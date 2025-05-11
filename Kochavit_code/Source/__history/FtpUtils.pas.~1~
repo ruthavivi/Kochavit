@@ -1,0 +1,59 @@
+unit FtpUtils;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, IdBaseComponent, IdComponent,
+  IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase, IdFTP,
+  Vcl.StdCtrls;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    IdFTP1: TIdFTP;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+var
+  Path, Dir: string;
+  I: Integer;
+  SourceFile, Target: string;
+begin
+  Path := '';
+
+  IdFTP1.Host := 'ftp.nemo4web.net';
+  IdFTP1.Username := 'sorin@nemo4web.net';
+  IdFTP1.Password := '71my01don';
+
+  IdFTP1.Connect;
+
+  SourceFile := 'D:\My Programs\WinVtr8\asakim_pt.json';
+  Target := '/kochavitmob/uploaded_files/asakim.json';
+
+  IdFTP1.Put(SourceFile, Target, False);
+
+//  IdFTP1.List('*.*', True);
+//  for I := 0 to IdFTP1.DirectoryListing.Count do
+//  begin
+//    IdFTP1.Get(IdFTP1.DirectoryListing.Items[I].FileName,
+//        IdFTP1.DirectoryListing.Items[I].FileName, False, False);
+//  end;
+
+  IdFTP1.Disconnect;
+  IdFTP1.Free;
+end;
+
+end.

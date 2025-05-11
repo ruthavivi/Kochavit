@@ -1,0 +1,342 @@
+object dmMain: TdmMain
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 290
+  Width = 207
+  object dsClient: TDataSource
+    DataSet = qrClientList
+    Left = 16
+    Top = 8
+  end
+  object tbFreze: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KFreze'
+    Left = 16
+    Top = 232
+  end
+  object qrWrnCar: TEDBQuery
+    AutoCalcFields = False
+    ReadOnly = True
+    BeforeOpen = qrWrnCarBeforeOpen
+    AfterOpen = qrWrnCarAfterOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsClient
+    SQL.Strings = (
+      
+        'SELECT Id, CarId, DateToDo, Tipul, CodCar, Number, Type, Contact' +
+        ', Tel, Shem, Tel1, Oved, Atar, Problem,'
+      'ZeutM, Profesion, TelP, ZeutP, Movil, Ktovet, Isuv'
+      'FROM KCrTipul Ct'
+      'LEFT JOIN KCar Cr ON Ct.CarId = Cr.Id   '
+      'LEFT JOIN KTblTipul Tt ON Ct.TipulId = Tt.Id      '
+      'LEFT JOIN KTblType Tp ON Cr.TypeId = Tp.Id'
+      'LEFT JOIN KTblOved Tv ON Cr.OvedId = Tv.Id'
+      'LEFT JOIN KTblAtar Ta ON Cr.AtarId = Ta.Id'
+      'LEFT JOIN KClient Cl ON Cr.ClientId = Cl.Id'
+      
+        'WHERE Cr.Pail = True AND Cr.Freze = False AND DateToDo >= :prmDa' +
+        'teF AND DateToDo <= :prmDateP'
+      'ORDER BY DateToDo')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'prmDateF'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'prmDateP'
+        ParamType = ptInput
+      end>
+    Left = 64
+    Top = 96
+    object qrWrnCarclSign: TStringField
+      DisplayWidth = 1
+      FieldKind = fkCalculated
+      FieldName = 'clSign'
+      OnGetText = qrWrnCarclSignGetText
+      Size = 1
+      Calculated = True
+    end
+    object qrWrnCarId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Id'
+    end
+    object qrWrnCarDateToDo: TDateField
+      DisplayLabel = #1500#1489#1510#1506' '#1489#1514#1488#1512#1497#1498
+      DisplayWidth = 10
+      FieldName = 'DateToDo'
+    end
+    object qrWrnCarTipul: TStringField
+      DisplayLabel = #1513#1501' '#1492#1496#1497#1508#1493#1500
+      DisplayWidth = 40
+      FieldName = 'Tipul'
+      Size = 40
+    end
+    object qrWrnCarType: TStringField
+      DisplayLabel = #1505#1493#1490' '#1512#1499#1489
+      DisplayWidth = 20
+      FieldName = 'Type'
+    end
+    object qrWrnCarCod: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1491#1493#1512#1497
+      FieldName = 'CodCar'
+    end
+    object qrWrnCarNumber: TStringField
+      DisplayLabel = #1502#1505#39' '#1512#1497#1513#1493#1497
+      DisplayWidth = 9
+      FieldName = 'Number'
+      Size = 9
+    end
+    object qrWrnCarContact: TStringField
+      DisplayLabel = #1488#1497#1513' '#1511#1513#1512
+      DisplayWidth = 25
+      FieldName = 'Contact'
+      Size = 25
+    end
+    object qrWrnCarTel: TStringField
+      DisplayLabel = #1496#1500'. '#1488#1497#1513' '#1511#1513#1512
+      DisplayWidth = 11
+      FieldName = 'Tel'
+      Size = 11
+    end
+    object qrWrnCarShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      DisplayWidth = 30
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrWrnCarTel1: TStringField
+      DisplayLabel = #1496#1500'. '#1495#1489#1512#1492
+      DisplayWidth = 11
+      FieldName = 'Tel1'
+      Size = 11
+    end
+    object qrWrnCarOved: TStringField
+      DisplayLabel = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497
+      DisplayWidth = 25
+      FieldName = 'Oved'
+      Size = 25
+    end
+    object qrWrnCarAtar: TStringField
+      DisplayLabel = #1488#1514#1512' '#1489#1497#1511#1493#1512#1514
+      DisplayWidth = 15
+      FieldName = 'Atar'
+      Size = 15
+    end
+    object qrWrnCarProblem: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Problem'
+    end
+    object qrWrnCarZeutM: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1512#1513#1497#1493#1503
+      FieldName = 'ZeutM'
+    end
+    object qrWrnCarProfesion: TStringField
+      DisplayLabel = #1502#1504#1492#1500' '#1502#1511#1510#1493#1506#1497
+      FieldName = 'Profesion'
+      Size = 30
+    end
+    object qrWrnCarZeutP: TIntegerField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514' '#1502'.'#1502'.'
+      FieldName = 'ZeutP'
+    end
+    object qrWrnCarKtovet: TStringField
+      DisplayLabel = #1499#1514#1493#1489#1514' '#1495#1489#1512#1492
+      FieldName = 'Ktovet'
+      Size = 30
+    end
+    object qrWrnCarIsuv: TStringField
+      DisplayLabel = #1497#1513#1493#1489
+      FieldName = 'Isuv'
+      Size = 15
+    end
+    object qrWrnCarCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object qrWrnCarTelP: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503' '#1502'.'#1502'.'
+      FieldName = 'TelP'
+      Size = 11
+    end
+    object qrWrnCarMovil: TStringField
+      DisplayLabel = #1513#1501' '#1489#1506#1500' '#1512#1513#1497#1493#1503' '#1502#1493#1489#1497#1500
+      FieldName = 'Movil'
+      Size = 30
+    end
+  end
+  object qrWrnDrv: TEDBQuery
+    AutoCalcFields = False
+    ReadOnly = True
+    BeforeOpen = qrWrnDrvBeforeOpen
+    AfterOpen = qrWrnDrvAfterOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsClient
+    SQL.Strings = (
+      
+        'SELECT Id, DriverId, DateToDo, Heiter, Dr.CodDrv, ShemD, Zeut, T' +
+        'elD, Shem, Tel1, Oved, Problem'
+      'FROM KDrHeiter Dh'
+      'LEFT JOIN KDriver Dr ON Dh.DriverId = Dr.Id'
+      'LEFT JOIN KTblHeiter tH ON Dh.HeiterId = th.Id'
+      'LEFT JOIN KClient Cl ON Cl.Id = Dr.ClientId'
+      'LEFT JOIN KTblOved tOv ON Dr.OvedId =  tOv.Id'
+      
+        'WHERE Dr.Pail = True AND Dr.Freze = False AND DateToDo >= :prmDa' +
+        'teF AND DateToDo <= :prmDateP'
+      'ORDER BY DateToDo')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'prmDateF'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'prmDateP'
+        ParamType = ptInput
+      end>
+    Left = 64
+    Top = 160
+    object qrWrnDrvclSign: TStringField
+      DisplayLabel = ' '
+      DisplayWidth = 1
+      FieldKind = fkCalculated
+      FieldName = 'clSign'
+      OnGetText = qrWrnDrvclSignGetText
+      Size = 1
+      Calculated = True
+    end
+    object qrWrnDrvId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Id'
+    end
+    object qrWrnDrvDateToDo: TDateField
+      DisplayWidth = 10
+      FieldName = 'DateToDo'
+    end
+    object qrWrnDrvHeiter: TStringField
+      DisplayWidth = 30
+      FieldName = 'Heiter'
+      Size = 30
+    end
+    object qrWrnDrvCodDrv: TIntegerField
+      FieldName = 'CodDrv'
+    end
+    object qrWrnDrvShemD: TStringField
+      DisplayWidth = 25
+      FieldName = 'ShemD'
+      Size = 25
+    end
+    object qrWrnDrvZeut: TStringField
+      DisplayWidth = 11
+      FieldName = 'Zeut'
+      Size = 11
+    end
+    object qrWrnDrvTelD: TStringField
+      DisplayWidth = 11
+      FieldName = 'TelD'
+      Size = 11
+    end
+    object qrWrnDrvShem: TStringField
+      DisplayWidth = 30
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrWrnDrvTel1: TStringField
+      DisplayWidth = 11
+      FieldName = 'Tel1'
+      Size = 11
+    end
+    object qrWrnDrvOved: TStringField
+      DisplayWidth = 25
+      FieldName = 'Oved'
+      Size = 25
+    end
+    object qrWrnDrvProblem: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Problem'
+    end
+    object qrWrnDrvDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+  end
+  object qrGnrl: TEDBQuery
+    AutoCalcFields = False
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    SQL.Strings = (
+      
+        'SELECT Cl.Id, Cl.Shem, Cl.Isuv, Cl.Tel1, Cl.Tel2, Cl.Dept, Dr.Sh' +
+        'emD, Dr.Zeut, Dr.TelD, Dr.CelD, Dr.LicenceNum, Dr.LicenceTyp, tH' +
+        '.Heiter, Dh.DateToDo, tOd.Oved, Cl.Hp'
+      'FROM KDrHeiter Dh'
+      '        LEFT JOIN KDriver Dr ON Dh.IdDriver = Dr.Id'
+      '        LEFT JOIN KTblHeiter tH ON Dh.IdHeiter = th.Id'
+      '        LEFT JOIN KClient Cl ON Cl.Id = Dr.ClientId'
+      '                LEFT JOIN KTblOved tOd ON tOd.Id = Cl.OvedId'
+      'WHERE 0=0'
+      
+        'GROUP BY Cl.Id, Dr.ShemD, Cl.Shem, Cl.Isuv, Cl.Tel1, Cl.Tel2, Cl' +
+        '.Dept, Dr.Zeut, Dr.TelD, Dr.CelD, Dr.LicenceNum, Dr.LicenceTyp, ' +
+        'tH.Heiter, Dh.DateToDo, tOd.Oved, Cl.Hp')
+    Params = <>
+    Left = 136
+    Top = 192
+  end
+  object qrClientList: TEDBQuery
+    ReadOnly = True
+    BeforeOpen = qrClientListBeforeOpen
+    AfterOpen = qrClientListAfterRefresh
+    AfterRefresh = qrClientListAfterRefresh
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    SQL.Strings = (
+      'SELECT Id, Cod, Shem, Dept, Freze'
+      'FROM KClient    '
+      'WHERE Pail = True'
+      'ORDER BY Shem')
+    Params = <>
+    Left = 72
+    Top = 8
+    object qrClientListId: TIntegerField
+      FieldName = 'Id'
+      Origin = 'KClient.Id'
+    end
+    object qrClientListCod: TIntegerField
+      FieldName = 'Cod'
+      Origin = 'KClient.Cod'
+    end
+    object qrClientListShem: TStringField
+      FieldName = 'Shem'
+      Origin = 'KClient.Shem'
+      Size = 30
+    end
+    object qrClientListDept: TFloatField
+      FieldName = 'Dept'
+      Origin = 'KClient.Dept'
+      currency = True
+    end
+    object qrClientListFreze: TBooleanField
+      FieldName = 'Freze'
+      Origin = 'KClient.Freze'
+    end
+  end
+  object dsWrnCar: TDataSource
+    DataSet = qrWrnCar
+    Left = 16
+    Top = 80
+  end
+  object frdbWrnCar: TfrxDBDataset
+    UserName = 'frdbWrnCar'
+    CloseDataSource = False
+    DataSet = qrWrnCar
+    BCDToCurrency = False
+    Left = 144
+    Top = 80
+  end
+end

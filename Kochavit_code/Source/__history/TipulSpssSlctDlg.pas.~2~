@@ -1,0 +1,85 @@
+unit TipulSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, Spin, StdCtrls, Buttons, ExtCtrls, DB, DBTables,
+  RpBase, RpSystem, RpDefine, RpRave, RpConDS, RpConBDE, RpCon, RpRender,
+  RpRenderRTF, edbcomps, RpRenderHTML;
+
+type
+  TfrmTipulSpssSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    ccChartsTpl: TRvCustomConnection;
+    qcTipulByTpl: TRvQueryConnection;
+    qcTipulByCln: TRvQueryConnection;
+    qcTipulByClTp: TRvQueryConnection;
+    qcTipulByTyp: TRvQueryConnection;
+    qcTipulByOvd: TRvQueryConnection;
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure ccChartsTplGetCols(Connection: TRvCustomConnection);
+    procedure ccChartsTplGetRow(Connection: TRvCustomConnection);
+  private
+    { Private declarations }
+    whrLn: String;
+    procedure SetChart(pLabel, pCmt: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTipulSpssSlctDlg: TfrmTipulSpssSlctDlg;
+
+implementation
+uses
+   TipulFilter, GnrlSpssChart, RPTChart;
+{$R *.dfm}
+
+procedure TfrmTipulSpssSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+   LoadRprtItems('TS');
+//   whrLn := frmTipulFilter.qrFilter.SQL[frmTipulFilter.qrFilter.SQL.Count -2];
+end;
+
+procedure TfrmTipulSpssSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+//  totRec := frmTipulFilter.qrFilter.RecordCount;
+  try
+   OpenSqlSpss(whrLn);
+   frmChart := TfrmChart.Create(Self);
+   SetChart(qrSpss.Fields[0].FieldName, 'Num');
+   if ((Sender as TBitBtn).Name = 'btnPrint') then
+      PrintSpss('', IntToStr(totRec))
+    else
+      PreviewSpss('', IntToStr(totRec));
+  finally
+   qrSpss.Close;
+   frmChart.Free;
+  end;
+end;
+
+procedure TfrmTipulSpssSlctDlg.ccChartsTplGetCols(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  Connection.WriteField('ChartTpl', dtGraphic, 30, '', '');
+end;
+
+procedure TfrmTipulSpssSlctDlg.ccChartsTplGetRow(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  WriteChartData(Connection, frmChart.dcChart);
+end;
+
+procedure TfrmTipulSpssSlctDlg.SetChart(pLabel, pCmt: String);
+begin
+  frmChart.dcChart.Series[0].DataSource := qrSpss;
+  frmChart.dcChart.Series[0].XLabelsSource := pLabel;
+  frmChart.dcChart.Series[0].YValues.ValueSource := pCmt;
+end;
+
+end.

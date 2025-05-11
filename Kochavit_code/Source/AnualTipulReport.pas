@@ -1,0 +1,86 @@
+unit AnualTipulReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, StdActns, DBActns,
+  System.Actions;
+
+type
+  TfrmAnualTipulReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBGridTitleClick(Column: TColumn);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAnualTipulReport: TfrmAnualTipulReport;
+
+implementation
+uses
+   AnualTipulFilterDM, AnualTipulRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmAnualTipulReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Shem');
+  SetStatusBar;
+end;
+
+procedure TfrmAnualTipulReport.SetStatusBar;
+var
+  Procent: String;
+begin
+  if (StrToInt(dmAnualTipulFilter.TotalRec) = 0) then
+    Procent := '0'
+  else
+    Procent := FormatFloat('#.##', StrToInt(dmAnualTipulFilter.TotalSelectRec) /
+          StrToInt(dmAnualTipulFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ טיפולים בדו"ח: ' + dmAnualTipulFilter.TotalSelectRec +
+      ' מתוך ' + dmAnualTipulFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmAnualTipulReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmAnualTipulFilter.SqlState.Order := GetOrders(Column);
+  dmAnualTipulFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmAnualTipulReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmAnualTipulRprtSlctDlg := TfrmAnualTipulRprtSlctDlg.Create(Self);
+  frmAnualTipulRprtSlctDlg.ShowModal;
+end;
+
+procedure TfrmAnualTipulReport.acExcelExecute(Sender: TObject);
+var
+  FileName: String;
+begin
+  inherited;
+  if SelectFields('At', dmAnualTipulFilter.qrFilter) then
+    if GetExprtFile(FileName, 'Excel', 2) then
+      SaveToExcel(dmAnualTipulFilter.qrFilter, FileName);
+end;
+
+procedure TfrmAnualTipulReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmAnualTipulFilter.qrFilter.Close;
+  inherited;
+  frmAnualTipulReport := nil;
+end;
+
+
+end.

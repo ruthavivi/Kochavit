@@ -1,0 +1,58 @@
+unit ChecksFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmChecksFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterClientId: TIntegerField;
+    qrFilterBankId: TSmallintField;
+    qrFilterAcount: TIntegerField;
+    qrFilterCheckNo: TIntegerField;
+    qrFilterCheckSum: TFloatField;
+    qrFilterAfkadaD: TDateField;
+    qrFilterPidyonD: TDateField;
+    qrFilterBill: TIntegerField;
+    qrFilterKabala: TIntegerField;
+    qrFilterReturn: TBooleanField;
+    qrFilterNifda: TBooleanField;
+    qrFilterNifdaTrg: TStringField;
+    qrFilterReturnTrg: TStringField;
+    qrFilterShem: TStringField;
+    qrFilterTel1: TStringField;
+    qrFilterTel2: TStringField;
+    qrFilterACounter: TStringField;
+    qrFilterTelA: TStringField;
+    qrFilterBank: TStringField;
+  private
+    { Private declarations }
+  public
+ function GetTotalSum: String;
+  end;
+
+var
+  dmChecksFilter: TdmChecksFilter;
+
+implementation
+
+{$R *.dfm}
+
+{ TdmChecksFilter }
+
+function TdmChecksFilter.GetTotalSum: String;
+begin
+  qrGnrl.SQL.Text := 'SELECT SUM(CheckSum) AS CheckSum FROM (' + qrFilter.SQL.Text +
+        ') AS SqlBase';
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('CheckSum').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+end.

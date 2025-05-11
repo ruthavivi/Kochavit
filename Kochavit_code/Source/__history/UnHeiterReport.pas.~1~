@@ -1,0 +1,54 @@
+unit UnHeiterReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmUnHeiterReport = class(TfrmGnrlReport)
+    procedure acPrintExecute(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure FormCreate(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUnHeiterReport: TfrmUnHeiterReport;
+
+implementation
+uses
+  UnTplHtrFilter, UnHeiterRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmUnHeiterReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Shem');
+end;
+
+procedure TfrmUnHeiterReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmUnTplHtrFilter.qrFilter, Column);
+end;
+
+procedure TfrmUnHeiterReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmUnTplHtrFilter.qrFilter);
+end;
+
+procedure TfrmUnHeiterReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmUnHeiterRprtSlctDlg := TfrmUnHeiterRprtSlctDlg.Create(Self);
+end;
+
+end.

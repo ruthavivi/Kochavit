@@ -1,0 +1,26 @@
+unit CarFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmCarFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+
+  end;
+
+var
+  dmCarFilter: TdmCarFilter;
+
+implementation
+
+{$R *.dfm}
+
+{ TdmCarFilter }
+
+end.

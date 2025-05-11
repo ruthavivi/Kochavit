@@ -1,0 +1,90 @@
+unit MailSendList;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
+  Data.DB, Vcl.Grids, Vcl.DBGrids, MyDBGrid, edbcomps;
+
+type
+  TfrmMailSendList = class(TForm)
+    dsEMailsSendCl: TDataSource;
+    Panel1: TPanel;
+    btnClose: TBitBtn;
+    qrEMailsSendCl: TEDBQuery;
+    qrEMailsSendClId: TIntegerField;
+    qrEMailsSendClClientId: TIntegerField;
+    qrEMailsSendClCarId: TIntegerField;
+    qrEMailsSendClDriverId: TIntegerField;
+    qrEMailsSendClMoed: TDateField;
+    qrEMailsSendClSubject: TStringField;
+    Panel2: TPanel;
+    Panel4: TPanel;
+    Label1: TLabel;
+    DBGrid2: TDBGrid;
+    Splitter1: TSplitter;
+    Panel3: TPanel;
+    Label2: TLabel;
+    DBGrid1: TDBGrid;
+    Splitter2: TSplitter;
+    Panel5: TPanel;
+    Label3: TLabel;
+    DBGrid3: TDBGrid;
+    qrEMailsSendCr: TEDBQuery;
+    dsEMailsSendCr: TDataSource;
+    qrEMailsSendDr: TEDBQuery;
+    dsEMailsSendDr: TDataSource;
+    qrEMailsSendCrId: TIntegerField;
+    qrEMailsSendCrClientId: TIntegerField;
+    qrEMailsSendCrCarId: TIntegerField;
+    qrEMailsSendCrDriverId: TIntegerField;
+    qrEMailsSendCrMoed: TDateField;
+    qrEMailsSendCrSubject: TStringField;
+    qrEMailsSendCrNumber: TStringField;
+    qrEMailsSendDrId: TIntegerField;
+    qrEMailsSendDrClientId: TIntegerField;
+    qrEMailsSendDrCarId: TIntegerField;
+    qrEMailsSendDrDriverId: TIntegerField;
+    qrEMailsSendDrMoed: TDateField;
+    qrEMailsSendDrSubject: TStringField;
+    qrEMailsSendDrShemD: TStringField;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure qrEMailsSendDrAttachedGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmMailSendList: TfrmMailSendList;
+
+implementation
+uses
+  ClientEditDM;
+{$R *.dfm}
+
+procedure TfrmMailSendList.FormCreate(Sender: TObject);
+begin
+  qrEMailsSendCl.Open;
+  qrEMailsSendCr.Open;
+  qrEMailsSendDr.Open;
+end;
+
+procedure TfrmMailSendList.qrEMailsSendDrAttachedGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  Text := Sender.AsString;
+end;
+
+procedure TfrmMailSendList.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  qrEMailsSendCl.Close;
+  qrEMailsSendCr.Close;
+  qrEMailsSendDr.Close;
+end;
+
+end.

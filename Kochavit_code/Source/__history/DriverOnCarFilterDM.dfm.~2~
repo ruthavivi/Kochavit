@@ -1,0 +1,4 @@
+inherited dmDriverOnCarFilter: TdmDriverOnCarFilter
+  Height = 245
+  Width = 256
+end

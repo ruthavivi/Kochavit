@@ -1,0 +1,27 @@
+inherited dmClientListArhiv: TdmClientListArhiv
+  OldCreateOrder = True
+  OnCreate = DataModuleCreate
+  inherited qrList: TEDBQuery
+    ReadOnly = True
+    BeforeOpen = qrListBeforeOpen
+    AfterOpen = qrListAfterRefresh
+    AfterRefresh = qrListAfterRefresh
+    SQL.Strings = (
+      'SELECT Id, Cod, Shem'
+      'FROM KClient    '
+      'WHERE Pail = False'
+      'ORDER BY Shem')
+    object qrListId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrListCod: TIntegerField
+      DisplayLabel = #1511#1493#1491' '#1495#1489#1512#1492
+      FieldName = 'Cod'
+    end
+    object qrListShem: TStringField
+      DisplayLabel = #1513#1501' '#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Size = 30
+    end
+  end
+end

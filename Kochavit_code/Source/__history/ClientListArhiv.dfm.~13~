@@ -1,0 +1,62 @@
+inherited frmClientListArhiv: TfrmClientListArhiv
+  Caption = #1488#1512#1499#1497#1493#1503' '#1500#1511#1493#1495#1493#1514
+  ClientHeight = 497
+  ClientWidth = 401
+  OnCreate = FormCreate
+  ExplicitWidth = 421
+  ExplicitHeight = 536
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited StatusBar: TStatusBar
+    Top = 478
+    Width = 401
+    ExplicitTop = 478
+    ExplicitWidth = 401
+  end
+  inherited ToolBar1: TToolBar
+    Width = 401
+    ExplicitWidth = 401
+  end
+  inherited Panel1: TPanel
+    Width = 401
+    Height = 430
+    ExplicitWidth = 401
+    ExplicitHeight = 430
+    inherited DBGrid: TDBGrid
+      Width = 399
+      Height = 428
+      DataSource = dsList
+      OnTitleClick = DBGridTitleClick
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Cod'
+          Title.Caption = #1502#1505#39
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Shem'
+          Title.Caption = #1513#1501' '#1492#1495#1489#1512#1492
+          Width = 245
+          Visible = True
+        end>
+    end
+  end
+  inherited dsList: TDataSource
+    DataSet = dmClientListArhiv.qrList
+  end
+  inherited ActionList1: TActionList
+    Left = 72
+    Top = 160
+    inherited acReturn: TAction
+      OnExecute = acReturnExecute
+    end
+    inherited acSiba: TAction
+      OnExecute = acSibaExecute
+    end
+    inherited acDelete: TAction
+      OnExecute = acDeleteExecute
+    end
+  end
+end

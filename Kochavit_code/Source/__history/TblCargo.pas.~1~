@@ -1,0 +1,35 @@
+unit TblCargo;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem;
+
+type
+  TfrmCargoTbl = class(TfrmGnrlTbl)
+    tbTblCargo: TStringField;
+    rtCargo: TRvTableConnection;
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCargoTbl: TfrmCargoTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCargoTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  RvTbl.ExecuteReport('rpCargo');
+end;
+
+end.

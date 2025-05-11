@@ -1,0 +1,23 @@
+unit GnrlFilterDM;
+
+interface
+
+uses
+  SysUtils, Classes;
+
+type
+  TdmGnrlFilter = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmGnrlFilter: TdmGnrlFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

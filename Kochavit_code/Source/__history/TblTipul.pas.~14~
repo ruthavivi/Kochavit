@@ -1,0 +1,144 @@
+unit TblTipul;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, edbcomps,
+  Vcl.StdActns, frxClass, frxDBSet, System.Actions, System.ImageList;
+
+type
+  TfrmTipulTbl = class(TfrmGnrlTbl)
+    tbTblID: TAutoIncField;
+    tbTblTipul: TStringField;
+    tbTblTedirut: TIntegerField;
+    tbTblKavua: TBooleanField;
+    tbTblMoedKavua: TBooleanField;
+    acAddAuto: TAction;
+    ToolButton1: TToolButton;
+    acRemoveAuto: TAction;
+    ToolButton2: TToolButton;
+    qrAddAuto: TEDBQuery;
+    qrCar: TEDBQuery;
+    frdbTipul: TfrxDBDataset;
+    tbTblBasic: TBooleanField;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acAddAutoExecute(Sender: TObject);
+    procedure acRemoveAutoExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    procedure AddTipul(pCarId: String);
+    procedure RemoveTipul(pCarId: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTipulTbl: TfrmTipulTbl;
+
+implementation
+uses
+  AddAuto, MainDM;
+{$R *.dfm}
+
+procedure TfrmTipulTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('TipulId', tbTblId.AsString, ['KCrTipul']) then
+    inherited;
+end;
+
+procedure TfrmTipulTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpTipul');
+end;
+
+procedure TfrmTipulTbl.acAddAutoExecute(Sender: TObject);
+begin
+  inherited;
+  frmAddAuto := TfrmAddAuto.Create(Self);
+  try
+    if (frmAddAuto.ShowModal = mrOk) then
+    begin
+      if (frmAddAuto.TypeId = '') then
+        qrCar.SQL.Text := 'SELECT Id FROM KCar'
+      else
+        qrCar.SQL.Text := 'SELECT Id FROM KCar WHERE TypeId = ' + frmAddAuto.TypeId;
+      Screen.Cursor := crHourGlass;
+      try
+        qrCar.Open;
+        while not qrCar.Eof do
+        begin
+          AddTipul(qrCar.FieldByName('Id').AsString);
+          qrCar.Next;
+        end;
+      finally
+        qrCar.Close;
+      end;
+    end;
+  finally
+    frmAddAuto.Free;
+  end;
+  Screen.Cursor := crDefault;
+end;
+
+procedure TfrmTipulTbl.acRemoveAutoExecute(Sender: TObject);
+var
+  TypeId: String;
+begin
+  inherited;
+  frmAddAuto := TfrmAddAuto.Create(Self);
+  try
+    if (frmAddAuto.ShowModal = mrOk) then
+    begin
+      TypeId := frmAddAuto.TypeId;
+      if (TypeId = '') then
+        qrCar.SQL.Text := 'SELECT Id FROM KCar'
+      else
+        qrCar.SQL.Text := 'SELECT Id FROM KCar WHERE TypeId = ' + TypeId;
+      try
+        qrCar.Open;
+        while not qrCar.Eof do
+        begin
+          RemoveTipul(qrCar.FieldByName('Id').AsString);
+          qrCar.Next;
+        end;
+      finally
+        qrCar.Close;
+      end;
+    end;
+  finally
+    frmAddAuto.Free;
+  end;
+end;
+
+procedure TfrmTipulTbl.AddTipul(pCarId: String);
+var
+  HasTipul: Boolean;
+  Id: String;
+begin
+  qrAddAuto.SQL.Text := 'SELECT Id FROM KCrTipul ' +
+      'WHERE CarId = ' + pCarId + ' and TipulId = ' + tbTblId.AsString;
+  qrAddAuto.Open;
+  HasTipul := True;
+  if qrAddAuto.Eof then
+    HasTipul := False;
+  qrAddAuto.Close;
+  if not HasTipul then
+  begin
+    Id := IntToStr(dmMain.GenerateNewId('NextNoTpl'));
+    qrAddAuto.SQL.Text := 'INSERT INTO KCrTipul (Id, CarId, TipulId) ' +
+                      'VALUES ('+ Id +', '+ pCarId + ', ' + tbTblId.AsString + ')';
+    qrAddAuto.ExecSQL;
+  end;
+end;
+
+procedure TfrmTipulTbl.RemoveTipul(pCarId: String);
+begin
+  qrAddAuto.SQL.Text := 'DELETE FROM KCrTipul ' +
+          'WHERE CarId = ' + pCarId + ' and TipulId = ' + tbTblId.AsString;
+  qrAddAuto.ExecSQL;
+end;
+
+end.

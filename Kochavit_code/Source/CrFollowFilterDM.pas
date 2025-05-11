@@ -1,0 +1,36 @@
+unit CrFollowFilterDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, GnrlFilterDM, Data.DB, edbcomps;
+
+type
+  TdmCrFollowFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterMoed: TDateField;
+    qrFilterSha: TTimeField;
+    qrFilterRemark: TStringField;
+    qrFilterCodCar: TIntegerField;
+    qrFilterNumber: TStringField;
+    qrFilterType: TStringField;
+    qrFilterProducer: TStringField;
+    qrFilterCod: TIntegerField;
+    qrFilterShem: TStringField;
+    qrFilterOved: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmCrFollowFilter: TdmCrFollowFilter;
+
+implementation
+
+{%CLASSGROUP 'System.Classes.TPersistent'}
+
+{$R *.dfm}
+
+end.

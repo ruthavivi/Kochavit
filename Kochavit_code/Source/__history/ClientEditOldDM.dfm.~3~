@@ -1,0 +1,83 @@
+object dmClientEditOld: TdmClientEditOld
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 182
+  Width = 236
+  object dsClFollow: TDataSource
+    DataSet = tbClFollow
+    Left = 104
+    Top = 32
+  end
+  object tbClFollow: TEDBTable
+    AfterOpen = tbClFollowAfterOpen
+    DatabaseName = 'KB'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dmMainOld.dsClientOld
+    TableName = 'KClFollowOld'
+    Left = 40
+    Top = 32
+    object tbClFollowMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbClFollowSha: TTimeField
+      DisplayWidth = 10
+      FieldName = 'Sha'
+      EditMask = '!90:00;1; '
+    end
+    object tbClFollowRemark: TStringField
+      DisplayWidth = 60
+      FieldName = 'Remark'
+      Size = 60
+    end
+    object tbClFollowId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbClFollowClientId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ClientId'
+    end
+  end
+  object tbTofes: TEDBTable
+    DatabaseName = 'KBBig'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dmMainOld.dsClientOld
+    TableName = 'KClTofesOld'
+    Left = 40
+    Top = 96
+    object tbTofesId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTofesClientId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ClientId'
+    end
+    object tbTofesMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+    end
+    object tbTofesName: TStringField
+      DisplayWidth = 30
+      FieldName = 'Name'
+      Size = 30
+    end
+    object tbTofesTofes: TBlobField
+      DisplayWidth = 10
+      FieldName = 'Tofes'
+      BlobType = ftParadoxOle
+    end
+    object tbTofesExt: TStringField
+      DisplayWidth = 3
+      FieldName = 'Ext'
+      Size = 3
+    end
+  end
+end

@@ -1,0 +1,85 @@
+unit DeleteBigFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask;
+
+type
+  TfrmDeleteBigFilter = class(TfrmGnrlFilter)
+    edETillMoed: TMaskEdit;
+    cxDTillMoed: TCheckBox;
+    edEMoedDelete: TMaskEdit;
+    cxDMoedDelete: TCheckBox;
+    procedure btnExecuteClick(Sender: TObject);
+    procedure cxDTillMoedClick(Sender: TObject);
+  private
+    procedure DeleteTofes(pTable: String);
+    procedure DeleteTillMoedDelete(pTable: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDeleteBigFilter: TfrmDeleteBigFilter;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmDeleteBigFilter.cxDTillMoedClick(Sender: TObject);
+begin
+  inherited;
+  ChkBoxClick(Sender as TCheckBox);
+end;
+
+procedure TfrmDeleteBigFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  if cxDTillMoed.Checked then
+  begin
+    DeleteTofes('KClTofes');
+    DeleteTofes('KClTofesOld');
+    DeleteTofes('KCrTofes');
+    DeleteTofes('KCrTofesOld');
+    DeleteTofes('KDrTofes');
+    DeleteTofes('KDrTofesOld');
+  end
+  else if cxDMoedDelete.Checked then
+  begin
+    DeleteTillMoedDelete('KClTofes');
+    DeleteTillMoedDelete('KClTofesOld');
+    DeleteTillMoedDelete('KCrTofes');
+    DeleteTillMoedDelete('KCrTofesOld');
+    DeleteTillMoedDelete('KDrTofes');
+    DeleteTillMoedDelete('KDrTofesOld');
+  end;
+  Screen.Cursor := crDefault;
+  Close;
+end;
+
+procedure TfrmDeleteBigFilter.DeleteTillMoedDelete(pTable: String);
+var
+  sMoed: String;
+begin
+  sMoed := FormatDateTime('mm/dd/yyyy', StrToDate(edEMoedDelete.Text));
+  qrFilter.SQL.Text := 'DELETE FROM ' + pTable +
+                  ' WHERE MoedDelete <= ' + QuotedStr(sMoed) +
+                  ' and MoedDelete IS NOT Null';
+  qrFilter.ExecSQL;
+end;
+
+procedure TfrmDeleteBigFilter.DeleteTofes(pTable: String);
+var
+  sMoed: String;
+begin
+  sMoed := FormatDateTime('mm/dd/yyyy', StrToDate(edETillMoed.Text));
+  qrFilter.SQL.Text := 'DELETE FROM ' + pTable +
+                  ' WHERE Moed <= ' + QuotedStr(sMoed) + ' or ' +
+                  'Moed IS Null';
+  qrFilter.ExecSQL;
+end;
+
+end.

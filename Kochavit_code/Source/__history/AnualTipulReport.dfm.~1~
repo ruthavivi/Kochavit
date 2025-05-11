@@ -1,0 +1,172 @@
+inherited frmAnualReport: TfrmAnualReport
+  Left = 90
+  Caption = #1491#1493'"'#1495' '#1496#1497#1508#1493#1500#1497#1501' '#1513#1504#1514#1497
+  ClientHeight = 340
+  ClientWidth = 648
+  OldCreateOrder = True
+  OnCreate = FormCreate
+  ExplicitWidth = 656
+  ExplicitHeight = 386
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited DBGrid: TDBGrid
+    Width = 648
+    Height = 269
+    OnTitleClick = DBGridTitleClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'IdCar'
+        Title.Caption = #1502#1505#39
+        Width = 26
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Shem'
+        Width = 119
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Number'
+        Title.Caption = #1502#1505#39' '#1512#1499#1489
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Type'
+        Title.Caption = #1505#1493#1490' '#1512#1499#1489
+        Width = 70
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Contact'
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '1'
+        Title.Caption = #1497#1504#1493#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '2'
+        Title.Caption = #1508#1489#1512#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '3'
+        Title.Caption = #1502#1512#1509
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '4'
+        Title.Caption = #1488#1508#1512#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '5'
+        Title.Caption = #1502#1488#1497
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '6'
+        Title.Caption = #1497#1493#1504#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '7'
+        Title.Caption = #1497#1493#1500#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '8'
+        Title.Caption = #1488#1493#1490#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '9'
+        Title.Caption = #1505#1508#1496#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '10'
+        Title.Caption = #1488#1493#1511#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '11'
+        Title.Caption = #1504#1493#1489#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '12'
+        Title.Caption = #1491#1510#1502#39
+        Width = 28
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Atar'
+        Title.Caption = #1488#1514#1512' '#1496#1497#1508#1493#1500
+        Width = 64
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Oved'
+        Title.Caption = #1513#1501' '#1492#1502#1496#1508#1500
+        Width = 109
+        Visible = True
+      end>
+  end
+  inherited StatusBar1: TStatusBar
+    Top = 317
+    Width = 648
+    ExplicitTop = -23
+    ExplicitWidth = 638
+  end
+  inherited ToolBar1: TToolBar
+    Width = 648
+    ExplicitWidth = 638
+    inherited btnLabel: TToolButton
+      ExplicitWidth = 50
+    end
+  end
+  inherited ActionList: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    inherited acExcel: TAction
+      OnExecute = acExcelExecute
+    end
+  end
+  inherited dsReport: TDataSource
+    DataSet = dmAnualTipulFilter.qrFilter
+  end
+end

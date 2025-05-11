@@ -1,0 +1,122 @@
+unit ChecksListDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps;
+
+type
+  TdmChecksList = class(TDataModule)
+    qrGnrl: TEDBQuery;
+    qrChecksList: TEDBQuery;
+    qrChecksListId: TIntegerField;
+    qrChecksListBill: TIntegerField;
+    qrChecksListCheckNo: TIntegerField;
+    qrChecksListAfkadaD: TDateField;
+    qrChecksListPidyonD: TDateField;
+    qrChecksListShem: TStringField;
+    qrChecksListclSign: TStringField;
+    qrChecksListReturn: TBooleanField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrChecksListBeforeOpen(DataSet: TDataSet);
+    procedure qrChecksListAfterOpen(DataSet: TDataSet);
+    procedure qrChecksListclSignGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure DataModuleDestroy(Sender: TObject);
+  private
+    whrAdd: String;
+  public
+    ChecksOrder, ChecksRecNo: String;
+    procedure ReOpenTable(pId: Integer);
+    procedure UpdateNifda;
+    procedure UpdateReturn;
+  end;
+
+var
+  dmChecksList: TdmChecksList;
+
+const
+  // when one client selected
+  whrSlctCh = 'WHERE Nifda = False AND ClientId = :Id ';
+  // when "כל החברות" selected
+  whrAll = 'WHERE Nifda = False AND Cl.Pail = TRUE ';
+
+implementation
+uses
+  MainDM, LogErrorUtil, KbFunc;
+
+{$R *.dfm}
+
+procedure TdmChecksList.DataModuleCreate(Sender: TObject);
+begin
+  ChecksOrder := GetIniValue('Checks', 'Order', 'PidyonD');
+
+  try
+    qrChecksList.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmChecksList.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmChecksList.qrChecksListBeforeOpen(DataSet: TDataSet);
+begin
+  if dmMain.SelectAll then
+    qrChecksList.SQL[qrChecksList.SQL.Count-2] :=  whrAll + whrAdd
+  else
+    qrChecksList.SQL[qrChecksList.SQL.Count-2] :=  whrSlctCh + whrAdd;
+
+  qrChecksList.SQL[qrChecksList.SQL.Count-1] := 'ORDER BY '+ ChecksOrder;
+end;
+
+procedure TdmChecksList.qrChecksListAfterOpen(DataSet: TDataSet);
+begin
+  ChecksRecNo := IntToStr(qrChecksList.RecordCount);
+end;
+
+procedure TdmChecksList.qrChecksListclSignGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  if qrChecksListPidyonD.AsDateTime < Date then
+    Text := '!';
+end;
+
+procedure TdmChecksList.ReOpenTable(pId: Integer);
+begin
+  try
+    qrChecksList.DisableControls;
+    qrChecksList.Close;
+    qrChecksList.Open;
+    qrChecksList.Locate('Id', pId, []);
+  finally
+    qrChecksList.EnableControls;
+  end;
+end;
+
+procedure TdmChecksList.UpdateNifda;
+begin
+  qrGnrl.SQL.Text := 'UPDATE KChecks SET Nifda = True WHERE Id = '+
+          qrChecksListId.AsString;
+  qrGnrl.ExecSQL;
+  ReOpenTable(0);
+end;
+
+procedure TdmChecksList.UpdateReturn;
+begin
+  qrGnrl.SQL.Text := 'UPDATE KChecks SET Return = True WHERE Id = '+
+          qrChecksListId.AsString;
+  qrGnrl.ExecSQL;
+  ReOpenTable(0);
+end;
+
+procedure TdmChecksList.DataModuleDestroy(Sender: TObject);
+begin
+  SetIniValue('Checks', 'Order', ChecksOrder);
+  qrChecksList.Close;
+  dmChecksList := nil;
+end;
+
+end.

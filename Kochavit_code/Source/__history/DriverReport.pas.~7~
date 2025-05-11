@@ -1,0 +1,67 @@
+unit DriverReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, StdActns, DBActns, ActnList,
+  StdCtrls, Buttons, ComCtrls, ToolWin, Grids, DBGrids;
+
+type
+  TfrmDriverReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverReport: TfrmDriverReport;
+
+implementation
+uses
+   DriverFilterDM, OpenToPrint, DriverRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmDriverReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('ShemD');
+  SetStatusBar;
+end;
+
+procedure TfrmDriverReport.SetStatusBar;
+var
+   procent: String;
+begin
+  Procent := FormatFloat('#.##', StrToInt(dmDriverFilter.TotalSelectRec) /
+          StrToInt(dmDriverFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ נהגים בדו"ח: ' + dmDriverFilter.TotalSelectRec +
+      ' מתוך ' + dmDriverFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmDriverReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmDriverRprtSlctDlg := TfrmDriverRprtSlctDlg.Create(Self);
+  frmDriverRprtSlctDlg.Show;
+end;
+
+procedure TfrmDriverReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(dmDriverFilter.qrFilter);
+end;
+
+procedure TfrmDriverReport.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dmDriverFilter.qrFilter.Close;
+  inherited;
+  frmDriverReport := nil;
+end;
+
+end.

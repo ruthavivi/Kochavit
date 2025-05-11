@@ -1,0 +1,156 @@
+unit AnualFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Spin,
+  DateUtils;
+
+type
+  TfrmAnualFilter = class(TfrmGnrlFilter)
+    lbEOved: TLabel;
+    cxEOved: TCheckBox;
+    cbEOved: TComboBox;
+    Label1: TLabel;
+    edYear: TSpinEdit;
+    dsCars: TDataSource;
+    qrTipul: TQuery;
+    qrCars: TQuery;
+    tbAnualTipul: TTable;
+    procedure FormCreate(Sender: TObject);
+    procedure cxEOvedClick(Sender: TObject);
+    procedure cbEOvedEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure LoadPrfx;
+    procedure FillTempFile;
+    procedure FillCarData;
+    procedure FillTipulData;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAnualFilter: TfrmAnualFilter;
+
+implementation
+uses
+   AnualReport;
+{$R *.dfm}
+
+procedure TfrmAnualFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  qrTipul.Prepare;
+  totalRec := GetRecNum('KCar.db');
+  edYear.Value := YearOf(Date);
+end;
+
+procedure TfrmAnualFilter.FormActivate(Sender: TObject);
+begin
+  inherited;
+  Self.WindowState := wsNormal;
+end;
+
+procedure TfrmAnualFilter.cxEOvedClick(Sender: TObject);
+begin
+  inherited;
+  ChkBoxClick(Sender as TCheckBox);
+end;
+
+procedure TfrmAnualFilter.cbEOvedEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KTblOved.db';
+  ItemsInCmbBox(cbEOved, 'Oved');
+end;
+
+procedure TfrmAnualFilter.btnExecuteClick(Sender: TObject);
+var
+  Path, WhereLn: String;
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+
+  prfxList := TStringList.Create;
+  LoadPrfx;
+  qrTipul.ParamByName('pYear').Value := edYear.Value;
+  qrCars.SQL.LoadFromFile(Path + 'AnualSQL.Txt');
+  WhereLn := GetWhereLn;
+  if (WhereLn <> '') then
+    qrCars.SQL.Add(' WHERE ' + WhereLn);
+
+  try
+    FillTempFile;
+    qrFilter.Open;
+    selectRec := qrFilter.RecordCount;
+    frmAnualReport := TfrmAnualReport.Create(Self);
+  finally
+    prfxList.Free;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmAnualFilter.FillTempFile;
+begin
+  qrCars.Open;
+  qrTipul.Open;
+  try
+    tbAnualTipul.EmptyTable;
+    tbAnualTipul.Open;
+    while not qrCars.Eof do
+    begin
+      FillCarData;
+      while not qrTipul.Eof do
+      begin
+        FillTipulData;
+        qrTipul.Next;
+      end;
+      qrCars.Next;
+    end;
+  finally
+    tbAnualTipul.Close;
+    qrCars.Close;
+    qrTipul.Close;
+  end;
+end;
+
+procedure TfrmAnualFilter.FillCarData;
+var
+  i: Integer;
+begin
+  tbAnualTipul.Append;
+  for i := 1 to qrCars.FieldCount -1 do
+    tbAnualTipul.FieldByName(qrCars.Fields[i].FieldName).Value :=
+        qrCars.Fields[i].Value;
+  tbAnualTipul.Post;
+end;
+
+procedure TfrmAnualFilter.FillTipulData;
+var
+  M, D: String;
+begin
+  tbAnualTipul.Edit;
+  M := qrTipul.FieldByName('M').AsString;
+  D := qrTipul.FieldByName('D').AsString;
+  tbAnualTipul.FieldByName(M).AsString := D;
+  tbAnualTipul.Post;
+end;
+
+procedure TfrmAnualFilter.LoadPrfx;
+begin
+  prfxList.Add('tOv.');
+end;
+
+procedure TfrmAnualFilter.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  qrTipul.UnPrepare;
+  inherited;
+end;
+
+end.

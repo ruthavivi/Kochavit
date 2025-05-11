@@ -1,0 +1,103 @@
+unit AviraFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmAviraFilter = class(TfrmGnrlFilter)
+    lbAAviraD: TLabel;
+    lbZAviraZ: TLabel;
+    edAAviraD: TMaskEdit;
+    edZAviraD: TMaskEdit;
+    cbAviraD: TCheckBox;
+    lbEShem: TLabel;
+    cbShem: TCheckBox;
+    cbEShem: TComboBox;
+    procedure FormCreate(Sender: TObject);
+    procedure cbAviraDClick(Sender: TObject);
+    procedure edAAviraDExit(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAviraFilter: TfrmAviraFilter;
+
+implementation
+uses
+   AviraFilterDM, AviraReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmAviraFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmAviraFilter := TdmAviraFilter.Create(Self);
+end;
+
+procedure TfrmAviraFilter.cbAviraDClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmAviraFilter.edAAviraDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAAviraD.Text,
+               edZAviraD.Text) = False) then
+           edAAviraD.SetFocus;
+end;
+
+procedure TfrmAviraFilter.cbEShemEnter(Sender: TObject);
+var
+  ListItem: TStringList;
+begin
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmAviraFilter.LoadItems('KClient', 'Shem', '', ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmAviraFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(frmAviraReport) then
+  begin
+    with dmAviraFilter do
+    begin
+      SetTotalRec('KDrAvira');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\AviraFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'AviraD';
+      if OpenData then
+        frmAviraReport := TfrmAviraReport.Create(Self);
+    end;
+  end;
+end;
+
+procedure TfrmAviraFilter.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  frmAviraFilter := nil;
+end;
+
+end.

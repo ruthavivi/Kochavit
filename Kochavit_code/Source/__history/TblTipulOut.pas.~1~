@@ -1,0 +1,36 @@
+unit TblTipulOut;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem;
+
+type
+  TfrmTipulOutTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblTipulOut: TStringField;
+    rtTipulOut: TRvTableConnection;
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTipulOutTbl: TfrmTipulOutTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmTipulOutTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  RvTbl.ExecuteReport('rpTipulOut');
+end;
+
+end.

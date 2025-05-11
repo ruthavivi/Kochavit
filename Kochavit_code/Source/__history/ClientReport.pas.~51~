@@ -1,0 +1,259 @@
+unit ClientReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, WordFunc, ComCtrls,
+  StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, OpenToSendEmail,
+  DBActns, StdActns, frxClass, frxDBSet, System.Actions, System.ImageList;
+
+type
+  TfrmClientReport = class(TfrmGnrlReport)
+    pmLabel: TPopupMenu;
+    N10: TMenuItem;
+    N9: TMenuItem;
+    N9X31: TMenuItem;
+    acLabel7x3: TAction;
+    acLable9x3: TAction;
+    acLabel8x3: TAction;
+    acLabel6x3: TAction;
+    N6X31: TMenuItem;
+    acMail: TAction;
+    N5: TMenuItem;
+    N7: TMenuItem;
+    acSendMail: TAction;
+    frdbClient: TfrxDBDataset;
+    procedure acLabel6x3Execute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acMailExecute(Sender: TObject);
+    procedure acLabel7x3Execute(Sender: TObject);
+    procedure acLable9x3Execute(Sender: TObject);
+    procedure acLabel8x3Execute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acSendMailExecute(Sender: TObject);
+  private
+    procedure SetStatusBar;
+    function SelectDoc(var WorkFile, nCopy: OleVariant;
+               var vButton, vMemo: String; vPath: String): Boolean;
+    procedure GnrlPrints(pDocName, pFunc: String; pNCopy: Integer);
+    function HaveEMails(ToEMails: TStringList): Boolean;
+    procedure PrintReport(pReportName: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmClientReport: TfrmClientReport;
+
+implementation
+uses
+   DataDM, ClientFilterDM, ClientRprtSlctDlg, ClientSpssSlctDlg, OpenToPrint, DocUtils,
+   KbFunc;
+{$R *.dfm}
+
+procedure TfrmClientReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Shem');
+  SetStatusBar;
+end;
+
+procedure TfrmClientReport.SetStatusBar;
+var
+  Procent: String;
+begin
+  if (StrToInt(dmClientFilter.TotalRec) = 0) then
+    Procent := '0'
+  else
+    Procent := FormatFloat('#.##', StrToInt(dmClientFilter.TotalSelectRec) /
+          StrToInt(dmClientFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ חברות בדו"ח: ' + dmClientFilter.TotalSelectRec +
+      ' מתוך ' + dmClientFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmClientReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmClientFilter.SqlState.Order := GetOrders(Column);
+  dmClientFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmClientReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmClientRprtSlctDlg := TfrmClientRprtSlctDlg.Create(Self);
+  frmClientRprtSlctDlg.Show;
+end;
+
+procedure TfrmClientReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmClientSpssSlctDlg := TfrmClientSpssSlctDlg.Create(Self);
+  frmClientSpssSlctDlg.Show;
+end;
+
+procedure TfrmClientReport.acExcelExecute(Sender: TObject);
+var
+  FileName: String;
+begin
+  inherited;
+  if SelectFields('Cln', dmClientFilter.qrFilter) then
+    if GetExprtFile(FileName, 'Excel', 2) then
+      SaveToExcel(dmClientFilter.qrFilter, FileName);
+end;
+
+procedure TfrmClientReport.acMailExecute(Sender: TObject);
+var
+  DocName, nCopy: OleVariant;
+  Func, vMemo: String;
+begin
+  inherited;
+  if SelectDoc(DocName, nCopy, Func, vMemo,
+       ExtractFilePath(Application.ExeName) + 'Docs\') then
+    GnrlPrints(DocName, Func, nCopy);
+end;
+
+procedure TfrmClientReport.GnrlPrints(pDocName, pFunc: String; pNCopy: Integer);
+var
+  Subject: String;
+  OneDoc: TDocUtils;
+  ToEmails: TStringList;
+begin
+  Subject := 'הודעה מהקצין רכב';
+
+  Screen.Cursor := crHourGlass;
+  with dmClientFilter.qrFilter do
+  begin
+    try
+      DisableControls;
+      First;
+      ToEmails := TStringList.Create;
+      while not Eof do
+      begin
+        if (pFunc = 'btnEmail') and HaveEMails(ToEmails) then
+        begin
+          OneDoc := TDocUtils.Create('btnEmail', dmClientFilter.qrFilterShem.AsString,
+               'מצורפת הודעה מקצין הבטיחות שלך', pNCopy, False, ToEmails, pDocName);
+          OneDoc.SendDoc(dmClientFilter.qrFilter, nil, nil);
+          if OneDoc.EmailSend then
+            SaveEmailSend(dmClientFilter.qrFilterId.AsString, 'NULL', 'NULL',
+              Subject, ExtractFileName(ChangeFileExt(pDocName, '.pdf')));
+        end
+        else if (pFunc = 'btnPrint') or (pFunc = 'btnPreview') then
+        begin
+          OneDoc := TDocUtils.Create(pFunc, pNCopy, False, Subject, '', '', '', pDocName);
+          OneDoc.SendDoc(dmClientFilter.qrFilter, nil, nil);
+        end;
+        Next;
+      end;
+    finally
+      EnableControls;
+      ToEmails.Free;
+      OneDoc.Free;
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+function TfrmClientReport.HaveEMails(ToEMails: TStringList): Boolean;
+begin
+  Result := False;
+  ToEMails.Clear;
+  if (dmClientFilter.qrFilterEMail.AsString <> '') then
+  begin
+    ToEMails.Add(dmClientFilter.qrFilterEMail.AsString);
+    Result := True;
+  end;
+  if (dmClientFilter.qrFilterEMailX.AsString <> '') then
+  begin
+    ToEMails.Add(dmClientFilter.qrFilterEMailX.AsString);
+    Result := True;
+  end;
+end;
+
+function TfrmClientReport.SelectDoc(var WorkFile, nCopy: OleVariant;
+  var vButton, vMemo: String; vPath: String): Boolean;
+begin
+  Result := False;
+
+   frmOpenToPrint := TfrmOpenToPrint.Create(self);
+   with frmOpenToPrint do
+   begin
+       DirectoryListBox.Directory := vPath;
+       Edit.Text := '';
+       if ShowModal = mrOK then
+       begin
+           vPath := DirectoryListBox.Directory;
+           WorkFile := vPath + '\' + Edit.Text;
+           vButton := btnPress;
+           nCopy := SpinEdit.Value;
+           Result := True;
+       end;
+       Free;
+   end
+end;
+
+procedure TfrmClientReport.acSendMailExecute(Sender: TObject);
+begin
+  inherited;
+  frmOpenToSendEmail := TfrmOpenToSendEmail.Create(Self);
+  try
+    frmOpenToSendEmail.SetData('Client', dmClientFilter.qrFilter);
+    if (frmOpenToSendEmail.ShowModal = mrOk) then
+    begin
+
+    end;
+  finally
+    frmOpenToSendEmail.Free;
+  end;
+end;
+
+procedure TfrmClientReport.acLabel6x3Execute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpClientRprtLbl3X6');
+end;
+
+procedure TfrmClientReport.acLabel7x3Execute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpClientRprtLbl3X7');
+end;
+
+procedure TfrmClientReport.acLabel8x3Execute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpClientRprtLbl3X8');
+end;
+
+procedure TfrmClientReport.acLable9x3Execute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpClientRprtLbl3X9');
+end;
+
+procedure TfrmClientReport.PrintReport(pReportName: String);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Report\';
+  dmData.frxReport.LoadFromFile(Path+pReportName+'.fr3');
+  dmData.frxReport.PrepareReport;
+  dmData.frxReport.Print;
+end;
+
+procedure TfrmClientReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmClientFilter.qrFilter.Close;
+  inherited;
+  frmClientReport := nil;
+end;
+
+end.

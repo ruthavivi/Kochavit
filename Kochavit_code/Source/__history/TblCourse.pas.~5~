@@ -1,0 +1,46 @@
+unit TblCourse;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem, edbcomps, frxClass,
+  frxDBSet, Vcl.StdActns;
+
+type
+  TfrmCourseTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblCourse: TStringField;
+    tbTblHourNum: TIntegerField;
+    tbTblTeuda: TStringField;
+    frdbCourse: TfrxDBDataset;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCourseTbl: TfrmCourseTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCourseTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('IdHeiter', tbTblId.AsString, ['KDrHeiter']) then
+    inherited;
+end;
+
+procedure TfrmCourseTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpCourse');
+end;
+
+end.

@@ -1,0 +1,38 @@
+unit BillPayd;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, Mask, Buttons, ComCtrls;
+
+type
+  TfrmBillPayd = class(TForm)
+    Panel1: TPanel;
+    Panel3: TPanel;
+    btnSave: TBitBtn;
+    btnCancel: TBitBtn;
+    Label1: TLabel;
+    dtPayd: TDateTimePicker;
+    Label2: TLabel;
+    edKabala: TMaskEdit;
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBillPayd: TfrmBillPayd;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmBillPayd.FormCreate(Sender: TObject);
+begin
+   dtPayd.DateTime := Date;
+end;
+
+end.

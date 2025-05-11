@@ -1,0 +1,82 @@
+unit ClientOldReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, RpCon, RpConDS, RpConBDE,
+  RpRave, RpDefine, RpBase, RpSystem;
+
+type
+  TfrmClientOldReport = class(TfrmGnrlReport)
+    RvSystem: TRvSystem;
+    RvRprt: TRvProject;
+    qcClientRprt: TRvQueryConnection;
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmClientOldReport: TfrmClientOldReport;
+
+implementation
+uses
+   ClientOldFilter, ClientOldRprtSlctDlg;
+
+{$R *.dfm}
+
+procedure TfrmClientOldReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmClientOldFilter.qrFilter, Column);
+end;
+
+procedure TfrmClientOldReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Shem');
+  SetStatusBar;
+  LoadPosition('ClientOldRpt', (Sender as TForm));
+
+  RvRprt.ProjectFile := ExtractFilePath(Application.ExeName) +
+                          'Reports\KvRprt.rav';
+end;
+
+procedure TfrmClientOldReport.SetStatusBar;
+var
+   procent: Real;
+begin
+  try
+    procent := frmClientOldFilter.selectRec /
+        frmClientOldFilter.totalRec * 100;
+  except
+    on EInvalidOp do procent := 0;
+  end;
+
+  StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmClientOldFilter.selectRec) +
+       ' לקוחות מתוך ' + IntToStr(frmClientOldFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmClientOldReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmClientOldRprtSlctDlg := TfrmClientOldRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmClientOldReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('ClientOldRpt', (Sender as TForm));
+  frmClientOldFilter.qrFilter.Close;
+  inherited;
+end;
+
+end.

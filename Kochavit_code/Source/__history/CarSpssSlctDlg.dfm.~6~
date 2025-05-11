@@ -1,0 +1,55 @@
+inherited frmCarSpssSlctDlg: TfrmCarSpssSlctDlg
+  Left = 184
+  ClientWidth = 367
+  OldCreateOrder = True
+  ExplicitWidth = 383
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    Width = 367
+    ExplicitWidth = 367
+    inherited edTitle: TMemo
+      Width = 365
+      ExplicitWidth = 365
+    end
+    inherited rgReports: TRadioGroup
+      Width = 365
+      Columns = 2
+      ExplicitWidth = 365
+    end
+  end
+  inherited Panel1: TPanel
+    Width = 367
+    ExplicitWidth = 367
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited qrSpss: TEDBQuery
+    SQL.Strings = (
+      'SELECT tT.Engine, COUNT(Cr.ID) Num '
+      'FROM KCar Cr '
+      'LEFT JOIN KTblType tT ON tT.Id = Cr.TypeId'
+      'LEFT JOIN KClient Cl ON Cr.ClientId = Cl.Id'
+      'GROUP BY tT.Engine'
+      'ORDER BY tT.Engine')
+  end
+  object ccChartsCar: TRvCustomConnection [6]
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsCarGetCols
+    OnGetRow = ccChartsCarGetRow
+    Left = 249
+    Top = 56
+  end
+  object frdbCar: TfrxDBDataset
+    UserName = 'frdbCar'
+    CloseDataSource = False
+    DataSet = qrSpss
+    BCDToCurrency = False
+    Left = 216
+    Top = 176
+  end
+end

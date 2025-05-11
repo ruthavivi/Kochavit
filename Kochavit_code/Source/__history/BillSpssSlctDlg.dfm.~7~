@@ -1,0 +1,35 @@
+inherited frmBillSpssSlctDlg: TfrmBillSpssSlctDlg
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited qrSpss: TEDBQuery
+    SQL.Strings = (
+      'SELECT Shem, SUM(SumA) Num'
+      'FROM ( pBaseSql ) AS BaseSql'
+      'GROUP BY Shem'
+      'ORDER BY Shem')
+  end
+  object ccChartsBill: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsBillGetCols
+    OnGetRow = ccChartsBillGetRow
+    Left = 249
+    Top = 56
+  end
+  object qcBillByCln: TRvDataSetConnection
+    RuntimeVisibility = rtDeveloper
+    DataSet = qrSpss
+    Left = 336
+    Top = 88
+  end
+end

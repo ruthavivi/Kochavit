@@ -1,0 +1,28 @@
+unit TblDocumentCar;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, edbcomps, RpRave, RpDefine, RpBase, RpSystem, ActnList,
+  ImgList, Grids, DBGrids, MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls,
+  ToolWin;
+
+type
+  TfrmDocumentCarTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblDocument: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDocumentCarTbl: TfrmDocumentCarTbl;
+
+implementation
+
+{$R *.dfm}
+
+end.

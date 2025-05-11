@@ -1,0 +1,114 @@
+unit BillEditDM;
+
+interface
+
+uses
+  Windows, SysUtils, GnrlEditDM, RpBase, RpSystem, RpDefine, RpRave, DBTables,
+  DB, Classes, edbcomps;
+
+type
+  TdmBillEdit = class(TdmGnrlEdit)
+    dsBill: TDataSource;
+    tbBill: TEDBTable;
+    qrAllFields: TEDBQuery;
+    tbBillId: TAutoIncField;
+    tbBillClientId: TIntegerField;
+    tbBillSumA: TFloatField;
+    tbBillProduceD: TDateField;
+    tbBillToPayD: TDateField;
+    tbBillReciptNo: TStringField;
+    tbBillRemark: TStringField;
+    tbBillPaydD: TDateField;
+    tbBillKabala: TIntegerField;
+    tbBillPayd: TBooleanField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure tbBillNewRecord(DataSet: TDataSet);
+    procedure tbBillAfterPost(DataSet: TDataSet);
+    procedure tbBillReciptNoValidate(Sender: TField);
+    procedure tbBillProduceDSetText(Sender: TField; const Text: string);
+  private
+  public
+    procedure SetDataState(pState: Boolean; pId: Integer);
+    procedure SaveData;
+  end;
+
+var
+  dmBillEdit: TdmBillEdit;
+
+implementation
+uses
+  DataDM, MainDM, BillListDM, KbFunc, LogErrorUtil;
+{$R *.dfm}
+
+procedure TdmBillEdit.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  try
+    tbBill.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmBillEdit.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmBillEdit.SetDataState(pState: Boolean; pId: Integer);
+begin
+  if (pState = True) then
+    tbBill.Append
+  else
+  begin
+    tbBill.FindKey([pId]);
+    tbBill.Edit;
+  end;
+  if dmMain.SelectAll then
+    ClientShem := GetClientName(tbBillClientId.AsString);
+end;
+
+//tables events
+procedure TdmBillEdit.tbBillNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbBillClientId.AsInteger := dmMain.qrClientList.FieldByName('Id').AsInteger;
+  tbBillProduceD.AsDateTime := Date;
+  tbBillToPayD.AsDateTime := Date;
+end;
+
+procedure TdmBillEdit.tbBillAfterPost(DataSet: TDataSet);
+begin
+  inherited;
+  dmBillList.qrBillList.Refresh;
+  dmBillList.qrBillList.Locate('Id', tbBillId.AsInteger, []);
+end;
+// end tables events
+
+// fields events
+procedure TdmBillEdit.tbBillProduceDSetText(Sender: TField; const Text: string);
+begin
+  inherited;
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TdmBillEdit.tbBillReciptNoValidate(Sender: TField);
+begin
+  inherited;
+  if CheckDblValue('KBill', Sender.FieldName, Sender.Text, tbBillId.AsString,
+      'מספר חשבונית קיים כבר', Sender.ClassType) then
+    Abort;
+end;
+//end fields events
+
+procedure TdmBillEdit.SaveData;
+begin
+  try
+    tbBill.Post;
+  except
+    on E: EDatabaseError do
+      HandelError('TdmBillEdit.SaveData', 'כרטיס לא נשמר' + E.Message, E);
+  end;
+end;
+
+end.

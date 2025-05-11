@@ -1,0 +1,24 @@
+unit Splash;
+
+interface
+
+uses
+  Windows, Classes, Forms, ExtCtrls, StdCtrls, Controls, Graphics;
+
+type
+  TfrmSplash = class(TForm)
+    Image1: TImage;
+    StaticText1: TStaticText;
+    StaticText2: TStaticText;
+    StaticText4: TStaticText;
+  
+  end;
+
+var
+  frmSplash: TfrmSplash;
+
+implementation
+
+{$R *.dfm}
+
+end.

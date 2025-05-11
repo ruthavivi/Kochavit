@@ -1,0 +1,49 @@
+unit ChecksRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, edbcomps, DB, Spin, StdCtrls, Buttons, ExtCtrls,
+  frxClass, frxDBSet;
+
+type
+  TfrmChecksRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    frdbChecks: TfrxDBDataset;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChecksRprtSlctDlg: TfrmChecksRprtSlctDlg;
+
+implementation
+uses
+  ChecksFilterDM;
+
+{$R *.dfm}
+
+procedure TfrmChecksRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('CH');
+end;
+
+procedure TfrmChecksRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintReport;
+end;
+
+procedure TfrmChecksRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewReport;
+end;
+
+end.

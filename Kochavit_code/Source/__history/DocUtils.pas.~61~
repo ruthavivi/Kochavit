@@ -1,0 +1,489 @@
+unit DocUtils;
+
+interface
+uses
+  Classes, Windows, SysUtils, Forms, Registry, DB, WordFunc,
+  SendMailNew, KbFunc, WordEdit;
+
+type
+  TDocUtils = class
+  private
+    fVer: Integer;
+    fSendMethod: String;
+    fCopyNum: Integer;
+    fSaveCopy: Boolean;
+    fDestName: string;
+    fBody: TStringList;
+    fSubject: String;
+    fFaxNum: String;
+    fEmail: String;
+    fEmailX: String;
+    fToEmails: TStringList;
+    FValidEmail: Boolean;
+    fWorkFile: OleVariant;
+    fEmailFile: OleVariant;
+    WordObj: TWordObj;
+
+    function GetCurrentWordMajorVersion: Integer;
+    procedure SendOption;
+    procedure SendByEMail;
+    procedure InsertRecData(pMainDat: TDataSet);
+    procedure InsertRecInTable(pData: TDataSet; pStrtPoint: String;
+      pTblNum: Integer);
+    procedure InsertLstData(pList: TStringList);
+    procedure InsertListData(pList: TStringList);
+    procedure InsertMultiListData(aList: array of TStringList);
+    procedure InsertOfenLstData(pList: TStringList; pStrt: String);
+    procedure InsertLstInTable(pList: TStringList; pStrt: String);
+    procedure InsertDblRecData(pMainData, pSubData: TDataSet);
+    procedure SetEmail(const Value: String);
+    procedure SetEmailX(const Value: String);
+    function  IsValidEmail(pValue: String): Boolean;
+  public
+    EmailSend: Boolean;
+    Subject: string;
+    constructor Create(pSendMethod: String; pCopyNum: Integer;
+      pSaveCopy: Boolean; pSubject, pFaxNum, pEmail, pEMailX: String;
+      pWorkFile: OleVariant); overload;
+    constructor Create(pSendMethod, pSubject: string; pCopyNum: Integer;
+      pSaveCopy: Boolean; pToEmails: TStringList; pWorkFile: OleVariant); overload;
+    constructor Create(pSendMethod, pDestName, pSubject: string; pCopyNum: Integer;
+      pSaveCopy: Boolean; pToEmails: TStringList; pWorkFile: OleVariant); overload;
+
+    destructor Destroy; override;
+    procedure SendDoc(pMainDat: TDataSet; pList: TStringList;
+      pEtekLst: TStringList); overload;
+    procedure SendDoc(pMainDat: TDataSet; aList: array of TStringList); overload;
+    procedure SendDoc(pMainDat: TDataSet; aScndDat: array of TDataSet;
+      aStrtPoint: array of String; aTblNum: array of Integer); overload;
+    procedure SendDoc(pMainDat: TDataSet; aScndDat: array of TDataSet;
+      aStrtPoint: array of String; aTblNum: array of Integer;
+      aList: array of TStringList; pEtekLst: TStringList); overload;
+    procedure SendDoc(pMainDat: TDataSet; pList: TStringList;
+      pStrtPoint: String); overload;
+    procedure SetFax(pValue: String);
+    property Email: String read FEmail write SetEmail;
+    property EmailX: String read FEmailX write SetEmailX;
+end;
+
+implementation
+uses
+  SendEMail;
+
+{ DocsMngr }
+
+constructor TDocUtils.Create(pSendMethod: String; pCopyNum: Integer;
+  pSaveCopy: Boolean; pSubject, pFaxNum, pEmail, pEMailX: String;
+  pWorkFile: OleVariant);
+begin
+  fVer := GetCurrentWordMajorVersion;
+  WordObj := TWordObj.Create;
+  fWorkFile := pWorkFile;
+  fSendMethod := pSendMethod;
+  fCopyNum := pCopyNum;
+  fSaveCopy := pSaveCopy;
+  fSubject := pSubject;
+  fFaxNum := pFaxNum;
+  Email := pEmail;
+  EmailX := pEmailX;
+end;
+
+constructor TDocUtils.Create(pSendMethod, pSubject: string; pCopyNum: Integer;
+  pSaveCopy: Boolean; pToEmails: TStringList; pWorkFile: OleVariant);
+begin
+  fVer := GetCurrentWordMajorVersion;
+  WordObj := TWordObj.Create;
+  fWorkFile := pWorkFile;
+  fSendMethod := pSendMethod;
+  fSubject := pSubject;
+  fCopyNum := pCopyNum;
+  fSaveCopy := pSaveCopy;
+  fToEmails := pToEmails;
+end;
+
+
+
+constructor TDocUtils.Create(pSendMethod, pDestName, pSubject: string;
+  pCopyNum: Integer; pSaveCopy: Boolean; pToEmails: TStringList;
+  pWorkFile: OleVariant);
+begin
+  fVer := GetCurrentWordMajorVersion;
+  WordObj := TWordObj.Create;
+  fWorkFile := pWorkFile;
+  fSendMethod := pSendMethod;
+  fDestName := pDestName;
+  fSubject := pSubject;
+  fCopyNum := pCopyNum;
+  fSaveCopy := pSaveCopy;
+  fToEmails := pToEmails;
+end;
+
+function TDocUtils.GetCurrentWordMajorVersion: Integer;
+var
+  vRegistry: TRegistry;
+  vVersionStr: string;
+  vVersion: string;
+begin
+   Result := -1;
+   vRegistry := TRegistry.Create(KEY_READ);
+   try
+       vRegistry.RootKey := HKEY_CLASSES_ROOT;
+       if vRegistry.OpenKeyReadOnly('Word.Application\CurVer') then
+       begin
+       { Get the default value: 'Word.Application.10'. }
+           vVersionStr := vRegistry.ReadString('');
+      { Extract the major version from the string. }
+           vVersion := System.Copy(vVersionStr, Succ(LastDelimiter('.',
+                   vVersionStr)), MAXINT);
+      { 8=Word97, 9=Word2000, 10=Word2002, etc. }
+      Result := StrToIntDef(vVersion, -1);
+    end;
+  finally
+    vRegistry.Free;
+  end;
+end;
+
+procedure TDocUtils.SendOption;
+begin
+  if (fSendMethod = 'btnPrint') then
+  begin
+    WordObj.PrintDocNew(fCopyNum);
+    if fSaveCopy then
+      WordObj.SaveAsDoc(ExtractFileName(fWorkFile));
+    WordObj.CloseDoc;
+  end
+  else if (fSendMethod = 'btnPreview') then
+    WordObj.SaveAsDoc('Temp.Doc')
+  else if (fSendMethod = 'btnEmail') then
+  begin
+    try
+      fEmailFile := ChangeFileExt(ExtractFileName(fWorkFile), '.PDF');
+      WordObj.SaveAsDoc(fEmailFile);
+    finally
+      WordObj.CloseDoc;
+    end;
+    SendByEMail;
+  end;
+end;
+
+procedure TDocUtils.SendDoc(pMainDat: TDataSet; pList,
+  pEtekLst: TStringList);
+begin
+  if WordObj.ConnectWord and WordObj.OpenDocKov(fWorkFile) then
+  begin
+    InsertRecData(pMainDat);
+    if (pList <> nil) then
+      InsertListData(pList);
+    if (pEtekLst <> nil) then
+      WordObj.InsertEtekData(pEtekLst);
+    SendOption;
+  end;
+end;
+
+procedure TDocUtils.SendDoc(pMainDat: TDataSet; aList: array of TStringList);
+var
+  i: Integer;
+begin
+  if WordObj.ConnectWord and WordObj.OpenDocKov(fWorkFile) then
+  begin
+    InsertRecData(pMainDat);
+    for i := 0 to High(aList) do
+      InsertListData(aList[i]);
+    SendOption;
+  end;
+end;
+
+procedure TDocUtils.SendDoc(pMainDat: TDataSet;
+  aScndDat: array of TDataSet; aStrtPoint: array of String;
+  aTblNum: array of Integer);
+var
+  i: Integer;
+begin
+  if WordObj.ConnectWord and WordObj.OpenDocKov(fWorkFile) then
+  begin
+    InsertRecData(pMainDat);
+    for i := 0 to High(aScndDat) do
+      InsertRecInTable(aScndDat[i], aStrtPoint[i], aTblNum[i]);
+    SendOption;
+  end;
+end;
+
+procedure TDocUtils.SendDoc(pMainDat: TDataSet; aScndDat: array of TDataSet;
+  aStrtPoint: array of String; aTblNum: array of Integer;
+  aList: array of TStringList; pEtekLst: TStringList);
+var
+  i: Integer;
+begin
+  if WordObj.ConnectWord and WordObj.OpenDocKov(fWorkFile) then
+  begin
+    InsertRecData(pMainDat);
+    for i := 0 to High(aScndDat) do
+      InsertRecInTable(aScndDat[i], aStrtPoint[i], aTblNum[i]);
+    for i := 0 to High(aList) do
+      InsertLstData(aList[i]);
+    if (pEtekLst <> nil) then
+      WordObj.InsertEtekData(pEtekLst);
+    SendOption;
+  end;
+end;
+
+// Special for Fault_Message.doc
+procedure TDocUtils.SendDoc(pMainDat: TDataSet; pList: TStringList;
+  pStrtPoint: String);
+var
+  i: Integer;
+  vValue, vNumber, vTipul: String;
+begin
+  if WordObj.ConnectWord and WordObj.OpenDocKov(fWorkFile) then
+  begin
+    InsertRecData(pMainDat);
+    InsertLstData(pList);
+    if WordObj.EnterInTable(pStrtPoint) then
+    begin
+      while not pMainDat.Eof do
+      begin
+        vNumber := pMainDat.FieldByName('Number').AsString;
+        vTipul := pMainDat.FieldByName('Tipul').AsString;
+        vValue := 'רכב מספר: ' + vNumber + '    שם הטיפול: ' + vTipul +
+            '  בוצע בתאריך: ' + pMainDat.FieldByName('DateDone').AsString;
+        WordObj.WriteNewLine(vValue);
+
+        WordObj.WriteNewLine('');
+        i := 1;
+        while NOT pMainDat.Eof AND ((pMainDat.FieldByName('Number').AsString = vNumber)
+            AND (pMainDat.FieldByName('Tipul').AsString = vTipul)) do
+        begin
+          if ((i = 1) AND (pMainDat.FieldByName('Remark').AsString <> ''))  then
+          begin
+            WordObj.WriteNewLine(pMainDat.FieldByName('Remark').AsString);
+            WordObj.WriteNewLine(EmptyStr);
+            if (pMainDat.FieldByName('BikoretDtl').AsString <> '') then
+              WordObj.WriteNewLine(pMainDat.FieldByName('BikoretDtl').AsString);
+          end
+          else if (pMainDat.FieldByName('BikoretDtl').AsString <> '') then
+            WordObj.WriteNewLine(pMainDat.FieldByName('BikoretDtl').AsString);
+
+          WordObj.WriteNewLine('_________________________________');
+          Inc(i);
+          pMainDat.Next;
+        end;
+      end;
+    end;
+  end;
+  SendOption;
+end;
+
+procedure TDocUtils.SetFax(pValue: String);
+begin
+  fFaxNum := pValue;
+end;
+
+procedure TDocUtils.SetEmail(const Value: String);
+begin
+  FValidEmail := False;
+  if (Value <> '') and (Value <> 'NULL') and IsValidEmail(Value) then
+  begin
+    FEmail := Value;
+    FValidEmail := True;
+  end;
+end;
+
+procedure TDocUtils.SetEmailX(const Value: String);
+begin
+  if (Value <> '') and IsValidEmail(Value) then
+  begin
+    FEmailX := Value;
+    FValidEmail := True;
+  end;
+end;
+
+function TDocUtils.IsValidEmail(pValue: String): Boolean;
+var
+  p: Integer;
+  s: String;
+begin
+  Result := False;
+  p := pos('@', pValue);
+  if (p > 1) and (p <> Length(pValue)) then
+  begin
+    s := Copy(pValue, p + 2, Length(pValue));
+    p := pos('.', s);
+    if (p > 0) and (p <> Length(s)) then
+      Result := True;
+  end;
+end;
+
+procedure TDocUtils.InsertRecData(pMainDat: TDataSet);
+var
+  i: Integer;
+  vName, vValue: String;
+begin
+  with WordObj, pMainDat do
+  begin
+    for i := 0 to FieldCount -1 do
+    begin
+      vName := Fields[i].FieldName;
+      if (Fields[i].ClassType = TCurrencyField) then
+        vValue := FormatCurr('₪0.00', FieldByName(vName).AsFloat)
+      else if (fVer = 9) and ((vName = 'TZeut') or (vName = 'Tel') or
+        (vName = 'Number')) then
+        vValue := RevStr(FieldByName(vName).AsString)
+      else
+        vValue := FieldByName(vName).AsString;
+      InsertBookMark(vName, vValue);
+      InsertBookMark(vName+'A', vValue);
+      InsertBookMark(vName+'B', vValue);
+    end
+  end;
+end;
+
+procedure TDocUtils.InsertRecInTable(pData: TDataSet; pStrtPoint: String;
+  pTblNum: Integer);
+var
+  i: Integer;
+begin
+  with WordObj, pData do
+  begin
+    if EnterInTable(pStrtPoint) then
+    begin
+      while not Eof do
+      begin
+        for i := 0 to FieldCount -1 do
+          if (Fields[i].ClassType = TCurrencyField) and (i = FieldCount-1) then
+            WriteInCellNew(FormatCurr('0.00 ₪', Fields[i].AsFloat), False)
+          else if Fields[i].ClassType = TCurrencyField then
+            WriteInCellNew(FormatCurr('0.00 ₪', Fields[i].AsFloat), True)
+          else if (i = FieldCount-1) then
+            WriteInCellNew(Fields[i].AsString, False)
+          else
+            WriteInCellNew(Fields[i].AsString, True);
+
+        Next;
+        TableInsertRowNew(pTblNum);
+      end;
+      First;
+    end;
+  end;
+end;
+
+procedure TDocUtils.InsertLstData(pList: TStringList);
+var
+  i: Integer;
+  vName, vValue: String;
+begin
+  with WordObj do
+  begin
+    for i := 0 to pList.Count -1 do
+    begin
+      vName := pList.Names[i];
+      if (fVer = 9) and ((vName = 'Cel') or (vName = 'Fax')) then
+        vValue := RevStr(pList.ValueFromIndex[i])
+      else
+        vValue := pList.ValueFromIndex[i];
+
+      InsertBookMark(vName, vValue);
+      InsertBookMark(vName+'A', vValue);
+      InsertBookMark(vName+'B', vValue);
+    end
+  end;
+end;
+
+procedure TDocUtils.InsertDblRecData(pMainData, pSubData: TDataSet);
+begin
+
+end;
+
+procedure TDocUtils.InsertListData(pList: TStringList);
+var
+  i: Integer;
+begin
+  with WordObj do
+  begin
+    if ExistBookMark(pList[0]) then
+    begin
+      InsertBookMark(pList[0], '');
+      for i := 1 to pList.Count -1 do
+        WriteNewLine(pList[i]);
+    end;
+  end;
+end;
+
+procedure TDocUtils.InsertMultiListData(aList: array of TStringList);
+var
+  i: Integer;
+begin
+  with WordObj do
+  begin
+    InsertBookMark(aList[0][0], '');
+    for i := 1 to aList[0].Count -1 do
+    begin
+      WriteNewLine(aList[0][i]);
+      WriteNewLine(aList[1][i-1]);
+      WriteNewLine(aList[2][i-1]);
+      WriteNewLine('');
+    end;
+  end;
+end;
+
+procedure TDocUtils.InsertOfenLstData(pList: TStringList; pStrt: String);
+var
+  i: Integer;
+begin
+  with WordObj do
+  begin
+    InsertBookMark(pStrt, '');
+    for i := 0 to pList.Count -1 do
+      WriteNewLine(pList[i]);
+  end;
+end;
+
+procedure TDocUtils.InsertLstInTable(pList: TStringList; pStrt: String);
+var
+  i: Integer;
+begin
+  with WordObj do
+  begin
+    if EnterInTable(pStrt) then
+      for i := 0 to pList.Count -1 do
+        WriteInCellNew(pList[i], True);
+  end;
+end;
+
+procedure TDocUtils.SendByEMail;
+var
+  Attachments: TStringList;
+begin
+  EmailSend := False;
+  frmSendEMail := TfrmSendEMail.Create(nil);
+  Attachments := TStringList.Create;
+  try
+    Attachments.Add(ExtractFilePath(ParamStr(0)) + 'Temp\' + fEmailFile);
+    if frmSendEMail.IsEMailSend(fDestName, fSubject, '', fToEmails, Attachments) then
+    begin
+      Subject := fSubject;
+      EmailSend := True;
+    end;
+  finally
+    Attachments.Free;
+    frmSendEMail.Free;
+  end;
+end;
+
+
+destructor TDocUtils.Destroy;
+var
+  DocFileSaved: OleVariant;
+begin
+//  WordObj.CloseDoc;
+  WordObj.Free;
+  if (fSendMethod = 'btnPreview') then
+  begin
+    DocFileSaved := ExtractFilePath(ParamStr(0)) + 'Temp\Temp.Doc';
+    EditWord(DocFileSaved);
+  end;
+
+  inherited Destroy;
+end;
+
+end.
+

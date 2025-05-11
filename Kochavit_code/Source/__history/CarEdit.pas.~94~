@@ -1,0 +1,571 @@
+﻿unit CarEdit;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlEdit, ImgList, Menus, ActnList, ComCtrls, StdCtrls, ToolWin,
+  Buttons, ExtCtrls, Mask, DBCtrls, DB, Grids, DBGrids, ExtDlgs,
+  StrUtils, DBActns, StdActns, System.Actions, System.ImageList;
+
+type
+  TfrmCarEdit = class(TfrmGnrlEdit)
+    Panel2: TPanel;
+    Splitter1: TSplitter;
+    Panel3: TPanel;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    edCodCar: TDBEdit;
+    edNumber: TDBEdit;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    edTypeId: TDBLookupComboBox;
+    edProducerId: TDBLookupComboBox;
+    edDgamId: TDBLookupComboBox;
+    edModel: TDBEdit;
+    edShildaN: TDBEdit;
+    edSpido: TDBEdit;
+    GroupBox2: TGroupBox;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    edWeightT: TDBEdit;
+    edWeightS: TDBEdit;
+    edCargoId: TDBLookupComboBox;
+    Label16: TLabel;
+    edRemark: TDBMemo;
+    Label15: TLabel;
+    edInsureId: TDBLookupComboBox;
+    Label17: TLabel;
+    edPolisaN: TDBEdit;
+    PageControl2: TPageControl;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    DBGrid2: TDBGrid;
+    dbgDriver: TDBGrid;
+    Label18: TLabel;
+    edContact: TDBEdit;
+    Label19: TLabel;
+    Label20: TLabel;
+    edShum: TDBEdit;
+    Panel6: TPanel;
+    dbgTipul: TDBGrid;
+    Panel7: TPanel;
+    DBGrid1: TDBGrid;
+    mmRemark: TDBMemo;
+    acAutoTipul: TAction;
+    edWeightR: TDBEdit;
+    Label22: TLabel;
+    Label24: TLabel;
+    Label21: TLabel;
+    edOvedId: TDBLookupComboBox;
+    Label25: TLabel;
+    edAtarId: TDBLookupComboBox;
+    acPrinAndDtl: TAction;
+    TabSheet5: TTabSheet;
+    DBGrid3: TDBGrid;
+    TabSheet6: TTabSheet;
+    DBGrid4: TDBGrid;
+    Label26: TLabel;
+    edCodSecure: TDBEdit;
+    ToolBar2: TToolBar;
+    ToolButton1: TToolButton;
+    acCrTipulDel: TDataSetDelete;
+    ToolBar3: TToolBar;
+    acCrDrvDel: TDataSetDelete;
+    acCrAcdntDel: TDataSetDelete;
+    acCrFollowDel: TDataSetDelete;
+    acCrTipulOutDel: TDataSetDelete;
+    ToolBar4: TToolBar;
+    ToolButton3: TToolButton;
+    ToolBar5: TToolBar;
+    ToolButton4: TToolButton;
+    ToolBar6: TToolBar;
+    ToolButton5: TToolButton;
+    acPrintPlasti: TAction;
+    dsCar: TDataSource;
+    Label23: TLabel;
+    edDateReg: TDBEdit;
+    btnAddTipulim: TToolButton;
+    acAddTipulim: TAction;
+    ToolBar7: TToolBar;
+    ToolButton6: TToolButton;
+    edTel: TDBEdit;
+    acSendEmail: TAction;
+    btnSendEmail: TToolButton;
+    acMailSendList: TAction;
+    pmEmailSend: TPopupMenu;
+    N9: TMenuItem;
+    GroupBox3: TGroupBox;
+    Label7: TLabel;
+    Label8: TLabel;
+    edProfesion: TDBEdit;
+    edTelP: TDBEdit;
+    Label28: TLabel;
+    edZeutP: TDBEdit;
+    Label31: TLabel;
+    edMovil: TDBEdit;
+    edZeutM: TDBEdit;
+    Label27: TLabel;
+    Label29: TLabel;
+    Label30: TLabel;
+    edHamas: TDBEdit;
+    edZeutH: TDBEdit;
+    ToolButton7: TToolButton;
+    acShowWebData: TAction;
+    procedure acDocumentExecute(Sender: TObject);
+    procedure edTypeIdExit(Sender: TObject);
+    procedure acSaveExecute(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edCodCarExit(Sender: TObject);
+    procedure acMailExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure edTypeIdKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure edWeightTExit(Sender: TObject);
+    procedure acNewFolderExecute(Sender: TObject);
+    procedure acScanExecute(Sender: TObject);
+    procedure acPhotoExecute(Sender: TObject);
+    procedure acShowScanExecute(Sender: TObject);
+    procedure acPrintLabelExecute(Sender: TObject);
+    procedure acPrintPlastiExecute(Sender: TObject);
+    procedure dbgTipulEnter(Sender: TObject);
+    procedure edDateRegKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+    procedure acShowFolderExecute(Sender: TObject);
+    procedure dbgTipulKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure acAddTipulimExecute(Sender: TObject);
+    procedure acSendEmailExecute(Sender: TObject);
+    procedure ToolBar1Click(Sender: TObject);
+    procedure acMailSendListExecute(Sender: TObject);
+    procedure acShowWebDataExecute(Sender: TObject);
+  private
+    { Private declarations }
+    function HasAllValue: Boolean;
+    procedure AddTirgum(lstPerut: TStringList);
+    function GetEMailsAdr(ToEmails: TStringList): Boolean;
+  public
+
+  end;
+
+var
+  frmCarEdit: TfrmCarEdit;
+
+implementation
+
+{$R *.dfm}
+uses
+  MainDM, DataDM, CarEditDM, DriverEdit, ScanImport, ImportPhoto, ImportFile, DocUtils,
+  LabelWriter, DriverEditDM, LogErrorUtil, DialogsHeb, FolderList,
+  GraphicUtils, SelectivePrintDlg, ShellAPI, MailSendListCr, carDetail_gov;
+
+procedure TfrmCarEdit.FormCreate(Sender: TObject);
+begin
+  inherited;
+  //stClientName.Caption := 'שם החברה: ' + #13#10 + dmCarEdit.ClientShem;
+  lbHeader.Caption := 'שם החברה: ' + #13#10 + dmCarEdit.ClientShem;
+  if (dmCarEdit.tbCar.State = dsInsert) then
+  begin
+    acMail.Enabled := False;
+    acPrint.Enabled := False;
+    acScan.Enabled := False;
+    acPhoto.Enabled := False;
+    acDocument.Enabled := False;
+    acPrintLabel.Enabled := False;
+    acShowScan.Enabled := False;
+    acAddTipulim.Enabled := False;
+  end;
+
+//  edProducerId
+end;
+
+
+// check requiered fields
+procedure TfrmCarEdit.edCodCarExit(Sender: TObject);
+begin
+  inherited;
+   if ((Sender as TDbEdit).Text = '') or
+      ((Sender as TDbEdit).Text = '  -   -  ') then
+   begin
+       MessageDlg('חובה להקליד ערך', mtConfirmation, [mbOk], 0);
+       (Sender as TDbEdit).SetFocus;
+   end;
+end;
+
+procedure TfrmCarEdit.edTypeIdExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TDbLookupCombobox).Text = '') then
+  begin
+       MessageDlg('חובה להקליד ערך', mtConfirmation, [mbOk], 0);
+       (Sender as TDbLookupCombobox).SetFocus;
+   end;
+end;
+
+function TfrmCarEdit.HasAllValue: Boolean;
+begin
+  Result := CtrlHasValue(edCodCar, edCodCar.Text, '', 'חובה להקליד מספר סידורי ') and
+           CtrlHasValue(edNumber, edNumber.Text, '', 'חובה להקליד מספר רישוי') and
+           CtrlHasValue(edTypeId, edTypeId.Text, '', 'חובה להקליד סוג רכב');
+end;
+procedure TfrmCarEdit.ToolBar1Click(Sender: TObject);
+begin
+  inherited;
+
+end;
+
+// end check requiered fields
+
+procedure TfrmCarEdit.edDateRegKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    (Sender as TDBedit).Text := DateToStr(Date);
+end;
+
+procedure TfrmCarEdit.edTypeIdKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if (Key = VK_DELETE) then
+    with (Sender as TDBLookupComboBox) do
+      DataSource.DataSet.FieldByName(Field.KeyFields).Clear;
+end;
+
+procedure TfrmCarEdit.acSaveExecute(Sender: TObject);
+begin
+  inherited;
+  if HasAllValue then
+  begin
+    dmCarEdit.SaveData;
+    Close;
+  end;
+end;
+
+procedure TfrmCarEdit.dbgTipulEnter(Sender: TObject);
+begin
+  inherited;
+  if (dmCarEdit.tbCar.State = dsInsert) and (dmCarEdit.tbCrTipul.IsEmpty) then
+    dmCarEdit.LoadTipulim;
+end;
+
+procedure TfrmCarEdit.acAddTipulimExecute(Sender: TObject);
+begin
+  inherited;
+  if dmCarEdit.tbCrTipul.IsEmpty then
+    dmCarEdit.LoadTipulim;
+end;
+
+procedure TfrmCarEdit.dbgTipulKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if (Key = VK_RETURN) then
+    (Sender as TDBGrid).DataSource.DataSet.Post;
+end;
+
+procedure TfrmCarEdit.acMailExecute(Sender: TObject);
+var
+  WorkFile, nCopy: OleVariant;
+  vPath, vButton, vMemo: String;
+  vSave: Boolean;
+  OneDoc: TDocUtils;
+  ToEmails, lstPerut: TStringList;
+begin
+  inherited;
+  vPath := ExtractFilePath(Application.ExeName);
+  if SelectDoc(WorkFile, nCopy, vButton, vMemo, vPath + 'Docs\Car\', vSave) then
+  begin
+    ToEmails := TStringList.Create;
+    if (vButton = 'btnEmail') and not HaveEMails(dmCarEdit.tbCarClientId.AsString, ToEmails) then
+        MessageDlgH('אין כתובות דואר אלקטרוני למשלוח...', mtConfirmation, [mbOk], 0, 0)
+    else
+    begin
+      Screen.Cursor := crHourGlass;
+      lstPerut := TStringList.Create;
+      dmCarEdit.qrGnrl.SQL.LoadFromFile(vPath+'SQL\CarFields.SQL');
+      dmCarEdit.qrGnrl.SQL.Add('WHERE Id = :Id');
+      dmCarEdit.qrGnrl.Open;
+      AddTirgum(lstPerut);
+      OneDoc := TDocUtils.Create(vButton,  dmCarEdit.ClientShem + ' - '+ edNumber.text, 'מצורפת הודעה מקצין הרכב שלך ',
+        nCopy, vSave, ToEmails, WorkFile);
+      try
+        OneDoc.SendDoc(dmCarEdit.qrGnrl, lstPerut, Nil);
+        if (vButton = 'btnEmail') and OneDoc.EmailSend then
+          SaveEmailSend(dmCarEdit.tbCarClientId.AsString, dmCarEdit.tbCarId.AsString, 'NULL',
+            OneDoc.Subject, ExtractFileName(ChangeFileExt(WorkFile, '.pdf')));
+
+        if vSave and (vButton <> 'btnPreview') then
+          dmCarEdit.SaveBigData(ExtractFilePath(Application.ExeName) + 'Temp\' +
+            ExtractFileName(WorkFile), ChangeFileExt(ExtractFileName(WorkFile), ''),
+            'DOC', True);
+      finally
+        OneDoc.Free;
+        dmCarEdit.qrGnrl.Close;
+        lstPerut.Free;
+        Screen.Cursor := crDefault;
+      end;
+    end;
+    ToEmails.Free;
+  end;
+end;
+
+procedure TfrmCarEdit.AddTirgum(lstPerut: TStringList);
+begin
+  lstPerut.Add('Perut');
+  dmCarEdit.tbCrTipul.First;
+  while not dmCarEdit.tbCrTipul.Eof do
+  begin
+    lstPerut.Add(dmCarEdit.tbCrTipulLTipul.AsString + ' ' +
+        dmCarEdit.tbCrTipulDateToDo.AsString);
+    dmCarEdit.tbCrTipul.Next;
+  end;
+end;
+
+procedure TfrmCarEdit.acPrintExecute(Sender: TObject);
+var
+  Path: String;
+begin
+  inherited;
+  dlgSelectivePrint := TdlgSelectivePrint.Create(Self);
+  try
+    if dlgSelectivePrint.ShowModal = mrOk then
+    begin
+      if dlgSelectivePrint.rgSelect.ItemIndex = 1 then
+        dmCarEdit.SetPrintFilter(dlgSelectivePrint.edDate.Date);
+
+      Path := ExtractFilePath(Application.ExeName) + 'Report\';
+      dmData.frxReport.LoadFromFile(Path+'rpCarKartis.fr3');
+      dmData.frxReport.PrepareReport;
+      dmData.frxReport.Print;
+    end;
+  finally
+    dmCarEdit.CancelPrintFilter;
+    dlgSelectivePrint.Free;
+  end;
+end;
+
+procedure TfrmCarEdit.acPrintLabelExecute(Sender: TObject);
+var
+  LabelFld: WideString;
+begin
+  inherited;
+  LabelFld := dmCarEdit.tbTblType.FieldByName('Type').AsString + '  ' +
+              dmCarEdit.tbTblProducer.FieldByName('Producer').AsString  + #10#13 +
+              'שילדה: '+ dmCarEdit.tbCarShildaN.AsString + #10#13 +
+              dmCarEdit.tbCarNumber.AsString + 'מודל: ' +
+              dmCarEdit.tbCarModel.AsString ;
+  PrintLabel(LabelFld);
+end;
+
+procedure TfrmCarEdit.acPrintPlastiExecute(Sender: TObject);
+var
+  LabelFld: WideString;
+begin
+  inherited;
+  LabelFld :=dmCarEdit.tbCarWeightT.AsString + ' ' +
+      dmCarEdit.tbCarWeightS.AsString + ' ' + dmCarEdit.tbCarWeightR.AsString;
+  PrintLM(LabelFld);
+end;
+
+procedure TfrmCarEdit.acNewFolderExecute(Sender: TObject);
+begin
+  inherited;
+  CreateDir(ExtractFilePath(Application.ExeName) + 'Docs\ScanDoc\' +
+      edNumber.Text);
+end;
+
+procedure TfrmCarEdit.edWeightTExit(Sender: TObject);
+var
+  wT, wS, wR: Integer;
+begin
+  inherited;
+  wT := StrToIntDef(edWeightT.Text, 0);
+  wS := StrToIntDef(edWeightS.Text, 0);
+  wR := StrToIntDef(edWeightR.Text, 0);
+
+  if (wT <> 0) and (wS <> 0) and (wR = 0) then
+    dmCarEdit.tbCarWeightR.AsInteger := (wT - wS)
+  else if (wT <> 0) and (wS = 0) and (wR <> 0) then
+    dmCarEdit.tbCarWeightS.AsInteger := (wT - wR)
+  else if (wT = 0) and (wS <> 0) and (wR <> 0) then
+    dmCarEdit.tbCarWeightT.AsInteger := (wS + wR);
+end;
+
+procedure TfrmCarEdit.acScanExecute(Sender: TObject);
+begin
+  inherited;
+  dlgScanImport := TdlgScanImport.Create(Self);
+  try
+    with dlgScanImport do
+    begin
+      if (ShowModal = mrOk) then
+        dmCarEdit.SaveBigData(PathAndFile, edDocName.Text,
+             ReplaceStr(ExtractFileExt(PathAndFile), '.', ''), True);
+    end;
+  finally
+    dlgScanImport.Free;
+  end;
+end;
+
+procedure TfrmCarEdit.acSendEmailExecute(Sender: TObject);
+var
+  ToEmails: TStringList;
+  FilesDir: string;
+begin
+  inherited;
+  ToEmails := TStringList.Create;
+  try
+    if GetEMailsAdr(ToEmails) then
+    begin
+      FilesDir :=  ExtractFilePath(Application.ExeName)+'Documents\Car\'+
+        dmCarEdit.tbCarId.AsString;
+      OpenEmailUtil(ToEmails,  dmCarEdit.ClientShem + ' - '+ edNumber.text,
+        FilesDir, dmCarEdit.tbCarClientId.AsString, dmCarEdit.tbCarId.AsString, 'NULL');
+    end
+    else
+      MessageDlgH('אין כתובות דואר אלקטרוני תקינות', mtWarning, [mbOk], 0, 0);
+  finally
+  end;
+end;
+
+function TfrmCarEdit.GetEMailsAdr(ToEmails: TStringList): Boolean;
+begin
+  Result := False;
+  dmCarEdit.qrGnrl.SQL.Text := 'SELECT Email, EmailX FROM KClient '+
+        'WHERE Id = ' + dmCarEdit.tbCarClientId.AsString;
+  try
+    dmCarEdit.qrGnrl.Open;
+    if not dmCarEdit.qrGnrl.IsEmpty then
+    begin
+      if (dmCarEdit.qrGnrl.FieldByName('Email').AsString <> '') then
+      begin
+        ToEmails.Add(dmCarEdit.qrGnrl.FieldByName('Email').AsString);
+        Result := True;
+      end;
+      if (dmCarEdit.qrGnrl.FieldByName('EmailX').AsString <> '') then
+      begin
+        ToEmails.Add(dmCarEdit.qrGnrl.FieldByName('EmailX').AsString);
+        Result := True;
+      end;
+    end;
+  finally
+    dmCarEdit.qrGnrl.Close;
+  end;
+end;
+
+procedure TfrmCarEdit.acPhotoExecute(Sender: TObject);
+begin
+  inherited;
+  dlgImportPhoto := TdlgImportPhoto.Create(Self);
+  try
+    with dlgImportPhoto do
+    begin
+      if (ShowModal = mrOk) then
+      begin
+        dmCarEdit.SaveBigData(OpenPictureDialog.FileName, edDocName.Text,
+            ReplaceStr(ExtractFileExt(OpenPictureDialog.FileName), '.', ''), SaveOnFolder);
+      end;
+    end;
+  finally
+    dlgImportPhoto.Free;
+  end;
+end;
+
+procedure TfrmCarEdit.acDocumentExecute(Sender: TObject);
+begin
+  inherited;
+  dlgImportFile := TdlgImportFile.Create(Self);
+  try
+    with dlgImportFile do
+    begin
+      if (ShowModal = mrOk) then
+        dmCarEdit.SaveBigData(PathAndFile, edDocName.Text,
+            ReplaceStr(ExtractFileExt(PathAndFile), '.', ''), SaveOnFolder);
+    end;
+  finally
+    dlgImportFile.Free;
+  end;
+end;
+
+procedure TfrmCarEdit.acShowScanExecute(Sender: TObject);
+begin
+  inherited;
+  frmFolderList := TfrmFolderList.Create(Self);
+  frmFolderList.OpenFile('KCrTofes', 'CarId', dmCarEdit.tbCarId.AsString);
+  frmFolderList.ShowModal;
+end;
+
+procedure TfrmCarEdit.acShowFolderExecute(Sender: TObject);
+var
+  FolderName: String;
+begin
+  inherited;
+  FolderName := ExtractFilePath(Application.ExeName)+'Documents\Car\'+
+    dmCarEdit.tbCarId.AsString;
+  ShellExecute(Application.MainForm.Handle, nil, PChar(FolderName),
+        nil, nil, SW_SHOW);
+end;
+
+procedure TfrmCarEdit.acMailSendListExecute(Sender: TObject);
+begin
+  inherited;
+  frmMailSendListCr := TfrmMailSendListCr.Create(Self);
+  frmMailSendListCr.ShowModal;
+end;
+
+procedure TfrmCarEdit.acShowWebDataExecute(Sender: TObject);
+var
+  frmCarDetail_gov: TfrmCarDetail_gov;
+begin
+  inherited;
+    frmCarDetail_gov := TfrmCarDetail_gov.Create(self);
+//    frmCarDetail_gov.GetCar_details(dmCarEdit.tbCarNumber.AsString);
+  frmCarDetail_gov.GetCar_data(dmCarEdit.tbCarNumber.AsString);
+end;
+
+procedure TfrmCarEdit.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  inherited;
+  if dmCarEdit.tbCar.Modified then
+  begin
+    case MessageDlgH('קימים נתונים חדשים בכרטיס. האם לשמור?',
+         mtConfirmation, mbYesNoCancel, 0, 0) of
+      id_Yes: begin
+                if not HasAllValue then
+                  Exit;
+                dmCarEdit.SaveData;
+                CanClose := True;
+              end;
+      id_No:  begin
+                dmCarEdit.tbCrTipul.CancelCachedUpdates;
+                CanClose := True;
+              end;
+      id_Cancel: CanClose := False;
+    end;
+  end
+  else
+    dmCarEdit.tbCrTipul.CancelCachedUpdates;
+end;
+
+procedure TfrmCarEdit.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dmCarEdit.Free;
+  inherited;
+  frmCarEdit := nil;
+end;
+
+end.

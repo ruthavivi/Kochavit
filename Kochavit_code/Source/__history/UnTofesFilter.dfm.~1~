@@ -1,0 +1,204 @@
+inherited frmUnTofesFilter: TfrmUnTofesFilter
+  Left = 302
+  Top = 214
+  Caption = #1495#1505#1512#1497' '#1502#1505#1502#1499#1497#1501
+  ClientHeight = 159
+  ExplicitHeight = 186
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 128
+    ExplicitTop = 128
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+    inherited btnClose: TBitBtn
+      Left = 137
+      ExplicitLeft = 137
+    end
+  end
+  inherited Panel2: TPanel
+    Height = 128
+    ExplicitHeight = 128
+    inherited grbMain: TGroupBox
+      Height = 126
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1495#1505#1512#1497' '#1502#1505#1502#1499#1497#1501
+      ExplicitHeight = 126
+      object lbTofes: TLabel
+        Tag = 5
+        Left = 261
+        Top = 59
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Tag = 5
+        Left = 261
+        Top = 35
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Tag = 5
+        Left = 261
+        Top = 83
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object cxTofesCar: TCheckBox
+        Tag = 5
+        Left = 320
+        Top = 59
+        Width = 105
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1505#1502#1498' '#1495#1505#1512' '#1512#1499#1489#1497#1501
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
+        OnClick = cxTofesCarClick
+      end
+      object cbTofesCar: TComboBox
+        Tag = 5
+        Left = 88
+        Top = 59
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 0
+        ParentFont = False
+        Sorted = True
+        TabOrder = 3
+        OnEnter = cbTofesCarEnter
+      end
+      object cxTofesCln: TCheckBox
+        Tag = 5
+        Left = 304
+        Top = 35
+        Width = 121
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1505#1502#1498' '#1495#1505#1512' '#1500#1511#1493#1495#1493#1514
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cxTofesCarClick
+      end
+      object cbTofesCln: TComboBox
+        Tag = 5
+        Left = 88
+        Top = 35
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 0
+        ParentFont = False
+        Sorted = True
+        TabOrder = 1
+        OnEnter = cbTofesClnEnter
+      end
+      object cxTofesDrv: TCheckBox
+        Tag = 5
+        Left = 312
+        Top = 83
+        Width = 113
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1505#1502#1498' '#1495#1505#1512' '#1504#1492#1490#1497#1501
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 4
+        OnClick = cxTofesCarClick
+      end
+      object cbTofesDrv: TComboBox
+        Tag = 5
+        Left = 88
+        Top = 83
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 0
+        ParentFont = False
+        Sorted = True
+        TabOrder = 5
+        OnEnter = cbTofesDrvEnter
+      end
+    end
+  end
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      'SELECT IdClient, Hp, Shem'
+      'FROM KClient'
+      'WHERE Id NOT IN'
+      '(SELECT DISTINCT ClientId '
+      'FROM ":KbBig:KClTofes.db")')
+    Left = 48
+    Top = 56
+  end
+  inherited qrGnrl: TEDBQuery
+    DatabaseName = 'KbBig'
+  end
+end

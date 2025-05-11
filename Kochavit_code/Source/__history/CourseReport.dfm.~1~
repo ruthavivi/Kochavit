@@ -1,0 +1,81 @@
+inherited frmCourseReport: TfrmCourseReport
+  Left = 160
+  Caption = #1514#1493#1510#1488#1493#1514' '#1513#1488#1497#1500#1514#1492' '#1511#1493#1512#1505#1497#1501
+  ClientHeight = 346
+  ClientWidth = 626
+  OldCreateOrder = True
+  OnCreate = FormCreate
+  ExplicitWidth = 634
+  ExplicitHeight = 392
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited DBGrid: TDBGrid
+    Width = 626
+    Height = 275
+    OnTitleClick = DBGridTitleClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'StartD'
+        Title.Caption = #1514#1488#1512#1497#1498' '#1492#1514#1495#1500#1492
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'EndD'
+        Title.Caption = #1514#1488#1512#1497#1498' '#1505#1497#1493#1501
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Shem'
+        Title.Caption = #1513#1501' '#1492#1495#1489#1512#1492
+        Width = 119
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ShemD'
+        Title.Caption = #1513#1501' '#1492#1504#1492#1490
+        Width = 130
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Course'
+        Title.Caption = #1513#1501' '#1492#1511#1493#1512#1505
+        Width = 99
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Organize'
+        Title.Caption = #1490#1493#1507' '#1502#1488#1512#1490#1503
+        Visible = True
+      end>
+  end
+  inherited StatusBar1: TStatusBar
+    Top = 323
+    Width = 626
+    ExplicitTop = 323
+    ExplicitWidth = 626
+  end
+  inherited ToolBar1: TToolBar
+    Width = 626
+    ExplicitWidth = 626
+    inherited btnLabel: TToolButton
+      ExplicitWidth = 50
+    end
+  end
+  inherited ActionList: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    inherited acStatistic: TAction
+      OnExecute = acStatisticExecute
+    end
+    inherited acExcel: TAction
+      OnExecute = acExcelExecute
+    end
+  end
+end

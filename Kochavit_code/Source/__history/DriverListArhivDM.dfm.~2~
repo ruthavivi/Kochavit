@@ -1,0 +1,17 @@
+inherited dmDriverListArhiv: TdmDriverListArhiv
+  OnCreate = DataModuleCreate
+  Height = 164
+  Width = 176
+  inherited qrList: TEDBQuery
+    BeforeOpen = qrListBeforeOpen
+    AfterOpen = qrListAfterRefresh
+    AfterRefresh = qrListAfterRefresh
+    SQL.Strings = (
+      'SELECT Id, CodDrv, ShemD, Zeut, Shem'
+      'FROM KDriver Dr'
+      'LEFT JOIN KClient Cl ON Dr.ClientId = Cl.Id'
+      'WHERE Dr.Pail = False'
+      'ORDER BY ShemD')
+    Top = 24
+  end
+end

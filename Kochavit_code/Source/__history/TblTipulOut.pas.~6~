@@ -1,0 +1,43 @@
+unit TblTipulOut;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, edbcomps, frxClass,
+  frxDBSet, Vcl.StdActns;
+
+type
+  TfrmTipulOutTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblTipulOut: TStringField;
+    frdbTipulOut: TfrxDBDataset;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTipulOutTbl: TfrmTipulOutTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmTipulOutTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('TipulOutId', tbTblId.AsString, ['KCrTipulOut']) then
+  inherited;
+end;
+
+procedure TfrmTipulOutTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpTipulOut');
+end;
+
+end.

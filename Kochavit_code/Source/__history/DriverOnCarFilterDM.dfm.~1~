@@ -1,0 +1,4 @@
+inherited dmGnrlFilter1: TdmGnrlFilter1
+  Height = 245
+  Width = 256
+end

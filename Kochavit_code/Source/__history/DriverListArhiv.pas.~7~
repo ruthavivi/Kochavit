@@ -1,0 +1,183 @@
+unit DriverListArhiv;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlListArhiv, DBActns, ActnList, ImgList, DB, Grids, DBGrids,
+  ExtCtrls, StdCtrls, Mask, ComCtrls, Buttons, ToolWin, StdActns, edbcomps, edberror;
+
+type
+  TfrmDriverListArhiv = class(TfrmGnrlListArhiv)
+    acHistory: TAction;
+    ToolButton6: TToolButton;
+    WindowClose: TWindowClose;
+    acEdit: TAction;
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure edSearchChange(Sender: TObject);
+    procedure acSibaExecute(Sender: TObject);
+    procedure acReturnExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+    procedure acHistoryExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acEditExecute(Sender: TObject);
+  private
+    procedure UpdateStatusBar;
+    procedure OpenOneRec(pState: Boolean);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverListArhiv: TfrmDriverListArhiv;
+
+implementation
+uses
+  MainDM, DriverListArhivDM, CauseMsg, ReturnDlg, History, DialogsHeb, LogErrorUtil,
+  DriverEditDM, DriverEdit;
+
+{$R *.dfm}
+
+procedure TfrmDriverListArhiv.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmDriverListArhiv := TdmDriverListArhiv.Create(Self);
+  LoadColOrder(DBGrid, 'DriverArhiv');
+  MarkIndexColumn(dmDriverListArhiv.DriverOrder);
+  UpdateStatusBar;
+end;
+
+procedure TfrmDriverListArhiv.UpdateStatusBar;
+begin
+  StatusBar.Panels[0].Text := 'סה"כ נהגים: ' + dmDriverListArhiv.DriverRecNo;
+end;
+
+procedure TfrmDriverListArhiv.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmDriverListArhiv.DriverOrder := Column.FieldName;
+  dmDriverListArhiv.ReOpenTable(dmDriverListArhiv.qrList.FieldByName('Id').AsInteger);
+  MarkIndexColumn(Column.FieldName);
+  edSearch.SetFocus;
+end;
+
+procedure TfrmDriverListArhiv.edSearchChange(Sender: TObject);
+begin
+  inherited;
+  dmDriverListArhiv.qrList.Locate(dmDriverListArhiv.DriverOrder, SearchVal, [loPartialKey]);
+end;
+
+procedure TfrmDriverListArhiv.acSibaExecute(Sender: TObject);
+begin
+  inherited;
+  dmDriverListArhiv.qrGnrl.SQL.Text := 'SELECT Moed, CauseDr FROM KDrSiba Ds ' +
+          'LEFT JOIN KTblCause tC ON Ds.SibaId = tC.Id '+
+          'WHERE OwnerId = ' + dmDriverListArhiv.qrList.FieldByName('Id').AsString;
+  frmCauseMsg := TfrmCauseMsg.Create(Self);
+  try
+    dmDriverListArhiv.qrGnrl.Open;
+    dmDriverListArhiv.qrGnrl.Last;
+    if not dmDriverListArhiv.qrGnrl.IsEmpty then
+    begin
+      frmCauseMsg.lbMoed.Caption := 'תאריך העברה: ' +
+            dmDriverListArhiv.qrGnrl.FieldByName('Moed').AsString;
+      frmCauseMsg.lbSiba.Caption := 'סיבת העברה: ' +
+            dmDriverListArhiv.qrGnrl.FieldByName('CauseDr').AsString;
+      frmCauseMsg.ShowModal;
+    end;
+  finally
+    frmCauseMsg.Free;
+    dmDriverListArhiv.qrGnrl.Open;
+  end;
+end;
+
+procedure TfrmDriverListArhiv.acReturnExecute(Sender: TObject);
+begin
+  inherited;
+  frmReturnDlg := TfrmReturnDlg.Create(Self);
+  frmReturnDlg.lbHead.Caption := 'להחזיר נהג ' +
+        dmDriverListArhiv.qrList.FieldByName('ShemD').AsString + ' לחברה?';
+  try
+    if (frmReturnDlg.ShowModal = mrYes) then
+    begin
+      dmDriverListArhiv.qrGnrl.SQL.Text := 'UPDATE KDriver SET Pail = True, ' +
+            'ClientId = ' + frmReturnDlg.NewId + ' ' +
+            'WHERE Id = ' + dmDriverListArhiv.qrList.FieldByName('Id').AsString;
+      dmDriverListArhiv.qrGnrl.ExecSQL;
+      dmDriverListArhiv.qrList.Refresh;
+      UpdateStatusBar;
+    end;
+  finally
+    frmReturnDlg.Free;
+  end;
+end;
+
+procedure TfrmDriverListArhiv.acDeleteExecute(Sender: TObject);
+begin
+  inherited;
+  if (MessageDlgH('למחוק סופית את הנהג ' +
+          dmDriverListArhiv.qrList.FieldByName('ShemD').AsString,
+          mtConfirmation, mbYesNoCancel, 0, 0) = mrYes) then
+  begin
+    dmDriverListArhiv.qrGnrl.SQL.Text := 'DELETE FROM KDriver ' +
+            'WHERE Id = ' + dmDriverListArhiv.qrList.FieldByName('Id').AsString;
+    dmDriverListArhiv.qrGnrl.ExecSQL;
+    dmDriverListArhiv.qrList.Refresh;
+    UpdateStatusBar;
+  end;
+end;
+
+procedure TfrmDriverListArhiv.acHistoryExecute(Sender: TObject);
+begin
+  inherited;
+  frmHistory := TfrmHistory.Create(Self);
+  frmHistory.Panel1.Caption := dmDriverListArhiv.qrList.FieldByName('ShemD').AsString;
+  frmHistory.qrHistory.SQL.Text := 'SELECT Shem, Moed FROM KDrSiba Ds ' +
+            'LEFT JOIN KClient Cl ON Ds.ClientId = Cl.Id ' +
+            'WHERE OwnerId = ' + dmDriverListArhiv.qrList.FieldByName('Id').AsString;
+  frmHistory.OpenRecord;
+  frmHistory.ShowModal;
+end;
+
+procedure TfrmDriverListArhiv.acEditExecute(Sender: TObject);
+begin
+  inherited;
+  OpenOneRec(False);
+end;
+
+procedure TfrmDriverListArhiv.OpenOneRec(pState: Boolean);
+begin
+  if not Assigned(frmDriverEdit) then
+  begin
+    try
+      dmDriverEdit := TdmDriverEdit.Create(Self);
+      dmDriverEdit.SetDataState(pState,
+          dmDriverListArhiv.qrList.FieldByName('Id').AsInteger);
+      frmDriverEdit := TfrmDriverEdit.Create(Self);
+      frmDriverEdit.acSave.Enabled := False;
+    except on E: Exception do
+      begin
+        if (E is EEDBError) then
+        begin
+          if (EEDBError(E).ErrorCode = EDB_ERROR_LOCKROW) then
+            MessageDlgH('כרטיס פתוח ע"י משתמש אחר', mtError, [mbOK], 0, 0)
+          else
+            HandelError('TfrmDriverList.OpenOneRec', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmDriverListArhiv.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  SaveColOrder(DBGrid, 'DriverListArhiv');
+  dmDriverListArhiv.Free;
+  inherited;
+  frmDriverListArhiv := nil;
+end;
+
+end.

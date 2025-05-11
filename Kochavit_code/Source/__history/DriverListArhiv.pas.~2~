@@ -1,0 +1,27 @@
+unit DriverListArhiv;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlListArhiv, DBActns, ActnList, ImgList, DB, Grids, DBGrids,
+  ExtCtrls, StdCtrls, Mask, ComCtrls, Buttons, ToolWin;
+
+type
+  TfrmDriverListArhiv = class(TfrmGnrlListArhiv)
+  private
+    procedure UpdateStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverListArhiv: TfrmDriverListArhiv;
+
+implementation
+uses
+  MainDM, DriverListArhivDM, CauseMsg, ReturnDlg, History, DialogsHeb;
+
+{$R *.dfm}
+
+end.

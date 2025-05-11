@@ -1,0 +1,39 @@
+inherited frmChecksSpssSlctDlg: TfrmChecksSpssSlctDlg
+  ExplicitWidth = 442
+  ExplicitHeight = 379
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    ExplicitHeight = 266
+    inherited edTitle: TMemo
+      ExplicitTop = 221
+    end
+    inherited rgReports: TRadioGroup
+      ExplicitHeight = 220
+    end
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 266
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  object ccChartsChecks: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsChecksGetCols
+    OnGetRow = ccChartsChecksGetRow
+    Left = 249
+    Top = 104
+  end
+  object frdbCheks: TfrxDBDataset
+    UserName = 'frdbCheks'
+    CloseDataSource = False
+    DataSet = qrSpss
+    BCDToCurrency = False
+    Left = 208
+    Top = 176
+  end
+end

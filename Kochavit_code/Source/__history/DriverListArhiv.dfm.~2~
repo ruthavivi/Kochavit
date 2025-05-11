@@ -1,0 +1,61 @@
+inherited frmDriverListArhiv: TfrmDriverListArhiv
+  Caption = 'frmDriverListArhiv'
+  ClientHeight = 318
+  ClientWidth = 582
+  ExplicitWidth = 602
+  ExplicitHeight = 357
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited StatusBar: TStatusBar
+    Top = 299
+    Width = 582
+    ExplicitTop = 299
+    ExplicitWidth = 582
+  end
+  inherited ToolBar1: TToolBar
+    Width = 582
+    ExplicitWidth = 582
+  end
+  inherited Panel1: TPanel
+    Width = 582
+    Height = 251
+    ExplicitWidth = 582
+    ExplicitHeight = 251
+    inherited DBGrid: TDBGrid
+      Width = 580
+      Height = 249
+      DataSource = dsList
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'CodDrv'
+          Title.Caption = #1502#1505#39' '#1505#1497#1491#1493#1512#1497
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Shem'
+          Title.Caption = #1513#1501' '#1492#1504#1492#1490
+          Width = 150
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Zeut'
+          Title.Caption = #1514'. '#1494#1492#1493#1514
+          Width = 99
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Shem'
+          Title.Caption = #1513#1501' '#1492#1495#1489#1512#1492
+          Width = 171
+          Visible = True
+        end>
+    end
+  end
+  inherited dsList: TDataSource
+    DataSet = dmDriverListArhiv.qrList
+  end
+end

@@ -1,0 +1,148 @@
+unit DrTahoFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask;
+
+type
+  TfrmDrTahoFilter = class(TfrmGnrlFilter)
+    lbAMoed: TLabel;
+    lbZMoed: TLabel;
+    edAMoed: TMaskEdit;
+    edZMoed: TMaskEdit;
+    cxDMoed: TCheckBox;
+    lbEShemD: TLabel;
+    cxEShemD: TCheckBox;
+    cbEShemD: TComboBox;
+    lbEShem: TLabel;
+    cxEShem: TCheckBox;
+    cbEShem: TComboBox;
+    lbENumber: TLabel;
+    cxENumber: TCheckBox;
+    cbENumber: TComboBox;
+    qrFilterId: TIntegerField;
+    qrFilterMoed: TDateField;
+    qrFilterSpeed: TBooleanField;
+    qrFilterZman: TBooleanField;
+    qrFilterHarig: TBooleanField;
+    qrFilterRemark: TStringField;
+    qrFilterNumber: TStringField;
+    qrFilterShemD: TStringField;
+    qrFilterShem: TStringField;
+    procedure FormCreate(Sender: TObject);
+    procedure cxDMoedClick(Sender: TObject);
+    procedure edAMoedExit(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure cbENumberEnter(Sender: TObject);
+    procedure cbEShemDEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure qrFilterSpeedGetText(Sender: TField; var Text: String;
+      DisplayText: Boolean);
+  private
+    procedure LoadPrfx;
+  public
+  end;
+
+var
+  frmDrTahoFilter: TfrmDrTahoFilter;
+
+implementation
+uses
+  DrTahoReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmDrTahoFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  totalRec := GetRecNum('KDrTaho');
+end;
+
+procedure TfrmDrTahoFilter.cxDMoedClick(Sender: TObject);
+begin
+  inherited;
+  ChkBoxClick(Sender as TCheckBox);
+end;
+
+procedure TfrmDrTahoFilter.edAMoedExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAMoed.Text,
+               edZMoed.Text) = False) then
+           edAMoed.SetFocus;
+end;
+
+procedure TfrmDrTahoFilter.cbEShemEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KClient';
+  ItemsInCmbBox(cbEShem, 'Shem');
+end;
+
+procedure TfrmDrTahoFilter.cbENumberEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KCar';
+  ItemsInCmbBox(cbENumber, 'Number');
+end;
+
+procedure TfrmDrTahoFilter.cbEShemDEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KDriver';
+  ItemsInCmbBox(cbEShemD, 'ShemD');
+end;
+
+procedure TfrmDrTahoFilter.qrFilterSpeedGetText(Sender: TField;
+  var Text: String; DisplayText: Boolean);
+begin
+  inherited;
+  if Sender.Value = True then
+    Text := 'λο'
+  else
+    Text := '';  
+end;
+
+procedure TfrmDrTahoFilter.btnExecuteClick(Sender: TObject);
+var
+   Path, WhereLn: String;
+begin
+  inherited;
+   Screen.Cursor := crHourGlass;
+   Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+   prfxList := TStringList.Create;
+   try
+       LoadPrfx;
+       with qrFilter do
+       begin
+           SQL.LoadFromFile(Path+'DrTahoSQL.TXT');
+           WhereLn := GetWhereLn;
+           if (WhereLn = '') then
+               SQL[SQL.Count -2] := ''
+           else
+               SQL[SQL.Count -2] := 'WHERE ' + WhereLn;
+           Open;
+           selectRec := RecordCount;
+       end;
+       frmDrTahoReport := TfrmDrTahoReport.Create(Self);
+   finally
+       prfxList.Free;
+       Screen.Cursor := crDefault;
+   end;
+end;
+
+procedure TfrmDrTahoFilter.LoadPrfx;
+begin
+  prfxList.Add('Dt.');
+  prfxList.Add('Cr.');
+  prfxList.Add('Dr.');
+  prfxList.Add('Cl.');
+end;
+
+
+end.

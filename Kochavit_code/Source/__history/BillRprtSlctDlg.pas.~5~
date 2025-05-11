@@ -1,0 +1,56 @@
+unit BillRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, Spin, StdCtrls, Buttons, ExtCtrls, DB, DBTables,
+  RpCon, RpConDS, RpConBDE, RpBase, RpSystem, RpDefine, RpRave, RpRender,
+  RpRenderRTF, edbcomps, RpRenderHTML;
+
+type
+  TfrmBillRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBillRprtSlctDlg: TfrmBillRprtSlctDlg;
+
+implementation
+
+{$R *.dfm}
+uses
+  BillFilterDM;
+
+procedure TfrmBillRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('BL');
+end;
+
+procedure TfrmBillRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmBillRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+procedure TfrmBillRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+end.

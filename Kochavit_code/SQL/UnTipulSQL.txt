@@ -1,0 +1,9 @@
+SELECT Shem, IdCar, Number, Oved 
+FROM KCar Cr
+LEFT JOIN KClient Cl ON (Cr.ClientId = Cl.Id)
+LEFT JOIN KTblOved tOv ON (Cr.OvedId = tOv.Id)
+WHERE Id NOT IN
+(SELECT KCt.CarId
+FROM KCrTipul KCt
+LEFT JOIN KTblTipul tT ON (KCt.TipulId = tT.Id)
+WHERE KCt.DateToDo IS NOT NULL and tT.Tipul = 

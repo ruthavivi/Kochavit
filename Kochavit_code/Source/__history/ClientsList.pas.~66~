@@ -1,0 +1,334 @@
+unit ClientsList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Grids, DBGrids, StdCtrls, Mask, ComCtrls, ActnList, ImgList, ToolWin,
+  DB, DBActns, edbcomps, edberror, Vcl.Menus, System.Actions, System.ImageList;
+
+type
+  TfrmeClientsList = class(TFrame)
+    ToolBar1: TToolBar;
+    Images: TImageList;
+    ActionList1: TActionList;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    edSearchClient: TMaskEdit;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    dbgClient: TDBGrid;
+    sbClientList: TStatusBar;
+    dsClientList: TDataSource;
+    DataSetFirst1: TDataSetFirst;
+    DataSetLast1: TDataSetLast;
+    acToArchive: TAction;
+    acFrezeOnOff: TAction;
+    acDelete: TAction;
+    acAllClients: TAction;
+    Button1: TButton;
+    acAppend: TAction;
+    acEdit: TAction;
+    acWrnSendMsg: TAction;
+    btnSendMsg: TToolButton;
+    acLikuySendMsg: TAction;
+    pmSendMsg: TPopupMenu;
+    N1: TMenuItem;
+    pmRightClick: TPopupMenu;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    FrezeOnOff1: TMenuItem;
+    procedure acToArchiveExecute(Sender: TObject);
+    procedure acFrezeOnOffExecute(Sender: TObject);
+    procedure dbgClientDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure acFrezeOnOffUpdate(Sender: TObject);
+    procedure dsClientListDataChange(Sender: TObject; Field: TField);
+    procedure acDeleteExecute(Sender: TObject);
+    procedure dbgClientTitleClick(Column: TColumn);
+    procedure edSearchClientChange(Sender: TObject);
+    procedure acAllClientsExecute(Sender: TObject);
+    procedure dbgClientEnter(Sender: TObject);
+    procedure acAppendExecute(Sender: TObject);
+    procedure acEditExecute(Sender: TObject);
+    procedure acWrnSendMsgExecute(Sender: TObject);
+    procedure acLikuySendMsgExecute(Sender: TObject);
+    procedure acAllClientsUpdate(Sender: TObject);
+  private
+    procedure SetSearchMode(Column: TColumn);
+    procedure OpenRecord(pState: Boolean);
+  public
+    { Public declarations }
+    procedure MarkIndexColumn;
+    procedure LoadColOrder(pDBGrid: TDBGrid; pFile: String);
+    procedure SaveColOrder(pDBGrid: TDBGrid; pFile: String);
+  end;
+
+implementation
+uses
+  MainDM, DataDM, LogErrorUtil, GnrlFreze, DialogsHeb, ClientEditDM, ClientEdit,
+  CarListDM, DriverListDM, BillListDM, ChecksListDM, WrnSendMsg, LikuySendMsg,
+  Cause;
+{$R *.dfm}
+
+procedure TfrmeClientsList.LoadColOrder(pDBGrid: TDBGrid; pFile: String);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Txt\';
+  if FileExists(Path + pFile) then
+    pDBGrid.Columns.LoadFromFile(Path + pFile);
+end;
+
+procedure TfrmeClientsList.dbgClientDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  with dbgClient do
+  begin
+    if (dmMain.qrClientList.FieldByName('Freze').AsBoolean) then
+      Canvas.Brush.Color := clSilver;
+    DefaultDrawColumnCell(Rect, DataCol, Column, State);
+  end;
+end;
+
+procedure TfrmeClientsList.dsClientListDataChange(Sender: TObject;
+  Field: TField);
+begin
+  sbClientList.Panels[0].Text := 'סה"כ חברות/מוקפאות: ' +
+          IntToStr(dmMain.ClnFrzRecNo)+'/'+IntToStr(dmMain.ClnRecNo);
+end;
+
+procedure TfrmeClientsList.dbgClientTitleClick(Column: TColumn);
+begin
+  dmMain.ClientOrder := Column.FieldName;
+  dmMain.ReOpenTable(dmMain.qrClientList,
+        dmMain.qrClientList.FieldByName('Id').AsInteger);
+  MarkIndexColumn;
+  edSearchClient.SetFocus;
+end;
+
+procedure TfrmeClientsList.MarkIndexColumn;
+var
+   i: Integer;
+begin
+  with dbgClient do
+  begin
+    for i := 0 to Columns.Count -1 do
+    begin
+      if Columns[i].FieldName = dmMain.ClientOrder then
+      begin
+        Columns[i].Title.Font.Color := clRed;
+        SetSearchMode(Columns[i]);
+      end
+      else
+        Columns[i].Title.Font.Color := clBlack;
+    end;
+  end;
+end;
+
+procedure TfrmeClientsList.SetSearchMode(Column: TColumn);
+begin
+  edSearchClient.Clear;
+  if (Column.FieldName = 'Cod') or (Column.FieldName = 'Depth') then
+  begin
+    edSearchClient.BiDiMode := bdLeftToRight;
+    edSearchClient.EditMask := '999999;0; ';
+  end
+  else
+  begin
+    edSearchClient.BiDiMode := bdRightToLeft;
+    edSearchClient.EditMask := '';
+  end;
+end;
+
+procedure TfrmeClientsList.edSearchClientChange(Sender: TObject);
+var
+  SearchVal: Variant;
+begin
+  inherited;
+  if (dmMain.ClientOrder = 'Shem') then
+    SearchVal := edSearchClient.Text
+  else
+    SearchVal := StrToIntDef(edSearchClient.Text, 0);
+  dmMain.qrClientList.Locate(dmMain.ClientOrder, SearchVal, [loPartialKey]);
+end;
+
+procedure TfrmeClientsList.acAllClientsUpdate(Sender: TObject);
+begin
+  acAllClients.Enabled := NOT dmMain.SelectAll;
+end;
+
+procedure TfrmeClientsList.acAllClientsExecute(Sender: TObject);
+begin
+  if not dmMain.SelectAll then
+  begin
+    dmMain.SelectAll := True;
+    if dmMain.qrWrnCar.Active then
+    begin
+      dmMain.ReOpenTable(dmMain.qrWrnCar, 0);
+      dmMain.ReOpenTable(dmMain.qrWrnDrv, 0);
+    end;
+    if Assigned(dmCarList) then
+      dmCarList.ReOpenTable(0);
+    if Assigned(dmDriverList) then
+      dmDriverList.ReOpenTable(0);
+    if Assigned(dmBillList) then
+      dmBillList.ReOpenTable(0);
+    if Assigned(dmChecksList) then
+      dmChecksList.ReOpenTable(0);
+  end;
+end;
+
+procedure TfrmeClientsList.dbgClientEnter(Sender: TObject);
+begin
+  if dmMain.SelectAll then
+  begin
+    dmMain.SelectAll := False;
+    if dmMain.qrWrnCar.Active then
+    begin
+      dmMain.ReOpenTable(dmMain.qrWrnCar, 0);
+      dmMain.ReOpenTable(dmMain.qrWrnDrv, 0);
+    end;
+    if Assigned(dmCarList) then
+      dmCarList.ReOpenTable(0);
+    if Assigned(dmDriverList) then
+      dmDriverList.ReOpenTable(0);
+    if Assigned(dmBillList) then
+      dmBillList.ReOpenTable(0);
+  end;
+end;
+
+procedure TfrmeClientsList.acFrezeOnOffUpdate(Sender: TObject);
+begin
+  if not dmMain.qrClientList.FieldByName('Freze').AsBoolean then
+  begin
+    acFrezeOnOff.Hint := 'השבתת חברה';
+    acFrezeOnOff.ImageIndex := 5;
+  end
+  else
+  begin
+    acFrezeOnOff.Hint := 'שיחרור מהשבתה';
+    acFrezeOnOff.ImageIndex := 6;
+  end;
+end;
+
+procedure TfrmeClientsList.acToArchiveExecute(Sender: TObject);
+begin
+  frmCause := TfrmCause.Create(Self);
+  frmCause.Panel3.Caption := 'שם הלקוח: ' +
+                       dmMain.qrClientList.FieldByName('Shem').AsString;
+  frmCause.OpenRecord(frmCause.tbClSiba);
+  try
+    if (frmCause.ShowModal = mrYes) then
+    begin
+      try
+        dmMain.qrGnrl.SQL.Text := 'UPDATE KClient SET Pail = False ' +
+                  'WHERE Id = ' + dmMain.qrClientList.FieldByName('Id').AsString;
+        dmMain.qrGnrl.ExecSQL;
+        dmMain.qrClientList.Refresh;
+      except
+        on E: EDatabaseError do
+          HandelError('TfrmeClientsList.acToArchiveExecute', 'כרטיס לא נשמר' + E.Message, E);
+      end;
+    end;
+  finally
+    frmCause.Free;
+  end;
+end;
+
+procedure TfrmeClientsList.acFrezeOnOffExecute(Sender: TObject);
+begin
+  if (acFrezeOnOff.ImageIndex = 5) then
+  begin
+    frmGnrlFreze := TfrmGnrlFreze.Create(Self);
+    if (frmGnrlFreze.ShowModal = mrOk) then
+      dmMain.UpdateFrezeState(True, frmGnrlFreze.rgSlct.ItemIndex = 1,
+          'KClFreze', 'ClientId', dmMain.qrClientList.FieldByName('Id').AsString,
+          Engine.DateToSQLStr(frmGnrlFreze.edMoed.Date), 'KClient');
+  end
+  else
+    dmMain.UpdateFrezeState(False, False, '', '',
+        dmMain.qrClientList.FieldByName('Id').AsString, '', 'KClient');
+  dmMain.qrClientList.Refresh;
+end;
+
+procedure TfrmeClientsList.acWrnSendMsgExecute(Sender: TObject);
+begin
+  dlgWrnSendMsg := TdlgWrnSendMsg.Create(Self);
+  dlgWrnSendMsg.Show;
+end;
+
+procedure TfrmeClientsList.acLikuySendMsgExecute(Sender: TObject);
+begin
+  dlgLikuySendMsg := TdlgLikuySendMsg.Create(Self);
+  dlgLikuySendMsg.Show;
+end;
+
+procedure TfrmeClientsList.acDeleteExecute(Sender: TObject);
+var
+  ExRecord: String;
+begin
+  if dmMain.AllowDelClient(ExRecord) then
+  begin
+    if MessageDlgH('למחוק סופית חברה ' +dmMain.qrClientList.FieldByName('Shem').AsString,
+          mtConfirmation, mbYesNoCancel, 0, 0) = mrYes then
+    begin
+      Screen.Cursor := crHourGlass;
+      try
+        dmMain.qrGnrl.SQL.Text := 'DELETE FROM KClient ' +
+                  'WHERE Id = ' + dmMain.qrClientListId.AsString;
+        dmMain.qrGnrl.ExecSQL;
+        dmMain.qrClientList.Refresh;
+      finally
+        Screen.Cursor := crDefault;
+      end;
+    end;
+  end
+  else
+    MessageDlgH('לחברה ' + dmMain.qrClientList.FieldByName('Shem').AsString +
+        ' יש ' + ExRecord + ' ולכן לא ניתן למחוק אותה', mtError, [mbOK], 0,0);
+end;
+
+procedure TfrmeClientsList.acAppendExecute(Sender: TObject);
+begin
+  OpenRecord(True);
+end;
+
+procedure TfrmeClientsList.acEditExecute(Sender: TObject);
+begin
+  OpenRecord(False);
+end;
+
+procedure TfrmeClientsList.OpenRecord(pState: Boolean);
+begin
+  if not Assigned(frmClientEdit) then
+  begin
+    try
+      dmClientEdit := TdmClientEdit.Create(Self);
+      dmClientEdit.SetDataState(pState, dmMain.qrClientList.FieldByName('Id').AsInteger);
+      frmClientEdit := TfrmClientEdit.Create(Self);
+    except on E: Exception do
+      begin
+        if (E is EEDBError) then
+        begin
+          if (EEDBError(E).ErrorCode = EDB_ERROR_LOCKROW) then
+            MessageDlgH('כרטיס פתוח ע"י משתמש אחר', mtError, [mbOK], 0, 0)
+          else
+            HandelError('TfrmeClientsList.OpenRecord', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmeClientsList.SaveColOrder(pDBGrid: TDBGrid; pFile: String);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Txt\';
+  pDBGrid.Columns.SaveToFile(Path + pFile);
+end;
+
+end.

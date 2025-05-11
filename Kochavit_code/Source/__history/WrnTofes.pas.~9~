@@ -1,0 +1,259 @@
+unit WrnTofes;
+
+interface
+
+uses
+  Classes, SysUtils, Forms, StrUtils, WordFunc, WrnList, WordVer,
+  KbFunc, DbTables, WrnListDM, edbcomps;
+
+  function  GetTofesDoc(pType: String): String;
+  function  GetSetNextNo: Integer;
+  procedure ProccessTofes;
+  procedure InsertData(pI: String);
+  procedure PrintSelected(pSelectedIdList: TStringList);
+  procedure PrintAll;
+  procedure OpenWordFile;
+  procedure InsertDataSet(pQr: TEDBQuery);
+var
+  NoBkr: Integer;
+  NumberBrCode: String;
+  WorkFile: OleVariant;
+  Ver: Integer;
+  WordObj: TWordObj;
+
+implementation
+
+procedure ProccessTofes(pSelectedIdList: TStringList);
+begin
+  Ver := GetCurrentWordMajorVersion;
+  WordObj := TWordObj.Create;
+  WordObj.ConnectWord;
+  with dmWrnList do
+  begin
+    try
+      qrTofesMain.Open;
+      qrTofesLikuy.Open;
+      qrTofesTipul.Open;
+      qrTofesHeiter.Open;
+      if (pSelectedIdList.Count > 0) then
+        PrintSelected(pSelectedIdList)
+      else
+        PrintAll;
+    finally
+      qrTofesMain.Close;
+      qrTofesLikuy.Close;
+      qrTofesTipul.Close;
+      qrTofesHeiter.Close;
+      WordObj.Free;
+    end;
+  end;
+end;
+
+function GetTofesDoc(pType: String): String;
+begin
+  Result := 'Tofes.Doc';
+  with dmWrnList do
+  begin
+    try
+      qrGnrl.SQL.Text := 'SELECT Doc FROM KTblType ' +
+                        'WHERE Type = ' + QuotedStr(pType);
+      qrGnrl.Open;
+      if not qrGnrl.Eof then
+        Result := qrGnrl.FieldByName('Doc').AsString;
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+function GetSetNextNo: Integer;
+begin
+  with dmWrnList do
+  begin
+    try
+      qrGnrl.SQL.Text := 'SELECT NextNoBkr FROM KDefault';
+      qrGnrl.Open;
+      Result := qrGnrl.FieldByName('NextNoBkr').AsInteger;
+      qrGnrl.Close;
+      qrGnrl.SQL.Text := 'UPDATE KDefault SET NextNoBkr = ' + IntToStr(Result + 1);
+      qrGnrl.ExecSQL;
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+procedure PrintSelected(pSelectedIdList: TStringList);
+var
+  I: Integer;
+begin
+  for I := 0 to pSelectedIdList.Count - 1 do
+  begin
+    OpenWordFile;
+    dmWrnList.qrTofesMain.Locate('Id', pSelectedIdList[I], []);
+    InsertDataSet;
+    WordObj.CloseDoc;
+  end;
+end;
+
+procedure PrintAll;
+begin
+  OpenWordFile;
+  while not dmWrnList.qrTofesMain.Eof do
+  begin
+    InsertDataSet(d;
+    dmWrnList.qrTofesMain.Next;
+  end;
+  WordObj.CloseDoc;
+end;
+
+procedure OpenWordFile;
+begin
+  NoBkr := GetSetNextNo;
+  WorkFile := ExtractFilePath(Application.ExeName) + 'Docs\Tofes\' +
+                GetTofesDoc(dmWrnList.qrTofesMain.FieldByName('Type').AsString);
+  WordObj.OpenDoc(WorkFile);
+end;
+
+procedure InsertDataSet(pQr: TEDBQuery);
+var
+  I: Integer;
+  FldName, FldValue, Remark: String;
+begin
+  for I := 0 to pQr.FieldCount - 1 do
+  begin
+    FldName := pQr.Fields[I].FieldName;
+    FldValue := pQr.FieldByName(FldName).AsString;
+
+    if (Ver = 9) then
+    begin
+      if ((FldName = 'Number') or (FldName = 'Tel')  or (FldName = 'Tel1')
+           or (FldName = 'TelC'))   then
+        FldValue := RevStr(FldValue);
+    end;
+    WordObj.InsertBookMark(FldName, RevStr(FldValue));
+    WordObj.InsertBookMark(FldName +'A', RevStr(FldValue));
+  end;
+end;
+
+procedure InsertData(pI: String);
+begin
+
+
+
+      begin
+        WordObj.InsertBookMark(FldName,
+                       FieldByName(FldName).AsString);
+        WordObj.InsertBookMark(FldName+'A',
+                       FieldByName(FldName).AsString);
+      end;
+    end;
+    NumberBrCode := '!'+dmMain.qrWrnExt.FieldByName('Number').AsString+'!';
+
+  end;
+
+  WordObj.InsertBookMark('sp', '');
+//  with frmWrnList.qrUpd do
+//  begin
+//    if not Eof then
+//    begin
+//      while not Eof do
+//      begin
+//        WordObj.WriteNewLine(FieldByName(Fields[0].FieldName).AsString);
+//        Next;
+//      end;
+//    end;
+//  end;
+  if (vRemark <> '') then
+    WordObj.WriteNewLine(vRemark);
+
+  if (WordObj.ExistBookMark('tp')) then
+  begin
+//    with frmWrnList.qrGnrl do
+//    begin
+//      if not Eof then
+//      begin
+//        WordObj.InsertBookMark('tp', '');
+//        while not Eof do
+//        begin
+//          if (FieldByName(Fields[1].FieldName).AsDateTime <= (Date + 30)) then
+//            WordObj.WriteNewLine(
+//              PadLeftA(' ! ' + FieldByName(Fields[0].FieldName).AsString+': ' +
+//                  FieldByName(Fields[1].FieldName).AsString, ' ', 25))
+//          else
+//            WordObj.WriteNewLine(
+//              PadLeftA(FieldByName(Fields[0].FieldName).AsString+': ' +
+//                  FieldByName(Fields[1].FieldName).AsString, ' ', 25));
+//          Next;
+//        end;
+//      end;
+//    end;
+  end;
+
+  if (WordObj.ExistBookMark('dh')) then
+  begin
+//    with frmWrnList.qrGnrl2 do
+//    begin
+//      First;
+//      if not Eof then
+//      begin
+//        WordObj.InsertBookMark('dh', '');
+//        while not Eof do
+//        begin
+//          if (FieldByName(Fields[4].FieldName).AsDateTime <= (Date + 30)) then
+//            WordObj.WriteNewLine(' ! ' +
+//              PadLeftA(FieldByName(Fields[0].FieldName).AsString+
+//                  ': ' + FieldByName(Fields[1].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[2].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[3].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[4].FieldName).AsString, ' ', 25))
+//          else
+//            WordObj.WriteNewLine(
+//              PadLeftA(FieldByName(Fields[0].FieldName).AsString+
+//                  ': ' + FieldByName(Fields[1].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[2].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[3].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[4].FieldName).AsString, ' ', 25));
+//          Next;
+//        end;
+//      end;
+//    end;
+  end;
+
+  WordObj.InsertBookMark('NoBkr', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NoBkrB', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NoBkrC', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NumberBrCode', NumberBrCode);
+
+  WordObj.InsertBookMark('pI', pI);
+
+//  WordObj.EditDoc;
+  WordObj.PrintDoc('1');
+  WordObj.CloseWord;
+end;
+
+function PadLeftA(const AString: string; const AChar: Char;
+  const ALen: Integer): string;
+var
+  PadLength: Integer; // number of padding characters required
+begin
+  Result := AString;
+  PadLength := ALen - Length(AString);
+  if PadLength < 1 then
+    Exit;
+  Result := AString + StringOfChar(AChar, PadLength);
+end;
+
+//function PadRightA(const AString: string; const AChar: Char;
+//  const ALen: Integer): string;
+//var
+//  PadLength: Integer; // number of padding characters required
+//begin
+//  Result := AString;
+//  PadLength := ALen - Length(AString);
+//  if PadLength < 1 then
+//    Exit;
+//  Result := StringOfChar(AChar, PadLength) + AString;
+//end;
+
+end.

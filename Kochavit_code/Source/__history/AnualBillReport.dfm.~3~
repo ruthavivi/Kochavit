@@ -1,0 +1,84 @@
+inherited frmAnualBillReport: TfrmAnualBillReport
+  Left = 40
+  Caption = ''
+  ClientHeight = 441
+  ClientWidth = 721
+  OnCreate = FormCreate
+  ExplicitWidth = 729
+  ExplicitHeight = 487
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited DBGrid: TDBGrid
+    Width = 721
+    Height = 370
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Cod'
+        Title.Caption = ' '#1502#1505#39' '#1495#1489#1512#1492
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Shem'
+        Title.Caption = #1513#1501' '#1495#1492#1489#1512#1492
+        Width = 90
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Oved'
+        Width = 76
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Engine'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'NumbPrClient'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SumPrClient'
+        Visible = True
+      end>
+  end
+  inherited StatusBar1: TStatusBar
+    Top = 418
+    Width = 721
+    ExplicitTop = 418
+    ExplicitWidth = 721
+  end
+  inherited ToolBar1: TToolBar
+    Width = 721
+    ExplicitWidth = 721
+    inherited btnMail: TToolButton
+      Enabled = False
+      Visible = False
+    end
+    inherited btnLabel: TToolButton
+      Enabled = False
+      Visible = False
+      ExplicitWidth = 50
+    end
+  end
+  inherited ActionList: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    inherited acStatistic: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acExcel: TAction
+      OnExecute = acExcelExecute
+    end
+  end
+  inherited dsReport: TDataSource
+    DataSet = dmAnualBillFilter.qrFilter
+  end
+end

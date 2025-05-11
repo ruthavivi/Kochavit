@@ -1,0 +1,141 @@
+unit GnrlListOld;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, DBTables, ActnList, ImgList, ComCtrls, StdCtrls,
+  Mask, DBCtrls, ToolWin, Grids, DBGrids, ExtCtrls, Menus;
+
+type
+  TfrmGnrlListOld = class(TForm)
+    Panel1: TPanel;
+    DBGrid: TDBGrid;
+    ToolBar1: TToolBar;
+    DBNavigator1: TDBNavigator;
+    edSearch: TMaskEdit;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    StatusBar: TStatusBar;
+    ImageList1: TImageList;
+    ActionList1: TActionList;
+    acCause: TAction;
+    acReturn: TAction;
+    acPrint: TAction;
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    ordField: String;
+    typField: TClass;
+    procedure LoadPosition(pKey: String; pForm: TForm);
+    procedure MarkIndexColumn(fldName: String);
+    procedure ChangeOrder(qr: TQuery; Column: TColumn);
+    procedure UpdateStatusBar(sMsg: String);
+    procedure SavePosition(pKey: String; pForm: TForm);
+  end;
+
+var
+  frmGnrlListOld: TfrmGnrlListOld;
+
+implementation
+uses
+  RegistryUtils;
+{$R *.dfm}
+
+procedure TfrmGnrlListOld.FormCreate(Sender: TObject);
+begin
+  ordField := '';
+end;
+
+procedure TfrmGnrlListOld.LoadPosition(pKey: String; pForm: TForm);
+var
+  Reg: TRegistryGrd;
+begin
+  Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+  Reg.LoadFromRegistry(DBGrid);
+  Reg.Free;
+end;
+
+procedure TfrmGnrlListOld.MarkIndexColumn(fldName: String);
+var
+   i: Integer;
+begin
+   with dbGrid do
+   begin
+       for i := 0 to Columns.Count -1 do
+       begin
+           if Columns[i].FieldName = fldName then
+               Columns[i].Title.Font.Color := clRed;
+       end;
+   end;
+end;
+
+procedure TfrmGnrlListOld.UpdateStatusBar(sMsg: String);
+begin
+   StatusBar.Panels[0].Text := sMsg;
+end;
+
+procedure TfrmGnrlListOld.ChangeOrder(qr: TQuery; Column: TColumn);
+var
+   j: Integer;
+   fldName: String;
+begin
+   fldName := Column.FieldName;
+   with qr do
+   begin
+       DisableControls;
+       Close;
+       SQL[SQL.Count-1] := 'ORDER BY ' + fldName;
+       Open;
+       EnableControls;
+   end;
+
+   with dbGrid do
+   begin
+       for j := 0 to Columns.Count -1 do
+           Columns[j].Title.Font.Color := clBlack;
+       Column.Title.Font.Color := clRed;
+   end;
+
+   ordField := Column.FieldName;
+   typField := Column.Field.ClassType;
+   if typField = TIntegerField then
+   begin
+       edSearch.BiDiMode := bdLeftToRight;
+       edSearch.EditMask := '999999999999;0; ';
+   end
+   else
+   begin
+       edSearch.BiDiMode := bdRightToLeft;
+       edSearch.EditMask := '';
+   end;
+
+   edSearch.SetFocus;
+   Refresh;
+end;
+
+procedure TfrmGnrlListOld.SavePosition(pKey: String; pForm: TForm);
+var
+  Reg: TRegistryGrd;
+begin
+  Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+  Reg.SaveToRegistry(DBGrid);
+  Reg.Free;
+end;
+
+procedure TfrmGnrlListOld.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+end.

@@ -1,0 +1,70 @@
+object dmWrnList: TdmWrnList
+  OldCreateOrder = False
+  Height = 295
+  Width = 179
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 32
+    Top = 16
+  end
+  object qrTofesMain: TEDBQuery
+    BeforeOpen = qrTofesMainBeforeOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 32
+    Top = 88
+  end
+  object qrTofesLikuy: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsTofesMain
+    SQL.Strings = (
+      'SELECT BikoretDtl'
+      'FROM KCrTipulDtl Cd '
+      'LEFT JOIN KTblBikoretDtl tB ON Cd.BikoretDtlId = tB.Id  '
+      'WHERE TipulId = :Id')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptInput
+      end>
+    Left = 32
+    Top = 160
+  end
+  object dsTofesMain: TDataSource
+    DataSet = qrTofesMain
+    Left = 104
+    Top = 88
+  end
+  object qrTofesTipul: TEDBQuery
+    BeforeInsert = qrTofesTipulBeforeInsert
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsTofesMain
+    SQL.Strings = (
+      'SELECT Tipul, DateToDo'
+      'FROM KCrTipul Ct '
+      'LEFT JOIN KTblTipul tT ON Ct.TipulId = tT.Id'
+      
+        'WHERE CarId = :CarId AND Ct.DateToDo <= :TillMoed OR DateToDo IS' +
+        ' NULL AND tT.Tipul <> '#39#225#233#247#229#248#250' '#231#229#227#249#233#250#39
+      'ORDER BY tT.Tipul')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'CarId'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'TillMoed'
+        ParamType = ptInput
+      end>
+    Left = 104
+    Top = 160
+  end
+end

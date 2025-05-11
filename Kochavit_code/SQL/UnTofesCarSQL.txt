@@ -1,0 +1,7 @@
+SELECT Cl.Shem, Cr.IdCar, Cr.Number 
+FROM KCar Cr
+LEFT JOIN KClient Cl ON (Cr.ClientId = Cl.Id)
+WHERE Id NOT IN
+(SELECT DISTINCT CarId 
+FROM ":KbBig:KCrTofes.db"
+WHERE Name = 

@@ -1,0 +1,94 @@
+unit AnualBillFilter;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Graphics, Controls, Forms,
+  GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Spin, DateUtils,
+  edbcomps;
+
+type
+  TfrmAnualBillFilter = class(TfrmGnrlFilter)
+    edYear: TSpinEdit;
+    cbOved: TCheckBox;
+    cbEOved: TComboBox;
+    cxYear: TCheckBox;
+    lbEOved: TLabel;
+    Label1: TLabel;
+    procedure FormCreate(Sender: TObject);
+    procedure cbOvedClick(Sender: TObject);
+    procedure cbEOvedEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAnualBillFilter: TfrmAnualBillFilter;
+
+implementation
+uses
+  AnualBillFilterDM, AnualBillReport;
+{$R *.dfm}
+
+procedure TfrmAnualBillFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmAnualBillFilter := TdmAnualBillFilter.Create(Self);
+  edYear.Value := YearOf(Date);
+end;
+
+procedure TfrmAnualBillFilter.cbOvedClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmAnualBillFilter.LoadItemsInComboBox(Sender: TObject;
+  pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmAnualBillFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmAnualBillFilter.cbEOvedEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmAnualBillFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(frmAnualBillReport) then
+  begin
+    with dmAnualBillFilter do
+    begin
+      SetTotalRec('KBill');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\AnualBillFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.GroupBy := 'Number';
+      SqlState.Order := 'Shem';
+      if OpenData then
+        frmAnualBillReport := TfrmAnualBillReport.Create(Self);
+    end;
+  end;
+end;
+
+end.

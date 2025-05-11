@@ -1,0 +1,265 @@
+inherited frmAcdntDrFilter: TfrmAcdntDrFilter
+  Caption = #1513#1488#1497#1500#1514#1492' '#1514#1488#1493#1504#1493#1514' '#1504#1492#1490#1497#1501
+  OldCreateOrder = True
+  ExplicitWidth = 451
+  ExplicitHeight = 229
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    inherited grbMain: TGroupBox
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1514#1488#1493#1504#1493#1514' '#1504#1492#1490#1497#1501
+      object lbAAcdntD: TLabel
+        Left = 323
+        Top = 32
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZAcdntZ: TLabel
+        Left = 144
+        Top = 32
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEWithInjr: TLabel
+        Left = 293
+        Top = 54
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEShem: TLabel
+        Tag = 1
+        Left = 293
+        Top = 98
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEQuilty: TLabel
+        Left = 293
+        Top = 76
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edAAcdntD: TMaskEdit
+        Left = 176
+        Top = 32
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 1
+        Text = '  /  /    '
+        OnExit = edAAcdntDExit
+      end
+      object edZAcdntD: TMaskEdit
+        Left = 23
+        Top = 32
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 2
+        Text = '  /  /    '
+        OnExit = edAAcdntDExit
+      end
+      object cxDAcdntD: TCheckBox
+        Left = 339
+        Top = 32
+        Width = 94
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1496#1497#1508#1493#1500':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cxDAcdntDClick
+      end
+      object cxEWithInjr: TCheckBox
+        Left = 339
+        Top = 54
+        Width = 94
+        Height = 14
+        Caption = #1506#1501' '#1504#1508#1490#1506#1497#1501':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = cxDAcdntDClick
+      end
+      object cbEWithInjr: TComboBox
+        Left = 128
+        Top = 54
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 4
+        Items.Strings = (
+          #1499#1503
+          #1500#1488)
+      end
+      object cxEShem: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 98
+        Width = 94
+        Height = 14
+        Caption = #1513#1501' '#1495#1489#1512#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 7
+        OnClick = cxDAcdntDClick
+      end
+      object cbEShem: TComboBox
+        Tag = 1
+        Left = 128
+        Top = 98
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 8
+        OnEnter = cbEShemEnter
+      end
+      object cxEQuilty: TCheckBox
+        Left = 339
+        Top = 76
+        Width = 94
+        Height = 14
+        Caption = #1504#1492#1490' '#1488#1513#1501':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
+        OnClick = cxDAcdntDClick
+      end
+      object cbEQuilty: TComboBox
+        Left = 128
+        Top = 76
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 6
+        Items.Strings = (
+          #1499#1503
+          #1500#1488)
+      end
+    end
+  end
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      'SELECT Da.Id, Da.AcdntD, Da.WithInjr, Da.Quilty, Da.Tipul, '
+      'Cr.Number, Cl.Shem, Dr.ShemD'
+      'FROM KDrAcdnt Da'
+      '   LEFT JOIN KCar Cr ON Da.IdCar = Cr.Id'
+      '   LEFT JOIN KDriver Dr ON Da.IdDriver = Dr.Id'
+      '         LEFT JOIN KClient Cl ON Dr.ClientId = Cl.Id'
+      'WHERE 0=0'
+      'ORDER BY Da.AcdntD')
+  end
+end

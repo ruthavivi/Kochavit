@@ -1,0 +1,277 @@
+unit GnrlReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, ImgList, ActnList, ComCtrls, StdCtrls, Buttons, ExtCtrls,
+  Grids, DBGrids, DBCtrls, ToolWin, DB, ShellAPI, edbcomps, DBActns,
+  StdActns, SendMailNew, System.Actions, System.ImageList;
+
+type
+  TfrmGnrlReport = class(TForm)
+    DBGrid: TDBGrid;
+    StatusBar1: TStatusBar;
+    ActionList: TActionList;
+    acPrint: TAction;
+    acStatistic: TAction;
+    acExcel: TAction;
+    ImageList: TImageList;
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    dsReport: TDataSource;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    dlgSaveFile: TSaveDialog;
+    ToolBar1: TToolBar;
+    btnPrint: TToolButton;
+    btnStatistic: TToolButton;
+    btnExcel: TToolButton;
+    btnFirst: TToolButton;
+    btnLast: TToolButton;
+    BitBtn1: TBitBtn;
+    DataSetFirst1: TDataSetFirst;
+    DataSetLast1: TDataSetLast;
+    btnSeparator: TToolButton;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    btnMail: TToolButton;
+    btnLabel: TToolButton;
+    acClose: TWindowClose;
+    btnSendEmail: TToolButton;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acCloseExecute(Sender: TObject);
+  private
+    HasOrder: Boolean;
+    RemOrder: String;
+    Subject, AttachFile: String;
+  public
+    EmailBody: TStrings;
+    procedure LoadPosition(pKey: String; pForm: TForm);
+    procedure MarkIndexColumn(fldName: String);
+    function GetOrders(Column: TColumn): String;
+    procedure ChangeOrder(qrFilter: TEDBQuery; Column: TColumn);
+    procedure SaveExcel(qrToSave: TEDBQuery);
+    procedure SaveToExcel(pQr: TDataSet; pFileName: String);
+    procedure SavePosition(pKey: String; pForm: TForm);
+    function  SetEmailVals: Boolean;
+    procedure SendEmail(pSndMail: TSendMailNew; pToEmail: String);
+    function SelectFields(pModul: String; pData: TDataSet): Boolean;
+    function GetExprtFile(var pFileName: String; pType: String;
+        pDfltIndx: Integer): Boolean;
+    procedure SetSaveDlgVal(pFilterIdx: Integer; pDfltExt, pIntDir: String);
+    procedure SaveEmailSend(ClientId, CarId, DriverId, Subject, Attached: string);
+  end;
+
+var
+  frmGnrlReport: TfrmGnrlReport;
+
+implementation
+uses
+  ExportToExcel, RegistryUtils, OpenToSendEmail, KbFunc, SlctFields, DialogsHeb,
+  LogErrorUtil, GnrlFilterDM;
+{$R *.dfm}
+
+procedure TfrmGnrlReport.LoadPosition(pKey: String; pForm: TForm);
+var
+  Reg: TRegistryGrd;
+begin
+  Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+  Reg.LoadFromRegistry(DBGrid);
+  Reg.Free;
+end;
+
+function TfrmGnrlReport.GetOrders(Column: TColumn): String;
+begin
+  Result := RemOrder;
+  if (RemOrder <> Column.FieldName) then
+  begin
+    if not HasOrder then
+      Result := Column.FieldName
+    else
+      Result := RemOrder + ', ' + Column.FieldName;
+  end;
+end;
+
+procedure TfrmGnrlReport.ChangeOrder(qrFilter: TEDBQuery; Column: TColumn);
+var
+   i: Integer;
+   ColumnName: String;
+begin
+   with qrFilter do
+   begin
+      DisableControls;
+      Close;
+      if StrToIntDef(Column.FieldName, -1) in [1..12] then
+        ColumnName := IntToStr(StrToInt(Column.FieldName)+6)
+      else
+        ColumnName := Column.FieldName;
+      SQL[SQL.Count-1] := 'ORDER BY ' + ColumnName;
+      Open;
+      EnableControls;
+   end;
+
+   with dbGrid do
+   begin
+       for i := 0 to Columns.Count -1 do
+           Columns[i].Title.Font.Color := clBlack;
+       Column.Title.Font.Color := clRed;
+   end;
+end;
+
+procedure TfrmGnrlReport.MarkIndexColumn(fldName: String);
+var
+  Col: TCollectionItem;
+begin
+  for Col in dbGrid.Columns do
+  begin
+    if (not HasOrder) and (TColumn(Col).FieldName = fldName) then
+      TColumn(Col).Title.Font.Color := clRed
+    else if HasOrder and (TColumn(Col).FieldName = RemOrder) then
+      TColumn(Col).Title.Font.Color := clRed
+    else if HasOrder and (TColumn(Col).FieldName = fldName) then
+      TColumn(Col).Title.Font.Color := clWebIndianRed
+    else
+      TColumn(Col).Title.Font.Color := clBlack;
+  end;
+
+  if HasOrder then
+    RemOrder := ''
+  else
+    RemOrder := fldName;
+  HasOrder := not HasOrder;
+end;
+
+procedure TfrmGnrlReport.SaveEmailSend(ClientId, CarId, DriverId, Subject,
+  Attached: string);
+begin
+  dmGnrlFilter.qrGnrl.SQL.Text := 'INSERT INTO KEMailsSend (ClientId, CarId, DriverId, ' +
+      'Subject, Attached) VALUES (' + ClientId + ', ' + CarId + ', ' + DriverId +
+      ', '+ QuotedStr(Subject) + ', ' + QuotedStr(Attached) +')';
+  dmGnrlFilter.qrGnrl.ExecSQL;
+end;
+
+procedure TfrmGnrlReport.SaveExcel(qrToSave: TEDBQuery);
+begin
+   with dlgSaveFile do
+   begin
+       InitialDir := ExtractFilePath(Application.ExeName) +
+                           'Excel\';
+       DefaultExt := '*.xls';
+       FilterIndex := 2;
+       if Execute then
+       begin
+           frmExportToExcel := TfrmExportToExcel.Create(Self);
+           frmExportToExcel.Show;
+           frmExportToExcel.SendToExcelFile(qrToSave, FileName);
+           MessageDlg('הופק קובץ אקסל בשם ומחיצה' + #10#13 + FileName,
+                mtInformation, [mbOK], 0);
+           ShellExecute(Application.MainForm.Handle, Nil, PChar(FileName),
+                Nil, Nil, SW_SHOW);
+       end;
+   end;
+end;
+
+procedure TfrmGnrlReport.SaveToExcel(pQr: TDataSet; pFileName: String);
+begin
+  frmExportToExcel := TfrmExportToExcel.Create(Self);
+  try
+    try
+      frmExportToExcel.Show;
+      frmExportToExcel.SendToExcelFile(pQr, pFileName);
+    except on E: Exception do
+        HandelError('TfrmGnrlReport.SaveToExcel', 'תקלה בהפקת קובץ' + #10#13 + E.Message, E);
+    end;
+  finally
+    frmExportToExcel.Free;
+  end;
+  MessageDlgH('הופק קובץ אקסל בשם ומחיצה' + #10#13 + pFileName,
+    mtInformation, [mbOK], 0, 0);
+  ShellExecute(Application.MainForm.Handle, Nil, PChar(pFileName),
+                Nil, Nil, SW_SHOW);
+end;
+
+procedure TfrmGnrlReport.SavePosition(pKey: String; pForm: TForm);
+var
+  Reg: TRegistryGrd;
+begin
+  Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+  Reg.SaveToRegistry(DBGrid);
+  Reg.Free;
+end;
+
+function TfrmGnrlReport.SetEmailVals: Boolean;
+begin
+  Result := False;
+  frmOpenToSendEmail := TfrmOpenToSendEmail.Create(Self);
+  try
+    if (frmOpenToSendEmail.ShowModal = mrOk) then
+    begin
+      EmailBody := TStringList.Create;
+      Subject := frmOpenToSendEmail.edSubject.Text;
+      EmailBody.Assign(frmOpenToSendEmail.edBody.Lines);
+//      AttachFile := frmOpenToSendEmail.AttachFile;
+      Result := True;
+    end;
+  finally
+    frmOpenToSendEmail.Free;
+  end;
+end;
+
+function TfrmGnrlReport.SelectFields(pModul: String; pData: TDataSet): Boolean;
+begin
+  Result := False;
+  frmSlctFields := TfrmSlctFields.Create(Self);
+  try
+    frmSlctFields.LoadLists(pModul, pData);
+    if (frmSlctFields.ShowModal = mrOk) then
+      Result := True;
+  finally
+    frmSlctFields.Free;
+  end;
+end;
+
+function TfrmGnrlReport.GetExprtFile(var pFileName: String; pType: String;
+  pDfltIndx: Integer): Boolean;
+var
+  Path: String;
+begin
+  Result := False;
+  Path := ExtractFilePath(Application.ExeName);
+  SetSaveDlgVal(pDfltIndx, '*.xls', Path + pType);
+  if dlgSaveFile.Execute then
+  begin
+    pFileName := dlgSaveFile.FileName;
+    Result := True;
+  end;
+end;
+
+procedure TfrmGnrlReport.SetSaveDlgVal(pFilterIdx: Integer; pDfltExt,
+  pIntDir: String);
+begin
+  dlgSaveFile.FilterIndex := pFilterIdx;
+  dlgSaveFile.DefaultExt := pDfltExt;
+  dlgSaveFile.InitialDir := pIntDir;
+end;
+
+procedure TfrmGnrlReport.SendEmail(pSndMail: TSendMailNew; pToEmail: String);
+begin
+  pSndMail.SetUpMailVal(Subject, pToEmail, AttachFile, EmailBody);
+  pSndMail.SendMultiEMail;
+  AttachFile := '';
+end;
+
+procedure TfrmGnrlReport.acCloseExecute(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmGnrlReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+end.

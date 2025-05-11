@@ -1,0 +1,11 @@
+inherited frmHeiterSpssSlctDlg: TfrmHeiterSpssSlctDlg
+  ExplicitWidth = 434
+  ExplicitHeight = 320
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ccChartsHeiter: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    Left = 257
+    Top = 48
+  end
+end

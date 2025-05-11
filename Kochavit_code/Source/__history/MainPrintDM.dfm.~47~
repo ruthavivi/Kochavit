@@ -1,0 +1,109 @@
+object dmMainPrint: TdmMainPrint
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 291
+  Width = 237
+  object qrToPrint: TEDBQuery
+    ReadOnly = True
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    SQL.Strings = (
+      
+        'SELECT Id, CarId, Tipul, DateToDo, Number, Type, Hp, Shem, Atar,' +
+        ' Isuv, Cl.Contact, TelC, Cr.Contact AS ContactCar, Producer, Cr.' +
+        'Tel, Ct.Remark, ZeutM'
+      'FROM KCrTipul Ct         '
+      'LEFT JOIN KCar Cr ON Ct.CarId = Cr.Id                   '
+      'LEFT JOIN KClient Cl ON Cr.ClientId = Cl.Id'
+      'LEFT JOIN KTblType tY ON Cr.TypeId = tY.Id'
+      'LEFT JOIN KTblProducer tP ON Cr.ProducerId = tP.Id'
+      'LEFT JOIN KTblAtar tA ON Cr.AtarId = tA.Id      '
+      'LEFT JOIN KTblOved tV ON Cr.OvedId = tV.Id'
+      'LEFT JOIN KTblTipul tT ON Ct.TipulId = tT.Id')
+    Params = <>
+    Left = 32
+    Top = 24
+  end
+  object qrToPrintDtl1: TEDBQuery
+    ReadOnly = True
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsToPrint
+    SQL.Strings = (
+      'SELECT TipulId, BikoretDtl'
+      'FROM KCrTipulDtl Td'
+      'LEFT JOIN KTblBikoretDtl tBd ON Td.BikoretDtlId = tBd.Id'
+      'WHERE TipulId = :Id')
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'Id'
+        ParamType = ptInput
+        Size = 4
+      end>
+    Left = 32
+    Top = 88
+  end
+  object qrToPrintDtl2: TEDBQuery
+    ReadOnly = True
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsToPrint
+    SQL.Strings = (
+      'SELECT CarId, Tipul, DateToDo'
+      'FROM KCrTipul Ct'
+      'LEFT JOIN KTblTipul tT ON Ct.TipulId = tT.Id'
+      'WHERE Ct.DateToDo <= :prmDateP AND Ct.TipulId = :Id')
+    Params = <
+      item
+        DataType = ftDate
+        Name = 'prmDateP'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftInteger
+        Name = 'Id'
+        ParamType = ptInput
+      end>
+    Left = 32
+    Top = 152
+  end
+  object qrGnrl: TEDBQuery
+    ReadOnly = True
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 32
+    Top = 216
+  end
+  object frdbGnrl: TfrxDBDataset
+    UserName = 'frdbGnrl'
+    CloseDataSource = False
+    DataSet = qrToPrint
+    BCDToCurrency = False
+    Left = 160
+    Top = 24
+  end
+  object frdbGnrlDtl1: TfrxDBDataset
+    UserName = 'frdbGnrlDtl1'
+    CloseDataSource = False
+    DataSet = qrToPrintDtl1
+    BCDToCurrency = False
+    Left = 160
+    Top = 88
+  end
+  object frdbGnrlDtl2: TfrxDBDataset
+    UserName = 'frdbGnrlDtl2'
+    CloseDataSource = False
+    DataSet = qrToPrintDtl2
+    BCDToCurrency = False
+    Left = 160
+    Top = 152
+  end
+  object dsToPrint: TDataSource
+    DataSet = qrToPrint
+    Left = 88
+    Top = 24
+  end
+end

@@ -1,0 +1,10 @@
+inherited frmGnrlEdit1: TfrmGnrlEdit1
+  Caption = 'frmGnrlEdit1'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    inherited stClientName: TStaticText
+      Height = 36
+    end
+  end
+end

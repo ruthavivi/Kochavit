@@ -1,0 +1,126 @@
+unit ClientListArhiv;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlListArhiv, DBActns, ActnList, ImgList, DB, Grids, DBGrids,
+  ExtCtrls, StdCtrls, Mask, ComCtrls, Buttons, ToolWin;
+
+type
+  TfrmClientListArhiv = class(TfrmGnrlListArhiv)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure edSearchChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acSibaExecute(Sender: TObject);
+    procedure acReturnExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    procedure UpdateStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmClientListArhiv: TfrmClientListArhiv;
+
+implementation
+uses
+  MainDM, ClientListArhivDM, CauseMsg, DialogsHeb;
+
+{$R *.dfm}
+
+procedure TfrmClientListArhiv.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmClientListArhiv := TdmClientListArhiv.Create(Self);
+  LoadColOrder(DBGrid, 'ClientListArhiv');
+  MarkIndexColumn(dmClientListArhiv.ClientOrder);
+  UpdateStatusBar;
+end;
+
+procedure TfrmClientListArhiv.UpdateStatusBar;
+begin
+  StatusBar.Panels[0].Text := 'סה"כ חברות: ' + dmClientListArhiv.ClnRecNo;
+end;
+
+procedure TfrmClientListArhiv.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmClientListArhiv.ClientOrder := Column.FieldName;
+  dmClientListArhiv.ReOpenTable(dmClientListArhiv.qrList.FieldByName('Id').AsInteger);
+  MarkIndexColumn(Column.FieldName);
+  edSearch.SetFocus;
+end;
+
+procedure TfrmClientListArhiv.edSearchChange(Sender: TObject);
+begin
+  inherited;
+  dmClientListArhiv.qrList.Locate(dmClientListArhiv.ClientOrder, SearchVal, [loPartialKey]);
+end;
+
+procedure TfrmClientListArhiv.acSibaExecute(Sender: TObject);
+begin
+  inherited;
+  dmClientListArhiv.qrGnrl.SQL.Text := 'SELECT Moed, CauseCl FROM KClSiba Cs ' +
+          'LEFT JOIN KTblCause tC ON Cs.SibaId = tC.Id '+
+          'WHERE OwnerId = ' + dmClientListArhiv.qrList.FieldByName('Id').AsString;
+  frmCauseMsg := TfrmCauseMsg.Create(Self);
+  try
+    dmClientListArhiv.qrGnrl.Open;
+    if not dmClientListArhiv.qrGnrl.IsEmpty then
+    begin
+      frmCauseMsg.lbMoed.Caption := 'תאריך העברה: ' +
+            dmClientListArhiv.qrGnrl.FieldByName('Moed').AsString;
+      frmCauseMsg.lbSiba.Caption := 'סיבת העברה: ' +
+            dmClientListArhiv.qrGnrl.FieldByName('CauseCl').AsString;
+      frmCauseMsg.ShowModal;
+    end;
+  finally
+    frmCauseMsg.Free;
+    dmClientListArhiv.qrGnrl.Open;
+  end;
+end;
+
+procedure TfrmClientListArhiv.acReturnExecute(Sender: TObject);
+begin
+  inherited;
+  if (MessageDlgH('להחזיר את החברה ' +
+      dmClientListArhiv.qrList.FieldByName('Shem').AsString + ' לרשימה הפעילה',
+      mtConfirmation, mbYesNoCancel, 0, 0) = mrYes) then
+  begin
+    dmClientListArhiv.qrGnrl.SQL.Text := 'UPDATE KClient SET Pail = True ' +
+            'WHERE Id = ' + dmClientListArhiv.qrList.FieldByName('Id').AsString;
+    dmClientListArhiv.qrGnrl.ExecSQL;
+    dmClientListArhiv.qrGnrl.SQL.Text := 'DELETE FROM KClSiba ' +
+            'WHERE OwnerId = ' + dmClientListArhiv.qrList.FieldByName('Id').AsString;
+    dmClientListArhiv.qrGnrl.ExecSQL;
+    dmClientListArhiv.qrList.Refresh;
+    dmMain.qrClientList.Refresh;
+  end;
+end;
+
+procedure TfrmClientListArhiv.acDeleteExecute(Sender: TObject);
+begin
+  inherited;
+  if (MessageDlgH('למחוק סופית חברה ' +
+          dmClientListArhiv.qrList.FieldByName('Shem').AsString,
+          mtConfirmation, mbYesNoCancel, 0, 0) = mrYes) then
+  begin
+    dmClientListArhiv.qrGnrl.SQL.Text := 'DELETE FROM KClient ' +
+            'WHERE Id = ' + dmClientListArhiv.qrList.FieldByName('Id').AsString;
+    dmClientListArhiv.qrGnrl.ExecSQL;
+  end;
+end;
+
+procedure TfrmClientListArhiv.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SaveColOrder(DBGrid, 'ClientListArhiv');
+  dmClientListArhiv.Free;
+  inherited;
+  frmClientListArhiv := nil;
+end;
+
+end.

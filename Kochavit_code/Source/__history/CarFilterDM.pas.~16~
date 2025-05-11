@@ -1,0 +1,70 @@
+unit CarFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmCarFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterCodCar: TIntegerField;
+    qrFilterDateReg: TDateField;
+    qrFilterNumber: TStringField;
+    qrFilterTypeId: TIntegerField;
+    qrFilterProducerId: TIntegerField;
+    qrFilterDgamId: TIntegerField;
+    qrFilterModel: TIntegerField;
+    qrFilterWeightT: TFloatField;
+    qrFilterWeightS: TFloatField;
+    qrFilterWeightR: TFloatField;
+    qrFilterShildaN: TStringField;
+    qrFilterSpido: TIntegerField;
+    qrFilterCargoId: TIntegerField;
+    qrFilterInsureId: TIntegerField;
+    qrFilterPolisaN: TStringField;
+    qrFilterContact: TStringField;
+    qrFilterTel: TStringField;
+    qrFilterShum: TFloatField;
+    qrFilterOvedId: TSmallintField;
+    qrFilterAtarId: TSmallintField;
+    qrFilterRemark: TStringField;
+    qrFilterClientId: TIntegerField;
+    qrFilterFreze: TBooleanField;
+    qrFilterMissing: TBooleanField;
+    qrFilterCodSecure: TStringField;
+    qrFilterPail: TBooleanField;
+    qrFilterStamp: TDateTimeField;
+    qrFilterType: TStringField;
+    qrFilterEngine: TStringField;
+    qrFilterProducer: TStringField;
+    qrFilterDgam: TStringField;
+    qrFilterCargo: TStringField;
+    qrFilterOved: TStringField;
+    qrFilterAtar: TStringField;
+    qrFilterShem: TStringField;
+    qrFilterKtovet: TStringField;
+    qrFilterIsuv: TStringField;
+    qrFilterMikud: TIntegerField;
+    qrFilterTel1: TStringField;
+    qrFilterTel2: TStringField;
+    qrFilterEMail: TStringField;
+    qrFilterEMailX: TStringField;
+    qrFilterHP: TIntegerField;
+  private
+    { Private declarations }
+  public
+
+  end;
+
+var
+  dmCarFilter: TdmCarFilter;
+
+implementation
+
+{$R *.dfm}
+
+{ TdmCarFilter }
+
+end.

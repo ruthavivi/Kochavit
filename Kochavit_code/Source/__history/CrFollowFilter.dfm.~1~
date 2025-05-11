@@ -1,0 +1,5 @@
+inherited frmGnrlFilter1: TfrmGnrlFilter1
+  Caption = 'frmGnrlFilter1'
+  PixelsPerInch = 96
+  TextHeight = 13
+end

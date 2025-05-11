@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="gmcsvh8op1f94tzjn_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="uml:package:Kochavit:src:DrCourseRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,171,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseRprtSlctDlg.TfrmDrCourseRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GraphicUtils">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="200,1,123,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GraphicUtils.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblDocumentCar">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="200,146,149,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblDocumentCar.TfrmDocumentCarTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblDocumentCar.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrBdikaReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="61,172,136,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrBdikaReport.TfrmDrBdikaReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrBdikaReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="387,1,139,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillSpssSlctDlg.TfrmBillSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ExpFile">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="387,163,96,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ExpFile.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="387,308,116,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverFilter.TfrmDriverFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DocUtils">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="278,353,101,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DocUtils.TDocUtils" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DocUtils.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:AddAuto">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="169,353,103,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AddAuto.TfrmAddAuto" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AddAuto.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlTbl">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="70,353,96,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlTbl.TfrmGnrlTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlTbl.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="564,1,99,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillFilter.TfrmBillFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:History">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="564,163,94,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:History.TfrmHistory" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:History.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblHeiter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="564,325,105,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblHeiter.TfrmTblHeiter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblHeiter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BuiltSqlWhere">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="564,487,134,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BuiltSqlWhere.TSqlWhere" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BuiltSqlWhere.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:SendMailNew">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="425,534,131,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SendMailNew.TSendMailNew" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SendMailNew.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:MainPrintDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="296,534,127,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:MainPrintDM.TdmMainPrint" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:MainPrintDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:WrnListDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="177,534,116,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WrnListDM.TdmWrnList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WrnListDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:Default">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="78,534,94,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Default.TfrmDefault" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Default.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrCourseSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="736,1,175,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseSpssSlctDlg.TfrmDrCourseSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverEdit">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="736,163,109,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverEdit.TfrmDriverEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverEdit.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:KbFunc">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="736,325,98,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:KbFunc.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarListArhivDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="736,470,142,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarListArhivDM.TdmCarListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarListArhivDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrBdikaRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="736,632,162,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrBdikaRprtSlctDlg.TfrmDrBdikaRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrBdikaRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrAviraRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="567,715,159,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAviraRprtSlctDlg.TfrmDrAviraRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAviraRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverListArhivDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="408,715,155,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverListArhivDM.TdmDriverListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverListArhivDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:AnualReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="279,715,124,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualReport.TfrmAnualReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblAtar">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="180,715,95,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblAtar.TfrmAtarTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblAtar.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientEditDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="51,715,127,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientEditDM.TdmClientEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientEditDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlEditDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="949,1,119,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlEditDM.TdmGnrlEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlEditDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="949,163,98,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlList.TfrmGnrlList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlList.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrCourseFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="949,325,136,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseFilter.TfrmDrCourseFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnSumRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="949,487,159,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnSumRprtSlctDlg.TfrmUnSumRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnSumRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTofesDrvRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="949,649,184,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesDrvRprtSlctDlg.TfrmUnTofesDrvRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesDrvRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlImport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="949,811,114,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlImport.TdlgGnrlImport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlImport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrAviraFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="820,896,124,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAviraFilter.TfrmDrAviraFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAviraFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CrAcdntRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="651,896,162,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntRprtSlctDlg.TfrmCrAcdntRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="552,896,91,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillList.TfrmBillList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillList.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:HeiterReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="423,896,125,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterReport.TfrmHeiterReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlListArhiv">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="294,896,126,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlListArhiv.TfrmGnrlListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlListArhiv.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:WordVer">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="185,896,104,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WordVer.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="26,896,149,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientRprtSlctDlg.TfrmClientRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:Cause">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1171,1,91,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Cause.TfrmCause" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Cause.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:SelectivePrintDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1171,163,149,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SelectivePrintDlg.TdlgSelectivePrint" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SelectivePrintDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillEdit">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1171,325,93,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillEdit.TfrmBillEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillEdit.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DataDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1171,487,100,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DataDM.TdmData" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DataDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1171,649,114,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientFilter.TfrmClientFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillListDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1171,811,110,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillListDM.TdmBillList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillListDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:AnualRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1171,973,149,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualRprtSlctDlg.TfrmAnualRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlFreze">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1052,1077,110,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlFreze.TfrmGnrlFreze" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlFreze.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTofesCarReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="883,1077,159,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesCarReport.TfrmUnTofesCarReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesCarReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="734,1077,141,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlRprtSlctDlg.TfrmGnrlRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrTahoReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="595,1077,133,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoReport.TfrmDrTahoReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TrapActionUtils">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="446,1077,139,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TrapActionUtils.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:WordEdit">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="337,1077,106,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WordEdit.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblOved">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="228,1077,102,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblOved.TfrmOvedTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblOved.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:AnualBillReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="79,1077,141,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualBillReport.TfrmAnualBillReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualBillReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarFilterDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,1,122,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarFilterDM.TdmCarFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarFilterDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrAcdntReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,163,137,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntReport.TfrmDrAcdntReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblTipul">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,325,99,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblTipul.TfrmTipulTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblTipul.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:Password">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,487,109,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Password.TfrmPassword" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Password.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:PasswordDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,649,128,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:PasswordDlg.TfrmPasswordDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:PasswordDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DialogsHeb">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,811,119,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DialogsHeb.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblDocumentClient">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,956,160,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblDocumentClient.TfrmDocumentClientTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblDocumentClient.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTofesCarRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1358,1118,184,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesCarRprtSlctDlg.TfrmUnTofesCarRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesCarRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblBikoret">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1239,1258,111,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblBikoret.TfrmTblBikoret" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblBikoret.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnHeiterRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1070,1258,167,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnHeiterRprtSlctDlg.TfrmUnHeiterRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnHeiterRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:HeiterSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="911,1258,155,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterSpssSlctDlg.TfrmHeiterSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:AnualFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="792,1258,114,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualFilter.TfrmAnualFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UtilsDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="693,1258,98,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UtilsDM.TdmUtils" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UtilsDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlEdit">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="584,1258,100,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlEdit.TfrmGnrlEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlEdit.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTplHtrFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="445,1258,132,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTplHtrFilter.TfrmUnTplHtrFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTplHtrFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ToDoDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="336,1258,104,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ToDoDlg.TfrmToDoDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ToDoDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="227,1258,106,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlFilter.TfrmGnrlFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrCourseReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="78,1258,145,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseReport.TfrmDrCourseReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrCourseReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TipulReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,1,119,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulReport.TfrmTipulReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,163,94,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarList.TfrmCarList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarList.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTofesFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,325,129,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesFilter.TfrmUnTofesFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,487,151,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverRprtSlctDlg.TfrmDriverRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrTahoFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,649,124,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoFilter.TfrmDrTahoFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ImportPhoto">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,811,122,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ImportPhoto.TdlgImportPhoto" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ImportPhoto.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblDocumentDriver">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,973,162,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblDocumentDriver.TfrmDocumentDriverTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblDocumentDriver.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:LabelWriter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,1135,118,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:LabelWriter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1580,1280,142,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarSpssSlctDlg.TfrmCarSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrTahoRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1561,1439,159,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoRprtSlctDlg.TfrmDrTahoRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnSumFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1432,1439,124,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnSumFilter.TfrmUnSumFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnSumFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrBdikaFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1303,1439,127,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrBdikaFilter.TfrmDrBdikaFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrBdikaFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TipulSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1144,1439,149,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulSpssSlctDlg.TfrmTipulSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:Splash">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1045,1439,93,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Splash.TfrmSplash" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Splash.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:HeiterRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="886,1439,151,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterRprtSlctDlg.TfrmHeiterRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:IOUtils">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="787,1439,92,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:IOUtils.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ExportToExcel">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="648,1439,136,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ExportToExcel.TfrmExportToExcel" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ExportToExcel.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverListArhiv">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="509,1439,136,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverListArhiv.TfrmDriverListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverListArhiv.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="350,1439,154,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientSpssSlctDlg.TfrmClientSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverListDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="221,1439,127,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverListDM.TdmDriverList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverListDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CrAcdntSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="52,1439,167,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntSpssSlctDlg.TfrmCrAcdntSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillEditDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,1,112,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillEditDM.TdmBillEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillEditDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblProducer">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,163,122,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblProducer.TfrmProducerTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblProducer.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTofesClnReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,325,158,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesClnReport.TfrmUnTofesClnReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesClnReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnSumReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,487,133,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnSumReport.TfrmUnSumReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnSumReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,649,138,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarRprtSlctDlg.TfrmCarRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CrAcdntFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,811,127,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntFilter.TfrmCrAcdntFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,973,134,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillRprtSlctDlg.TfrmBillRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:PrintTofes">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,1135,111,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:PrintTofes.TPrintTofes" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:PrintTofes.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblCause">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,1297,108,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblCause.TfrmCauseTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblCause.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:AnualBillFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1780,1459,131,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualBillFilter.TfrmAnualBillFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualBillFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:OpenToPrint">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1761,1620,125,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:OpenToPrint.TfrmOpenToPrint" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:OpenToPrint.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:LogErrorUtil">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1632,1620,121,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:LogErrorUtil.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:Main">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1543,1620,82,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Main.TfrmMain" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Main.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarListDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1424,1620,114,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarListDM.TdmCarList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarListDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1315,1620,103,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarFilter.TfrmCarFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CrAcdntReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1176,1620,137,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntReport.TfrmCrAcdntReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CrAcdntReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverEditDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1037,1620,129,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverEditDM.TdmDriverEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverEditDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblCargo">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="928,1620,106,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblCargo.TfrmCargoTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblCargo.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrAcdntRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="759,1620,162,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntRprtSlctDlg.TfrmDrAcdntRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrAcdntSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="590,1620,167,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntSpssSlctDlg.TfrmDrAcdntSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:WrnList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="491,1620,97,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WrnList.TfrmWrnList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WrnList.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:AnualBillRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="322,1620,166,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualBillRprtSlctDlg.TfrmAnualBillRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:AnualBillRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblLicence">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="203,1620,115,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblLicence.TfrmLicenceTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblLicence.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="84,1620,112,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarReport.TfrmCarReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblInsure">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,1,107,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblInsure.TfrmTblInsure" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblInsure.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlListArhivDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,163,145,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlListArhivDM.TdmGnrlListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlListArhivDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,325,125,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverReport.TfrmDriverReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlFilterDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,487,125,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlFilterDM.TdmGnrlFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlFilterDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlBigDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,649,116,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlBigDM.TdmGnrlBig" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlBigDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DeleteBigFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,811,136,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DeleteBigFilter.TfrmDeleteBigFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DeleteBigFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:SendMsg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,973,107,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SendMsg.TdlgSendMsg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SendMsg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DocSend">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,1135,106,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DocSend.TfrmDocSend" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DocSend.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:About">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,1297,87,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:About.TfrmAbout" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:About.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,1459,116,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlReport.TfrmGnrlReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ReturnDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,1621,111,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ReturnDlg.TfrmReturnDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ReturnDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:SlctOther">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1976,1783,107,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SlctOther.TfrmSlctOther" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SlctOther.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblOfenPay">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1847,1801,120,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblOfenPay.TfrmOfenPayTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblOfenPay.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientListArhiv">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1708,1801,134,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientListArhiv.TfrmClientListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientListArhiv.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DriverList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1599,1801,107,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverList.TfrmDriverList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DriverList.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1470,1801,124,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientReport.TfrmClientReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:WordFunc">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1351,1801,112,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WordFunc.TWordObj" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:WordFunc.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:Kochavit4">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1232,1801,109,126" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:Kochavit4.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ProblemDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1103,1801,120,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ProblemDlg.TfrmProblem" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ProblemDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrAcdntFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="974,1801,127,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntFilter.TfrmDrAcdntFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAcdntFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientFilterDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="835,1801,134,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientFilterDM.TdmClientFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientFilterDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:GnrlSpssChart">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="696,1801,136,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlSpssChart.TfrmChart" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:GnrlSpssChart.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:SqlStates">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="587,1801,108,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SqlStates.TSqlStates" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:SqlStates.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarEdit">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="488,1801,96,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarEdit.TfrmCarEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarEdit.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ScanImport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="369,1801,118,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ScanImport.TdlgScanImport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ScanImport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientListArhivDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="210,1801,154,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientListArhivDM.TdmClientListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientListArhivDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ShowScan">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="91,1801,114,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ShowScan.TfrmShowScan" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ShowScan.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTofesDrvReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,1,158,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesDrvReport.TfrmUnTofesDrvReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesDrvReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientsList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,163,112,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientsList.TfrmeClientsList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientsList.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ClientEdit">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,325,108,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientEdit.TfrmClientEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ClientEdit.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTipulRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,487,160,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTipulRprtSlctDlg.TfrmUnTipulRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTipulRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ShowNotif">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,649,111,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ShowNotif.TfrmShowNotif" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ShowNotif.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblTipulOut">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,811,119,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblTipulOut.TfrmTipulOutTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblTipulOut.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TipulRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,973,145,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulRprtSlctDlg.TfrmTipulRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnHeiterReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,1135,141,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnHeiterReport.TfrmUnHeiterReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnHeiterReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CauseMsg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,1297,114,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CauseMsg.TfrmCauseMsg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CauseMsg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarListArhiv">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,1459,123,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarListArhiv.TfrmCarListArhiv" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarListArhiv.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:CarEditDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,1621,116,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarEditDM.TdmCarEdit" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:CarEditDM.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrAviraReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,1783,133,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAviraReport.TfrmDrAviraReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrAviraReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTofesClnRprtSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2357,1,183,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesClnRprtSlctDlg.TfrmUnTofesClnRprtSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTofesClnRprtSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:UnTipulReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2159,1945,135,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTipulReport.TfrmUnTipulReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:UnTipulReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillReport">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="2040,1982,109,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillReport.TfrmBillReport" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillReport.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ScanUtil">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1931,1982,101,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ScanUtil.TfrmScaner" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ScanUtil.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblType">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1822,1982,100,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblType.TfrmTypeTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblType.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:ImportFile">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1703,1982,110,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ImportFile.TdlgImportFile" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:ImportFile.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:HeiterFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1584,1982,116,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterFilter.TfrmHeiterFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:HeiterFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:RegistryUtils">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1388,1963,125,188" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:RegistryUtils.TRegistryUtils" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:RegistryUtils.TRegistryGrd" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:RegistryUtils.TRegistryGrdPnl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:RegistryUtils.TRegistryPnl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:RegistryUtils.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TblCourse">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1269,1982,112,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblCourse.TfrmCourseTbl" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TblCourse.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:DrTahoSpssSlctDlg">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="1100,1982,163,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoSpssSlctDlg.TfrmDrTahoSpssSlctDlg" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:DrTahoSpssSlctDlg.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:BillPayd">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="991,1982,100,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillPayd.TfrmBillPayd" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:BillPayd.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:TipulFilter">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="872,1982,110,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulFilter.TfrmTipulFilter" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:TipulFilter.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:FolderList">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="753,1982,110,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:FolderList.TfrmFolderList" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:FolderList.@unitclass" />
+    </reference>
+    <reference referencedUin="uml:package:Kochavit:src:MainDM">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="644,1982,101,143" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:MainDM.TdmMain" />
+      <reference referencedUin="delphi:e_class:src:Kochavit:MainDM.@unitclass" />
+    </reference>
+  </view>
+</nodeSet>

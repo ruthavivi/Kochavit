@@ -1,0 +1,54 @@
+object dmGnrlBig: TdmGnrlBig
+  OldCreateOrder = False
+  Height = 201
+  Width = 178
+  object tbBigFolder: TEDBTable
+    DatabaseName = 'dbnMainBig'
+    SessionName = 'Main'
+    TableName = 'KClTofes'
+    Left = 48
+    Top = 32
+  end
+  object qrBigFolder: TEDBQuery
+    DatabaseName = 'dbnMainBig'
+    SessionName = 'Main'
+    Params = <>
+    Left = 48
+    Top = 96
+    object qrBigFolderId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object qrBigFolderMainId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'MainId'
+    end
+    object qrBigFolderDocName: TStringField
+      DisplayWidth = 25
+      FieldName = 'DocName'
+      Size = 25
+    end
+    object qrBigFolderDocSave: TBlobField
+      DisplayWidth = 10
+      FieldName = 'DocSave'
+      BlobType = ftParadoxOle
+    end
+    object qrBigFolderDocType: TStringField
+      DisplayWidth = 3
+      FieldName = 'DocType'
+      Size = 3
+    end
+    object qrBigFolderDocDate: TDateField
+      DisplayWidth = 10
+      FieldName = 'DocDate'
+    end
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMainBig'
+    SessionName = 'Main'
+    Params = <>
+    Left = 112
+    Top = 96
+  end
+end

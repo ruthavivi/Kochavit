@@ -1,0 +1,29 @@
+unit GnrlSendMsg;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons;
+
+type
+  TdlgGnrlSendMsg = class(TForm)
+    btnPreview: TBitBtn;
+    Panel1: TPanel;
+    btnPrint: TBitBtn;
+    btnEmail: TBitBtn;
+    btnCancel: TBitBtn;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dlgGnrlSendMsg: TdlgGnrlSendMsg;
+
+implementation
+
+{$R *.dfm}
+
+end.

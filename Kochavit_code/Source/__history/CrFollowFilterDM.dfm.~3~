@@ -1,0 +1,48 @@
+inherited dmCrFollowFilter: TdmCrFollowFilter
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      
+        'SELECT Id, Moed, Sha, Remark, CodCar, Number, Type, Producer, Co' +
+        'd, Shem'
+      'FROM KCrFollow Cf'
+      '  LEFT JOIN KCar Cr ON Cr.Id = Cf.CarId'
+      '    LEFT JOIN KTblType tY ON tY.Id = Cr.TypeId'
+      '    LEFT JOIN KTblProducer tR ON tR.Id = Cr.ProducerId'
+      '    LEFT JOIN KClient Cl ON Cl.Id = Cr.ClientId')
+    ReadOnly = True
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterMoed: TDateField
+      FieldName = 'Moed'
+    end
+    object qrFilterSha: TTimeField
+      FieldName = 'Sha'
+    end
+    object qrFilterRemark: TStringField
+      FieldName = 'Remark'
+      Size = 60
+    end
+    object qrFilterCodCar: TIntegerField
+      FieldName = 'CodCar'
+    end
+    object qrFilterNumber: TStringField
+      FieldName = 'Number'
+      Size = 9
+    end
+    object qrFilterType: TStringField
+      FieldName = 'Type'
+      Size = 30
+    end
+    object qrFilterProducer: TStringField
+      FieldName = 'Producer'
+    end
+    object qrFilterCod: TIntegerField
+      FieldName = 'Cod'
+    end
+    object qrFilterShem: TStringField
+      FieldName = 'Shem'
+      Size = 30
+    end
+  end
+end

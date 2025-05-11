@@ -1,0 +1,1505 @@
+inherited frmGnrlEdit1: TfrmGnrlEdit1
+  Width = 698
+  Height = 504
+  Caption = 'frmGnrlEdit1'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 417
+    Width = 690
+  end
+  inherited ToolBar1: TToolBar
+    Width = 690
+  end
+  inherited PageControl1: TPageControl
+    Width = 690
+    Height = 382
+    inherited TabSheet1: TTabSheet
+      object Splitter1: TSplitter
+        Left = 0
+        Top = 193
+        Width = 682
+        Height = 3
+        Cursor = crVSplit
+        Align = alTop
+      end
+      object Panel2: TPanel
+        Left = 0
+        Top = 0
+        Width = 682
+        Height = 193
+        Align = alTop
+        TabOrder = 0
+        object Panel4: TPanel
+          Left = 294
+          Top = 1
+          Width = 387
+          Height = 191
+          Align = alRight
+          TabOrder = 0
+          object GroupBox1: TGroupBox
+            Left = 1
+            Top = 1
+            Width = 385
+            Height = 189
+            Align = alClient
+            Caption = #1508#1512#1496#1497' '#1512#1497#1513#1493#1497
+            TabOrder = 0
+            object Label1: TLabel
+              Left = 311
+              Top = 24
+              Width = 57
+              Height = 13
+              Caption = #1502#1505#39' '#1505#1497#1491#1493#1512#1497':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clRed
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label2: TLabel
+              Left = 134
+              Top = 24
+              Width = 42
+              Height = 13
+              Caption = #1502#1505#39' '#1512#1499#1489':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clRed
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label3: TLabel
+              Left = 324
+              Top = 46
+              Width = 44
+              Height = 13
+              Caption = #1505#1493#1490' '#1512#1499#1489':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label4: TLabel
+              Left = 342
+              Top = 68
+              Width = 26
+              Height = 13
+              Caption = #1497#1510#1512#1503':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label5: TLabel
+              Left = 153
+              Top = 68
+              Width = 23
+              Height = 13
+              Caption = #1491#1490#1501':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label6: TLabel
+              Left = 315
+              Top = 90
+              Width = 53
+              Height = 13
+              Caption = #1513#1504#1514' '#1502#1493#1491#1500':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label7: TLabel
+              Left = 155
+              Top = 90
+              Width = 21
+              Height = 13
+              Caption = #1510#1489#1506
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label8: TLabel
+              Left = 309
+              Top = 134
+              Width = 59
+              Height = 13
+              Caption = #1514'. '#1492#1497#1500#1493#1499#1497#1501':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label9: TLabel
+              Left = 311
+              Top = 112
+              Width = 57
+              Height = 13
+              Caption = #1502#1505#39' '#1513#1497#1500#1491#1492':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label10: TLabel
+              Left = 135
+              Top = 112
+              Width = 41
+              Height = 13
+              Caption = #1502#1491' '#1488#1493#1509':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label20: TLabel
+              Left = 130
+              Top = 134
+              Width = 46
+              Height = 13
+              Caption = #1495#1497#1493#1489' '#1495#1491#39':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label22: TLabel
+              Left = 13
+              Top = 120
+              Width = 19
+              Height = 13
+              Caption = #1511'"'#1502
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label23: TLabel
+              Left = 11
+              Top = 142
+              Width = 21
+              Height = 13
+              Caption = #1513'"'#1495
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object edIdCar: TDBEdit
+              Left = 184
+              Top = 24
+              Width = 121
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'IdCar'
+              DataSource = dsCar
+              ParentBiDiMode = False
+              TabOrder = 0
+            end
+            object edNumber: TDBEdit
+              Left = 8
+              Top = 24
+              Width = 121
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'Number'
+              ParentBiDiMode = False
+              TabOrder = 1
+            end
+            object edTypeId: TDBLookupComboBox
+              Left = 184
+              Top = 46
+              Width = 121
+              Height = 21
+              BiDiMode = bdRightToLeft
+              DataField = 'TypeId'
+              KeyField = 'ID'
+              ListField = 'Type'
+              ParentBiDiMode = False
+              TabOrder = 2
+            end
+            object edProducerId: TDBLookupComboBox
+              Left = 184
+              Top = 68
+              Width = 121
+              Height = 21
+              DataField = 'ProducerId'
+              KeyField = 'ID'
+              ListField = 'Producer'
+              TabOrder = 3
+            end
+            object edDgamId: TDBLookupComboBox
+              Left = 8
+              Top = 68
+              Width = 121
+              Height = 21
+              DataField = 'DgamId'
+              KeyField = 'ID'
+              ListField = 'Dgam'
+              TabOrder = 4
+            end
+            object edModel: TDBEdit
+              Left = 184
+              Top = 90
+              Width = 121
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'Model'
+              MaxLength = 4
+              ParentBiDiMode = False
+              TabOrder = 5
+            end
+            object edZeva: TDBEdit
+              Left = 8
+              Top = 90
+              Width = 121
+              Height = 21
+              BiDiMode = bdRightToLeft
+              DataField = 'Zeva'
+              ParentBiDiMode = False
+              TabOrder = 6
+            end
+            object edShildaN: TDBEdit
+              Left = 184
+              Top = 112
+              Width = 121
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'ShildaN'
+              ParentBiDiMode = False
+              TabOrder = 7
+            end
+            object edGear: TDBComboBox
+              Left = 184
+              Top = 134
+              Width = 121
+              Height = 21
+              DataField = 'Gear'
+              ItemHeight = 13
+              Items.Strings = (
+                #1488#1493#1496#1493#1502#1496#1497
+                #1512#1490#1497#1500)
+              TabOrder = 9
+            end
+            object edSpido: TDBEdit
+              Left = 32
+              Top = 112
+              Width = 97
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'Spido'
+              ParentBiDiMode = False
+              TabOrder = 8
+            end
+            object edShum: TDBEdit
+              Left = 32
+              Top = 134
+              Width = 97
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'Shum'
+              ParentBiDiMode = False
+              TabOrder = 10
+            end
+          end
+        end
+        object Panel5: TPanel
+          Left = 1
+          Top = 1
+          Width = 293
+          Height = 191
+          Align = alClient
+          TabOrder = 1
+          object GroupBox2: TGroupBox
+            Left = 1
+            Top = 1
+            Width = 291
+            Height = 189
+            Align = alClient
+            Caption = #1508#1512#1496#1497#1501' '#1504#1493#1505#1508#1497#1501
+            TabOrder = 0
+            object Label11: TLabel
+              Left = 251
+              Top = 24
+              Width = 50
+              Height = 13
+              Caption = #1505#1493#1490' '#1502#1496#1506#1503':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label12: TLabel
+              Left = 239
+              Top = 46
+              Width = 62
+              Height = 13
+              Caption = #1502#1513#1511#1500' '#1499#1493#1500#1500':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label13: TLabel
+              Left = 146
+              Top = 46
+              Width = 29
+              Height = 13
+              Caption = #1506#1510#1502#1497':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label14: TLabel
+              Left = 298
+              Top = 72
+              Width = 3
+              Height = 13
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label16: TLabel
+              Left = 266
+              Top = 156
+              Width = 35
+              Height = 13
+              Caption = #1492#1506#1512#1493#1514':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label15: TLabel
+              Left = 239
+              Top = 68
+              Width = 62
+              Height = 13
+              Caption = #1505#1493#1490' '#1508#1493#1500#1497#1505#1492':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label17: TLabel
+              Left = 90
+              Top = 68
+              Width = 30
+              Height = 13
+              Caption = #1502#1505#1508#1512':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label18: TLabel
+              Left = 251
+              Top = 90
+              Width = 50
+              Height = 13
+              Caption = #1488#1497#1513' '#1511#1513#1512':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label19: TLabel
+              Left = 98
+              Top = 90
+              Width = 20
+              Height = 13
+              Caption = #1496#1500'.:'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label24: TLabel
+              Left = 58
+              Top = 46
+              Width = 37
+              Height = 13
+              Caption = #1502#1493#1512#1513#1492':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label21: TLabel
+              Left = 233
+              Top = 112
+              Width = 68
+              Height = 13
+              Caption = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object Label25: TLabel
+              Left = 237
+              Top = 134
+              Width = 64
+              Height = 13
+              Caption = #1488#1514#1512' '#1489#1497#1511#1493#1512#1514':'
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clBlack
+              Font.Height = -11
+              Font.Name = 'MS Sans Serif'
+              Font.Style = []
+              ParentFont = False
+            end
+            object edWeightT: TDBEdit
+              Left = 176
+              Top = 46
+              Width = 49
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'WeightT'
+              ParentBiDiMode = False
+              TabOrder = 1
+            end
+            object edWeightS: TDBEdit
+              Left = 96
+              Top = 46
+              Width = 49
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'WeightS'
+              ParentBiDiMode = False
+              TabOrder = 2
+            end
+            object edCargoId: TDBLookupComboBox
+              Left = 8
+              Top = 24
+              Width = 217
+              Height = 21
+              DataField = 'CargoId'
+              KeyField = 'ID'
+              ListField = 'Cargo'
+              TabOrder = 0
+            end
+            object edRemark: TDBMemo
+              Left = 8
+              Top = 156
+              Width = 217
+              Height = 25
+              DataField = 'Remark'
+              TabOrder = 10
+            end
+            object edInsureId: TDBLookupComboBox
+              Left = 120
+              Top = 68
+              Width = 105
+              Height = 21
+              DataField = 'InsureId'
+              KeyField = 'ID'
+              ListField = 'Insure'
+              TabOrder = 4
+            end
+            object edPolisaN: TDBEdit
+              Left = 8
+              Top = 68
+              Width = 81
+              Height = 21
+              Hint = 'tbCarPolisaN.AsString'
+              BiDiMode = bdLeftToRight
+              DataField = 'PolisaN'
+              ParentBiDiMode = False
+              ParentShowHint = False
+              ShowHint = True
+              TabOrder = 5
+            end
+            object edContact: TDBEdit
+              Left = 120
+              Top = 90
+              Width = 105
+              Height = 21
+              BiDiMode = bdRightToLeft
+              DataField = 'Contact'
+              ParentBiDiMode = False
+              TabOrder = 6
+            end
+            object edTel: TDBEdit
+              Left = 8
+              Top = 90
+              Width = 81
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'Tel'
+              ParentBiDiMode = False
+              TabOrder = 7
+            end
+            object edWeightR: TDBEdit
+              Left = 8
+              Top = 46
+              Width = 49
+              Height = 21
+              BiDiMode = bdLeftToRight
+              DataField = 'WeightR'
+              ParentBiDiMode = False
+              TabOrder = 3
+            end
+            object edOvedId: TDBLookupComboBox
+              Left = 8
+              Top = 112
+              Width = 217
+              Height = 21
+              DataField = 'OvedId'
+              KeyField = 'ID'
+              ListField = 'Oved'
+              TabOrder = 8
+            end
+            object edAtarId: TDBLookupComboBox
+              Left = 8
+              Top = 134
+              Width = 217
+              Height = 21
+              DataField = 'AtarId'
+              KeyField = 'ID'
+              ListField = 'Atar'
+              TabOrder = 9
+            end
+          end
+        end
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 196
+        Width = 682
+        Height = 158
+        Align = alClient
+        TabOrder = 1
+        object PageControl2: TPageControl
+          Left = 1
+          Top = 1
+          Width = 680
+          Height = 156
+          ActivePage = TabSheet2
+          Align = alClient
+          TabOrder = 0
+          object TabSheet2: TTabSheet
+            Caption = #1496#1497#1508#1493#1500#1497#1501
+            object Panel6: TPanel
+              Left = 250
+              Top = 0
+              Width = 422
+              Height = 128
+              Align = alRight
+              TabOrder = 0
+              object dbgTipul: TDBGrid
+                Left = 1
+                Top = 1
+                Width = 420
+                Height = 126
+                Align = alClient
+                DataSource = dsCrTipul
+                Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgConfirmDelete, dgCancelOnExit]
+                TabOrder = 0
+                TitleFont.Charset = DEFAULT_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -11
+                TitleFont.Name = 'MS Sans Serif'
+                TitleFont.Style = []
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'LTipul'
+                    Width = 222
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'DateDone'
+                    Visible = True
+                  end
+                  item
+                    Expanded = False
+                    FieldName = 'DateToDo'
+                    Visible = True
+                  end>
+              end
+            end
+            object Panel7: TPanel
+              Left = 0
+              Top = 0
+              Width = 250
+              Height = 128
+              Align = alClient
+              TabOrder = 1
+              object DBGrid1: TDBGrid
+                Left = 1
+                Top = 1
+                Width = 248
+                Height = 95
+                Align = alClient
+                TabOrder = 0
+                TitleFont.Charset = DEFAULT_CHARSET
+                TitleFont.Color = clWindowText
+                TitleFont.Height = -11
+                TitleFont.Name = 'MS Sans Serif'
+                TitleFont.Style = []
+                Columns = <
+                  item
+                    Expanded = False
+                    FieldName = 'sBikoret'
+                    Title.Caption = #1500#1497#1511#1493#1497#1497#1501' '#1489#1489#1497#1511#1493#1512#1514' '#1488#1495#1512#1493#1504#1492
+                    Visible = True
+                  end>
+              end
+              object DBMemo1: TDBMemo
+                Left = 1
+                Top = 96
+                Width = 248
+                Height = 31
+                Align = alBottom
+                DataField = 'Remark'
+                TabOrder = 1
+              end
+            end
+          end
+          object TabSheet3: TTabSheet
+            Caption = #1504#1492#1490#1497#1501' '#1510#1502#1493#1491#1497#1501
+            ImageIndex = 1
+            object dbgDriver: TDBGrid
+              Left = 366
+              Top = 0
+              Width = 320
+              Height = 117
+              Align = alRight
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -11
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+              Columns = <
+                item
+                  Expanded = False
+                  FieldName = 'LDriver'
+                  Visible = True
+                end>
+            end
+          end
+          object TabSheet4: TTabSheet
+            Caption = #1514#1488#1493#1504#1493#1514
+            ImageIndex = 2
+            object DBGrid2: TDBGrid
+              Left = 84
+              Top = 0
+              Width = 602
+              Height = 117
+              Align = alRight
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -11
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+              Columns = <
+                item
+                  Expanded = False
+                  FieldName = 'AcdntD'
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Descrpt'
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Status'
+                  PickList.Strings = (
+                    #1514#1511#1497#1503
+                    #1491#1512#1493#1513' '#1514#1497#1511#1493#1503
+                    #1488#1505#1493#1512' '#1500#1513#1497#1502#1493#1513)
+                  Visible = True
+                end>
+            end
+          end
+          object TabSheet5: TTabSheet
+            Caption = #1502#1506#1511#1489' '#1492#1493#1491#1506#1493#1514
+            ImageIndex = 3
+            object DBGrid3: TDBGrid
+              Left = 0
+              Top = 0
+              Width = 686
+              Height = 117
+              Align = alClient
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -11
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+              Columns = <
+                item
+                  Expanded = False
+                  FieldName = 'Moed'
+                  Title.Caption = #1514#1488#1512#1497#1498
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Sha'
+                  Title.Caption = #1513#1506#1492
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Remark'
+                  Title.Caption = #1492#1506#1512#1493#1514
+                  Width = 521
+                  Visible = True
+                end>
+            end
+          end
+          object TabSheet6: TTabSheet
+            Caption = #1496#1497#1508#1493#1500#1497#1501' '#1488#1495#1512#1497#1501
+            ImageIndex = 4
+            object DBGrid4: TDBGrid
+              Left = 0
+              Top = 0
+              Width = 686
+              Height = 117
+              Align = alClient
+              TabOrder = 0
+              TitleFont.Charset = DEFAULT_CHARSET
+              TitleFont.Color = clWindowText
+              TitleFont.Height = -11
+              TitleFont.Name = 'MS Sans Serif'
+              TitleFont.Style = []
+              Columns = <
+                item
+                  Expanded = False
+                  FieldName = 'Moed'
+                  Title.Caption = #1514#1488#1512#1497#1498' '#1496#1497#1508#1493#1500
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'LTipulOut'
+                  Title.Caption = #1505#1493#1490' '#1496#1497#1508#1493#1500
+                  Width = 107
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Musah'
+                  Title.Caption = #1502#1493#1505#1498' '#1502#1496#1508#1500
+                  Width = 109
+                  Visible = True
+                end
+                item
+                  Expanded = False
+                  FieldName = 'Remark'
+                  Title.Caption = #1492#1506#1512#1493#1514
+                  Width = 345
+                  Visible = True
+                end>
+            end
+          end
+        end
+      end
+    end
+  end
+  inherited ActionList1: TActionList
+    Left = 224
+    Top = 48
+    inherited acSave: TAction
+      OnExecute = acSaveExecute
+    end
+    inherited acMail: TAction
+      OnExecute = acMailExecute
+    end
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    inherited acScan: TAction
+      OnExecute = acScanExecute
+    end
+    inherited acPhoto: TAction
+      OnExecute = acPhotoExecute
+    end
+    object acAutoTipul: TAction [5]
+      Caption = 'acAutoTipul'
+      OnExecute = acAutoTipulExecute
+    end
+    inherited acShowScan: TAction
+      OnExecute = acShowScanExecute
+    end
+    object acPrinAndtDtl: TAction
+      Caption = #1499#1493#1500#1500'  '#1508#1512#1496#1497#1501
+      OnExecute = acPrinAndtDtlExecute
+    end
+  end
+  inherited tbTofes: TTable
+    IndexFieldNames = 'Id'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrTofes'
+    object tbTofesId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTofesCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbTofesMoed: TDateField
+      FieldName = 'Moed'
+    end
+    object tbTofesName: TStringField
+      FieldName = 'Name'
+      Size = 30
+    end
+    object tbTofesTofes: TBlobField
+      FieldName = 'Tofes'
+      BlobType = ftParadoxOle
+    end
+    object tbTofesExt: TStringField
+      FieldName = 'Ext'
+      Size = 3
+    end
+  end
+  object tbCrTipul: TTable
+    DatabaseName = 'Kb'
+    FilterOptions = [foNoPartialCompare]
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrTipul'
+    Left = 128
+    Top = 320
+    object tbCrTipulId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrTipulCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbCrTipulTipulId: TIntegerField
+      FieldName = 'TipulId'
+    end
+    object tbCrTipulDateDone: TDateField
+      DisplayLabel = #1489#1493#1510#1506' '#1489#1514#1488#1512#1497#1498
+      FieldName = 'DateDone'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrTipulDateToDo: TDateField
+      DisplayLabel = #1500#1489#1510#1506' '#1489#1514#1488#1512#1497#1498
+      FieldName = 'DateToDo'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrTipulLTipul: TStringField
+      DisplayLabel = #1492#1496#1497#1508#1493#1500
+      FieldKind = fkLookup
+      FieldName = 'LTipul'
+      LookupDataSet = tbTblTipul
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Tipul'
+      KeyFields = 'TipulId'
+      Size = 40
+      Lookup = True
+    end
+    object tbCrTipulRemark: TStringField
+      FieldName = 'Remark'
+      Size = 120
+    end
+  end
+  object tbTblTipul: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    IndexName = 'xTipul'
+    TableName = 'KTblTipul'
+    Left = 144
+    Top = 344
+    object tbTblTipulID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblTipulTipul: TStringField
+      FieldName = 'Tipul'
+      Size = 40
+    end
+    object tbTblTipulTedirut: TIntegerField
+      FieldName = 'Tedirut'
+    end
+    object tbTblTipulKavua: TBooleanField
+      FieldName = 'Kavua'
+    end
+  end
+  object dsCrTipul: TDataSource
+    DataSet = tbCrTipul
+    Left = 104
+    Top = 304
+  end
+  object tbCar: TTable
+    DatabaseName = 'Kb'
+    TableName = 'KCar'
+    Left = 352
+    Top = 8
+    object tbCarId: TIntegerField
+      FieldName = 'Id'
+    end
+    object tbCarIdCar: TIntegerField
+      FieldName = 'IdCar'
+    end
+    object tbCarNumber: TStringField
+      FieldName = 'Number'
+      EditMask = '99\-999\-99;1; '
+      Size = 9
+    end
+    object tbCarTypeId: TIntegerField
+      Alignment = taLeftJustify
+      FieldName = 'TypeId'
+    end
+    object tbCarProducerId: TIntegerField
+      FieldName = 'ProducerId'
+    end
+    object tbCarDgamId: TIntegerField
+      FieldName = 'DgamId'
+    end
+    object tbCarModel: TIntegerField
+      DisplayWidth = 4
+      FieldName = 'Model'
+    end
+    object tbCarZeva: TStringField
+      FieldName = 'Zeva'
+    end
+    object tbCarGear: TStringField
+      FieldName = 'Gear'
+      Size = 10
+    end
+    object tbCarWeightT: TFloatField
+      FieldName = 'WeightT'
+    end
+    object tbCarWeightS: TFloatField
+      FieldName = 'WeightS'
+    end
+    object tbCarWeightR: TFloatField
+      FieldName = 'WeightR'
+    end
+    object tbCarShildaN: TStringField
+      FieldName = 'ShildaN'
+    end
+    object tbCarSpido: TIntegerField
+      FieldName = 'Spido'
+    end
+    object tbCarCargoId: TIntegerField
+      FieldName = 'CargoId'
+    end
+    object tbCarInsureId: TIntegerField
+      FieldName = 'InsureId'
+    end
+    object tbCarPolisaN: TStringField
+      FieldName = 'PolisaN'
+      Size = 15
+    end
+    object tbCarContact: TStringField
+      FieldName = 'Contact'
+      Size = 25
+    end
+    object tbCarTel: TStringField
+      FieldName = 'Tel'
+      Size = 11
+    end
+    object tbCarShum: TCurrencyField
+      FieldName = 'Shum'
+    end
+    object tbCarOvedId: TSmallintField
+      FieldName = 'OvedId'
+    end
+    object tbCarAtarId: TSmallintField
+      FieldName = 'AtarId'
+    end
+    object tbCarRemark: TMemoField
+      FieldName = 'Remark'
+      BlobType = ftMemo
+      Size = 120
+    end
+    object tbCarClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object tbCarMissing: TBooleanField
+      FieldName = 'Missing'
+    end
+    object tbCarLkpType: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpType'
+      LookupDataSet = tbTblType
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Type'
+      KeyFields = 'TypeId'
+      Lookup = True
+    end
+    object tbCarLkpProduce: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpProduce'
+      LookupDataSet = tbTblProducer
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Producer'
+      KeyFields = 'ProducerId'
+      Lookup = True
+    end
+    object tbCarLkpDgam: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpDgam'
+      LookupDataSet = tbTblDgam
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Dgam'
+      KeyFields = 'DgamId'
+      Lookup = True
+    end
+    object tbCarLkpCargo: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpCargo'
+      LookupDataSet = tbTblCargo
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Cargo'
+      KeyFields = 'CargoId'
+      Lookup = True
+    end
+    object tbCarLkpInsure: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpInsure'
+      LookupDataSet = tbTblInsure
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Insure'
+      KeyFields = 'InsureId'
+      Lookup = True
+    end
+  end
+  object tbTblType: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    IndexFieldNames = 'Type'
+    TableName = 'KTblType'
+    Left = 392
+    Top = 24
+    object tbTblTypeID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblTypeType: TStringField
+      Alignment = taRightJustify
+      FieldName = 'Type'
+    end
+  end
+  object tbTblProducer: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    IndexFieldNames = 'Producer'
+    TableName = 'KTblProducer'
+    Left = 448
+    Top = 24
+    object tbTblProducerID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblProducerProducer: TStringField
+      Alignment = taRightJustify
+      FieldName = 'Producer'
+    end
+  end
+  object tbTblDgam: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    Filtered = True
+    TableName = 'KTblDgam'
+    Left = 496
+    Top = 24
+    object tbTblDgamID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblDgamIdP: TIntegerField
+      FieldName = 'IdP'
+    end
+    object tbTblDgamDgam: TStringField
+      Alignment = taRightJustify
+      FieldName = 'Dgam'
+    end
+  end
+  object tbTblCargo: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    IndexFieldNames = 'Cargo'
+    TableName = 'KTblCargo.DB'
+    Left = 544
+    Top = 24
+    object tbTblCargoID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblCargoCargo: TStringField
+      Alignment = taRightJustify
+      FieldName = 'Cargo'
+    end
+  end
+  object tbTblInsure: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    IndexFieldNames = 'Insure'
+    TableName = 'KTblInsure.DB'
+    Left = 592
+    Top = 24
+    object tbTblInsureID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblInsureInsure: TStringField
+      Alignment = taRightJustify
+      FieldName = 'Insure'
+    end
+  end
+  object tbTblOved: TTable
+    DatabaseName = 'Kb'
+    TableName = 'KTblOved.db'
+    Left = 632
+    Top = 24
+    object tbTblOvedID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblOvedOved: TStringField
+      Alignment = taRightJustify
+      FieldName = 'Oved'
+      Size = 25
+    end
+  end
+  object dsCar: TDataSource
+    DataSet = tbCar
+    OnDataChange = dsCarDataChange
+    Left = 320
+    Top = 8
+  end
+  object dsTblType: TDataSource
+    DataSet = tbTblType
+    Left = 392
+  end
+  object DataSource1: TDataSource
+    DataSet = tbTblType
+    Left = 392
+  end
+  object dsTblProducer: TDataSource
+    DataSet = tbTblProducer
+    Left = 448
+  end
+  object dsTblDgam: TDataSource
+    DataSet = tbTblDgam
+    Left = 496
+  end
+  object dsTblCargo: TDataSource
+    DataSet = tbTblCargo
+    Left = 544
+  end
+  object dsTblInsure: TDataSource
+    DataSet = tbTblInsure
+    Left = 592
+  end
+  object dsTblOved: TDataSource
+    DataSet = tbTblOved
+    Left = 632
+  end
+  object tbCrDrv: TTable
+    DatabaseName = 'Kb'
+    FilterOptions = [foNoPartialCompare]
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrDrv.DB'
+    Left = 64
+    Top = 336
+    object tbCrDrvId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrDrvCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbCrDrvDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbCrDrvLDriver: TStringField
+      DisplayLabel = #1513#1501' '#1492#1504#1492#1490
+      FieldKind = fkLookup
+      FieldName = 'LDriver'
+      LookupDataSet = tbDriver
+      LookupKeyFields = 'Id'
+      LookupResultField = 'ShemD'
+      KeyFields = 'DriverId'
+      Size = 25
+      Lookup = True
+    end
+  end
+  object tbDriver: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    IndexFieldNames = 'ShemD'
+    TableName = 'KDriver.DB'
+    Left = 24
+    Top = 336
+  end
+  object tbCrTipulDtl: TTable
+    DatabaseName = 'Kb'
+    IndexName = 'xTipulId'
+    MasterFields = 'Id'
+    MasterSource = dsCrTipul
+    TableName = 'KCrTipulDtl.db'
+    Left = 224
+    Top = 328
+    object tbCrTipulDtlsBikoret: TStringField
+      DisplayLabel = #1505#1506#1497#1508#1497' '#1489#1497#1511#1493#1512#1514
+      FieldKind = fkLookup
+      FieldName = 'sBikoret'
+      LookupDataSet = tbTblBikoretDtl
+      LookupKeyFields = 'ID'
+      LookupResultField = 'BikoretDtl'
+      KeyFields = 'BikoretDtlId'
+      Size = 40
+      Lookup = True
+    end
+    object tbCrTipulDtlId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrTipulDtlTipulId: TIntegerField
+      FieldName = 'TipulId'
+    end
+    object tbCrTipulDtlBikoretDtlId: TIntegerField
+      FieldName = 'BikoretDtlId'
+    end
+  end
+  object tbCrAcdnt: TTable
+    DatabaseName = 'Kb'
+    FilterOptions = [foNoPartialCompare]
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrAcdnt.db'
+    Left = 288
+    Top = 304
+    object tbCrAcdntId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrAcdntCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbCrAcdntAcdntD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1492#1514#1488#1493#1504#1492
+      FieldName = 'AcdntD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrAcdntDescrpt: TStringField
+      DisplayLabel = #1502#1492#1493#1514' '#1492#1514#1488#1493#1504#1492
+      FieldName = 'Descrpt'
+      Size = 30
+    end
+    object tbCrAcdntStatus: TStringField
+      DisplayLabel = #1505#1496#1496#1493#1505
+      FieldName = 'Status'
+    end
+  end
+  object tbTblBikoretDtl: TTable
+    DatabaseName = 'Kb'
+    TableName = 'KTblBikoretDtl.db'
+    Left = 384
+    Top = 304
+    object tbTblBikoretDtlBikoretDtl: TStringField
+      FieldName = 'BikoretDtl'
+      Size = 40
+    end
+    object tbTblBikoretDtlID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblBikoretDtlIdBikoret: TIntegerField
+      FieldName = 'IdBikoret'
+    end
+  end
+  object tbCrFollow: TTable
+    DatabaseName = 'KB'
+    FilterOptions = [foNoPartialCompare]
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrFollow.db'
+    Left = 441
+    Top = 312
+    object tbCrFollowId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrFollowCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbCrFollowMoed: TDateField
+      FieldName = 'Moed'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrFollowSha: TTimeField
+      FieldName = 'Sha'
+      EditMask = '!90:00;1; '
+    end
+    object tbCrFollowRemark: TStringField
+      FieldName = 'Remark'
+      Size = 60
+    end
+  end
+  object tbCrTipulOut: TTable
+    DatabaseName = 'KB'
+    FilterOptions = [foNoPartialCompare]
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrTipulOut.DB'
+    Left = 505
+    Top = 312
+    object tbCrTipulOutId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrTipulOutCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbCrTipulOutMoed: TDateField
+      FieldName = 'Moed'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrTipulOutTipulOutId: TSmallintField
+      FieldName = 'TipulOutId'
+    end
+    object tbCrTipulOutMusah: TStringField
+      FieldName = 'Musah'
+    end
+    object tbCrTipulOutRemark: TStringField
+      FieldName = 'Remark'
+      Size = 60
+    end
+    object tbCrTipulOutLTipulOut: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LTipulOut'
+      LookupDataSet = tbTblTipulOut
+      LookupKeyFields = 'Id'
+      LookupResultField = 'TipulOut'
+      KeyFields = 'TipulOutId'
+      Lookup = True
+    end
+  end
+  object tbTblTipulOut: TTable
+    Active = True
+    DatabaseName = 'Kb'
+    IndexName = 'xTipulOut'
+    TableName = 'KTblTipulOut.DB'
+    Left = 544
+    Top = 344
+    object tbTblTipulOutId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTblTipulOutTipulOut: TStringField
+      FieldName = 'TipulOut'
+      Size = 30
+    end
+  end
+  object dsCrDrv: TDataSource
+    DataSet = tbCrDrv
+    Left = 64
+    Top = 304
+  end
+  object dsCrTipulDtl: TDataSource
+    DataSet = tbCrTipulDtl
+    Left = 224
+    Top = 296
+  end
+  object dsCrAcdnt: TDataSource
+    DataSet = tbCrAcdnt
+    Left = 280
+    Top = 272
+  end
+  object dsCrFollow: TDataSource
+    DataSet = tbCrFollow
+    Left = 441
+    Top = 280
+  end
+  object dsCrTipulOut: TDataSource
+    DataSet = tbCrTipulOut
+    Left = 505
+    Top = 280
+  end
+  object tbTblAtar: TTable
+    DatabaseName = 'Kb'
+    IndexFieldNames = 'Atar'
+    TableName = 'KTblAtar.db'
+    Left = 672
+    Top = 24
+    object tbTblAtarID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblAtarAtar: TStringField
+      Alignment = taRightJustify
+      FieldName = 'Atar'
+      Size = 15
+    end
+  end
+  object dsTblAtar: TDataSource
+    DataSet = tbTblAtar
+    Left = 672
+  end
+end

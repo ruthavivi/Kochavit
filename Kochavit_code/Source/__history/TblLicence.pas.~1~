@@ -1,0 +1,26 @@
+unit TblLicence;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, edbcomps, RpRave, RpDefine, RpBase, RpSystem, ActnList,
+  ImgList, Grids, DBGrids, MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls,
+  ToolWin;
+
+type
+  TfrmGnrlTbl2 = class(TfrmGnrlTbl)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGnrlTbl2: TfrmGnrlTbl2;
+
+implementation
+
+{$R *.dfm}
+
+end.

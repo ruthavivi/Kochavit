@@ -1,0 +1,125 @@
+unit LikuySendMsg;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlSendMsg, Data.DB, edbcomps,
+  Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.Samples.Spin, System.DateUtils;
+
+type
+  TdlgLikuySendMsg = class(TdlgGnrlSendMsg)
+    Label1: TLabel;
+    edMonth: TComboBox;
+    Label2: TLabel;
+    edYear: TSpinEdit;
+    qrGnrl1: TEDBQuery;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+  private
+    procedure SetParameters;
+    procedure SendMessage(pButton: String; pWorkFile: OleVariant; pList: TStringList);
+    procedure SaveSendMail;
+  public
+    { Public declarations }
+  end;
+
+var
+  dlgLikuySendMsg: TdlgLikuySendMsg;
+
+implementation
+uses
+  MainDM, DocUtils, DialogsHeb;
+{$R *.dfm}
+
+procedure TdlgLikuySendMsg.FormCreate(Sender: TObject);
+var
+  DefaultDate: TDate;
+begin
+  inherited;
+  if (Owner.Name = 'frmeClientsList') then
+    btnPreview.Enabled := False;
+
+  DefaultDate := IncMonth(Date, -1);
+  edYear.MaxValue := YearOf(Date);
+  edYear.Value := YearOf(DefaultDate);
+  edMonth.ItemIndex := MonthOf(DefaultDate) -1;
+end;
+
+procedure TdlgLikuySendMsg.btnPrintClick(Sender: TObject);
+var
+  WorkFile: OleVariant;
+  List: TStringList;
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  SetParameters;
+  WorkFile := ExtractFilePath(Application.ExeName) + 'Docs\Wrn\Fault_Message.dot';
+  List := TStringList.Create;
+  List.Add('Year='+IntToStr(edYear.Value));
+  List.Add('Month='+edMonth.Text);
+  try
+    qrGnrl.Open;
+    if (Owner.Name = 'frmeClientsList') then
+    begin
+      dmMain.qrClientList.First;
+      while not dmMain.qrClientList.Eof do
+      begin
+        if not dmMain.qrClientListFreze.AsBoolean then
+        begin
+          SendMessage((Sender as TBitBtn).Name, WorkFile, List);
+          SaveSendMail;
+        end;
+        dmMain.qrClientList.Next;
+      end;
+    end
+    else
+    begin
+      if (qrGnrl1.IsEmpty) then
+        MessageDlgH('אין ליקויים ללקוח זה', mtError, [mbOk], 0, 0)
+      else
+      begin
+        SendMessage((Sender as TBitBtn).Name, WorkFile, List);
+        if ((Sender as TBitBtn).Name <> 'btnPreview') then
+          SaveSendMail;
+      end;
+    end;
+  finally
+    qrGnrl.Close;
+    Screen.Cursor := crDefault;
+  end;
+  Close;
+end;
+
+procedure TdlgLikuySendMsg.SendMessage(pButton: String; pWorkFile: OleVariant;
+  pList: TStringList);
+var
+  OneDoc: TDocUtils;
+begin
+  OneDoc := TDocUtils.Create(pButton, 1, False, 'הודעה על ליקויים בביקורות חודשיות',
+      qrGnrl.FieldByName('Fax').AsString, qrGnrl.FieldByName('EMail').AsString,
+      qrGnrl.FieldByName('EMailX').AsString, pWorkFile);
+  try
+    OneDoc.SendDoc(qrGnrl, pList, 'sp');
+
+  finally
+    OneDoc.Free;
+  end;
+end;
+
+procedure TdlgLikuySendMsg.SaveSendMail;
+begin
+  qrGnrl1.SQL.Text := 'INSERT INTO KClientMailSend '+
+      '(ClientId , Subject) VALUES (' + dmMain.qrClientListId.AsString + ', '+
+      QuotedStr('הודעה על ליקויים בביקורות חודשיות') + ')';
+  qrGnrl1.ExecSQL;
+end;
+
+procedure TdlgLikuySendMsg.SetParameters;
+begin
+  qrGnrl.ParamByName('pYear').AsInteger := edYear.Value;
+  qrGnrl.ParamByName('pMonth').AsInteger := edMonth.ItemIndex+1;
+//  qrGnrl.ParamByName('Id').AsInteger := dmMain.qrClientListId.AsInteger;
+end;
+
+end.

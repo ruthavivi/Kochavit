@@ -1,0 +1,100 @@
+object dmWrnList: TdmWrnList
+  OldCreateOrder = False
+  Height = 246
+  Width = 242
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 32
+    Top = 16
+  end
+  object qrTofesMain: TEDBQuery
+    BeforeOpen = qrTofesMainBeforeOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    Params = <>
+    Left = 32
+    Top = 88
+  end
+  object qrTofesLikuy: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsTofesMain
+    SQL.Strings = (
+      'SELECT BikoretDtl'
+      'FROM KCrTipulDtl Cd '
+      'LEFT JOIN KTblBikoretDtl tB ON Cd.BikoretDtlId = tB.Id  '
+      'WHERE TipulId = :Id')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptInput
+      end>
+    Left = 32
+    Top = 160
+  end
+  object dsTofesMain: TDataSource
+    DataSet = qrTofesMain
+    Left = 104
+    Top = 88
+  end
+  object qrTofesTipul: TEDBQuery
+    BeforeOpen = qrTofesTipulBeforeOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsTofesMain
+    SQL.Strings = (
+      'SELECT Tipul, DateToDo'
+      'FROM KCrTipul Ct '
+      'LEFT JOIN KTblTipul tT ON Ct.TipulId = tT.Id'
+      
+        'WHERE CarId = :CarId AND (Ct.DateToDo <= :TillMoed OR DateToDo I' +
+        'S NULL) AND tT.Tipul <> '#39#1489#1497#1511#1493#1512#1514' '#1495#1493#1491#1513#1497#1514#39
+      'ORDER BY tT.Tipul')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'CarId'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'TillMoed'
+        ParamType = ptInput
+      end>
+    Left = 104
+    Top = 160
+  end
+  object qrTofesHeiter: TEDBQuery
+    BeforeOpen = qrTofesTipulBeforeOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsTofesMain
+    SQL.Strings = (
+      'SELECT ShemD, LicenceTyp, Limit, Heiter, DateToDo'
+      'FROM KDrHeiter Dh '
+      'LEFT JOIN KTblHeiter tH ON (Dh.HeiterId = tH.Id)'
+      'LEFT JOIN KCrDrv CD ON (Dh.DriverId = CD.DriverId)'
+      'LEFT JOIN KDriver Dr ON (CD.DriverId = Dr.Id)'
+      
+        'WHERE CD.CarId = :CarId AND (DateToDo <= :TillMoed OR Dh.DateToD' +
+        'o IS Null)'
+      'ORDER BY Dr.ShemD')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'CarId'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'TillMoed'
+        ParamType = ptInput
+      end>
+    Left = 176
+    Top = 160
+  end
+end

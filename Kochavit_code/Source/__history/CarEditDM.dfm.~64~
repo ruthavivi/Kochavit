@@ -1,0 +1,643 @@
+inherited dmCarEdit: TdmCarEdit
+  OldCreateOrder = True
+  Height = 386
+  Width = 620
+  inherited qrGnrl: TEDBQuery
+    DataSource = dsCar
+    Top = 152
+  end
+  object dsCar: TDataSource
+    DataSet = tbCar
+    OnDataChange = dsCarDataChange
+    Left = 88
+    Top = 72
+  end
+  object dsCrTipul: TDataSource
+    DataSet = tbCrTipul
+    Left = 136
+    Top = 176
+  end
+  object dsCrAcdnt: TDataSource
+    DataSet = tbCrAcdnt
+    Left = 264
+    Top = 176
+  end
+  object dsCrFollow: TDataSource
+    DataSet = tbCrFollow
+    Left = 329
+    Top = 176
+  end
+  object dsCrTipulOut: TDataSource
+    DataSet = tbCrTipulOut
+    Left = 401
+    Top = 176
+  end
+  object dsCrTipulDtl: TDataSource
+    DataSet = qrCrTipulDtl
+    Left = 464
+    Top = 176
+  end
+  object dsTblProducer: TDataSource
+    DataSet = tbTblProducer
+    Left = 216
+    Top = 64
+  end
+  object tbCar: TEDBTable
+    BeforePost = tbCarBeforePost
+    AfterPost = tbCarAfterPost
+    OnCalcFields = tbCarCalcFields
+    OnNewRecord = tbCarNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Id'
+    TableName = 'KCar'
+    Left = 24
+    Top = 72
+    object tbCarId: TIntegerField
+      FieldName = 'Id'
+    end
+    object tbCarCodCar: TAutoIncField
+      FieldName = 'CodCar'
+      OnValidate = tbCarNumberValidate
+    end
+    object tbCarNumber: TStringField
+      DisplayWidth = 9
+      FieldName = 'Number'
+      OnValidate = tbCarNumberValidate
+      Size = 9
+    end
+    object tbCarDateReg: TDateField
+      FieldName = 'DateReg'
+      OnSetText = tbCarDateRegSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCarTypeId: TIntegerField
+      Alignment = taLeftJustify
+      DisplayWidth = 10
+      FieldName = 'TypeId'
+    end
+    object tbCarProducerId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ProducerId'
+    end
+    object tbCarDgamId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'DgamId'
+    end
+    object tbCarModel: TIntegerField
+      DisplayWidth = 4
+      FieldName = 'Model'
+      OnValidate = tbCarModelValidate
+    end
+    object tbCarWeightT: TFloatField
+      DisplayWidth = 10
+      FieldName = 'WeightT'
+    end
+    object tbCarWeightS: TFloatField
+      DisplayWidth = 10
+      FieldName = 'WeightS'
+    end
+    object tbCarWeightR: TFloatField
+      DisplayWidth = 10
+      FieldName = 'WeightR'
+    end
+    object tbCarShildaN: TStringField
+      DisplayWidth = 20
+      FieldName = 'ShildaN'
+    end
+    object tbCarSpido: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Spido'
+    end
+    object tbCarCargoId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CargoId'
+    end
+    object tbCarInsureId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'InsureId'
+    end
+    object tbCarPolisaN: TStringField
+      DisplayWidth = 15
+      FieldName = 'PolisaN'
+      Size = 15
+    end
+    object tbCarContact: TStringField
+      Alignment = taRightJustify
+      DisplayWidth = 25
+      FieldName = 'Contact'
+      Size = 25
+    end
+    object tbCarTel: TStringField
+      DisplayWidth = 11
+      FieldName = 'Tel'
+      Size = 11
+    end
+    object tbCarCodSecure: TStringField
+      DisplayWidth = 10
+      FieldName = 'CodSecure'
+      Size = 10
+    end
+    object tbCarShum: TCurrencyField
+      DisplayWidth = 10
+      FieldName = 'Shum'
+    end
+    object tbCarOvedId: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'OvedId'
+    end
+    object tbCarAtarId: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'AtarId'
+    end
+    object tbCarRemark: TStringField
+      DisplayWidth = 120
+      FieldName = 'Remark'
+      Size = 120
+    end
+    object tbCarClientId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ClientId'
+    end
+    object tbCarMissing: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Missing'
+    end
+    object tbCarLkpType: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpType'
+      LookupDataSet = tbTblType
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Type'
+      KeyFields = 'TypeId'
+      Lookup = True
+    end
+    object tbCarLkpProduce: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpProduce'
+      LookupDataSet = tbTblProducer
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Producer'
+      KeyFields = 'ProducerId'
+      Lookup = True
+    end
+    object tbCarLkpDgam: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpDgam'
+      LookupDataSet = tbTblDgam
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Dgam'
+      KeyFields = 'DgamId'
+      Lookup = True
+    end
+    object tbCarLkpCargo: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpCargo'
+      LookupDataSet = tbTblCargo
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Cargo'
+      KeyFields = 'CargoId'
+      Lookup = True
+    end
+    object tbCarLkpInsure: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpInsure'
+      LookupDataSet = tbTblInsure
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Insure'
+      KeyFields = 'InsureId'
+      Lookup = True
+    end
+    object tbCarLkpOved: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpOved'
+      LookupDataSet = tbTblOved
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Oved'
+      KeyFields = 'OvedId'
+      Lookup = True
+    end
+    object tbCarLkpAtar: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpAtar'
+      LookupDataSet = tbTblAtar
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Atar'
+      KeyFields = 'AtarId'
+      Lookup = True
+    end
+    object tbCarProfesion: TStringField
+      FieldName = 'Profesion'
+      Size = 30
+    end
+    object tbCarTelP: TStringField
+      FieldName = 'TelP'
+      Size = 10
+    end
+    object tbCarZeutP: TIntegerField
+      FieldName = 'ZeutP'
+    end
+    object tbCarMovil: TStringField
+      FieldName = 'Movil'
+      Size = 30
+    end
+    object tbCarZeutM: TIntegerField
+      FieldName = 'ZeutM'
+    end
+    object tbCarFreze: TBooleanField
+      FieldName = 'Freze'
+    end
+    object tbCarPail: TBooleanField
+      FieldName = 'Pail'
+    end
+    object tbCarStamp: TDateTimeField
+      FieldName = 'Stamp'
+    end
+    object tbCarHamas: TStringField
+      FieldName = 'Hamas'
+      Size = 30
+    end
+    object tbCarZeutH: TIntegerField
+      FieldName = 'ZeutH'
+    end
+  end
+  object tbTblType: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Type'
+    TableName = 'KTblType'
+    Left = 144
+    Top = 16
+  end
+  object tbTblProducer: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Producer'
+    TableName = 'KTblProducer'
+    Left = 216
+    Top = 16
+  end
+  object tbTblDgam: TEDBTable
+    Filtered = True
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xIdP'
+    MasterFields = 'ID'
+    MasterSource = dsTblProducer
+    TableName = 'KTblDgam'
+    Left = 288
+    Top = 16
+  end
+  object tbTblCargo: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Cargo'
+    TableName = 'KTblCargo'
+    Left = 352
+    Top = 16
+  end
+  object tbTblInsure: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Insure'
+    TableName = 'KTblInsure'
+    Left = 416
+    Top = 16
+  end
+  object tbTblOved: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Oved'
+    TableName = 'KTblOved'
+    Left = 478
+    Top = 16
+  end
+  object tbTblAtar: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Atar'
+    TableName = 'KTblAtar'
+    Left = 536
+    Top = 16
+  end
+  object tbDriver: TEDBTable
+    Filtered = True
+    BeforeOpen = tbDriverBeforeOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'ShemD'
+    TableName = 'KDriver'
+    Left = 304
+    Top = 232
+  end
+  object tbCrTipul: TEDBTable
+    OnNewRecord = tbCrTipulNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrTipul'
+    Left = 136
+    Top = 112
+    object tbCrTipulId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+    end
+    object tbCrTipulCarId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CarId'
+    end
+    object tbCrTipulTipulId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'TipulId'
+      OnValidate = tbCrTipulTipulIdValidate
+    end
+    object tbCrTipulDateDone: TDateField
+      DisplayLabel = #1489#1493#1510#1506' '#1489#1514#1488#1512#1497#1498
+      DisplayWidth = 10
+      FieldName = 'DateDone'
+      OnSetText = tbCarDateRegSetText
+      OnValidate = tbCrTipulDateDoneValidate
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrTipulDateToDo: TDateField
+      DisplayLabel = #1500#1489#1510#1506' '#1489#1514#1488#1512#1497#1498
+      DisplayWidth = 10
+      FieldName = 'DateToDo'
+      OnSetText = tbCarDateRegSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrTipulLTipul: TStringField
+      DisplayLabel = #1492#1496#1497#1508#1493#1500
+      DisplayWidth = 40
+      FieldKind = fkLookup
+      FieldName = 'LTipul'
+      LookupDataSet = tbTblTipul
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Tipul'
+      KeyFields = 'TipulId'
+      Size = 40
+      Lookup = True
+    end
+    object tbCrTipulRemark: TStringField
+      DisplayWidth = 420
+      FieldName = 'Remark'
+      Size = 420
+    end
+  end
+  object tbTblTipul: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xTipul'
+    TableName = 'KTblTipul'
+    Left = 376
+    Top = 232
+  end
+  object tbCrFollow: TEDBTable
+    OnNewRecord = tbCrTipulNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrFollow'
+    Left = 329
+    Top = 112
+    object tbCrFollowId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrFollowCarId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CarId'
+    end
+    object tbCrFollowMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrFollowSha: TTimeField
+      DisplayWidth = 10
+      FieldName = 'Sha'
+      EditMask = '!90:00;1; '
+    end
+    object tbCrFollowRemark: TStringField
+      DisplayWidth = 120
+      FieldName = 'Remark'
+      Size = 120
+    end
+  end
+  object tbCrTipulOut: TEDBTable
+    OnNewRecord = tbCrTipulNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrTipulOut'
+    Left = 393
+    Top = 112
+    object tbCrTipulOutId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrTipulOutCarId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CarId'
+    end
+    object tbCrTipulOutMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrTipulOutTipulOutId: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'TipulOutId'
+    end
+    object tbCrTipulOutMusah: TStringField
+      DisplayWidth = 20
+      FieldName = 'Musah'
+    end
+    object tbCrTipulOutRemark: TStringField
+      DisplayWidth = 60
+      FieldName = 'Remark'
+      Size = 60
+    end
+    object tbCrTipulOutLTipulOut: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LTipulOut'
+      LookupDataSet = tbTblTipulOut
+      LookupKeyFields = 'Id'
+      LookupResultField = 'TipulOut'
+      KeyFields = 'TipulOutId'
+      Lookup = True
+    end
+    object tbCrTipulOutTofes: TStringField
+      DisplayWidth = 10
+      FieldName = 'Tofes'
+      Size = 10
+    end
+  end
+  object tbTblTipulOut: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xTipulOut'
+    TableName = 'KTblTipulOut'
+    Left = 440
+    Top = 232
+  end
+  object tbCrDrv: TEDBTable
+    OnNewRecord = tbCrTipulNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrDrv'
+    Left = 200
+    Top = 112
+    object AutoIncField1: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrDrvCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbCrDrvDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbCrDrvLkpDriver: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpDriver'
+      LookupDataSet = tbDriver
+      LookupKeyFields = 'Id'
+      LookupResultField = 'ShemD'
+      KeyFields = 'DriverId'
+      Lookup = True
+    end
+  end
+  object tbCrAcdnt: TEDBTable
+    OnNewRecord = tbCrTipulNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xCarId'
+    MasterFields = 'Id'
+    MasterSource = dsCar
+    TableName = 'KCrAcdnt'
+    Left = 264
+    Top = 112
+    object AutoIncField2: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object IntegerField3: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CarId'
+    end
+    object tbCrAcdntAcdntD: TDateField
+      FieldName = 'AcdntD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrAcdntDescrpt: TStringField
+      FieldName = 'Descrpt'
+      Size = 30
+    end
+    object tbCrAcdntStatus: TStringField
+      FieldName = 'Status'
+    end
+  end
+  object dsCrDrv: TDataSource
+    DataSet = tbCrDrv
+    Left = 200
+    Top = 176
+  end
+  object qrCrTipulDtl: TEDBQuery
+    ReadOnly = True
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsCrTipul
+    SQL.Strings = (
+      'SELECT BikoretDtl'
+      'FROM KCrTipulDtl Td'
+      'LEFT JOIN KTblBikoretDtl tB ON Td.BikoretDtlId = tB.Id'
+      'WHERE Td.TipulId = :Id')
+    Params = <
+      item
+        DataType = ftAutoInc
+        Name = 'Id'
+        ParamType = ptInput
+        Size = 4
+      end>
+    Left = 464
+    Top = 112
+  end
+  object frdbCar: TfrxDBDataset
+    UserName = 'frdbCar'
+    CloseDataSource = False
+    DataSet = tbCar
+    BCDToCurrency = False
+    Left = 56
+    Top = 304
+  end
+  object frdbClient: TfrxDBDataset
+    UserName = 'frdbClient'
+    CloseDataSource = False
+    DataSet = dmMain.qrClientList
+    BCDToCurrency = False
+    Left = 120
+    Top = 296
+  end
+  object frdbCrDrv: TfrxDBDataset
+    UserName = 'frdbCrDrv'
+    CloseDataSource = False
+    DataSet = tbCrDrv
+    BCDToCurrency = False
+    Left = 184
+    Top = 304
+  end
+  object frdbTipul: TfrxDBDataset
+    UserName = 'frdbTipul'
+    CloseDataSource = False
+    DataSet = tbCrTipul
+    BCDToCurrency = False
+    Left = 248
+    Top = 296
+  end
+  object frdbAcdnt: TfrxDBDataset
+    UserName = 'frdbAcdnt'
+    CloseDataSource = False
+    DataSet = tbCrAcdnt
+    BCDToCurrency = False
+    Left = 312
+    Top = 304
+  end
+  object frdbTipulOut: TfrxDBDataset
+    UserName = 'frdbTipulOut'
+    CloseDataSource = False
+    DataSet = tbCrTipulOut
+    BCDToCurrency = False
+    Left = 376
+    Top = 296
+  end
+  object frdbFollow: TfrxDBDataset
+    UserName = 'frdbFollow'
+    CloseDataSource = False
+    DataSet = tbCrFollow
+    BCDToCurrency = False
+    Left = 448
+    Top = 304
+  end
+end

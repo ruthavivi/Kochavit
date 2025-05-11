@@ -1,0 +1,467 @@
+unit DriverEditDM;
+
+interface
+
+uses
+  Windows, SysUtils, Forms, Classes, Graphics, Controls, Dialogs, GnrlEditDM,
+  DBTables, DB, StrUtils, edbcomps, edbtype, frxClass, frxDBSet;
+
+type
+  TdmDriverEdit = class(TdmGnrlEdit)
+    dsDriver: TDataSource;
+    dsDrHeiter: TDataSource;
+    dsDrAcdnt: TDataSource;
+    dsDrAvira: TDataSource;
+    dsDrCourse: TDataSource;
+    dsDrBdika: TDataSource;
+    dsDrTaho: TDataSource;
+    dsDrFollow: TDataSource;
+    dsCrDrv: TDataSource;
+    tbDriver: TEDBTable;
+    tbDriverZeut: TStringField;
+    tbDriverShemD: TStringField;
+    tbDriverKtovetD: TStringField;
+    tbDriverIsuvD: TStringField;
+    tbDriverMikudD: TIntegerField;
+    tbDriverTelD: TStringField;
+    tbDriverCelD: TStringField;
+    tbDriverBorn: TDateField;
+    tbDriverLicenceNum: TStringField;
+    tbDriverLicenceTyp: TStringField;
+    tbDriverLicencePrd: TSmallintField;
+    tbDriverLimit: TStringField;
+    tbDriverWorkStrt: TDateField;
+    tbDriverOvedId: TSmallintField;
+    tbDriverRemark: TStringField;
+    tbDriverClientId: TIntegerField;
+    tbDriverMissing: TBooleanField;
+    tbDriverLkpOved: TStringField;
+    tbTblOved: TEDBTable;
+    tbDrHeiter: TEDBTable;
+    tbDrHeiterDateDone: TDateField;
+    tbDrHeiterLHeiter: TStringField;
+    tbDrHeiterDateToDo: TDateField;
+    tbTblHeiter: TEDBTable;
+    tbDrAcdnt: TEDBTable;
+    tbDrAcdntId: TAutoIncField;
+    tbDrAcdntAcdntD: TDateField;
+    tbDrAcdntWithInjr: TStringField;
+    tbDrAcdntQuilty: TStringField;
+    tbDrAcdntTipul: TStringField;
+    tbDrAcdntLCar: TStringField;
+    tbDrAvira: TEDBTable;
+    tbDrAviraId: TAutoIncField;
+    tbDrAviraAviraD: TDateField;
+    tbDrAviraDescrpt: TStringField;
+    tbDrAviraDohNum: TStringField;
+    tbDrAviraTipul: TStringField;
+    tbDrCourse: TEDBTable;
+    tbDrCourseId: TAutoIncField;
+    tbDrCourseOrganize: TStringField;
+    tbDrCourseStartD: TDateField;
+    tbDrCourseEndD: TDateField;
+    b: TStringField;
+    tbTblCourse: TEDBTable;
+    tbDrBdika: TEDBTable;
+    tbDrBdikaId: TAutoIncField;
+    tbDrBdikaBdikaD: TDateField;
+    tbDrBdikaBdika: TStringField;
+    tbDrBdikaMakom: TStringField;
+    tbDrBdikaTipul: TStringField;
+    tbDrTaho: TEDBTable;
+    tbDrTahoId: TAutoIncField;
+    tbDrTahoMoed: TDateField;
+    tbDrTahoCarId: TIntegerField;
+    tbDrTahoSpeed: TBooleanField;
+    tbDrTahoZman: TBooleanField;
+    tbDrTahoHarig: TBooleanField;
+    tbDrTahoRemark: TStringField;
+    tbDrTahoLkpCar: TStringField;
+    tbDrFollow: TEDBTable;
+    tbDrFollowId: TAutoIncField;
+    tbDrFollowDriverId: TIntegerField;
+    tbDrFollowMoed: TDateField;
+    tbDrFollowSha: TTimeField;
+    tbDrFollowRemark: TStringField;
+    tbCrDrv: TEDBTable;
+    tbCrDrvId: TAutoIncField;
+    tbCrDrvCarId: TIntegerField;
+    tbCrDrvDriverId: TIntegerField;
+    tbCrDrvLkpCar: TStringField;
+    tbCar: TEDBTable;
+    tbDriverId: TIntegerField;
+    tbDriverCodDrv: TAutoIncField;
+    tbDriverFreze: TBooleanField;
+    tbDriverPail: TBooleanField;
+    tbDrHeiterId: TAutoIncField;
+    tbDrHeiterDriverId: TIntegerField;
+    tbDrHeiterHeiterId: TIntegerField;
+    tbDrHeiterRemark: TStringField;
+    tbDrHeiterProblem: TBooleanField;
+    tbDrAcdntDriverId: TIntegerField;
+    tbDrAcdntCarId: TIntegerField;
+    tbDrAviraDriverId: TIntegerField;
+    tbDrCourseDriverId: TIntegerField;
+    tbDrCourseCourseId: TIntegerField;
+    tbDrBdikaDriverId: TIntegerField;
+    tbDrTahoDriverId: TIntegerField;
+    tbDriverLicenceId: TIntegerField;
+    tbDriverStamp: TDateTimeField;
+    tbTblLicence: TEDBTable;
+    tbDriverLkpLicence: TStringField;
+    frdbDriver: TfrxDBDataset;
+    frdbClient: TfrxDBDataset;
+    frdbHeiter: TfrxDBDataset;
+    frdbAvira: TfrxDBDataset;
+    frdbAcdnt: TfrxDBDataset;
+    frdbCourse: TfrxDBDataset;
+    frdbFollow: TfrxDBDataset;
+    frdbBdika: TfrxDBDataset;
+    frdbTaho: TfrxDBDataset;
+    tbDriverEMail: TStringField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure tbDriverNewRecord(DataSet: TDataSet);
+    procedure tbDriverBeforePost(DataSet: TDataSet);
+    procedure tbDrTahoNewRecord(DataSet: TDataSet);
+    procedure tbDriverZeutValidate(Sender: TField);
+    procedure tbDriverBornSetText(Sender: TField; const Text: string);
+    procedure tbDriverLicenceNumSetText(Sender: TField; const Text: string);
+    procedure tbDrHeiterDateDoneValidate(Sender: TField);
+    procedure tbDrHeiterIdHeiterValidate(Sender: TField);
+    procedure tbDrFollowShaSetText(Sender: TField; const Text: string);
+    procedure tbDriverShemDValidate(Sender: TField);
+    procedure dsDriverDataChange(Sender: TObject; Field: TField);
+    procedure tbDrHeiterNewRecord(DataSet: TDataSet);
+    procedure tbDriverAfterPost(DataSet: TDataSet);
+    procedure tbCrDrvBeforeOpen(DataSet: TDataSet);
+    procedure tbDriverCodDrvValidate(Sender: TField);
+  private
+    { Private declarations }
+  public
+    procedure SetDataState(pState: Boolean; pId: Integer);
+    procedure LoadHeterim;
+    procedure SetCarFilter(pState: String; pFilter: Boolean);
+    procedure SaveBigData(pDocSource, pDocNewName, pDocType, pMoedDelete: String;
+          pSaveOnFolder: Boolean);
+//    function  GetCompany: String;
+    procedure SetPrintFilter(pDate: TDate);
+    procedure CancelPrintFilter;
+    procedure SaveData;
+  end;
+
+var
+  dmDriverEdit: TdmDriverEdit;
+
+implementation
+uses
+  MainDM, DataDM, DriverListDM, LogErrorUtil, KbFunc, GraphicUtils, IOUtils, Variants,
+  GnrlBigDM;
+{$R *.dfm}
+
+procedure TdmDriverEdit.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  try
+    tbDriver.Open;
+    tbDrHeiter.Open;
+    tbDrAcdnt.Open;
+    tbDrAvira.Open;
+    tbDrCourse.Open;
+    tbDrBdika.Open;
+    tbCrDrv.Open;
+    tbDrTaho.Open;
+    tbDrFollow.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmDriverEdit.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmDriverEdit.SetDataState(pState: Boolean; pId: Integer);
+begin
+  if (pState = True) then
+    tbDriver.Append
+  else
+  begin
+    if tbDriver.FindKey([pId]) then
+      tbDriver.Edit;
+  end;
+  tbDrHeiter.BeginCachedUpdates;
+
+  if dmMain.SelectAll then
+    ClientShem := GetClientName(tbDriverClientId.AsString);
+end;
+
+// fields events
+procedure TdmDriverEdit.tbDriverShemDValidate(Sender: TField);
+begin
+  if CheckDblValue('KDriver', Sender.FieldName, Sender.Text, tbDriverId.AsString,
+         'שם נהג קיים כבר', Sender.ClassType) then
+end;
+
+procedure TdmDriverEdit.tbDriverZeutValidate(Sender: TField);
+begin
+  inherited;
+  if (RightStr(Sender.AsString, 1) <> ' ') then
+    ValidTZeut(Sender.Text);
+
+  if CheckDblValue('KDriver', Sender.FieldName, QuotedStr(Sender.Text),
+        tbDriverId.AsString, 'מספר ת. זהות כבר קיים', Sender.ClassType) then
+    Abort;
+end;
+
+procedure TdmDriverEdit.tbDriverCodDrvValidate(Sender: TField);
+var
+   sMsg: String;
+begin
+  inherited;
+  if (Sender.FieldName = 'CodDrv') then
+    sMsg := 'קוד חברה קיים כבר'
+  else if (Sender.FieldName = 'LicenceNum') then
+    sMsg := 'מספר רשיון נהיגה קיים כבר';
+
+  if CheckDblValue('KDriver', Sender.FieldName, Sender.Text, tbDriverId.AsString,
+        sMsg, Sender.ClassType) then
+    Abort;
+end;
+
+procedure TdmDriverEdit.tbDriverBornSetText(Sender: TField; const Text: string);
+begin
+  inherited;
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TdmDriverEdit.tbDriverLicenceNumSetText(Sender: TField;
+  const Text: string);
+begin
+  inherited;
+  if (Length(Text) < 7) then
+    Sender.AsString := StringOfChar('0', 7-Length(Text))+ Text
+  else
+    Sender.AsString := Text;
+end;
+
+procedure TdmDriverEdit.tbDrFollowShaSetText(Sender: TField;
+  const Text: string);
+begin
+  inherited;
+  if not ValidTime(Sender, Text) then
+    Abort;
+end;
+
+procedure TdmDriverEdit.tbDrHeiterDateDoneValidate(Sender: TField);
+begin
+  inherited;
+  if (Sender.Text <> '') then
+    tbDrHeiterDateToDo.AsDateTime := IncMonth(StrToDate(Sender.Text),
+           tbTblHeiter.FieldByName('Tedirut').AsInteger);
+end;
+
+procedure TdmDriverEdit.tbDrHeiterIdHeiterValidate(Sender: TField);
+begin
+  inherited;
+  if CheckDblSub('KDrHeiter', 'IdDriver', tbDriverId.AsString,
+       Sender.FieldName, Sender.Text, 'האישור/היתר רשום לנהג זה כבר') then
+    Abort;
+end;
+// end fields events
+
+
+//tables events
+procedure TdmDriverEdit.tbDriverNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbDriverId.AsInteger := dmMain.GenerateNewId('IdDriver');
+  tbDriverCodDrv.AsInteger := GetMaxId('KDriver', 'CodDrv');
+  tbDriverClientId.AsInteger := dmMain.qrClientList.FieldByName('Id').AsInteger;
+end;
+
+procedure TdmDriverEdit.tbDrHeiterNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  if ((DataSet as TEDBTable).Name = 'tbDrHeiter') then
+    tbDrHeiterId.AsInteger := dmMain.GenerateNewId('NextNoHtr');
+  DataSet.FieldByName('DriverId').AsInteger := tbDriverId.AsInteger;
+end;
+
+procedure TdmDriverEdit.tbDrTahoNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  DataSet.FieldByName('DriverId').AsInteger := tbDriverId.AsInteger;
+  qrGnrl.DataSource := dsDriver;
+  qrGnrl.SQL.Text := 'SELECT Moed, CarId FROM KDrTaho ' +
+                    'WHERE DriverId = :Id ORDER BY Moed';
+  try
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+    begin
+      qrGnrl.Last;
+      tbDrTahoMoed.AsDateTime := qrGnrl.FieldByName('Moed').AsDateTime +1;
+      tbDrTahoCarId.AsString := qrGnrl.FieldByName('CarId').AsString;
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmDriverEdit.tbCrDrvBeforeOpen(DataSet: TDataSet);
+begin
+  inherited;
+  if dmMain.SelectAll then
+    tbCar.Filter := 'Pail = True'
+  else
+    tbCar.Filter := 'ClientId = ' + dmMain.qrClientList.FieldByName('Id').AsString +
+         ' AND Pail = True';
+end;
+
+procedure TdmDriverEdit.tbDriverBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  tbDriverMissing.AsBoolean := False;
+  tbDrHeiter.First;
+  tbDrHeiter.DisableControls;
+  try
+    while not tbDrHeiter.Eof do
+    begin
+      if (tbDrHeiterDateToDo.AsString = '') then
+      begin
+        tbDriverMissing.AsBoolean := True;
+        Exit;
+      end;
+      tbDrHeiter.Next;
+    end;
+  finally
+    tbDrHeiter.EnableControls;
+  end;
+end;
+
+procedure TdmDriverEdit.dsDriverDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  if tbDrFollow.Active then
+  begin
+    tbDrTaho.Last;
+    tbDrFollow.Last;
+    tbDrBdika.Last;
+    tbDrCourse.Last;
+    tbDrAcdnt.Last;
+    tbDrAvira.Last;
+  end;
+end;
+
+procedure TdmDriverEdit.tbDriverAfterPost(DataSet: TDataSet);
+begin
+  inherited;
+  dmDriverList.qrDriverList.Refresh;
+  dmDriverList.qrDriverList.Locate('Id', tbDriverId.AsInteger, []);
+end;
+// end tables events
+
+// called procedure
+procedure TdmDriverEdit.LoadHeterim;
+begin
+  with tbTblHeiter do
+  begin
+    First;
+    while not Eof do
+    begin
+      if FieldByName('Kavua').AsBoolean then
+      begin
+        tbDrHeiter.Append;
+        tbDrHeiterHeiterId.AsInteger := FieldByName('Id').AsInteger;
+        tbDrHeiter.Post;
+      end;
+      Next;
+    end;
+  end;
+end;
+
+procedure TdmDriverEdit.SaveData;
+begin
+  try
+    while dmData.dbMain.InTransaction do
+      Sleep(10);
+    dmData.dbMain.StartTransaction(EmptyEDBStringsArray);
+    tbDriver.Post;
+    if tbDrHeiter.CachingUpdates then
+      tbDrHeiter.ApplyCachedUpdates;
+    if (tbCrDrv.State <> dsBrowse)  then
+      tbCrDrv.Post;
+    if (tbDrAcdnt.State <> dsBrowse) then
+      tbDrAcdnt.Post;
+    if (tbDrAvira.State <> dsBrowse) then
+      tbDrAvira.Post;
+    if (tbDrCourse.State <> dsBrowse) then
+      tbDrCourse.Post;
+    if (tbDrBdika.State <> dsBrowse) then
+      tbDrBdika.Post;
+    if (tbDrTaho.State <> dsBrowse) then
+      tbDrTaho.Post;
+    if (tbDrFollow.State <> dsBrowse) then
+      tbDrFollow.Post;
+
+    dmData.dbMain.Commit;
+  except
+    on E: EDatabaseError do
+    begin
+      dmData.dbMain.Rollback;
+      HandelError('TdmDriverEdit.SaveData', 'כרטיס לא נשמר' + E.Message, E);
+    end;
+  end;
+end;
+
+procedure TdmDriverEdit.SetCarFilter(pState: String; pFilter: Boolean);
+begin
+end;
+//
+
+procedure TdmDriverEdit.SaveBigData(pDocSource, pDocNewName, pDocType,
+  pMoedDelete: String; pSaveOnFolder: Boolean);
+begin
+  dmGnrlBig := TdmGnrlBig.Create(Self);
+  try
+    dmGnrlBig.SetProperties('KDrTofes');
+    dmGnrlBig.SaveBigData(tbDriverId.AsInteger, 'DriverId', pDocSource, pDocNewName,
+      pDocType, pMoedDelete, pSaveOnFolder);
+  finally
+    dmGnrlBig.Free;
+  end;
+end;
+
+procedure TdmDriverEdit.SetPrintFilter(pDate: TDate);
+begin
+  tbDrAcdnt.Filter := 'AcdntD >= ' +
+        QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbDrAcdnt.Filtered := True;
+  tbDrAvira.Filter := 'AviraD >= ' +
+        QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbDrAvira.Filtered := True;
+  tbDrCourse.Filter := 'StartD >= ' +
+        QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbDrCourse.Filtered := True;
+  tbDrBdika.Filter := 'BdikaD >= ' +
+        QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbDrBdika.Filtered := True;
+  tbDrTaho.Filter := 'Moed >= ' +
+        QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbDrTaho.Filtered := True;
+  tbDrFollow.Filter := 'Moed >= ' +
+        QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbDrFollow.Filtered := True;
+end;
+
+procedure TdmDriverEdit.CancelPrintFilter;
+begin
+  tbDrAcdnt.Filtered := False;
+  tbDrAvira.Filtered := False;
+  tbDrCourse.Filtered := False;
+  tbDrBdika.Filtered := False;
+  tbDrTaho.Filtered := False;
+  tbDrFollow.Filtered := False;
+end;
+
+end.

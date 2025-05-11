@@ -1,0 +1,278 @@
+﻿unit MainDM;
+
+interface
+
+uses
+  SysUtils, Forms, Classes, DB, Dialogs, edbcomps, frxClass, frxDBSet;
+
+type
+  TdmMain = class(TDataModule)
+    dsClient: TDataSource;
+    tbFreze: TEDBTable;
+    qrWrnCar: TEDBQuery;
+    qrWrnCarId: TIntegerField;
+    qrWrnCarDateToDo: TDateField;
+    qrWrnCarTipul: TStringField;
+    qrWrnCarType: TStringField;
+    qrWrnCarNumber: TStringField;
+    qrWrnCarContact: TStringField;
+    qrWrnCarTel: TStringField;
+    qrWrnCarShem: TStringField;
+    qrWrnCarTel1: TStringField;
+    qrWrnCarOved: TStringField;
+    qrWrnCarAtar: TStringField;
+    qrWrnDrv: TEDBQuery;
+    qrWrnDrvclSign: TStringField;
+    qrWrnDrvId: TIntegerField;
+    qrWrnDrvDateToDo: TDateField;
+    qrWrnDrvHeiter: TStringField;
+    qrWrnDrvShemD: TStringField;
+    qrWrnDrvZeut: TStringField;
+    qrWrnDrvTelD: TStringField;
+    qrWrnDrvShem: TStringField;
+    qrWrnDrvTel1: TStringField;
+    qrWrnDrvOved: TStringField;
+    qrWrnDrvProblem: TBooleanField;
+    qrGnrl: TEDBQuery;
+    qrClientList: TEDBQuery;
+    qrWrnCarCod: TIntegerField;
+    qrWrnDrvCodDrv: TIntegerField;
+    dsWrnCar: TDataSource;
+    qrClientListId: TIntegerField;
+    qrClientListCod: TIntegerField;
+    qrClientListShem: TStringField;
+    qrClientListDept: TFloatField;
+    qrClientListFreze: TBooleanField;
+    qrWrnCarZeutM: TIntegerField;
+    frdbWrnCar: TfrxDBDataset;
+    qrWrnCarProfesion: TStringField;
+    qrWrnCarZeutP: TIntegerField;
+    qrWrnCarKtovet: TStringField;
+    qrWrnCarIsuv: TStringField;
+    qrWrnDrvDriverId: TIntegerField;
+    qrWrnCarTelP: TStringField;
+    qrWrnCarMovil: TStringField;
+    qrWrnCarCarId: TIntegerField;
+    qrWrnCarProblem: TBooleanField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrWrnCarclSignGetText(Sender: TField; var Text: String;
+      DisplayText: Boolean);
+    procedure qrWrnDrvclSignGetText(Sender: TField; var Text: String;
+      DisplayText: Boolean);
+    procedure qrWrnCarAfterOpen(DataSet: TDataSet);
+    procedure qrWrnDrvAfterOpen(DataSet: TDataSet);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure qrClientListAfterRefresh(DataSet: TDataSet);
+    procedure qrClientListBeforeOpen(DataSet: TDataSet);
+    procedure qrWrnCarBeforeOpen(DataSet: TDataSet);
+    procedure qrWrnDrvBeforeOpen(DataSet: TDataSet);
+  private
+    { Private declarations }
+    procedure UpdateFrezeField(pState: Boolean; pMainTbl, pIdValue: String);
+  public
+    SelectAll: Boolean;
+    ClientOrder, WrnCarOrder, WrnDrvOrder: String;
+    whrAddCar, WhrAddDrv: String;
+    ClnRecNo, ClnFrzRecNo: Integer;
+    RecNoWrnCar, RecNoWrnDrv: Integer;
+    procedure ReOpenTable(pDataSet: TDataSet; pId: Integer);
+    function GenerateNewId(pColumn: String): Integer;
+    function AllowDelClient(var pExValue: String): Boolean;
+    procedure UpdateFrezeState(pState, pLimited: Boolean; pFrezeTbl, pIdName,
+          pIdValue, pMoed, pMainTbl: String);
+    function GetTillDate: TDateTime;
+  end;
+
+var
+  dmMain: TdmMain;
+
+const
+   // when one client selected
+   whrSlctWrnC = 'WHERE Cr.Pail = True AND Cr.Freze = False AND DateToDo ' +
+                '>= :prmDateF AND DateToDo <= :prmDateP AND Cr.ClientId = :Id';
+   whrSlctWrnD = 'WHERE Dr.Pail = True AND Dr.Freze = False AND DateToDo' +
+                '>= :prmDateF AND DateToDo <= :prmDateP  AND Dr.ClientId = :Id';
+
+   // when "כל החברות" selected
+   whrAllWrnC = 'WHERE Cr.Pail = True AND Cr.Freze = False AND DateToDo ' +
+                '>= :prmDateF AND DateToDo <= :prmDateP';
+   whrAllWrnD = 'WHERE Dr.Pail = True AND Dr.Freze = False AND DateToDo' +
+                '>= :prmDateF AND DateToDo <= :prmDateP';
+
+implementation
+{$R *.dfm}
+uses
+  DataDM, KbFunc, WrnList, CarList, DriverList, BillList, Controls, LogErrorUtil;
+
+procedure TdmMain.DataModuleCreate(Sender: TObject);
+begin
+  SelectAll := True;
+  ClientOrder := GetIniValue('Client', 'Order', 'Shem');
+
+  try
+    qrClientList.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmMain.DataModuleCreate', 'קיים קובץ לא תקין!!!'+ #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmMain.qrClientListBeforeOpen(DataSet: TDataSet);
+begin
+  qrClientList.SQL[qrClientList.SQL.Count-1] := 'ORDER BY ' + ClientOrder;
+end;
+
+procedure TdmMain.qrWrnCarBeforeOpen(DataSet: TDataSet);
+begin
+  if SelectAll then
+    qrWrnCar.SQL[qrWrnCar.SQL.Count-2] :=  whrAllWrnC + whrAddCar
+  else
+    qrWrnCar.SQL[qrWrnCar.SQL.Count-2] :=  whrSlctWrnC + whrAddCar;
+
+  qrWrnCar.SQL[qrWrnCar.SQL.Count-1] := 'ORDER BY '+ WrnCarOrder;
+end;
+
+procedure TdmMain.qrWrnDrvBeforeOpen(DataSet: TDataSet);
+begin
+   if SelectAll then
+    qrWrnDrv.SQL[qrWrnDrv.SQL.Count-2] :=  whrAllWrnD + whrAddDrv
+  else
+    qrWrnDrv.SQL[qrWrnDrv.SQL.Count-2] :=  whrSlctWrnD + whrAddDrv;
+
+  qrWrnDrv.SQL[qrWrnDrv.SQL.Count-1] := 'ORDER BY '+ WrnDrvOrder;
+end;
+
+procedure TdmMain.ReOpenTable(pDataSet: TDataSet; pId: Integer);
+begin
+  try
+    pDataSet.DisableControls;
+    pDataSet.Close;
+    pDataSet.Open;
+    pDataSet.Locate('Id', pId, []);
+  finally
+    pDataSet.EnableControls;
+  end;
+end;
+
+function TdmMain.AllowDelClient(var pExValue: String): Boolean;
+begin
+  Result := True;
+  qrGnrl.SQL.Text := 'SELECT Id FROM KBill WHERE ClientId = ' +
+            qrClientList.FieldByName('Id').AsString;
+  qrGnrl.Open;
+  if not qrGnrl.IsEmpty then
+  begin
+    Result := False;
+    pExValue := ' חשבונות ';
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmMain.GenerateNewId(pColumn: String): Integer;
+begin
+  Result := 0;
+  qrGnrl.SQL.Text := 'SELECT ' + pColumn + ' FROM KCounter';
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName(pColumn).AsInteger + 1;
+  finally
+    qrGnrl.Close;
+    qrGnrl.SQL.Text := 'UPDATE KCounter SET ' + pColumn + ' = ' +
+      IntToStr(Result);
+  qrGnrl.ExecSQL;
+  end;
+end;
+
+function TdmMain.GetTillDate: TDateTime;
+begin
+  Result := Date;
+  qrGnrl.SQL.Text := 'SELECT DayWrn FROM KDefault';
+  try
+    qrGnrl.Open;
+    if (qrGnrl.FieldByName('DayWrn').AsInteger > 0) then
+      Result := Date + qrGnrl.FieldByName('DayWrn').AsInteger;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmMain.qrWrnCarclSignGetText(Sender: TField; var Text: String;
+  DisplayText: Boolean);
+begin
+  if qrWrnCarDateToDo.AsDateTime < Date then
+    Text := '!';
+end;
+
+procedure TdmMain.qrWrnDrvclSignGetText(Sender: TField; var Text: String;
+  DisplayText: Boolean);
+begin
+  if qrWrnDrvDateToDo.AsDateTime < Date then
+    Text := '!';
+end;
+
+procedure TdmMain.qrClientListAfterRefresh(DataSet: TDataSet);
+begin
+  ClnRecNo := qrClientList.RecordCount;
+  try
+    qrGnrl.SQL.Text :=  'SELECT COUNT(Id) AS Num FROM KClient ' +
+                    'WHERE Pail = True AND Freze = True';
+    qrGnrl.Open;
+    ClnFrzRecNo := qrGnrl.FieldByName('Num').AsInteger;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmMain.qrWrnCarAfterOpen(DataSet: TDataSet);
+begin
+  RecNoWrnCar := qrWrnCar.RecordCount;
+end;
+
+procedure TdmMain.qrWrnDrvAfterOpen(DataSet: TDataSet);
+begin
+  RecNoWrnDrv := qrWrnDrv.RecordCount;
+end;
+
+procedure TdmMain.UpdateFrezeState(pState, pLimited: Boolean; pFrezeTbl,
+  pIdName, pIdValue, pMoed, pMainTbl: String);
+begin
+  if pState then
+  begin
+    if pLimited then
+    begin
+      qrGnrl.SQL.Text := 'INSERT INTO ' + pFrezeTbl + ' (' + pIdName + ', Moed) ' +
+          'VALUES (' + pIdValue + ', DATE ' + QuotedStr(pMoed) + ')';
+      dmMain.qrGnrl.ExecSQL;
+    end;
+    UpdateFrezeField(pState, pMainTbl, pIdValue);
+  end
+  else
+    UpdateFrezeField(pState, pMainTbl, pIdValue);
+end;
+
+procedure TdmMain.UpdateFrezeField(pState: Boolean; pMainTbl, pIdValue: String);
+begin
+  Screen.Cursor := crHourGlass;
+  try
+    dmMain.qrGnrl.SQL.Text := 'UPDATE ' + pMainTbl + ' SET Freze = ' +
+          Engine.BooleanToSQLStr(pState) + ' WHERE Id = ' + pIdValue;
+    dmMain.qrGnrl.ExecSQL;
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TdmMain.DataModuleDestroy(Sender: TObject);
+var
+  Comp: TComponent;
+begin
+  SetIniValue('Client', 'Order', ClientOrder);
+  for Comp in Self do
+    if (Comp is TDataSet) and TDataSet(Comp).Active then
+      TDataSet(Comp).Close;
+end;
+
+end.

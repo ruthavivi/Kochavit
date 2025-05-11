@@ -1,0 +1,97 @@
+unit DrTahoSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  RpBase, RpSystem, RpDefine, RpRave, RpConDS, RpConBDE, RpCon, RpRender,
+  RpRenderRTF, BDE;
+
+type
+  TfrmDrTahoSpssSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    ccChartsTh: TRvCustomConnection;
+    qcTahoByMm: TRvQueryConnection;
+    qcTahoByYy: TRvQueryConnection;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure ccChartsThGetCols(Connection: TRvCustomConnection);
+    procedure ccChartsThGetRow(Connection: TRvCustomConnection);
+  private
+    whrLn: String;
+    procedure SaveTempFile;
+    procedure SetChart(pLabel, pCmt: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDrTahoSpssSlctDlg: TfrmDrTahoSpssSlctDlg;
+
+implementation
+uses
+   DrTahoFilter, GnrlSpssChart, RPTChart;
+{$R *.dfm}
+
+procedure TfrmDrTahoSpssSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('TH');
+  whrLn := frmDrTahoFilter.qrFilter.SQL[frmDrTahoFilter.qrFilter.SQL.Count -2];
+end;
+
+procedure TfrmDrTahoSpssSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  totRec := frmDrTahoFilter.qrFilter.RecordCount;
+  try
+    OpenSqlTmpSpss('TahoByMmYy.SQL', whrLn);
+    SaveTempFile;
+    OpenSqlSpss('');
+    frmChart := TfrmChart.Create(Self);
+    SetChart(qrSpss.Fields[0].FieldName, 'Cmt');
+    if ((Sender as TBitBtn).Name = 'btnPrint') then
+      PrintSpss('', IntToStr(totRec))
+    else
+      PreviewSpss('', IntToStr(totRec));
+  finally
+   qrSpss.Close;
+   frmChart.Free;
+  end;
+end;
+
+procedure TfrmDrTahoSpssSlctDlg.SaveTempFile;
+var
+  tmpPathFile: AnsiString;
+begin
+  with qrSpss do
+  begin
+    Open;
+    tmpPathFile := ExtractFilePath(Application.ExeName)+ 'Data\Temp';
+    DbiMakePermanent(qrSpss.Handle, PAnsiChar(tmpPathFile), True);
+    Close;
+  end;
+end;
+
+procedure TfrmDrTahoSpssSlctDlg.ccChartsThGetCols(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  Connection.WriteField('ChartTh', dtGraphic, 30, '', '');
+end;
+
+procedure TfrmDrTahoSpssSlctDlg.ccChartsThGetRow(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  WriteChartData(Connection, frmChart.dcChart);
+end;
+
+procedure TfrmDrTahoSpssSlctDlg.SetChart(pLabel, pCmt: String);
+begin
+  frmChart.dcChart.Series[0].DataSource := qrSpss;
+  frmChart.dcChart.Series[0].XLabelsSource := pLabel;
+  frmChart.dcChart.Series[0].YValues.ValueSource := pCmt;
+end;
+
+end.

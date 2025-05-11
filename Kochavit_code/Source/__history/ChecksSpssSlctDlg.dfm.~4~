@@ -1,0 +1,21 @@
+inherited frmChecksSpssSlctDlg: TfrmChecksSpssSlctDlg
+  ExplicitWidth = 320
+  ExplicitHeight = 240
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  object ccChartsChecks: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsChecksGetCols
+    OnGetRow = ccChartsChecksGetRow
+    Left = 249
+    Top = 104
+  end
+end

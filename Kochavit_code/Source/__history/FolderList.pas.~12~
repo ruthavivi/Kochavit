@@ -1,0 +1,141 @@
+unit FolderList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ComCtrls, Grids, DBGrids, MyDBGrid, ToolWin, edbcomps,
+  ActnList, StdActns, ImgList, StdCtrls, Buttons, ExtCtrls, ShellAPI,
+  GnrlBigDM;
+
+type
+  TfrmFolderList = class(TForm)
+    ToolBar1: TToolBar;
+    btnShowDoc: TToolButton;
+    DBGrid: TMyDBGrid;
+    dsFolder: TDataSource;
+    ImageList1: TImageList;
+    ActionList1: TActionList;
+    acShowDoc: TAction;
+    acDelete: TAction;
+    Panel1: TPanel;
+    btnClose: TBitBtn;
+    ToolButton1: TToolButton;
+    acShiftDoc: TAction;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    acMoveToRec: TAction;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acShowDocExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
+    procedure acShiftDocExecute(Sender: TObject);
+    procedure acMoveToRecExecute(Sender: TObject);
+  private
+    Table, MainId: String;
+    procedure MoveClient;
+  public
+    procedure OpenFile(pTable, pMainFldName, pMainFldValue: String);
+  end;
+
+var
+  frmFolderList: TfrmFolderList;
+
+implementation
+uses
+  DialogsHeb, SlctOther;
+{$R *.dfm}
+
+procedure TfrmFolderList.FormCreate(Sender: TObject);
+begin
+  dmGnrlBig := TdmGnrlBig.Create(Self);
+end;
+
+procedure TfrmFolderList.OpenFile(pTable, pMainFldName, pMainFldValue: String);
+begin
+  Table := pTable;
+  MainId := pMainFldValue;
+  dmGnrlBig.OpenDataBig(pTable, pMainFldName, pMainFldValue);
+end;
+
+procedure TfrmFolderList.acShowDocExecute(Sender: TObject);
+var
+  tmpFile: String;
+begin
+  tmpFile := ExtractFilePath(Application.ExeName) + 'Temp\Tmp.' +
+      dmGnrlBig.qrBigFolder.FieldByName('Ext').AsString;
+  TBlobField(dmGnrlBig.qrBigFolder.FieldByName('Tofes')).SaveToFile(tmpFile);
+  ShellExecute(Application.MainForm.Handle, nil, PChar(TmpFile),
+        nil, nil, SW_SHOW);
+end;
+
+procedure TfrmFolderList.acDeleteExecute(Sender: TObject);
+begin
+  if MessageDlgH('мозеч осок осеоп', mtConfirmation,
+      [mbYes, mbNo], 0, 0) = mrYes then
+    dmGnrlBig.DeleteDoc(Table, dmGnrlBig.qrBigFolder.FieldByName('Id').AsString);
+end;
+
+procedure TfrmFolderList.acShiftDocExecute(Sender: TObject);
+var
+  Module, Path: String;
+begin
+  if (Table = 'KClTofes') then
+    Module := 'Client\'
+  else if (Table = 'KCrTofes') then
+    Module := 'Car\'
+  else if (Table = 'KDrTofes') then
+    Module := 'Driver\';
+  Path := ExtractFilePath(Application.ExeName) + 'Documents\' + Module+MainId;
+  if not DirectoryExists(Path) then
+    CreateDir(Path);
+  TBlobField(dmGnrlBig.qrBigFolder.FieldByName('Tofes')).SaveToFile(Path+'\'+
+    dmGnrlBig.qrBigFolder.FieldByName('Name').AsString+'.'+
+    dmGnrlBig.qrBigFolder.FieldByName('Ext').AsString);
+  dmGnrlBig.DeleteDoc(Table, dmGnrlBig.qrBigFolder.FieldByName('Id').AsString);
+end;
+
+procedure TfrmFolderList.acMoveToRecExecute(Sender: TObject);
+begin
+  frmSlctOther := TfrmSlctOther.Create(Self);
+  try
+    if (Table = 'KClTofes') then
+      MoveClient;
+//    else if (Table = 'KCrTofes') then
+//    else if (Table = 'KDrTofes') then
+    if (frmSlctOther.ShowModal = mrOk) then
+    begin
+      dmGnrlBig.qrGnrl.SQL.Text := 'UPDATE KClTofes SET ClientId = ' +
+        IntToStr(frmSlctOther.Id) + ' WHERE Id = ' +
+        dmGnrlBig.qrBigFolder.FieldByName('Id').AsString;
+      dmGnrlBig.qrGnrl.ExecSQL;
+    end;
+    dmGnrlBig.qrBigFolder.Refresh;
+  finally
+    frmSlctOther.qrSlctOther.Close;
+    frmSlctOther.Free;
+  end;
+end;
+
+procedure TfrmFolderList.MoveClient;
+begin
+  frmSlctOther.qrSlctOther.SQL.Text := 'SELECT Id, Shem AS Main FROM KClient ' +
+      'ORDER BY Shem ';
+  frmSlctOther.qrSlctOther.Open;
+end;
+
+procedure TfrmFolderList.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmFolderList.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmGnrlBig.CloseDataBig;
+  Action := caFree;
+end;
+
+end.

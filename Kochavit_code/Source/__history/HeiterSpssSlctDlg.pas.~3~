@@ -1,0 +1,26 @@
+unit HeiterSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlSpssSlctDlg, edbcomps, DB, RpRave, RpDefine, RpBase, RpSystem,
+  Spin, StdCtrls, Buttons, ExtCtrls, RpCon;
+
+type
+  TfrmHeiterSpssSlctDlg = class(TfrmGnrlSpssSlctDlg)
+    ccChartsHeiter: TRvCustomConnection;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmHeiterSpssSlctDlg: TfrmHeiterSpssSlctDlg;
+
+implementation
+
+{$R *.dfm}
+
+end.

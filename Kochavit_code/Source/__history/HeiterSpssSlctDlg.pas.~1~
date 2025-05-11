@@ -1,0 +1,85 @@
+unit HeiterSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  RpConDS, RpConBDE, RpCon, RpBase, RpSystem, RpDefine, RpRave, RpRender,
+  RpRenderRTF;
+
+type
+  TfrmHeiterSpssSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    ccChartsHtr: TRvCustomConnection;
+    qcHeiterByHtr: TRvQueryConnection;
+    qcHeiterByCln: TRvQueryConnection;
+    qcHeiterByDrv: TRvQueryConnection;
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure ccChartsHtrGetCols(Connection: TRvCustomConnection);
+    procedure ccChartsHtrGetRow(Connection: TRvCustomConnection);
+  private
+    { Private declarations }
+    whrLn: String;
+    procedure SetChart(pLabel, pCmt: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmHeiterSpssSlctDlg: TfrmHeiterSpssSlctDlg;
+
+implementation
+{$R *.dfm}
+uses
+   HeiterFilter, GnrlSpssChart, RPTChart;
+
+{ TfrmHeiterSpssSlctDlg }
+
+procedure TfrmHeiterSpssSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('HS');
+  whrLn := frmHeiterFilter.qrFilter.SQL[frmHeiterFilter.qrFilter.SQL.Count -2];
+end;
+
+procedure TfrmHeiterSpssSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  totRec := frmHeiterFilter.qrFilter.RecordCount;
+  try
+   OpenSqlSpss(whrLn);
+   frmChart := TfrmChart.Create(Self);
+   SetChart(qrSpss.Fields[0].FieldName, 'Num');
+   if ((Sender as TBitBtn).Name = 'btnPrint') then
+      PrintSpss('', IntToStr(totRec))
+    else
+      PreviewSpss('', IntToStr(totRec));
+  finally
+   qrSpss.Close;
+   frmChart.Free;
+  end;
+end;
+
+procedure TfrmHeiterSpssSlctDlg.ccChartsHtrGetCols(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  Connection.WriteField('ChartHtr', dtGraphic, 30, '', '');
+end;
+
+procedure TfrmHeiterSpssSlctDlg.ccChartsHtrGetRow(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  WriteChartData(Connection, frmChart.dcChart);
+end;
+
+procedure TfrmHeiterSpssSlctDlg.SetChart(pLabel, pCmt: String);
+begin
+  frmChart.dcChart.Series[0].DataSource := qrSpss;
+  frmChart.dcChart.Series[0].XLabelsSource := pLabel;
+  frmChart.dcChart.Series[0].YValues.ValueSource := pCmt;
+end;
+
+end.

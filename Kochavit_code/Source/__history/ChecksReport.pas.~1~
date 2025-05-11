@@ -1,0 +1,25 @@
+unit ChecksReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, StdActns, DBActns, ActnList,
+  StdCtrls, Buttons, ComCtrls, ToolWin, Grids, DBGrids;
+
+type
+  TfrmGnrlReport1 = class(TfrmGnrlReport)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGnrlReport1: TfrmGnrlReport1;
+
+implementation
+
+{$R *.dfm}
+
+end.

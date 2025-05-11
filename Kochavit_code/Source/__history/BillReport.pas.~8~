@@ -1,0 +1,88 @@
+unit BillReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, DBTables, edbcomps,
+  StdActns, DBActns;
+
+type
+  TfrmBillReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBillReport: TfrmBillReport;
+
+implementation
+
+{$R *.dfm}
+uses
+   BillFilterDM, BillRprtSlctDlg, BillSpssSlctDlg, LogErrorUtil;
+
+procedure TfrmBillReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('ReciptNo');
+  SetStatusBar;
+end;
+
+procedure TfrmBillReport.SetStatusBar;
+var
+   procent: String;
+begin
+  Procent := FormatFloat('#.##', StrToInt(dmBillFilter.TotalSelectRec) /
+          StrToInt(dmBillFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ רכבים בדו"ח: ' + dmBillFilter.TotalSelectRec +
+      ' מתוך ' + dmBillFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmBillReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmBillFilter.SqlState.Order := GetOrders(Column);
+  dmBillFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmBillReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmBillRprtSlctDlg := TfrmBillRprtSlctDlg.Create(Self);
+  frmBillRprtSlctDlg.Show;
+end;
+
+procedure TfrmBillReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmBillSpssSlctDlg := TfrmBillSpssSlctDlg.Create(Self);
+  frmBillSpssSlctDlg.Show;
+end;
+
+procedure TfrmBillReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+   SaveExcel(dmBillFilter.qrFilter);
+end;
+
+procedure TfrmBillReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmBillFilter.qrFilter.Close;
+  inherited;
+  frmBillReport := nil;
+end;
+
+end.

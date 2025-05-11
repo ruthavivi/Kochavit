@@ -1,0 +1,28 @@
+inherited frmChecksSpssSlctDlg: TfrmChecksSpssSlctDlg
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    object RadioGroup1: TRadioGroup
+      Left = 1
+      Top = 1
+      Width = 424
+      Height = 172
+      Align = alClient
+      TabOrder = 2
+      OnClick = rgReportsClick
+      ExplicitLeft = 2
+      ExplicitTop = 9
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  object ccChartsChecks: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsChecksGetCols
+    Left = 249
+    Top = 104
+  end
+end

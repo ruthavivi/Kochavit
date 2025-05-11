@@ -1,0 +1,25 @@
+unit CheckEdit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlEdit, Menus, ImgList, ExtDlgs, StdActns, ActnList, ComCtrls,
+  StdCtrls, Buttons, ToolWin;
+
+type
+  TfrmGnrlEdit1 = class(TfrmGnrlEdit)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGnrlEdit1: TfrmGnrlEdit1;
+
+implementation
+
+{$R *.dfm}
+
+end.

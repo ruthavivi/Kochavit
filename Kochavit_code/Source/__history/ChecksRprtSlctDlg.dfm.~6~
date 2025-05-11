@@ -1,0 +1,20 @@
+inherited frmChecksRprtSlctDlg: TfrmChecksRprtSlctDlg
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      Top = 4
+      OnClick = btnPreviewClick
+      ExplicitTop = 4
+    end
+  end
+  object rqCheckRprt: TRvDataSetConnection
+    RuntimeVisibility = rtDeveloper
+    DataSet = dmChecksFilter.qrFilter
+    Left = 248
+    Top = 48
+  end
+end

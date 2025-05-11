@@ -1,0 +1,56 @@
+unit UnTofesDrvReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmUnTofesDrvReport = class(TfrmGnrlReport)
+    procedure acPrintExecute(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUnTofesDrvReport: TfrmUnTofesDrvReport;
+
+implementation
+uses
+  UnTofesFilter, UnTofesDrvRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmUnTofesDrvReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Shem');
+end;
+
+procedure TfrmUnTofesDrvReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmUnTofesFilter.qrFilter, Column);
+end;
+
+procedure TfrmUnTofesDrvReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmUnTofesDrvRprtSlctDlg := TfrmUnTofesDrvRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmUnTofesDrvReport.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  frmUnTofesFilter.qrFilter.Close;
+  inherited;
+end;
+
+
+
+end.

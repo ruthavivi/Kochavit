@@ -1,0 +1,37 @@
+inherited frmOfenPayTbl: TfrmOfenPayTbl
+  Caption = #1512#1513#1497#1502#1514' '#1488#1493#1508#1504#1497' '#1514#1513#1500#1493#1501
+  ExplicitWidth = 275
+  ExplicitHeight = 354
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited StatusBar: TStatusBar
+    ExplicitTop = 308
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 36
+    ExplicitHeight = 272
+    inherited dbGrid: TCheckDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'OfenPay'
+          Width = 176
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited tbTbl: TEDBTable
+    IndexFieldNames = 'OfenPay'
+    TableName = 'KTblOfenPay'
+    object tbTblId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTblOfenPay: TStringField
+      DisplayLabel = #1488#1493#1508#1503' '#1514#1513#1500#1493#1501
+      FieldName = 'OfenPay'
+    end
+  end
+end

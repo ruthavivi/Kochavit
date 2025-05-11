@@ -1,0 +1,100 @@
+unit TahoReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, StdActns, DBActns;
+
+type
+  TfrmTahoReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+    procedure ReOpen;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTahoReport: TfrmTahoReport;
+
+implementation
+uses
+   DrTahoFilter, DrTahoRprtSlctDlg, DrTahoSpssSlctDlg;
+{$R *.dfm}
+
+procedure TfrmTahoReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Moed');
+  SetStatusBar;
+  LoadPosition('DrTahoRpt', (Sender as TForm));
+end;
+
+procedure TfrmTahoReport.SetStatusBar;
+var
+   procent: Real;
+begin
+   try
+       procent := frmDrTahoFilter.selectRec /
+                   frmDrTahoFilter.totalRec * 100;
+   except
+       on EInvalidOp do procent := 0;
+   end;
+
+   StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmDrTahoFilter.selectRec) +
+       ' בדיקות טכוגרף מתוך ' + IntToStr(frmDrTahoFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmTahoReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmDrTahoFilter.qrFilter, Column);
+end;
+
+procedure TfrmTahoReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmDrTahoRprtSlctDlg := TfrmDrTahoRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmTahoReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmDrTahoSpssSlctDlg := TfrmDrTahoSpssSlctDlg.Create(Self);
+end;
+
+procedure TfrmTahoReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmDrTahoFilter.qrFilter);
+end;
+
+procedure TfrmTahoReport.ReOpen;
+begin
+  with frmDrTahoFilter.qrFilter do
+  begin
+    DisableControls;
+    Close;
+    Open;
+    EnableControls;
+  end;
+end;
+
+procedure TfrmTahoReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('DrTahoRpt', (Sender as TForm));
+  frmDrTahoFilter.qrFilter.Close;
+  inherited;
+end;
+
+end.

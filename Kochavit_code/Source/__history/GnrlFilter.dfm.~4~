@@ -1,0 +1,137 @@
+object frmGnrlFilter: TfrmGnrlFilter
+  Left = 184
+  Top = 198
+  BiDiMode = bdRightToLeft
+  Caption = 'frmGnrlFilter'
+  ClientHeight = 202
+  ClientWidth = 443
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  FormStyle = fsMDIChild
+  OldCreateOrder = False
+  ParentBiDiMode = False
+  Visible = True
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 171
+    Width = 443
+    Height = 31
+    Align = alBottom
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 0
+    object btnExecute: TBitBtn
+      Left = 256
+      Top = 7
+      Width = 61
+      Height = 20
+      Cursor = crHandPoint
+      Caption = '&'#1489#1510#1506
+      Default = True
+      DoubleBuffered = True
+      Font.Charset = HEBREW_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        E6000000424DE60000000000000076000000280000000F0000000E0000000100
+        0400000000007000000000000000000000001000000000000000000000000000
+        BF0000BF000000BFBF00BF000000BF00BF00BFBF0000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF0087FFFFFFFFFFFF0B3087FFFFFFFFFFF0BB0087FF
+        FFFFFFFF0BB3008FFFFFFFFFF0BBB008FFFFFFFFF00BBB007FFFFFFF00BBB007
+        FFF0FFFFF00BBB007FF0FFFFFFF00BB007F0FFFFFFFFF00B0070FFFFFFFFFFF0
+        00F0FFFFFFFFFFFFFFF0}
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 0
+    end
+    object btnClose: TBitBtn
+      Left = 185
+      Top = 7
+      Width = 61
+      Height = 20
+      Cursor = crHandPoint
+      Cancel = True
+      Caption = '&'#1505#1490#1493#1512
+      DoubleBuffered = True
+      Font.Charset = HEBREW_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -12
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Glyph.Data = {
+        DE010000424DDE01000000000000760000002800000024000000120000000100
+        0400000000006801000000000000000000001000000000000000000000000000
+        80000080000000808000800000008000800080800000C0C0C000808080000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00388888888877
+        F7F787F8888888888333333F00004444400888FFF444448888888888F333FF8F
+        000033334D5007FFF4333388888888883338888F0000333345D50FFFF4333333
+        338F888F3338F33F000033334D5D0FFFF43333333388788F3338F33F00003333
+        45D50FEFE4333333338F878F3338F33F000033334D5D0FFFF43333333388788F
+        3338F33F0000333345D50FEFE4333333338F878F3338F33F000033334D5D0FFF
+        F43333333388788F3338F33F0000333345D50FEFE4333333338F878F3338F33F
+        000033334D5D0EFEF43333333388788F3338F33F0000333345D50FEFE4333333
+        338F878F3338F33F000033334D5D0EFEF43333333388788F3338F33F00003333
+        4444444444333333338F8F8FFFF8F33F00003333333333333333333333888888
+        8888333F00003333330000003333333333333FFFFFF3333F00003333330AAAA0
+        333333333333888888F3333F00003333330000003333333333338FFFF8F3333F
+        0000}
+      NumGlyphs = 2
+      ParentDoubleBuffered = False
+      ParentFont = False
+      TabOrder = 1
+      OnClick = btnCloseClick
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 443
+    Height = 171
+    Align = alClient
+    TabOrder = 1
+    object grbMain: TGroupBox
+      Left = 1
+      Top = 1
+      Width = 441
+      Height = 169
+      Align = alClient
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -13
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 0
+    end
+  end
+  object tbl: TEDBTable
+    DatabaseName = 'Kb'
+    Left = 104
+    Top = 152
+  end
+  object qrFilter: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 56
+    Top = 32
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 56
+    Top = 120
+  end
+end

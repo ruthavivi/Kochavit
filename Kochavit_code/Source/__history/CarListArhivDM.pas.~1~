@@ -1,0 +1,24 @@
+unit CarListArhivDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlListArhivDM, DB, edbcomps;
+
+type
+  TdmCarListArhiv = class(TdmGnrlListArhiv)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmCarListArhiv: TdmCarListArhiv;
+
+implementation
+
+{$R *.dfm}
+
+end.

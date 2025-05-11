@@ -1,0 +1,24 @@
+unit ClientListArhivDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlListArhivDM, DB, edbcomps;
+
+type
+  TdmGnrlListArhiv2 = class(TdmGnrlListArhiv)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmGnrlListArhiv2: TdmGnrlListArhiv2;
+
+implementation
+
+{$R *.dfm}
+
+end.

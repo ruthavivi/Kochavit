@@ -1,0 +1,64 @@
+inherited dlgImportFile: TdlgImportFile
+  ClientHeight = 153
+  ClientWidth = 373
+  OnActivate = FormActivate
+  ExplicitWidth = 379
+  ExplicitHeight = 181
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited imDisplay: TImage
+    Width = 373
+    Height = 0
+    ExplicitTop = 104
+    ExplicitWidth = 373
+    ExplicitHeight = 0
+  end
+  inherited Panel1: TPanel
+    Top = 0
+    Width = 373
+    ExplicitTop = 0
+    ExplicitWidth = 373
+    inherited Label1: TLabel
+      Left = 284
+      ExplicitLeft = 284
+    end
+    inherited Label2: TLabel
+      Left = 303
+      ExplicitLeft = 303
+    end
+    inherited edDocName: TEdit
+      ExplicitLeft = 15
+    end
+    inherited edDeleteDate: TJvDateEdit
+      Anchors = [akTop, akRight]
+    end
+    inherited cbSaveOnFolder: TCheckBox
+      Checked = True
+      State = cbChecked
+    end
+  end
+  inherited Panel2: TPanel
+    Top = 104
+    Width = 373
+    Height = 49
+    ExplicitTop = 104
+    ExplicitWidth = 373
+    ExplicitHeight = 49
+    inherited btnAbort: TBitBtn
+      Left = 85
+      OnClick = btnAbortClick
+      ExplicitLeft = 85
+    end
+    inherited btnOk: TBitBtn
+      Left = 203
+      ExplicitLeft = 203
+    end
+  end
+  object OpenDialog: TOpenDialog
+    Filter = 'Any file (*.*)|*.*'
+    InitialDir = 'C:\'
+    Options = [ofHideReadOnly, ofFileMustExist, ofEnableSizing]
+    Left = 304
+    Top = 88
+  end
+end

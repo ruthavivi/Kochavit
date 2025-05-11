@@ -1,0 +1,57 @@
+inherited frmHeiterSpssSlctDlg: TfrmHeiterSpssSlctDlg
+  Caption = #1489#1495#1497#1512#1514' '#1491#1493'"'#1495' '#1505#1496#1496#1497#1505#1496#1497
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited rgReports: TRadioGroup
+      Columns = 2
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited qrSpss: TQuery
+    SQL.Strings = (
+      'SELECT Dr.ShemD, COUNT(Ht.Id) Num  '
+      'FROM KDrHeiterHis Ht '
+      'LEFT JOIN KDriver Dr ON Dr.Id = Ht.IdDriver '
+      'LEFT JOIN KClient Cl ON Cl.Id = Dr.ClientId '
+      'LEFT JOIN KTblHeiter Th ON Th.Id = Ht.IdHeiter '
+      'GROUP BY Dr.ShemD'
+      'ORDER BY Dr.ShemD')
+  end
+  object ccChartsHtr: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsHtrGetCols
+    OnGetRow = ccChartsHtrGetRow
+    Left = 9
+    Top = 112
+  end
+  object qcHeiterByHtr: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 49
+    Top = 112
+  end
+  object qcHeiterByCln: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 89
+    Top = 112
+  end
+  object qcHeiterByDrv: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 129
+    Top = 112
+  end
+end

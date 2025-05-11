@@ -1,0 +1,53 @@
+unit DriverFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmDriverFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterCodDrv: TIntegerField;
+    qrFilterZeut: TStringField;
+    qrFilterShemD: TStringField;
+    qrFilterKtovetD: TStringField;
+    qrFilterIsuvD: TStringField;
+    qrFilterMikudD: TIntegerField;
+    qrFilterTelD: TStringField;
+    qrFilterCelD: TStringField;
+    qrFilterBorn: TDateField;
+    qrFilterLicenceNum: TStringField;
+    qrFilterLicenceId: TIntegerField;
+    qrFilterLimit: TStringField;
+    qrFilterWorkStrt: TDateField;
+    qrFilterOvedId: TSmallintField;
+    qrFilterRemark: TStringField;
+    qrFilterClientId: TIntegerField;
+    qrFilterFreze: TBooleanField;
+    qrFilterMissing: TBooleanField;
+    qrFilterPail: TBooleanField;
+    qrFilterStamp: TDateTimeField;
+    qrFilterShem: TStringField;
+    qrFilterHp: TIntegerField;
+    qrFilterIsuv: TStringField;
+    qrFilterTel1: TStringField;
+    qrFilterTel2: TStringField;
+    qrFilterLicence: TStringField;
+    qrFilterLicencePrd: TSmallintField;
+    qrFilterOved: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmDriverFilter: TdmDriverFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

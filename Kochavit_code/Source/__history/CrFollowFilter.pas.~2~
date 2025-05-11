@@ -1,0 +1,40 @@
+unit CrFollowFilter;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlFilter, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls, Vcl.Mask;
+
+type
+  TfrmCrFollowFilter = class(TfrmGnrlFilter)
+    lbADateDone: TLabel;
+    lbZDateDone: TLabel;
+    edAMoed: TMaskEdit;
+    edZMoed: TMaskEdit;
+    cbMoed: TCheckBox;
+    lbEShem: TLabel;
+    cbEShem: TComboBox;
+    cbShem: TCheckBox;
+    procedure cbMoedClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCrFollowFilter: TfrmCrFollowFilter;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCrFollowFilter.cbMoedClick(Sender: TObject);
+begin
+  inherited;
+  dmTipulFilter := TdmTipulFilter.Create(Self);
+end;
+
+end.

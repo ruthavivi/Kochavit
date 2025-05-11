@@ -1,0 +1,160 @@
+unit ExportToExcel;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, DB, ExportDS, SME2Cell, SME2XLS, sme2xlsx, scExcelExport;
+
+
+type
+  TfrmExportToExcel = class(TForm)
+    Panel1: TPanel;
+    ExportToXLS: TSMExportToXLS;
+    ex2Excel: TSMExportToXLSX;
+    scExcelExport: TscExcelExport;
+  private
+    { Private declarations }
+    SavedFile, BodyTxt: string;
+    procedure SendByEMail(pClientName: string; pToEmails: TStringList);
+    function GetSignature: string;
+  public
+    procedure SendToExcelFile(pDset: TDataSet; pClientName, pToFile, pAction, pFrom: string;
+      pToEmails: TStringList); overload;
+    procedure SendToExcelFile(pDSet: TDataSet; pToFile: String); overload;
+    procedure SendToExcelFile(pToFile: String; pDSetMain, pDSetDtl1, pDSetDtl2: TDataSet); overload;
+  end;
+
+var
+  frmExportToExcel: TfrmExportToExcel;
+
+implementation
+uses
+  MainDM, ShellAPI, SendEMail;
+
+{$R *.dfm}
+
+
+{ TfrmExportToExcel }
+procedure TfrmExportToExcel.SendToExcelFile(pDset: TDataSet; pClientName,
+  pToFile, pAction, pFrom: string; pToEmails: TStringList);
+var
+  Path: string;
+begin
+  Screen.Cursor := crHourGlass;
+  Path := ExtractFilePath(Application.ExeName)+'Temp\';
+  SavedFile := Path + pToFile + '.xls';
+  scExcelExport.Dataset := pDset;
+  scExcelExport.HeaderText.Add('');
+  scExcelExport.HeaderText.Text := pClientName;
+  scExcelExport.MergeHeaderCells := True;
+
+  try
+    scExcelExport.ExportDataset;
+    scExcelExport.SaveAs(SavedFile, ffXLS);
+  finally
+    scExcelExport.Disconnect(True);
+  end;
+
+  if (pAction = 'EMail') then
+  begin
+    if (pFrom = 'Cars') then
+      BodyTxt := 'לכבוד' +#13#10+ pClientName +#13#10#10#13+
+          'מצורפת מצבת הרכבים של חברתך.' +#13#10#13#10+GetSignature
+    else
+      BodyTxt := 'מצורפת מצבת נהגים של חברתך.';
+    SendByEMail(pClientName, pToEmails);
+  end
+  else
+    ShellExecute(Handle, 'open', PChar(SavedFile) ,nil, nil, SW_SHOWNORMAL);
+
+  Screen.Cursor := crDefault;
+end;
+
+function TfrmExportToExcel.GetSignature: string;
+begin
+  dmMain.qrGnrl.SQL.Text := 'SELECT Signature FROM KDefault';
+  try
+    dmMain.qrGnrl.Open;
+    Result := dmMain.qrGnrl.FieldByName('Signature').AsString;
+  finally
+    dmMain.qrGnrl.Close;
+  end;
+end;
+
+procedure TfrmExportToExcel.SendByEMail(pClientName: string; pToEmails: TStringList);
+var
+  Attachments, Body: TStringList;
+  Subject: string;
+begin
+//  EmailSend := False;
+  frmSendEMail := TfrmSendEMail.Create(nil);
+  Attachments := TStringList.Create;
+  Subject := 'הודעה מקצין הבטיחות שלך';
+  Body := TStringList.Create;
+  Body.Text := BodyTxt;
+  try
+    Attachments.Add(SavedFile);
+    frmSendEMail.IsEMailSend(pClientName, Subject, Body.Text, pToEmails, Attachments);
+//    if frmSendEMail.IsEMailSend(fDestName, fSubject, '', fToEmails, Attachments) then
+//    begin
+//      Subject := fSubject;
+////      EmailSend := True;
+//    end;
+  finally
+    Attachments.Free;
+    Body.Free;
+    frmSendEMail.Free;
+  end;
+end;
+
+procedure TfrmExportToExcel.SendToExcelFile(pDSet: TDataSet; pToFile: String);
+var
+  I: integer;
+begin
+  ex2Excel.DataSet := pDSet;
+  ex2Excel.FileName := pToFile;
+  for I := 0 to pDSet.FieldCount -1 do
+  begin
+    ex2Excel.Columns.Add;
+    ex2Excel.Columns.Items[I].Title.Caption := pDSet.Fields.Fields[I].DisplayLabel;
+    ex2Excel.Columns.Items[I].Title.Alignment := taRightJustify;
+    ex2Excel.Columns.Items[I].FieldName := pDSet.Fields.Fields[I].FieldName;
+    ex2Excel.Columns.Items[I].Width := pDSet.Fields.Fields[I].DisplayWidth+1;
+    ex2Excel.Columns.Items[I].Visible := pDSet.Fields.Fields[I].Visible;
+    if pDSet.Fields.Fields[I].DataType = ftString then
+      ex2Excel.Columns.Items[I].Alignment := taRightJustify;
+  end;
+  ex2Excel.Execute;
+end;
+
+procedure TfrmExportToExcel.SendToExcelFile(pToFile: String; pDSetMain,
+  pDSetDtl1, pDSetDtl2: TDataSet);
+begin
+  ex2Excel.DataSet := pDSetMain;
+
+  ex2Excel.DetailSources.Clear;
+  with ex2Excel.DetailSources.Add do
+  begin
+    ShiftCount := 1;
+    DataSet := pDSetDtl1;
+    ColumnSource := csDataSet;
+    Options := Options + [dloAddTitle];
+  end;
+
+  if pDSetDtl2 <> nil then
+  begin
+    with ex2Excel.DetailSources.Add do
+    begin
+      ShiftCount := 1;
+      DataSet := pDSetDtl2;
+      ColumnSource := csDataSet;
+    end;
+  end;
+
+  ex2Excel.Options := ex2Excel.Options - [soDisableControls];
+  ex2Excel.FileName :=  pToFile;
+  ex2Excel.Execute;
+end;
+
+end.

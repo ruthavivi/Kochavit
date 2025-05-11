@@ -1,0 +1,80 @@
+unit TahoReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, StdActns, DBActns;
+
+type
+  TfrmTahoReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTahoReport: TfrmTahoReport;
+
+implementation
+uses
+   TahoFilterDM, TahoRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmTahoReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Moed');
+  SetStatusBar;
+end;
+
+procedure TfrmTahoReport.SetStatusBar;
+var
+  Procent: String;
+begin
+  if (StrToInt(dmTahoFilter.TotalRec) = 0) then
+    Procent := '0'
+  else
+    Procent := FormatFloat('#.##', StrToInt(dmTahoFilter.TotalSelectRec) /
+          StrToInt(dmTahoFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ בדיקות בדו"ח: ' + dmTahoFilter.TotalSelectRec +
+      ' מתוך ' + dmTahoFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmTahoReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmTahoFilter.SqlState.Order := GetOrders(Column);
+  dmTahoFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmTahoReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmTahoRprtSlctDlg := TfrmTahoRprtSlctDlg.Create(Self);
+  frmTahoRprtSlctDlg.Show;
+end;
+
+procedure TfrmTahoReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(dmTahoFilter.qrFilter);
+end;
+
+procedure TfrmTahoReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmTahoFilter.qrFilter.Close;
+  inherited;
+  frmTahoReport := nil;
+end;
+
+end.

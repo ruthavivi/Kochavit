@@ -1,0 +1,49 @@
+inherited frmClientRprtSlctDlg: TfrmClientRprtSlctDlg
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited rgReports: TRadioGroup
+      Columns = 2
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited RvRprt: TRvProject
+    Left = 176
+  end
+  object rqClientRprt: TRvQueryConnection [7]
+    RuntimeVisibility = rtDeveloper
+    Left = 168
+    Top = 120
+  end
+  object rqClTofes: TRvQueryConnection [8]
+    RuntimeVisibility = rtDeveloper
+    Left = 112
+    Top = 120
+  end
+  object EDBQuery1: TEDBQuery
+    Params = <>
+    Left = 64
+    Top = 120
+  end
+  object qrClTofes: TEDBQuery
+    FilterOptions = [foNoPartialCompare]
+    DatabaseName = 'KBBig'
+    SQL.Strings = (
+      'SELECT ClientId, Moed, Name'
+      'FROM  KClTofes')
+    Params = <>
+    Left = 64
+    Top = 120
+  end
+end

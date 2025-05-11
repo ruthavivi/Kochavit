@@ -1,0 +1,5 @@
+inherited frmGnrlTbl2: TfrmGnrlTbl2
+  Caption = 'frmGnrlTbl2'
+  PixelsPerInch = 96
+  TextHeight = 13
+end

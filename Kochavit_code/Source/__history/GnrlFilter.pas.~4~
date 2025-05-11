@@ -1,0 +1,333 @@
+unit GnrlFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, DBTables, StdCtrls, Buttons, ExtCtrls, Mask, Spin, edbcomps;
+
+type
+  TfrmGnrlFilter = class(TForm)
+    Panel1: TPanel;
+    btnExecute: TBitBtn;
+    btnClose: TBitBtn;
+    tbl: TEDBTable;
+    Panel2: TPanel;
+    grbMain: TGroupBox;
+    qrFilter: TEDBQuery;
+    qrGnrl: TEDBQuery;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCloseClick(Sender: TObject);
+  private
+    function GetVal(cmpName, clsType: String): String;
+    function BetweenDates(pref, fName, aDate, zDate: String): String;
+    function BetweenNumber(pref, fName, aNum, zNum: String): String;
+    function BetweenString(pref, fName, aNum, zNum: String): String;
+    function BetweenSpecial(aNum, zNum: String): String;
+    function EqualString(pref, fName, vStr: String): String;
+    function NotEqualString(pref, fName, vStr: String): String;
+  public
+    totalRec, selectRec: Integer;
+    prfxList: TStringList;
+    function GetRecNum(fileName: String): Integer;
+    procedure ChkBoxClick(Sender: TCheckBox);
+    procedure ChangeState(fldName: String; State: Boolean; cColor: TColor);
+    procedure ItemsInCmbBox(cbBox: TComboBox; fldName: String);
+    function CompareDate(aDate, zDate: String): Boolean;
+    function GetWhereLn: String;
+  end;
+
+var
+  frmGnrlFilter: TfrmGnrlFilter;
+
+implementation
+
+{$R *.dfm}
+
+function TfrmGnrlFilter.GetRecNum(fileName: String): Integer;
+begin
+//   with qrGnrl do
+//   begin
+//       Close;
+//       SQL.Clear;
+//       SQL.Text := 'SELECT Count(Id) Num FROM ' + fileName;
+//       Open;
+//       Result := FieldByName('Num').AsInteger;
+//       Close;
+//   end;
+end;
+
+procedure TfrmGnrlFilter.ChkBoxClick(Sender: TCheckBox);
+var
+   fldName: String;
+begin
+   fldName := Trim(Copy((Sender.Name), 4, 15));
+   if Sender.Checked then
+       ChangeState(fldName, True, clWhite)
+   else
+       ChangeState(fldName, False, clBtnFace);
+end;
+
+procedure TfrmGnrlFilter.ChangeState(fldName: String; State: Boolean;
+  cColor: TColor);
+var
+   i: integer;
+   Comp: TComponent;
+begin
+   for i := 0 to ComponentCount -1 do
+   begin
+       Comp := Components[i];
+
+       if comp is TLabel then
+       begin
+           if Trim(Copy((Comp as TLabel).Name, 4, 15)) = fldName then
+               (Comp as TLabel).Enabled := State;
+       end
+       else if (Comp is TMaskEdit) then
+       begin
+           if Trim(Copy((Comp as TMaskEdit).Name, 4, 15)) = fldName then
+           begin
+               (Comp as TMaskEdit).Enabled := State;
+               (Comp as TMaskEdit).Color := cColor;
+           end;
+       end
+       else if Comp is TEdit then
+       begin
+           if Trim(Copy((Comp as TEdit).Name, 4, 15)) = fldName then
+           begin
+               (Comp as TEdit).Enabled := State;
+               (Comp as TEdit).Color := cColor;
+           end;
+       end
+       else if Comp is TComboBox then
+       begin
+           if Trim(Copy((Comp as TComboBox).Name, 4, 15)) = fldName then
+           begin
+               (Comp as TComboBox).Enabled := State;
+               (Comp as TComboBox).Color := cColor;
+           end;
+       end
+       else if Comp is TSpinEdit then
+       begin
+           if Trim(Copy((Comp as TSpinEdit).Name, 4, 15)) = fldName then
+           begin
+               (Comp as TSpinEdit).Enabled := State;
+               (Comp as TSpinEdit).Color := cColor;
+           end;
+       end;
+   end;
+end;
+
+procedure TfrmGnrlFilter.ItemsInCmbBox(cbBox: TComboBox;
+  fldName: String);
+begin
+   if (cbBox.Items.Count = 0) then
+   with tbl do
+   begin
+       Open;
+       First;
+       while not EOF do
+       begin
+           if (FieldByName(fldName).AsString <> '') then
+               cbBox.Items.Add(FieldByName(fldName).AsString);
+           Next;
+       end;
+       Close;
+   end;
+end;
+
+function TfrmGnrlFilter.CompareDate(aDate, zDate: String): Boolean;
+begin
+   Result := True;
+   if (aDate <> '  /  /    ') and (zDate <> '  /  /    ') then
+       if (StrToDate(aDate) > StrToDate(zDate)) then
+       begin
+           Result := False;
+           MessageDlg(':תאריך מ: גדול מתאריך עד', mtError, [mbOK], 0);
+       end;
+end;
+
+function TfrmGnrlFilter.GetWhereLn: String;
+var
+   i: Integer;
+   fldName, Sug: String;
+   prfx, aDate, zDate, eVal, aNum, zNum: String;
+   Comp: TComponent;
+   expList: TStringList;
+begin
+  inherited;
+   expList := TStringList.Create;
+   for i := 0 to ComponentCount -1 do
+   begin
+       Comp := Components[i];
+
+       if (Comp is TCheckBox) and (Comp as TCheckBox).Checked then
+       begin
+           prfx := prfxList[Comp.Tag];
+           fldName := Trim(Copy(Comp.Name, 4, 15));
+           Sug := Copy(Comp.Name, 3, 1);
+
+           if (Sug = 'D') then
+           begin
+               aDate := GetVal('edA'+fldName, 'M');
+               zDate := GetVal('edZ'+fldName, 'M');
+               if (aDate <> '  /  /    ') or (zDate <> '  /  /    ') then
+                  expList.Add(BetweenDates(prfx, fldName,
+                           aDate, zDate));
+           end
+           else if (Sug = 'N') then
+           begin
+               aNum := GetVal('edA'+fldName, 'M');
+               zNum := GetVal('edZ'+fldName, 'M');
+               expList.Add(BetweenNumber(prfx, fldName,
+                           aNum, zNum));
+           end
+           else if (Sug = 'S') then
+           begin
+               aNum := GetVal('edA'+fldName, 'M');
+               zNum := GetVal('edZ'+fldName, 'M');
+               expList.Add(BetweenSpecial(aNum, zNum));
+           end
+           else if (Sug = 'A') then
+           begin
+               aNum := GetVal('edA'+fldName, 'A');
+               zNum := GetVal('edZ'+fldName, 'A');
+               expList.Add(BetweenString(prfx, fldName,
+                           aNum, zNum));
+           end
+           else if (Sug = 'E') then
+           begin
+               eVal := GetVal('cbE'+fldName, 'C');
+               expList.Add(EqualString(prfx, fldName, eVal));
+           end
+           else if (Sug = 'X') then
+           begin
+               eVal := GetVal('cbX'+fldName, 'C');
+               expList.Add(NotEqualString(prfx, fldName, eVal));
+           end
+           else if (Sug = 'L') then
+           begin
+               eVal := GetVal('edL'+fldName, 'L');
+               expList.Add(EqualString(prfx, fldName, eVal));
+           end;
+       end;
+   end;
+   for i := 0 to expList.Count -1 do
+   begin
+       if (i = 0) then
+           Result := expList[i]
+       else
+           Result := Result + ' and ' + expList[i];
+   end;
+   expList.Free;
+end;
+
+function TfrmGnrlFilter.GetVal(cmpName, clsType: String): String;
+var
+   Comp: TComponent;
+begin
+   Result := '';
+   Comp := FindComponent(cmpName);
+   if (clsType = 'M') then
+       Result := (Comp as TMaskEdit).Text
+   else if (clsType = 'C') then
+       Result := (Comp as TComboBox).Text
+   else if (clsType = 'L') or (clsType = 'A') then
+       Result := (Comp as TEdit).Text;
+end;
+
+function TfrmGnrlFilter.BetweenDates(pref, fName,
+   aDate, zDate: String): String;
+var
+   faDate, fzDate: String;
+begin
+   Result := '';
+   faDate := '';
+   fzDate := '';
+   if (aDate <> '  /  /    ') then
+       faDate := FormatDateTime('mm/dd/yy', StrToDate(aDate));
+   if (zDate <> '  /  /    ') then
+       fzDate := FormatDateTime('mm/dd/yy', StrToDate(zDate));
+
+   if (faDate <> '') and (fzDate <> '') then
+       Result := ' '+pref+fName + ' >= ' + QuotedStr(faDate) +
+           ' and ' + pref+fName + ' <= ' + QuotedStr(fzDate)+' '
+   else if (faDate <> '') then
+       Result := ' '+pref+fName + ' >= ' + QuotedStr(faDate)+' '
+   else if (fzDate <> '') then
+       Result := ' '+pref+fName + ' <= ' + QuotedStr(fzDate)+' ';
+end;
+
+function TfrmGnrlFilter.BetweenNumber(pref, fName, aNum,
+  zNum: String): String;
+begin
+   Result := '';
+   aNum := Trim(aNum);
+   zNum := Trim(zNum);
+   if ((aNum <> '') and (zNum <> '')) or
+      ((aNum = '') and (zNum = '')) then
+       Result := ' '+pref+fName + ' >= ' + QuotedStr(aNum) +
+           ' and ' + pref+fName + ' <= ' + QuotedStr(zNum)+' '
+   else if (aNum <> '') then
+       Result := ' '+pref+fName + ' >= ' + QuotedStr(aNum)+' '
+   else if (zNum <> '') then
+       Result := ' '+pref+fName + ' <= ' + QuotedStr(zNum)+' ';
+end;
+
+function TfrmGnrlFilter.BetweenString(pref, fName, aNum,
+  zNum: String): String;
+begin
+  Result := '';
+   aNum := Trim(aNum);
+   zNum := Trim(zNum);
+   if ((aNum <> '') and (zNum <> '')) or
+      ((aNum = '') and (zNum = '')) then
+       Result := ' '+pref+fName + ' >= ' + QuotedStr(aNum) +
+           ' and ' + pref+fName + ' <= ' + QuotedStr(zNum)+' '
+   else if (aNum <> '') then
+       Result := ' '+pref+fName + ' >= ' + QuotedStr(aNum)+' '
+   else if (zNum <> '') then
+       Result := ' '+pref+fName + ' <= ' + QuotedStr(zNum)+' ';
+end;
+
+function TfrmGnrlFilter.EqualString(pref, fName, vStr: String): String;
+begin
+   if (vStr <> '') then
+       Result := ' '+pref+fName + ' = ' + QuotedStr(vStr)+' '
+   else
+       Result := ' ('+ pref+fName + ' = ' + QuotedStr(vStr)+' or ' +
+              pref+fName + ' Is Null) ';
+end;
+
+function TfrmGnrlFilter.NotEqualString(pref, fName, vStr: String): String;
+begin
+  if (vStr <> '') then
+       Result := ' '+pref+fName + ' <> ' + QuotedStr(vStr)+' ';
+end;
+
+function TfrmGnrlFilter.BetweenSpecial(aNum, zNum: String): String;
+begin
+   Result := '';
+   aNum := Trim(aNum);
+   zNum := Trim(zNum);
+   if (aNum <> '') and (zNum <> '') then
+       Result := ' '+'(Bl.PaydD-Bl.ToPayD) >= ' + QuotedStr(aNum) +
+           ' and ' + '(Bl.PaydD-Bl.ToPayD) <= ' + QuotedStr(zNum)+' '
+   else if (aNum <> '') then
+       Result := ' '+'(Bl.PaydD-Bl.ToPayD) >= ' + QuotedStr(aNum)+' '
+   else if (zNum <> '') then
+       Result := ' '+'(Bl.PaydD-Bl.ToPayD) <= ' + QuotedStr(zNum)+' ';
+end;
+
+procedure TfrmGnrlFilter.btnCloseClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmGnrlFilter.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+end.

@@ -1,0 +1,49 @@
+inherited frmDocumentCarTbl: TfrmDocumentCarTbl
+  Caption = #1502#1505#1502#1499#1497' '#1512#1499#1489#1497#1501
+  ClientHeight = 400
+  ClientWidth = 245
+  ExplicitWidth = 253
+  ExplicitHeight = 427
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 245
+    ExplicitWidth = 245
+  end
+  inherited StatusBar: TStatusBar
+    Top = 381
+    Width = 245
+    ExplicitTop = 381
+    ExplicitWidth = 245
+  end
+  inherited Panel1: TPanel
+    Width = 245
+    Height = 345
+    ExplicitWidth = 245
+    ExplicitHeight = 345
+    inherited dbGrid: TCheckDBGrid
+      Width = 243
+      Height = 343
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Document'
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited tbTbl: TEDBTable
+    TableName = 'KTblDocumentCar'
+    object tbTblId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTblDocument: TStringField
+      DisplayLabel = #1513#1501' '#1492#1502#1505#1502#1498
+      FieldName = 'Document'
+      Size = 25
+    end
+  end
+end

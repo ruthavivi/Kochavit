@@ -1,0 +1,43 @@
+unit CheckEdit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlEdit, Menus, ImgList, ExtDlgs, StdActns, ActnList, ComCtrls,
+  StdCtrls, Buttons, ToolWin, DB, Grids, DBGrids;
+
+type
+  TfrmCheckEdit = class(TfrmGnrlEdit)
+    DBGrid1: TDBGrid;
+    dsChecks: TDataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCheckEdit: TfrmCheckEdit;
+
+implementation
+uses
+  MainDM, CheckEditDM;
+{$R *.dfm}
+
+procedure TfrmCheckEdit.FormCreate(Sender: TObject);
+begin
+  inherited;
+  stClientName.Caption := 'שם החברה: ' + #13#10 + dmCheckEdit.ClientShem;
+end;
+
+procedure TfrmCheckEdit.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dmCheckEdit.Free;
+  inherited;
+  frmCheckEdit := nil;
+end;
+
+end.

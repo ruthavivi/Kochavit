@@ -1,0 +1,43 @@
+unit TblInsure;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, edbcomps, frxClass,
+  frxDBSet, Vcl.StdActns;
+
+type
+  TfrmTblInsure = class(TfrmGnrlTbl)
+    tbTblInsure: TStringField;
+    tbTblID: TAutoIncField;
+    frdbInsure: TfrxDBDataset;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTblInsure: TfrmTblInsure;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmTblInsure.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('InsureId', tbTblId.AsString, ['KCar']) then
+  inherited;
+end;
+
+procedure TfrmTblInsure.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpInsure');
+end;
+
+end.

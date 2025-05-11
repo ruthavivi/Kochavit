@@ -1,0 +1,44 @@
+unit TblCargo;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem, edbcomps, frxClass,
+  frxDBSet, Vcl.StdActns;
+
+type
+  TfrmCargoTbl = class(TfrmGnrlTbl)
+    tbTblCargo: TStringField;
+    tbTblID: TAutoIncField;
+    frdbCargo: TfrxDBDataset;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCargoTbl: TfrmCargoTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmCargoTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('CargoId', tbTblId.AsString, ['KCar']) then
+  inherited;
+end;
+
+procedure TfrmCargoTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpCargo');
+end;
+
+end.

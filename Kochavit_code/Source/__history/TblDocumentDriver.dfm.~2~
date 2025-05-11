@@ -1,0 +1,36 @@
+inherited frmDocumentDriverTbl: TfrmDocumentDriverTbl
+  Caption = #1502#1505#1502#1499#1497#1501' '#1504#1492#1490#1497#1501
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited dbGrid: TCheckDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Document'
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited tbTbl: TEDBTable
+    TableName = 'KTblDocumentDriver'
+    object tbTblId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTblDocument: TStringField
+      DisplayLabel = #1513#1501' '#1492#1502#1505#1502#1498
+      FieldName = 'Document'
+      Size = 25
+    end
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMainBig'
+    SessionName = 'Main'
+    Params = <>
+    Left = 120
+    Top = 216
+  end
+end

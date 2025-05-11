@@ -1,0 +1,193 @@
+unit GnrlSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, edbcomps, RpRave, RpDefine, RpBase, RpSystem, Spin, StdCtrls,
+  Buttons, ExtCtrls, StrUtils, RpRender, RpRenderHTML, RpCon, RpConDS,
+  frxClass;
+
+type
+  TfrmGnrlSpssSlctDlg = class(TForm)
+    Panel2: TPanel;
+    edTitle: TMemo;
+    rgReports: TRadioGroup;
+    Panel1: TPanel;
+    Label1: TLabel;
+    btnPrint: TBitBtn;
+    btnClose: TBitBtn;
+    SpinEdit: TSpinEdit;
+    btnPreview: TBitBtn;
+    btnRTF: TBitBtn;
+    RvSystem: TRvSystem;
+    RvRprt: TRvProject;
+    tbRprtList: TEDBTable;
+    qrSpss: TEDBQuery;
+    SaveDialog: TSaveDialog;
+    RvRenderHTML: TRvRenderHTML;
+    procedure FormCreate(Sender: TObject);
+    procedure rgReportsClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
+  private
+    SqlName: string;
+    TotalRpt: String;
+    TotalCmt, TotalSum: String;
+    procedure SetRprtParm(pAutHeader: String);
+    procedure SetReportParm(pQuanty: Integer; pTotalSum: String);
+  public
+    Path, RprtName: String;
+    procedure LoadRprtItems(pUtil: String);
+    procedure LoadSpssSql(pBaseSql: string);
+    procedure SetTotals(pTotalCmt, pTotalSum: String);
+    procedure ExecuteRprt(pAutHeader, pAction: String);
+
+    procedure PrintReport(pQuanty: Integer; pTotalSum: String);
+    procedure PreviewReport(pQuanty: Integer; pTotalSum: String);
+  end;
+
+var
+  frmGnrlSpssSlctDlg: TfrmGnrlSpssSlctDlg;
+
+implementation
+uses
+  Main, DataDM, GnrlFilter;
+
+{$R *.dfm}
+
+{ TfrmGnrlSpssSlctDlg }
+procedure TfrmGnrlSpssSlctDlg.FormCreate(Sender: TObject);
+begin
+  RvRprt.ProjectFile := ExtractFilePath(Application.ExeName) + 'Reports\KvRprt.rav';
+  RvRprt.Open;
+
+  Path := ExtractFilePath(Application.ExeName)+'Report\Spss\';
+end;
+
+procedure TfrmGnrlSpssSlctDlg.LoadRprtItems(pUtil: String);
+begin
+  Screen.Cursor := crHourGlass;
+  tbRprtList.Open;
+  while not tbRprtList.Eof do
+  begin
+    if (tbRprtList.FieldByName('Group').AsString = pUtil) then
+      rgReports.Items.Add(tbRprtList.FieldByName('RprtShem').AsString);
+    tbRprtList.Next;
+  end;
+  tbRprtList.IndexFieldNames := 'RprtShem';
+  rgReports.ItemIndex := 0;
+  Screen.Cursor := crDefault;
+end;
+
+procedure TfrmGnrlSpssSlctDlg.rgReportsClick(Sender: TObject);
+begin
+  tbRprtList.FindKey([rgReports.Items[rgReports.ItemIndex]]);
+  SqlName := tbRprtList.FieldByName('SpssFile').AsString + '.SQL';
+  RvRprt.SelectReport(tbRprtList.FieldByName('RprtName').AsString,
+        False);
+
+  RprtName := tbRprtList.FieldByName('RprtName').AsString;
+end;
+
+procedure TfrmGnrlSpssSlctDlg.LoadSpssSql(pBaseSql: string);
+var
+  SqlText: TStringList;
+  SqlToString: string;
+begin
+  SqlText := TStringList.Create;
+  try
+    SqlText.LoadFromFile(ExtractFilePath(Application.ExeName) + 'SQL\Spss\'+ SqlName);
+    SqlToString := ReplaceStr(SqlText.Text, 'pBaseSql', pBaseSql);
+    qrSpss.SQL.Text := SqlToString;
+  finally
+    SqlText.Free;
+  end;
+end;
+
+procedure TfrmGnrlSpssSlctDlg.SetTotals(pTotalCmt, pTotalSum: String);
+begin
+  TotalCmt := pTotalCmt;
+  TotalSum := pTotalSum;
+end;
+
+procedure TfrmGnrlSpssSlctDlg.ExecuteRprt(pAutHeader, pAction: String);
+var
+  qc: TRvDataSetConnection;
+begin
+  qc := TRvDataSetConnection.Create(Self);
+  try
+    qc.Name := 'qc'+Copy(tbRprtList.FieldByName('RprtName').AsString, 3, 20);
+    qc.DataSet := qrSpss;
+
+    SetRprtParm(pAutHeader);
+    if (pAction = 'Print') then
+      rvSystem.DefaultDest := rdPrinter
+    else if (pAction = 'Preview') then
+      rvSystem.DefaultDest := rdPreview
+    else if (pAction = 'RTF') then
+    begin
+      SaveDialog.InitialDir := ExtractFilePath(Application.ExeName) + 'ExportFiles';
+      if SaveDialog.Execute then
+      begin
+        RvSystem.DefaultDest := rdFile;
+        RvSystem.DoNativeOutput := False;
+        if (SaveDialog.FilterIndex = 1) then
+          RvSystem.RenderObject := RvRenderHTML;
+        RvSystem.OutputFileName := SaveDialog.FileName;
+      end;
+    end;
+    RvRprt.Execute;
+  finally
+    qc.Free;
+  end;
+end;
+
+procedure TfrmGnrlSpssSlctDlg.SetRprtParm(pAutHeader: String);
+begin
+  with RvRprt do
+  begin
+    rvSystem.SystemPrinter.Copies := SpinEdit.Value;
+    SetParam('GrandTotal', TotalCmt);
+    SetParam('GrandSum', TotalSum);
+    SetParam('AutHeader', pAutHeader);
+    if edTitle.Lines[0] <> 'הקלד כותרת משנית כאן...' then
+      SetParam('SubHeader', edTitle.Text);
+  end;
+end;
+
+procedure TfrmGnrlSpssSlctDlg.PreviewReport(pQuanty: Integer; pTotalSum: String);
+begin
+  SetReportParm(pQuanty, pTotalSum);
+  dmData.frxReport.ShowReport();
+end;
+
+procedure TfrmGnrlSpssSlctDlg.PrintReport(pQuanty: Integer; pTotalSum: String);
+begin
+  SetReportParm(pQuanty, pTotalSum);
+  dmData.frxReport.Print();
+end;
+
+procedure TfrmGnrlSpssSlctDlg.SetReportParm(pQuanty: Integer; pTotalSum: String);
+var
+  fmSubHeadLine, fmFilters: TfrxMemoView;
+begin
+  dmData.frxReport.LoadFromFile(Path + RprtName + '.fr3');
+  dmData.frxReport.PrepareReport();
+  dmData.frxReport.PrintOptions.ShowDialog := False;
+  if (pQuanty > 0) then
+    dmData.frxReport.Variables['ReportQuanty'] := pQuanty;
+  if (pTotalSum <> '0') then
+    dmData.frxReport.Variables['ReportSum'] := pTotalSum;
+  if edTitle.Lines[0] <> 'הקלד כותרת משנית כאן...' then
+  begin
+    fmSubHeadLine := dmData.frxReport.FindObject('mmSubHeadLine') as TfrxMemoView;
+    fmSubHeadLine.Text := edTitle.Text;
+  end;
+end;
+
+procedure TfrmGnrlSpssSlctDlg.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+end.

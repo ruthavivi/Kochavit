@@ -1,0 +1,26 @@
+unit Splash;
+
+interface
+
+uses
+  Windows, Classes, Forms, ExtCtrls, StdCtrls, Controls, Graphics, pngimage,
+  EnPngGr;
+
+type
+  TfrmSplash = class(TForm)
+    Image1: TImage;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+  
+  end;
+
+var
+  frmSplash: TfrmSplash;
+
+implementation
+
+{$R *.dfm}
+
+end.

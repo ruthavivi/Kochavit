@@ -1,0 +1,66 @@
+unit DocSend;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, DB, DBTables, edbcomps;
+
+type
+  TfrmDocSend = class(TForm)
+    dbGrid: TDBGrid;
+    Panel1: TPanel;
+    btnClose: TBitBtn;
+    dsDocs: TDataSource;
+    qrDocs: TEDBQuery;
+    qrDocsDocName: TStringField;
+    qrDocsDateSend: TDateField;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure dbGridEditButtonClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    Path: String;
+  end;
+
+var
+  frmDocSend: TfrmDocSend;
+
+implementation
+
+{$R *.dfm}
+uses
+   WordFunc;
+
+procedure TfrmDocSendGridEditButtonClick(Sender: TObject);
+var
+   WordObj: TWordObj;
+   WorkFile: OleVariant;
+begin
+  inherited;
+   WorkFile := Path + dbGrid.Fields[0].Text;
+   WordObj := TWordObj.Create;
+   if WordObj.ConnectWord then
+   begin
+       WordObj.OpenDoc(WorkFile);
+       WordObj.EditDoc;
+       WordObj.CloseWord;
+       WordObj.Free;
+   end;
+end;
+
+procedure TfrmDocSend.btnCloseClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmDocSend.FormClose(Sender: TObject;
+   var Action: TCloseAction);
+begin
+   qrDocs.Close;
+   Action := caFree;
+end;
+
+end.

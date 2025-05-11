@@ -1,0 +1,35 @@
+inherited frmCarRprtSlctDlg: TfrmCarRprtSlctDlg
+  Caption = #1489#1495#1497#1512#1514' '#1491#1493'"'#1495
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited rgReports: TRadioGroup
+      Columns = 2
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+  end
+  inherited tbRprtList: TEDBTable
+    Left = 57
+    Top = 96
+  end
+  inherited qrSpss: TEDBQuery
+    Left = 136
+    Top = 96
+  end
+  object frdbCarFilter: TfrxDBDataset
+    UserName = 'frdbCarFilter'
+    CloseDataSource = False
+    DataSet = dmCarFilter.qrFilter
+    BCDToCurrency = False
+    Left = 224
+    Top = 104
+  end
+end

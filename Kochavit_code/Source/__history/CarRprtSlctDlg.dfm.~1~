@@ -1,0 +1,119 @@
+inherited frmCarRprtSlctDlg: TfrmCarRprtSlctDlg
+  Caption = #1489#1495#1497#1512#1514' '#1491#1493'"'#1495
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited rgReports: TRadioGroup
+      Columns = 2
+      Items.Strings = (
+        #1496#1493#1508#1505#1497' '#1489#1497#1511#1493#1512#1514)
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnRTFClick
+    end
+  end
+  inherited qrSpss: TQuery
+    SQL.Strings = (
+      
+        'SELECT Cr.ID,  Cr.IdCar, Cr.Number, tT.Type, tP.Producer, tD.Dga' +
+        'm, Cl.Shem, Cr.Contact, Cr.Tel, Cr.Spido, Cl.Tel1, tA.Atar, tV.O' +
+        'ved, tTp.Tipul, Ct.DateToDo, Ct.Remark'
+      'FROM KCrTipul Ct'
+      '        LEFT JOIN KCar Cr ON Cr.Id = Ct.CarId'
+      '              LEFT JOIN KTblType tT ON tT.Id = Cr.TypeId'
+      '              LEFT JOIN KTblProducer tP ON tP.Id = Cr.ProducerId'
+      '              LEFT JOIN KTblDgam tD ON tD.Id = Cr.DgamId'
+      '              LEFT JOIN KTblOved tV ON tV.Id = Cr.OvedId'
+      '              LEFT JOIN KTblAtar tA ON tA.Id = Cr.AtarId'
+      '              LEFT JOIN KClient Cl ON Cl.Id = Cr.ClientId'
+      '        LEFT JOIN KTblTipul tTp ON tTp.Id = Ct.TipulId'
+      'WHERE tTp.Tipul = '#39#1489#1497#1511#1493#1512#1514' '#1495#1493#1491#1513#1497#1514#39' and Cr.Id = :Id')
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptUnknown
+      end>
+  end
+  object qrTipul: TQuery [6]
+    DatabaseName = 'KB'
+    DataSource = frmCarReport.dsReport
+    SQL.Strings = (
+      'SELECT tT.Tipul, Ct.DateToDo'
+      'FROM KCrTipul Ct'
+      'LEFT JOIN KTblTipul tT ON (Ct.TipulId = tT.Id)'
+      'WHERE tT.Tipul <> '#39#1489#1497#1511#1493#1512#1514' '#1495#1493#1491#1513#1497#1514#39' and Ct.CarId = :Id')
+    Left = 64
+    Top = 112
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptUnknown
+      end>
+  end
+  object dsSpss: TDataSource [7]
+    DataSet = qrSpss
+    Left = 112
+    Top = 56
+  end
+  object qrTplDtl: TQuery [8]
+    DatabaseName = 'KB'
+    DataSource = dsSpss
+    SQL.Strings = (
+      'SELECT tB.BikoretDtl '
+      'FROM KCrTipulDtl Cd'
+      'LEFT JOIN KTblBikoretDtl tB ON (Cd.BikoretDtlId = tB.Id)'
+      'WHERE Cd.TipulId = :Id')
+    Left = 112
+    Top = 112
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptUnknown
+      end>
+  end
+  object qrGnrl: TQuery [9]
+    DatabaseName = 'KB'
+    Left = 16
+    Top = 56
+  end
+  object rqCarRprt: TRvQueryConnection [10]
+    RuntimeVisibility = rtDeveloper
+    Query = frmCarFilter.qrFilter
+    Left = 16
+    Top = 24
+  end
+  object qrCrTofes: TQuery [11]
+    DatabaseName = 'KBBig'
+    FilterOptions = [foNoPartialCompare]
+    SQL.Strings = (
+      'SELECT CarId, Moed, Name'
+      'FROM  KCrTofes')
+    Left = 160
+    Top = 112
+  end
+  object rqCrTofes: TRvQueryConnection [12]
+    RuntimeVisibility = rtDeveloper
+    Query = qrCrTofes
+    Left = 208
+    Top = 112
+  end
+  inherited RvRenderRTF: TRvRenderRTF
+    Left = 224
+    Top = 48
+  end
+end

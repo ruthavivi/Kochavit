@@ -1,0 +1,91 @@
+inherited frmDrBdikaReport: TfrmDrBdikaReport
+  Left = 107
+  Caption = ''
+  ClientHeight = 344
+  ClientWidth = 669
+  OnCreate = FormCreate
+  ExplicitWidth = 677
+  ExplicitHeight = 390
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ControlBar1: TControlBar
+    Width = 669
+    ExplicitWidth = 669
+    inherited ToolBar1: TToolBar
+      inherited DBNavigator: TDBNavigator
+        DataSource = dsReport
+        Hints.Strings = ()
+      end
+    end
+  end
+  inherited DBGrid: TDBGrid
+    Width = 669
+    Height = 251
+    OnTitleClick = DBGridTitleClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'BdikaD'
+        Title.Caption = #1514#1488#1512#1497#1498' '#1489#1491#1497#1511#1492
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Bdika'
+        Title.Caption = #1502#1492#1493#1514' '#1492#1489#1491#1497#1511#1492
+        Width = 93
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Makom'
+        Title.Caption = #1502#1511#1493#1501' '#1492#1489#1491#1497#1511#1492
+        Width = 117
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Tipul'
+        Title.Caption = #1492#1506#1512#1493#1514
+        Width = 116
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ShemD'
+        Title.Caption = #1513#1501' '#1492#1504#1492#1490
+        Width = 126
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Shem'
+        Title.Caption = #1513#1501'  '#1492#1495#1489#1512#1492
+        Width = 64
+        Visible = True
+      end>
+  end
+  inherited Panel1: TPanel
+    Top = 289
+    Width = 669
+    ExplicitTop = 289
+    ExplicitWidth = 669
+  end
+  inherited StatusBar1: TStatusBar
+    Top = 321
+    Width = 669
+    ExplicitTop = 321
+    ExplicitWidth = 669
+  end
+  inherited ActionList: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    inherited acExcel: TAction
+      OnExecute = acExcelExecute
+    end
+  end
+  inherited dsReport: TDataSource
+    DataSet = frmDrBdikaFilter.qrFilter
+  end
+end

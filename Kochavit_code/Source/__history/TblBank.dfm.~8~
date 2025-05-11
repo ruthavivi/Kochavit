@@ -1,0 +1,40 @@
+inherited frmBankTbl: TfrmBankTbl
+  Caption = #1512#1513#1497#1502#1514' '#1489#1504#1511#1497#1501
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited dbGrid: TCheckDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Bank'
+          Width = 187
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+  end
+  inherited tbTbl: TEDBTable
+    IndexFieldNames = 'Bank'
+    TableName = 'KTblBank'
+    object tbTblId: TAutoIncField
+      FieldName = 'Id'
+    end
+    object tbTblBank: TStringField
+      DisplayLabel = #1513#1501' '#1492#1489#1504#1511
+      FieldName = 'Bank'
+    end
+  end
+  object rtBank: TRvDataSetConnection
+    RuntimeVisibility = rtDeveloper
+    DataSet = tbTbl
+    Left = 128
+    Top = 64
+  end
+end

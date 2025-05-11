@@ -1,0 +1,26 @@
+unit AcdntSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlSpssSlctDlg, edbcomps, DB, RpRave, RpDefine, RpBase, RpSystem,
+  Spin, StdCtrls, Buttons, ExtCtrls, RpCon;
+
+type
+  TfrmAcdntSpssSlctDlg = class(TfrmGnrlSpssSlctDlg)
+    ccChartsAcdnt: TRvCustomConnection;
+  private
+    procedure SetChart(pLabel, pCmt: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcdntSpssSlctDlg: TfrmAcdntSpssSlctDlg;
+
+implementation
+
+{$R *.dfm}
+
+end.

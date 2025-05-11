@@ -1,0 +1,48 @@
+inherited dmAnualBillFilter: TdmAnualBillFilter
+  OldCreateOrder = True
+  inherited qrFilter: TEDBQuery
+    ReadOnly = True
+    SQL.Strings = (
+      'SELECT ClientId, Cod, Shem, Oved, COUNT(Id) AS NumAll,'
+      'IF (Engine = '#39#1499#1503#39' THEN COUNT(Engine) ELSE NULL) AS NumNo,'
+      'IF (Engine = '#39#1499#1503#39' THEN COUNT(Engine) ELSE NULL) AS NumYes, '
+      'SUM(Shum) AS SumPrClient'
+      'FROM KCAR Cr                '
+      'LEFT JOIN KClient Cl ON Cr.ClientId = Cl.Id'
+      'LEFT JOIN KTblType tT ON Cr.TypeId = tT.Id'
+      'LEFT JOIN KTblOved tV ON Cr.OvedId = tV.Id'
+      'GROUP BY ClientId')
+    object qrFilterCod: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1495#1489#1512#1492
+      FieldName = 'Cod'
+      Origin = 'KClient.Cod'
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Origin = 'KClient.Shem'
+      Size = 30
+    end
+    object qrFilterOved: TStringField
+      DisplayLabel = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497
+      FieldName = 'Oved'
+      Origin = 'KTblOved.Oved'
+      Size = 25
+    end
+    object qrFilterSumPrClient: TFloatField
+      DisplayLabel = #1505#1492'"'#1499' '#1495#1493#1491#1513#1497
+      FieldName = 'SumPrClient'
+      currency = True
+    end
+    object qrFilterClientId: TIntegerField
+      FieldName = 'ClientId'
+      Origin = 'KCAR.ClientId'
+    end
+    object qrFilterNumAll: TIntegerField
+      FieldName = 'NumAll'
+    end
+    object qrFilterNumNo: TIntegerField
+      FieldName = 'NumNo'
+    end
+  end
+end

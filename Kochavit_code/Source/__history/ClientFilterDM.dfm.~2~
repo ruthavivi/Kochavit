@@ -1,0 +1,145 @@
+inherited dmClientFilter: TdmClientFilter
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      'SELECT Cl.*, Oved, OfenPay'
+      'FROM KClient Cl        '
+      'LEFT JOIN KTblOved tV ON Cl.OvedId = tV.Id'
+      'LEFT JOIN KTblOfenPay tP ON Cl.OfenPayId = tP.Id')
+    ReadOnly = True
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterCod: TIntegerField
+      FieldName = 'Cod'
+    end
+    object qrFilterHp: TIntegerField
+      FieldName = 'Hp'
+    end
+    object qrFilterOpenDate: TDateField
+      FieldName = 'OpenDate'
+    end
+    object qrFilterShem: TStringField
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrFilterBahalim1: TStringField
+      FieldName = 'Bahalim1'
+      Size = 30
+    end
+    object qrFilterTelB1: TStringField
+      FieldName = 'TelB1'
+      Size = 11
+    end
+    object qrFilterBahalim2: TStringField
+      FieldName = 'Bahalim2'
+      Size = 30
+    end
+    object qrFilterTelB2: TStringField
+      FieldName = 'TelB2'
+      Size = 11
+    end
+    object qrFilterKtovet: TStringField
+      FieldName = 'Ktovet'
+      Size = 30
+    end
+    object qrFilterIsuv: TStringField
+      FieldName = 'Isuv'
+      Size = 15
+    end
+    object qrFilterMikud: TIntegerField
+      FieldName = 'Mikud'
+    end
+    object qrFilterTel1: TStringField
+      FieldName = 'Tel1'
+      Size = 12
+    end
+    object qrFilterTel2: TStringField
+      FieldName = 'Tel2'
+      Size = 11
+    end
+    object qrFilterFax: TStringField
+      FieldName = 'Fax'
+      Size = 10
+    end
+    object qrFilterEMail: TStringField
+      FieldName = 'EMail'
+      Size = 30
+    end
+    object qrFilterContact: TStringField
+      FieldName = 'Contact'
+      Size = 30
+    end
+    object qrFilterTelC: TStringField
+      FieldName = 'TelC'
+      Size = 11
+    end
+    object qrFilterAcounter: TStringField
+      FieldName = 'Acounter'
+      Size = 30
+    end
+    object qrFilterTelA: TStringField
+      FieldName = 'TelA'
+      Size = 11
+    end
+    object qrFilterProfesion: TStringField
+      FieldName = 'Profesion'
+      Size = 30
+    end
+    object qrFilterTelP: TStringField
+      FieldName = 'TelP'
+      Size = 11
+    end
+    object qrFilterZeutP: TIntegerField
+      FieldName = 'ZeutP'
+    end
+    object qrFilterKtovetP: TStringField
+      FieldName = 'KtovetP'
+      Size = 30
+    end
+    object qrFilterSizeP: TIntegerField
+      FieldName = 'SizeP'
+    end
+    object qrFilterPeriodPay: TSmallintField
+      FieldName = 'PeriodPay'
+    end
+    object qrFilterCreditPay: TSmallintField
+      FieldName = 'CreditPay'
+    end
+    object qrFilterOvedId: TSmallintField
+      FieldName = 'OvedId'
+    end
+    object qrFilterRemark: TMemoField
+      FieldName = 'Remark'
+      BlobType = ftMemo
+    end
+    object qrFilterDept: TFloatField
+      FieldName = 'Dept'
+    end
+    object qrFilterFreze: TBooleanField
+      FieldName = 'Freze'
+    end
+    object qrFilterMovil: TStringField
+      FieldName = 'Movil'
+      Size = 30
+    end
+    object qrFilterZeutM: TIntegerField
+      FieldName = 'ZeutM'
+    end
+    object qrFilterOfenPayId: TIntegerField
+      FieldName = 'OfenPayId'
+    end
+    object qrFilterPail: TBooleanField
+      FieldName = 'Pail'
+    end
+    object qrFilterStamp: TDateTimeField
+      FieldName = 'Stamp'
+    end
+    object qrFilterOved: TStringField
+      FieldName = 'Oved'
+      Size = 25
+    end
+    object qrFilterOfenPay: TStringField
+      FieldName = 'OfenPay'
+    end
+  end
+end

@@ -1,0 +1,127 @@
+inherited dlgLikuySendMsg: TdlgLikuySendMsg
+  Caption = #1513#1500#1497#1495#1514' '#1512#1513#1497#1502#1514' '#1492#1506#1512#1493#1514' '#1493#1500#1497#1511#1493#1497#1497#1501' '#1489#1489#1497#1511#1493#1512#1493#1514' '#1492#1488#1495#1512#1493#1504#1493#1514
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited btnPreview: TBitBtn
+    OnClick = btnPrintClick
+    ExplicitLeft = 18
+  end
+  inherited Panel1: TPanel
+    ExplicitLeft = 134
+    ExplicitTop = 0
+    object Label1: TLabel
+      Left = 88
+      Top = 9
+      Width = 71
+      Height = 13
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = #1506#1489#1493#1512' '#1495#1493#1491#1513':'
+    end
+    object Label2: TLabel
+      Left = 88
+      Top = 55
+      Width = 71
+      Height = 13
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Caption = #1513#1504#1492':'
+    end
+    object edYear: TSpinEdit
+      Left = 34
+      Top = 74
+      Width = 127
+      Height = 22
+      Anchors = [akTop, akRight]
+      MaxLength = 4
+      MaxValue = 0
+      MinValue = 2010
+      TabOrder = 0
+      Value = 0
+    end
+  end
+  inherited btnPrint: TBitBtn
+    OnClick = btnPrintClick
+    ExplicitLeft = 18
+  end
+  inherited btnEmail: TBitBtn
+    OnClick = btnPrintClick
+    ExplicitLeft = 18
+  end
+  inherited btnCancel: TBitBtn
+    ExplicitLeft = 18
+  end
+  object edMonth: TComboBox [5]
+    Left = 168
+    Top = 28
+    Width = 127
+    Height = 21
+    Anchors = [akTop, akRight]
+    TabOrder = 5
+    Text = 'edMonth'
+    Items.Strings = (
+      #1497#1504#1493#1488#1512
+      #1508#1489#1512#1493#1488#1512
+      #1502#1512#1509
+      #1488#1508#1512#1497#1500
+      #1502#1488#1497
+      #1497#1493#1504#1497
+      #1497#1493#1500#1497
+      #1488#1493#1490#1493#1505#1496
+      #1505#1508#1496#1502#1489#1512
+      #1488#1493#1511#1496#1493#1489#1512
+      #1504#1493#1489#1502#1489#1512
+      #1491#1510#1502#1489#1512)
+  end
+  inherited qrGnrl: TEDBQuery
+    DataSource = dmMain.dsClient
+    SQL.Strings = (
+      
+        'SELECT CL.Id, Shem, Ktovet, Isuv, Mikud, Fax, EMail, EMailX, Num' +
+        'ber, DateDone, Tipul, Remark, BikoretDtl, Cl.Contact'
+      'FROM KCrTipul CT               '
+      'LEFT JOIN KTblTipul tT ON CT.TipulId = tT.Id'
+      'LEFT JOIN KCrTipulDtl CD ON CD.TipulId = CT.Id '
+      'LEFT JOIN KTblBikoretDtl tB ON CD.BikoretDtlId = tB.Id'
+      'LEFT JOIN KCar CR ON CT.CarId = Cr.Id'
+      'LEFT JOIN KClient CL ON CR.ClientId = CL.Id'
+      
+        'WHERE Cl.Pail = True AND Cr.Pail = True AND Cl.Freze = False AND' +
+        ' Cr.Freze = False AND'
+      
+        'EXTRACT(YEAR FROM DateDone) = :pYear AND EXTRACT(MONTH FROM Date' +
+        'Done) = :pMonth'
+      
+        'AND ((Remark IS NOT NULL AND Remark <> '#39#39') OR BikoretDtlId IS NO' +
+        'T NULL)'
+      'AND CL.Id = :Id'
+      'ORDER BY CL.Id, Number, Tipul')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'pYear'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'pMonth'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptInput
+      end>
+    Left = 104
+    Top = 16
+  end
+  object qrGnrl1: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    Params = <>
+    Left = 112
+    Top = 72
+  end
+end

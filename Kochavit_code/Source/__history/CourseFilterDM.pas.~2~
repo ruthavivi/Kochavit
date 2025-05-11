@@ -1,0 +1,24 @@
+unit CourseFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmCourseFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmCourseFilter: TdmCourseFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

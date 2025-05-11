@@ -1,0 +1,7 @@
+SELECT Cl.Shem, Dr.IdDrv, Dr.Zeut, Dr.ShemD
+FROM KDriver Dr
+LEFT JOIN KClient Cl ON (Dr.ClientId = Cl.Id)
+WHERE Id NOT IN
+(SELECT DISTINCT DriverId 
+FROM ":KbBig:KDrTofes.db"
+WHERE Name = 

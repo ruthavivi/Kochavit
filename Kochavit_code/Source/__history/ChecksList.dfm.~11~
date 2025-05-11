@@ -1,0 +1,101 @@
+inherited frmChecksList: TfrmChecksList
+  Caption = #1512#1513#1497#1502#1514' '#1492#1502#1495#1488#1493#1514' '#1500#1492#1508#1511#1491#1492
+  ClientHeight = 411
+  ClientWidth = 665
+  ExplicitWidth = 673
+  ExplicitHeight = 457
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 665
+    ExplicitWidth = 665
+    inherited edSearch: TMaskEdit
+      OnChange = edSearchChange
+    end
+  end
+  inherited Panel1: TPanel
+    Width = 665
+    Height = 344
+    ExplicitWidth = 665
+    ExplicitHeight = 344
+    inherited DBGrid: TDBGrid
+      Width = 663
+      Height = 342
+      DataSource = dsList
+      OnDblClick = acEditExecute
+      OnTitleClick = DBGridTitleClick
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'clSign'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Bill'
+          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'AfkadaD'
+          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'CheckNo'
+          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'PidyonD'
+          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Shem'
+          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Return'
+          Width = 64
+          Visible = True
+        end>
+    end
+  end
+  inherited StatusBar: TStatusBar
+    Top = 392
+    Width = 665
+    ExplicitTop = 392
+    ExplicitWidth = 665
+  end
+  inherited ActionList1: TActionList
+    inherited acAppend: TAction
+      OnExecute = acAppendExecute
+      OnUpdate = acAppendUpdate
+    end
+    inherited acEdit: TAction
+      OnExecute = acEditExecute
+    end
+    inherited acArchive: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acDelete: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acFreze: TAction
+      Enabled = False
+      Visible = False
+    end
+  end
+  inherited dsList: TDataSource
+    DataSet = dmChecksList.qrChecksList
+  end
+end

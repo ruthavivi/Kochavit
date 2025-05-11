@@ -1,0 +1,50 @@
+inherited frmDrTahoSpssSlctDlg: TfrmDrTahoSpssSlctDlg
+  Caption = #1489#1495#1497#1512#1514' '#1491#1493'"'#1495
+  ExplicitWidth = 378
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited RvRprt: TRvProject
+    Top = 72
+  end
+  inherited RvSystem: TRvSystem
+    Left = 144
+    Top = 72
+  end
+  inherited qrSpss: TEDBQuery
+    SQL.Strings = (
+      'SELECT YY,  MM, COUNT(MM)  Cmt'
+      'FROM "Temp.db"'
+      'GROUP BY YY, MM'
+      'ORDER BY YY, MM')
+  end
+  object ccChartsTh: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsThGetCols
+    OnGetRow = ccChartsThGetRow
+    Left = 9
+    Top = 112
+  end
+  object qcTahoByMm: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 49
+    Top = 112
+  end
+  object qcTahoByYy: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 89
+    Top = 112
+  end
+end

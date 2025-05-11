@@ -1,0 +1,70 @@
+unit TblType;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, ImgList, Grids, DBGrids, ExtCtrls,
+  ComCtrls, StdCtrls, ToolWin, ActnList, DBCtrls, MyChkDBGrid, edbcomps, frxClass,
+  frxDBSet, Vcl.StdActns, System.Actions, System.ImageList, Vcl.DBActns;
+
+type
+  TfrmTypeTbl = class(TfrmGnrlTbl)
+    tbTblType: TStringField;
+    tbTblID: TAutoIncField;
+    tbTblDoc: TStringField;
+    tbTblEngine: TStringField;
+    tbTblLicenceId: TIntegerField;
+    tbTblLicence: TEDBTable;
+    tbTblLkpLicence: TStringField;
+    frdbType: TfrxDBDataset;
+    tbTblGroup: TEDBTable;
+    tbTblGroupId: TIntegerField;
+    tbTblLkpGroup: TStringField;
+    DatasetDelete1: TDataSetDelete;
+    procedure acPrintExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure tbTblNewRecord(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+
+  end;
+
+var
+  frmTypeTbl: TfrmTypeTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmTypeTbl.FormCreate(Sender: TObject);
+var
+  Path: String;
+  sr: TSearchRec;
+begin
+  inherited;
+  Path := ExtractFilePath(Application.ExeName) + 'Docs\Tofes\*.dot';
+  with dbGrid.Columns[1] do
+  begin
+    if FindFirst(Path, faAnyFile, sr) = 0 then
+    repeat
+      PickList.Append(sr.Name);
+    until FindNext(sr) <> 0;
+      FindClose(sr);
+  end;
+end;
+
+procedure TfrmTypeTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpType');
+end;
+
+procedure TfrmTypeTbl.tbTblNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbTblDoc.AsString := 'Tofes.Dot';
+end;
+
+end.

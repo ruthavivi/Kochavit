@@ -1,0 +1,47 @@
+inherited frmBillRprtSlctDlg: TfrmBillRprtSlctDlg
+  OldCreateOrder = True
+  ExplicitWidth = 378
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnRTFClick
+    end
+  end
+  object rqBillRprt: TRvQueryConnection [7]
+    RuntimeVisibility = rtDeveloper
+    Left = 304
+    Top = 40
+  end
+  object rqBillDtl: TRvQueryConnection [8]
+    RuntimeVisibility = rtDeveloper
+    Left = 304
+    Top = 72
+  end
+  object EDBQuery1: TEDBQuery
+    Params = <>
+    Left = 232
+    Top = 72
+  end
+  object qrBillDtl: TEDBQuery
+    FilterOptions = [foNoPartialCompare]
+    DatabaseName = 'Kb'
+    DataSource = frmBillFilter.dsFilter
+    SQL.Strings = (
+      'SELECT Bd.BillId, Cr.Number, Bd.SumP'
+      'FROM KBlDetailHis Bd '
+      'LEFT JOIN KCar Cr ON (Cr.Id = Bd.CarId)')
+    Params = <>
+    Left = 232
+    Top = 72
+  end
+end

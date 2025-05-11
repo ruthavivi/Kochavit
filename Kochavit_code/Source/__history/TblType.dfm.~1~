@@ -1,0 +1,98 @@
+inherited frmTypeTbl: TfrmTypeTbl
+  Left = 235
+  Caption = #1496#1489#1500#1514' '#1505#1493#1490#1497' '#1512#1499#1489#1497#1501
+  ClientHeight = 311
+  ClientWidth = 406
+  OldCreateOrder = True
+  ExplicitWidth = 414
+  ExplicitHeight = 338
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 406
+    Height = 22
+    ExplicitWidth = 359
+    ExplicitHeight = 22
+    inherited dbNav: TDBNavigator
+      Hints.Strings = ()
+    end
+  end
+  inherited StatusBar: TStatusBar
+    Top = 292
+    Width = 406
+    ExplicitWidth = 359
+  end
+  inherited Panel1: TPanel
+    Top = 22
+    Width = 406
+    Height = 270
+    ExplicitTop = 22
+    ExplicitWidth = 359
+    ExplicitHeight = 245
+    inherited dbGrid: TCheckDBGrid
+      Width = 404
+      Height = 268
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Type'
+          Width = 176
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'Doc'
+          Width = 114
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'Engine'
+          PickList.Strings = (
+            #1499#1503
+            #1500#1488)
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited tbTbl: TTable
+    OnNewRecord = tbTblNewRecord
+    IndexFieldNames = 'Type'
+    TableName = 'KTblType.DB'
+    object tbTblID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblType: TStringField
+      DisplayLabel = #1505#1493#1490#1497' '#1512#1499#1489#1497#1501
+      FieldName = 'Type'
+      Size = 30
+    end
+    object tbTblDoc: TStringField
+      DisplayLabel = #1502#1505#1502#1498' '#1489#1497#1511#1493#1512#1514
+      FieldName = 'Doc'
+    end
+    object tbTblEngine: TStringField
+      DisplayLabel = #1502#1502#1493#1504#1506
+      FieldName = 'Engine'
+      Size = 2
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+  end
+  object rtType: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Table = tbTbl
+    Left = 128
+    Top = 112
+  end
+end

@@ -1,0 +1,43 @@
+unit TblOfenPay;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, RpRave, RpDefine, RpBase, RpSystem, ActnList, DB, DBTables,
+  ImgList, Grids, DBGrids, MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls,
+  ToolWin, edbcomps, RpCon, RpConDS, frxClass, frxDBSet, Vcl.StdActns;
+
+type
+  TfrmOfenPayTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblOfenPay: TStringField;
+    frdbOfenPay: TfrxDBDataset;
+    procedure acDeleteExecute(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmOfenPayTbl: TfrmOfenPayTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmOfenPayTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('OfenPayId', tbTblId.AsString, ['KClient']) then
+    inherited;
+end;
+
+procedure TfrmOfenPayTbl.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpOfenPay');
+end;
+
+end.

@@ -1,0 +1,75 @@
+unit TblType;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, DBTables, ImgList, Grids, DBGrids, ExtCtrls,
+  ComCtrls, StdCtrls, ToolWin, ActnList, DBCtrls, MyChkDBGrid, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem, edbcomps, frxClass,
+  frxDBSet, Vcl.StdActns;
+
+type
+  TfrmTypeTbl = class(TfrmGnrlTbl)
+    tbTblType: TStringField;
+    tbTblID: TAutoIncField;
+    tbTblDoc: TStringField;
+    rtType: TRvTableConnection;
+    tbTblEngine: TStringField;
+    tbTblLicenceId: TIntegerField;
+    tbTblLicence: TEDBTable;
+    tbTblLkpLicence: TStringField;
+    frdbType: TfrxDBDataset;
+    procedure acPrintExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure tbTblNewRecord(DataSet: TDataSet);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+
+  end;
+
+var
+  frmTypeTbl: TfrmTypeTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmTypeTbl.FormCreate(Sender: TObject);
+var
+  Path: String;
+  sr: TSearchRec;
+begin
+  inherited;
+  Path := ExtractFilePath(Application.ExeName) + 'Docs\Tofes\*.doc';
+  with dbGrid.Columns[1] do
+  begin
+    if FindFirst(Path, faAnyFile, sr) = 0 then
+    repeat
+      PickList.Append(sr.Name);
+    until FindNext(sr) <> 0;
+      FindClose(sr);
+  end;
+end;
+
+procedure TfrmTypeTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('TypeId', tbTblId.AsString, ['KCar']) then
+    inherited;
+end;
+
+procedure TfrmTypeTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  RvTbl.ExecuteReport('rpType');
+end;
+
+procedure TfrmTypeTbl.tbTblNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbTblDoc.AsString := 'Tofes.Doc';
+end;
+
+end.

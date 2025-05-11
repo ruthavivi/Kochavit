@@ -1,0 +1,397 @@
+object dmMainOld: TdmMainOld
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 267
+  Width = 457
+  object dsClientOld: TDataSource
+    DataSet = tbClientOld
+    Left = 24
+    Top = 16
+  end
+  object dsCarOld: TDataSource
+    DataSet = qrCarOld
+    Left = 24
+    Top = 64
+  end
+  object dsDriverOld: TDataSource
+    DataSet = qrDriverOld
+    Left = 24
+    Top = 112
+  end
+  object RvSystem: TRvSystem
+    TitleSetup = 'Output Options'
+    TitleStatus = 'Report Status'
+    TitlePreview = 'Report Preview'
+    SystemSetups = [ssAllowCopies, ssAllowCollate, ssAllowDuplex, ssAllowDestPreview, ssAllowDestPrinter, ssAllowDestFile, ssAllowPrinterSetup, ssAllowPreviewSetup]
+    DefaultDest = rdPrinter
+    SystemFiler.AccuracyMethod = amAppearance
+    SystemFiler.StatusFormat = 'Generating page %p'
+    SystemPreview.ZoomFactor = 100.000000000000000000
+    SystemPrinter.ScaleX = 100.000000000000000000
+    SystemPrinter.ScaleY = 100.000000000000000000
+    SystemPrinter.StatusFormat = 'Printing page %p'
+    SystemPrinter.Title = 'ReportPrinter Report'
+    SystemPrinter.UnitsFactor = 1.000000000000000000
+    Left = 168
+    Top = 16
+  end
+  object RvRprt: TRvProject
+    Engine = RvSystem
+    ProjectFile = 
+      'C:\Program Files\Borland\BDS\4.0\Projects\Kochavit\Reports\KvRpr' +
+      't.rav'
+    Left = 216
+    Top = 16
+  end
+  object rtClientOld: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Left = 272
+    Top = 16
+  end
+  object rqCarOld: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Left = 272
+    Top = 64
+  end
+  object rqDriverOld: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Left = 272
+    Top = 112
+  end
+  object tbClientOld: TEDBTable
+    AfterScroll = tbClientOldAfterScroll
+    DatabaseName = 'Kb'
+    IndexName = 'xShem'
+    TableName = 'KClientOld.DB'
+    Left = 96
+    Top = 16
+    object tbClientOldId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbClientOldIdClient: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'IdClient'
+    end
+    object tbClientOldShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      DisplayWidth = 30
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object tbClientOldHp: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Hp'
+    end
+    object tbClientOldOpenDate: TDateField
+      DisplayWidth = 10
+      FieldName = 'OpenDate'
+    end
+    object tbClientOldBahalim1: TStringField
+      DisplayWidth = 30
+      FieldName = 'Bahalim1'
+      Size = 30
+    end
+    object tbClientOldTelB1: TStringField
+      DisplayWidth = 10
+      FieldName = 'TelB1'
+      Size = 10
+    end
+    object tbClientOldBahalim2: TStringField
+      DisplayWidth = 30
+      FieldName = 'Bahalim2'
+      Size = 30
+    end
+    object tbClientOldTelB2: TStringField
+      DisplayWidth = 10
+      FieldName = 'TelB2'
+      Size = 10
+    end
+    object tbClientOldKtovet: TStringField
+      DisplayWidth = 30
+      FieldName = 'Ktovet'
+      Size = 30
+    end
+    object tbClientOldIsuv: TStringField
+      DisplayWidth = 15
+      FieldName = 'Isuv'
+      Size = 15
+    end
+    object tbClientOldMikud: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Mikud'
+    end
+    object tbClientOldTel1: TStringField
+      DisplayWidth = 11
+      FieldName = 'Tel1'
+      Size = 11
+    end
+    object tbClientOldTel2: TStringField
+      DisplayWidth = 10
+      FieldName = 'Tel2'
+      Size = 10
+    end
+    object tbClientOldFax: TStringField
+      DisplayWidth = 10
+      FieldName = 'Fax'
+      Size = 10
+    end
+    object tbClientOldEMail: TStringField
+      DisplayWidth = 30
+      FieldName = 'EMail'
+      Size = 30
+    end
+    object tbClientOldContact: TStringField
+      DisplayWidth = 30
+      FieldName = 'Contact'
+      Size = 30
+    end
+    object tbClientOldTelC: TStringField
+      DisplayWidth = 10
+      FieldName = 'TelC'
+      Size = 10
+    end
+    object tbClientOldAcounter: TStringField
+      DisplayWidth = 30
+      FieldName = 'Acounter'
+      Size = 30
+    end
+    object tbClientOldTelA: TStringField
+      DisplayWidth = 10
+      FieldName = 'TelA'
+      Size = 10
+    end
+    object tbClientOldProfesion: TStringField
+      DisplayWidth = 30
+      FieldName = 'Profesion'
+      Size = 30
+    end
+    object tbClientOldTelP: TStringField
+      DisplayWidth = 10
+      FieldName = 'TelP'
+      Size = 10
+    end
+    object tbClientOldZeutP: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ZeutP'
+    end
+    object tbClientOldKtovetP: TStringField
+      DisplayWidth = 30
+      FieldName = 'KtovetP'
+      Size = 30
+    end
+    object tbClientOldSizeP: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'SizeP'
+    end
+    object tbClientOldPeriodPay: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'PeriodPay'
+    end
+    object tbClientOldCreditPay: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'CreditPay'
+    end
+    object tbClientOldRemark: TMemoField
+      DisplayWidth = 10
+      FieldName = 'Remark'
+      BlobType = ftMemo
+      Size = 60
+    end
+    object tbClientOldDept: TCurrencyField
+      DisplayWidth = 10
+      FieldName = 'Dept'
+    end
+    object tbClientOldFreze: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Freze'
+    end
+    object tbClientOldOvedId: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'OvedId'
+    end
+    object tbClientOldMovil: TStringField
+      DisplayWidth = 30
+      FieldName = 'Movil'
+      Size = 30
+    end
+    object tbClientOldZeutM: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ZeutM'
+    end
+  end
+  object qrCarOld: TEDBQuery
+    AfterOpen = qrCarOldAfterOpen
+    DatabaseName = 'Kb'
+    DataSource = dsClientOld
+    SQL.Strings = (
+      
+        'SELECT Cr.ID, Cr.IdCar, Cr.Number, tT.Type, tP.Producer, tD.Dgam' +
+        ', Cr.Model, Cr.Number, Cl.Shem, Cr.Contact, Cr.Tel, Cr.Freze'
+      'FROM KCarOld Cr'
+      'LEFT JOIN KTblType tT ON tT.Id = Cr.TypeId'
+      'LEFT JOIN KTblProducer tP ON tP.Id = Cr.ProducerId'
+      'LEFT JOIN KTblDgam tD ON tD.Id = Cr.DgamId'
+      'LEFT JOIN KClientOld Cl ON Cl.Id = Cr.ClientId'
+      'WHERE 0=0'
+      'ORDER BY Cr.Number')
+    Params = <>
+    Left = 96
+    Top = 64
+    object qrCarOldID: TIntegerField
+      DisplayLabel = 'Id'
+      DisplayWidth = 10
+      FieldName = 'ID'
+      Origin = 'KB."KCar.DB".Id'
+    end
+    object qrCarOldIdCar: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1491#1493#1512#1497
+      DisplayWidth = 10
+      FieldName = 'IdCar'
+    end
+    object qrCarOldNumber: TStringField
+      DisplayLabel = #1502#1505#39' '#1492#1512#1499#1489
+      DisplayWidth = 9
+      FieldName = 'Number'
+      Origin = 'KB."KCar.DB".Number'
+      Size = 9
+    end
+    object qrCarOldType: TStringField
+      DisplayLabel = #1505#1493#1490
+      DisplayWidth = 20
+      FieldName = 'Type'
+      Origin = 'KB."KTblType.DB".Type'
+    end
+    object qrCarOldProducer: TStringField
+      DisplayLabel = #1497#1510#1512#1503
+      DisplayWidth = 20
+      FieldName = 'Producer'
+      Origin = 'KB."KTblProducer.DB".Producer'
+    end
+    object qrCarOldDgam: TStringField
+      DisplayLabel = #1491#1490#1501
+      DisplayWidth = 20
+      FieldName = 'Dgam'
+      Origin = 'KB."KTblDgam.DB".Dgam'
+    end
+    object qrCarOldModel: TIntegerField
+      DisplayLabel = #1502#1493#1491#1500
+      DisplayWidth = 10
+      FieldName = 'Model'
+      Origin = 'KB."KCar.DB".Model'
+    end
+    object qrCarOldShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      DisplayWidth = 30
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrCarOldContact: TStringField
+      DisplayLabel = #1488#1497#1513' '#1511#1513#1512
+      DisplayWidth = 25
+      FieldName = 'Contact'
+      Size = 25
+    end
+    object qrCarOldTel: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503
+      DisplayWidth = 10
+      FieldName = 'Tel'
+      Size = 10
+    end
+  end
+  object qrDriverOld: TEDBQuery
+    AfterOpen = qrDriverOldAfterOpen
+    DatabaseName = 'Kb'
+    DataSource = dsClientOld
+    SQL.Strings = (
+      'SELECT DISTINCT D.*, Cl.Shem'
+      'FROM KDriverOld D'
+      'LEFT JOIN KClientOld Cl ON Cl.Id = D.ClientId'
+      'WHERE 0=0 '
+      'ORDER BY D.ShemD')
+    Params = <>
+    Left = 96
+    Top = 112
+    object qrDriverOldID: TIntegerField
+      DisplayLabel = #1502#1505#39
+      DisplayWidth = 10
+      FieldName = 'ID'
+      Origin = 'KB."KDriver.DB".Id'
+    end
+    object qrDriverOldIdDrv: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1491#1493#1512#1497
+      DisplayWidth = 10
+      FieldName = 'IdDrv'
+      Origin = 'KB."KDriver.DB".IdDrv'
+    end
+    object qrDriverOldZeut: TStringField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514
+      DisplayWidth = 11
+      FieldName = 'Zeut'
+      Origin = 'KB."KDriver.DB".Zeut'
+      Size = 11
+    end
+    object qrDriverOldShemD: TStringField
+      DisplayLabel = #1513#1501' '#1492#1504#1492#1490
+      DisplayWidth = 25
+      FieldName = 'ShemD'
+      Origin = 'KB."KDriver.DB".ShemD'
+      Size = 25
+    end
+    object qrDriverOldKtovetD: TStringField
+      DisplayLabel = #1499#1514#1493#1489#1514
+      DisplayWidth = 25
+      FieldName = 'KtovetD'
+      Origin = 'KB."KDriver.DB".KtovetD'
+      Size = 25
+    end
+    object qrDriverOldIsuvD: TStringField
+      DisplayLabel = #1497#1513#1493#1489
+      DisplayWidth = 15
+      FieldName = 'IsuvD'
+      Origin = 'KB."KDriver.DB".IsuvD'
+      Size = 15
+    end
+    object qrDriverOldMikudD: TIntegerField
+      DisplayLabel = #1502#1497#1511#1493#1491
+      DisplayWidth = 10
+      FieldName = 'MikudD'
+      Origin = 'KB."KDriver.DB".MikudD'
+    end
+    object qrDriverOldLicenceNum: TStringField
+      DisplayLabel = #1502#1505#39' '#1512#1513#1497#1493#1503
+      DisplayWidth = 7
+      FieldName = 'LicenceNum'
+      Origin = 'KB."KDriverOld.DB".LicenceNum'
+      Size = 7
+    end
+    object qrDriverOldTelD: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503
+      DisplayWidth = 10
+      FieldName = 'TelD'
+      Origin = 'KB."KDriver.DB".TelD'
+      Size = 10
+    end
+    object qrDriverOldCelD: TStringField
+      DisplayLabel = #1505#1500#1493#1500#1512#1497
+      DisplayWidth = 10
+      FieldName = 'CelD'
+      Origin = 'KB."KDriver.DB".CelD'
+      Size = 10
+    end
+    object qrDriverOldShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      DisplayWidth = 30
+      FieldName = 'Shem'
+      Origin = 'KB."KClient.DB".Shem'
+      Size = 30
+    end
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'Kb'
+    Params = <>
+    Left = 96
+    Top = 184
+  end
+end

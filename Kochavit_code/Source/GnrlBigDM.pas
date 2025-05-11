@@ -1,0 +1,131 @@
+unit GnrlBigDM;
+
+interface
+
+uses
+  SysUtils, Classes, Forms, edbcomps, DB, Windows, StrUtils, Dialogs;
+
+type
+  TdmGnrlBig = class(TDataModule)
+    tbBigFolder: TEDBTable;
+    qrBigFolder: TEDBQuery;
+    qrGnrl: TEDBQuery;
+  private
+    pRelativePath: String;
+    procedure CreateDirectory(pMainId: String);
+  public
+    procedure SetProperties(pTable: String);
+    procedure SaveBigData(pMainId: Integer; pMainFld, pDocSource, pDocNewName,
+        pDocType: String; pSaveOnFolder: Boolean);
+    procedure OpenDataBig(pTable, pMainFldName, pMainFldValue: String);
+    procedure DeleteDoc(pTable, pId: String);
+    procedure CloseDataBig;
+  end;
+
+var
+  dmGnrlBig: TdmGnrlBig;
+
+implementation
+uses
+  LogErrorUtil, KbFunc;
+
+{$R *.dfm}
+
+{ TdmGnrlBig }
+
+procedure TdmGnrlBig.SetProperties(pTable: String);
+begin
+  tbBigFolder.TableName := pTable;
+end;
+
+
+procedure TdmGnrlBig.SaveBigData(pMainId: Integer; pMainFld, pDocSource,
+  pDocNewName, pDocType: String; pSaveOnFolder: Boolean);
+var
+  DocSource, DocType: String;
+begin
+  DocSource := pDocSource;
+  DocType := pDocType;
+  if ((UpperCase(pDocType) = 'JPG') and (not pSaveOnFolder)) then
+  begin
+    DocSource := ExtractFilePath(Application.ExeName) + 'Temp\Temp.jpg';
+    CompressJpg(pDocSource, DocSource);
+  end
+  else if ((UpperCase(pDocType) = 'BMP') and (not pSaveOnFolder)) then
+  begin
+    DocSource := ExtractFilePath(Application.ExeName) + 'Temp\Scan.jpg';
+    ConvertBmpToJpg(pDocSource, DocSource);
+    DocType := 'JPG';
+  end;
+
+  if pSaveOnFolder then
+  begin
+    try
+      CreateDirectory(IntToStr(pMainId));
+      if MoveFileEx(PWideChar(DocSource), PWideChar(pRelativePath+
+          '\'+pDocNewName+'.'+DocType), MOVEFILE_COPY_ALLOWED+MOVEFILE_REPLACE_EXISTING) = False then
+        ShowMessage('המסמך לא צורף. בדוק שהמסמך קיים והוא לא פתוח');
+    except on E: Exception do
+      HandelError('TdmGnrlBig.SaveBigData', 'העברת המסמך נכשלה!!! '+#10#13+E.Message, E)
+    end;
+  end
+  else
+  begin
+    try
+      tbBigFolder.Open;
+      tbBigFolder.Append;
+      tbBigFolder.FieldByName(pMainFld).AsInteger := pMainId;
+      tbBigFolder.FieldByName('Moed').AsDateTime := Now;
+      tbBigFolder.FieldByName('Name').AsString := pDocNewName;
+      tbBigFolder.FieldByName('Ext').AsString := DocType;
+      TBlobField(tbBigFolder.FieldByName('Tofes')).LoadFromFile(DocSource);
+      tbBigFolder.Post;
+    except on E: EDatabaseError do
+      HandelError('TdmGnrlBig.SaveBigData', 'שמירת המסמך נכשלה!!! '+#10#13+E.Message, E);
+    end;
+  end;
+end;
+
+procedure TdmGnrlBig.OpenDataBig(pTable, pMainFldName, pMainFldValue: String);
+begin
+  qrBigFolder.SQL.Text := 'SELECT * FROM ' + pTable + ' WHERE ' + pMainFldName +
+          ' = ' + pMainFldValue;
+  try
+    qrBigFolder.Open;
+  except on E: EDatabaseError do
+    begin
+      tbBigFolder.Close;
+      HandelError('TdmGnrlBig.OpenDataBig', 'קובץ מסמכים אינו תקין !!!' + #10#13 + E.Message, E);
+    end;
+  end;
+end;
+
+procedure TdmGnrlBig.DeleteDoc(pTable, pId: String);
+begin
+  qrGnrl.SQL.Text := 'DELETE FROM ' + pTable + ' WHERE Id = ' + pId;
+  qrGnrl.ExecSQL;
+  qrBigFolder.Close;
+  qrBigFolder.Open;
+end;
+
+procedure TdmGnrlBig.CloseDataBig;
+begin
+  qrBigFolder.Close;
+end;
+
+procedure TdmGnrlBig.CreateDirectory(pMainId: String);
+var
+  Module: String;
+begin
+  if (tbBigFolder.TableName = 'KClTofes') then
+    Module := 'Client\'
+  else if (tbBigFolder.TableName = 'KCrTofes') then
+    Module := 'Car\'
+  else if (tbBigFolder.TableName = 'KDrTofes') then
+    Module := 'Driver\';
+  pRelativePath := ExtractFilePath(Application.ExeName)+'Documents\'+Module+pMainId;
+  if not DirectoryExists(pRelativePath) then
+    CreateDir(pRelativePath);
+end;
+
+end.

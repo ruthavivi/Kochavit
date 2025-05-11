@@ -1,0 +1,111 @@
+inherited frmCarRprtSlctDlg: TfrmCarRprtSlctDlg
+  Caption = #1489#1495#1497#1512#1514' '#1491#1493'"'#1495
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited rgReports: TRadioGroup
+      Columns = 2
+      Items.Strings = (
+        #1496#1493#1508#1505#1497' '#1489#1497#1511#1493#1512#1514)
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnRTFClick
+    end
+  end
+  object dsSpss: TDataSource [5]
+    Left = 112
+    Top = 56
+  end
+  object rqCarRprt: TRvQueryConnection [6]
+    RuntimeVisibility = rtDeveloper
+    Left = 16
+    Top = 24
+  end
+  object rqCrTofes: TRvQueryConnection [7]
+    RuntimeVisibility = rtDeveloper
+    Left = 208
+    Top = 112
+  end
+  object EDBQuery1: TEDBQuery
+    Params = <>
+    Left = 64
+    Top = 112
+  end
+  object EDBQuery2: TEDBQuery
+    Params = <>
+    Left = 112
+    Top = 112
+  end
+  object EDBQuery3: TEDBQuery
+    Params = <>
+    Left = 16
+    Top = 56
+  end
+  object EDBQuery4: TEDBQuery
+    Params = <>
+    Left = 160
+    Top = 112
+  end
+  object qrTipul: TEDBQuery
+    DatabaseName = 'KB'
+    DataSource = frmCarReport.dsReport
+    SQL.Strings = (
+      'SELECT tT.Tipul, Ct.DateToDo'
+      'FROM KCrTipul Ct'
+      'LEFT JOIN KTblTipul tT ON (Ct.TipulId = tT.Id)'
+      'WHERE tT.Tipul <> '#39#1489#1497#1511#1493#1512#1514' '#1495#1493#1491#1513#1497#1514#39' and Ct.CarId = :Id')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptInput
+      end>
+    Left = 64
+    Top = 112
+  end
+  object qrTplDtl: TEDBQuery
+    DatabaseName = 'KB'
+    DataSource = dsSpss
+    SQL.Strings = (
+      'SELECT tB.BikoretDtl '
+      'FROM KCrTipulDtl Cd'
+      'LEFT JOIN KTblBikoretDtl tB ON (Cd.BikoretDtlId = tB.Id)'
+      'WHERE Cd.TipulId = :Id')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptInput
+      end>
+    Left = 112
+    Top = 112
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'KB'
+    Params = <>
+    Left = 16
+    Top = 56
+  end
+  object qrCrTofes: TEDBQuery
+    FilterOptions = [foNoPartialCompare]
+    DatabaseName = 'KBBig'
+    SQL.Strings = (
+      'SELECT CarId, Moed, Name'
+      'FROM  KCrTofes')
+    Params = <>
+    Left = 160
+    Top = 112
+  end
+end

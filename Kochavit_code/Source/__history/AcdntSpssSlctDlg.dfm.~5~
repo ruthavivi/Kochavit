@@ -1,0 +1,22 @@
+inherited frmAcdntSpssSlctDlg: TfrmAcdntSpssSlctDlg
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  object ccChartsAcdnt: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsAcdntGetCols
+    OnGetRow = ccChartsAcdntGetRow
+    Left = 257
+    Top = 48
+  end
+end

@@ -1,0 +1,56 @@
+unit CrAcdntRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  RpBase, RpSystem, RpDefine, RpRave, RpCon, RpConDS, RpConBDE, RpRender,
+  RpRenderRTF, edbcomps, RpRenderHTML;
+
+type
+  TfrmCrAcdntRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqCrAcdnt: TRvQueryConnection;
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCrAcdntRprtSlctDlg: TfrmCrAcdntRprtSlctDlg;
+
+implementation
+uses
+   AcdntFilterDM;
+{$R *.dfm}
+
+procedure TfrmCrAcdntRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('CN');
+end;
+
+procedure TfrmCrAcdntRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmCrAcdntRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+procedure TfrmCrAcdntRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+end.

@@ -1,0 +1,36 @@
+unit TblAtar;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem;
+
+type
+  TfrmAtarTbl = class(TfrmGnrlTbl)
+    tbTblID: TAutoIncField;
+    tbTblAtar: TStringField;
+    rtAtar: TRvTableConnection;
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAtarTbl: TfrmAtarTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmAtarTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  RvTbl.ExecuteReport('rpAtar');
+end;
+
+end.

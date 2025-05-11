@@ -1,0 +1,413 @@
+unit CarEditDM;
+
+interface
+
+uses
+  SysUtils, Classes, Forms, GnrlEditDM, Dialogs, DB, edbcomps, edbtype,
+  frxClass, frxDBSet;
+
+type
+  TdmCarEdit = class(TdmGnrlEdit)
+    dsCar: TDataSource;
+    dsCrTipul: TDataSource;
+    dsCrAcdnt: TDataSource;
+    dsCrFollow: TDataSource;
+    dsCrTipulOut: TDataSource;
+    dsCrTipulDtl: TDataSource;
+    dsTblProducer: TDataSource;
+    tbCar: TEDBTable;
+    tbCarNumber: TStringField;
+    tbCarTypeId: TIntegerField;
+    tbCarProducerId: TIntegerField;
+    tbCarDgamId: TIntegerField;
+    tbCarModel: TIntegerField;
+    tbCarWeightT: TFloatField;
+    tbCarWeightS: TFloatField;
+    tbCarWeightR: TFloatField;
+    tbCarShildaN: TStringField;
+    tbCarSpido: TIntegerField;
+    tbCarCargoId: TIntegerField;
+    tbCarInsureId: TIntegerField;
+    tbCarPolisaN: TStringField;
+    tbCarContact: TStringField;
+    tbCarTel: TStringField;
+    tbCarCodSecure: TStringField;
+    tbCarShum: TCurrencyField;
+    tbCarOvedId: TSmallintField;
+    tbCarAtarId: TSmallintField;
+    tbCarRemark: TStringField;
+    tbCarClientId: TIntegerField;
+    tbCarMissing: TBooleanField;
+    tbCarLkpType: TStringField;
+    tbCarLkpProduce: TStringField;
+    tbCarLkpDgam: TStringField;
+    tbCarLkpCargo: TStringField;
+    tbCarLkpInsure: TStringField;
+    tbCarLkpOved: TStringField;
+    tbCarLkpAtar: TStringField;
+    tbTblType: TEDBTable;
+    tbTblProducer: TEDBTable;
+    tbTblDgam: TEDBTable;
+    tbTblCargo: TEDBTable;
+    tbTblInsure: TEDBTable;
+    tbTblOved: TEDBTable;
+    tbTblAtar: TEDBTable;
+    tbDriver: TEDBTable;
+    tbCrTipul: TEDBTable;
+    tbCrTipulId: TAutoIncField;
+    tbCrTipulCarId: TIntegerField;
+    tbCrTipulTipulId: TIntegerField;
+    tbCrTipulDateDone: TDateField;
+    tbCrTipulDateToDo: TDateField;
+    tbCrTipulLTipul: TStringField;
+    tbCrTipulRemark: TStringField;
+    tbTblTipul: TEDBTable;
+    tbCrFollow: TEDBTable;
+    tbCrFollowId: TAutoIncField;
+    tbCrFollowCarId: TIntegerField;
+    tbCrFollowMoed: TDateField;
+    tbCrFollowSha: TTimeField;
+    tbCrFollowRemark: TStringField;
+    tbCrTipulOut: TEDBTable;
+    tbCrTipulOutId: TAutoIncField;
+    tbCrTipulOutCarId: TIntegerField;
+    tbCrTipulOutMoed: TDateField;
+    tbCrTipulOutTipulOutId: TSmallintField;
+    tbCrTipulOutMusah: TStringField;
+    tbCrTipulOutRemark: TStringField;
+    tbCrTipulOutLTipulOut: TStringField;
+    tbCrTipulOutTofes: TStringField;
+    tbTblTipulOut: TEDBTable;
+    tbCrDrv: TEDBTable;
+    AutoIncField1: TAutoIncField;
+    tbCrAcdnt: TEDBTable;
+    AutoIncField2: TAutoIncField;
+    IntegerField3: TIntegerField;
+    tbCarFreze: TBooleanField;
+    tbCrDrvDriverId: TIntegerField;
+    tbCarCodCar: TAutoIncField;
+    tbCarPail: TBooleanField;
+    tbCrAcdntAcdntD: TDateField;
+    tbCrAcdntDescrpt: TStringField;
+    tbCrAcdntStatus: TStringField;
+    tbCrDrvCarId: TIntegerField;
+    tbCarId: TIntegerField;
+    dsCrDrv: TDataSource;
+    tbCrDrvLkpDriver: TStringField;
+    tbCarDateReg: TDateField;
+    tbCarStamp: TDateTimeField;
+    qrCrTipulDtl: TEDBQuery;
+    frdbCar: TfrxDBDataset;
+    frdbClient: TfrxDBDataset;
+    frdbCrDrv: TfrxDBDataset;
+    frdbTipul: TfrxDBDataset;
+    frdbAcdnt: TfrxDBDataset;
+    frdbTipulOut: TfrxDBDataset;
+    frdbFollow: TfrxDBDataset;
+    tbCarProfesion: TStringField;
+    tbCarTelP: TStringField;
+    tbCarZeutP: TIntegerField;
+    tbCarMovil: TStringField;
+    tbCarZeutM: TIntegerField;
+    tbCarHamas: TStringField;
+    tbCarZeutH: TIntegerField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure tbCarModelValidate(Sender: TField);
+    procedure tbCrTipulTipulIdValidate(Sender: TField);
+    procedure tbCrTipulDateDoneValidate(Sender: TField);
+    procedure tbCarAfterPost(DataSet: TDataSet);
+    procedure tbCarBeforePost(DataSet: TDataSet);
+    procedure tbCarNewRecord(DataSet: TDataSet);
+    procedure tbCarNumberValidate(Sender: TField);
+    procedure dsCarDataChange(Sender: TObject; Field: TField);
+    procedure tbCrTipulNewRecord(DataSet: TDataSet);
+    procedure tbCarDateRegSetText(Sender: TField; const Text: string);
+    procedure tbCarCalcFields(DataSet: TDataSet);
+    procedure tbDriverBeforeOpen(DataSet: TDataSet);
+  private
+    { Private declarations }
+    function GetDgam(pProducerId, pDgamId: Integer): String;
+  public
+    procedure SetDataState(pState: Boolean; pId: Integer);
+    procedure LoadTipulim;
+    procedure SaveBigData(pDocSource, pDocNewName, pDocType: String;
+          pSaveOnFolder: Boolean);
+    procedure SetPrintFilter(pDate: TDate);
+    procedure CancelPrintFilter;
+    procedure SaveData;
+  end;
+
+var
+  dmCarEdit: TdmCarEdit;
+
+implementation
+uses
+  DataDM, MainDM, CarListDM, KbFunc, LogErrorUtil, GnrlBigDM,
+  GraphicUtils, IOUtils, Variants;
+
+{$R *.dfm}
+
+procedure TdmCarEdit.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  try
+    tbCar.Open;
+    tbCrTipul.Open;
+    tbCrDrv.Open;
+    tbCrAcdnt.Open;
+    tbCrTipulOut.Open;
+    tbCrFollow.Open;
+    qrCrTipulDtl.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmCarEdit.DataModuleCreate', 'קיים קובץ לא תקין!!!'+ #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmCarEdit.SetDataState(pState: Boolean; pId: Integer);
+begin
+  if (pState = True) then
+  begin
+    tbCar.Append;
+    qrGnrl.SQL.Text := 'SELECT Profesion, ZeutP, TelP, Movil, ZeutM FROM KClient '+
+            'WHERE Id = ' + dmMain.qrClientListId.AsString;
+    try
+      qrGnrl.Open;
+      tbCarProfesion.AsString := qrGnrl.FieldByName('Profesion').AsString;
+      tbCarZeutP.AsString := qrGnrl.FieldByName('ZeutP').AsString;
+      tbCarTelP.AsString := qrGnrl.FieldByName('TelP').AsString;
+      tbCarMovil.AsString := qrGnrl.FieldByName('Movil').AsString;
+      tbCarZeutM.AsString := qrGnrl.FieldByName('ZeutM').AsString;
+    finally
+      qrGnrl.Close;
+    end;
+  end
+  else
+  begin
+    tbCar.IndexFieldNames := 'Id';
+    if tbCar.FindKey([pId]) then
+      tbCar.Edit;
+  end;
+  tbCrTipul.BeginCachedUpdates;
+
+  if dmMain.SelectAll then
+    ClientShem := GetClientName(tbCarClientId.AsString);
+end;
+
+// fields events
+procedure TdmCarEdit.tbCarNumberValidate(Sender: TField);
+var
+   sMsg: String;
+begin
+  inherited;
+  if (Sender.FieldName = 'CodCar') then
+    sMsg := 'קוד רכב קיים כבר'
+  else if (Sender.FieldName = 'Number') then
+    sMsg := 'מספר רישוי קיים כבר';
+
+  if CheckDblValue('KCar', Sender.FieldName, Sender.Text, tbCarId.AsString,
+        sMsg, Sender.ClassType) then
+    Abort;
+end;
+
+procedure TdmCarEdit.tbCarDateRegSetText(Sender: TField; const Text: string);
+begin
+  inherited;
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TdmCarEdit.tbCarModelValidate(Sender: TField);
+begin
+  inherited;
+  if (Sender.Text <> '') and (StrToInt(Sender.Text) < 1900) then
+  begin
+    MessageDlg('שנת המודל אינה תקינה', mtError, [mbOk], 0);
+    Abort;
+  end;
+end;
+
+procedure TdmCarEdit.tbCrTipulTipulIdValidate(Sender: TField);
+begin
+  inherited;
+  if CheckDblSub('KCrTipul', 'CarId', tbCarId.AsString,
+       Sender.FieldName, Sender.Text, '...הטיפול הזה כבר רשום') then
+    Abort;
+end;
+
+procedure TdmCarEdit.tbCrTipulDateDoneValidate(Sender: TField);
+begin
+  inherited;
+  if (Sender.Text <> '') then
+    tbCrTipulDateToDo.AsDateTime :=
+      IncMonth(StrToDate(Sender.Text), tbTblTipul.FieldByName('Tedirut').AsInteger);
+end;
+//end fields events
+
+//tables events
+procedure TdmCarEdit.tbCarNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbCarId.AsInteger := dmMain.GenerateNewId('IdCar');
+  tbCarCodCar.AsInteger := GetMaxId('KCar', 'CodCar');
+  tbCarClientId.AsInteger := dmMain.qrClientList.FieldByName('Id').AsInteger;
+end;
+
+procedure TdmCarEdit.tbCrTipulNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  if ((DataSet as TEDBTable).Name = 'tbCrTipul') then
+      tbCrTipulId.AsInteger := dmMain.GenerateNewId('NextNoTpl');
+  DataSet.FieldByName('CarId').AsInteger := tbCarId.AsInteger;
+end;
+
+procedure TdmCarEdit.tbCarBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  tbCarMissing.AsBoolean := False;
+  tbCrTipul.First;
+  tbCrTipul.DisableControls;
+  try
+    tbCarMissing.AsBoolean := False;
+    while not tbCrTipul.Eof do
+    begin
+      if (tbCrTipulDateToDo.AsString = '') then
+      begin
+        tbCarMissing.AsBoolean := True;
+        Exit;
+      end;
+      tbCrTipul.Next;
+    end;
+  finally
+    tbCrTipul.EnableControls;
+  end;
+end;
+
+procedure TdmCarEdit.tbCarCalcFields(DataSet: TDataSet);
+begin
+  inherited;
+  if (tbCarDgamId.AsString <> '') then
+    tbCarLkpDgam.AsString := GetDgam(tbCarProducerId.AsInteger, tbCarDgamId.AsInteger);
+end;
+
+function TdmCarEdit.GetDgam(pProducerId, pDgamId: Integer): String;
+begin
+  Result := '';
+  tbTblProducer.Locate('Id', pProducerId, []);
+  if (tbTblDgam.Locate('Id', pDgamId, [])) then
+    Result := tbTblDgam.FieldByName('Dgam').AsString;
+end;
+
+procedure TdmCarEdit.dsCarDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  if tbCrFollow.Active then
+  begin
+    tbCrFollow.Last;
+    tbCrAcdnt.Last;
+    tbCrTipulOut.Last;
+  end;
+end;
+
+procedure TdmCarEdit.tbCarAfterPost(DataSet: TDataSet);
+begin
+  inherited;
+  dmCarList.qrCarList.Refresh;
+  dmCarList.qrCarList.Locate('Id', tbCarId.AsInteger, []);
+end;
+
+procedure TdmCarEdit.tbDriverBeforeOpen(DataSet: TDataSet);
+begin
+  inherited;
+  if dmMain.SelectAll then
+    tbDriver.Filter := 'Pail = True'
+  else
+    tbDriver.Filter := 'ClientId = ' + dmMain.qrClientList.FieldByName('Id').AsString +
+         ' AND Pail = True';
+end;
+// end tables events
+
+// called procedure
+procedure TdmCarEdit.LoadTipulim;
+begin
+  tbTblTipul.First;
+  while not tbTblTipul.Eof do
+  begin
+    if tbTblTipul.FieldByName('Kavua').AsBoolean then
+    begin
+      tbCrTipul.Append;
+      tbCrTipulTipulId.AsInteger := tbTblTipul.FieldByName('Id').AsInteger;
+      tbCrTipul.Post;
+    end;
+    tbTblTipul.Next;
+  end;
+end;
+
+procedure TdmCarEdit.SaveData;
+begin
+  try
+    while dmData.dbMain.InTransaction do
+      Sleep(10);
+    dmData.dbMain.StartTransaction(EmptyEDBStringsArray);
+    tbCar.Post;
+    tbCrTipul.ApplyCachedUpdates;
+    if (tbCrDrv.State <> dsBrowse) then
+      tbCrDrv.Post;
+    if (tbCrAcdnt.State <> dsBrowse) then
+      tbCrAcdnt.Post;
+    if (tbCrFollow.State <> dsBrowse) then
+      tbCrFollow.Post;
+    if (tbCrTipulOut.State <> dsBrowse) then
+      tbCrTipulOut.Post;
+    dmData.dbMain.Commit;
+  except
+    on E: EEDBError do
+    begin
+      dmData.dbMain.Rollback;
+      HandelError('TdmCarEdit.SaveData', 'כרטיס לא נשמר' + E.Message, E);
+    end;
+    on E: Exception do
+    begin
+      dmData.dbMain.Rollback;
+      HandelError('TdmCarEdit.SaveData', 'כרטיס לא נשמר... ' + E.Message, E);
+    end;
+  end;
+end;
+
+procedure TdmCarEdit.SaveBigData(pDocSource, pDocNewName, pDocType: String;
+  pSaveOnFolder: Boolean);
+begin
+  dmGnrlBig := TdmGnrlBig.Create(Self);
+  try
+    dmGnrlBig.SetProperties('KCrTofes');
+    dmGnrlBig.SaveBigData(tbCarId.AsInteger, 'CarId', pDocSource, pDocNewName,
+      pDocType, pSaveOnFolder);
+  finally
+    dmGnrlBig.Free;
+  end;
+end;
+
+procedure TdmCarEdit.SetPrintFilter(pDate: TDate);
+begin
+  tbCrAcdnt.Filter := 'AcdntD >= DATE ' +
+      QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbCrAcdnt.Filtered := True;
+  tbCrFollow.Filter := 'Moed >= DATE ' +
+      QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbCrFollow.Filtered := True;
+  tbCrTipulOut.Filter := 'Moed >= DATE ' +
+      QuotedStr(FormatDateTime('YYYY-MM-DD', pDate));
+  tbCrTipulOut.Filtered := True;
+end;
+
+procedure TdmCarEdit.CancelPrintFilter;
+begin
+  tbCrAcdnt.Filtered := False;
+  tbCrFollow.Filtered := False;
+  tbCrTipulOut.Filtered := False;
+end;
+
+end.

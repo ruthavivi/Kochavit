@@ -1,0 +1,101 @@
+object dmDriverList: TdmDriverList
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 208
+  Width = 163
+  object qrDriverList: TEDBQuery
+    ReadOnly = True
+    BeforeOpen = qrDriverListBeforeOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    SQL.Strings = (
+      
+        'SELECT Id, CodDrv, ShemD, Zeut, Shem, LicenceNum, Freze, Missing' +
+        ', ClientId'
+      'FROM KDriver Dr'
+      'LEFT JOIN KClient Cl ON Cl.Id = Dr.ClientId'
+      'WHERE Pail = True'
+      'ORDER BY ShemD')
+    Params = <>
+    Left = 32
+    Top = 32
+    object qrDriverListId: TIntegerField
+      FieldName = 'Id'
+      Origin = 'KDriver.Id'
+    end
+    object qrDriverListCodDrv: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1497#1491#1493#1512#1497
+      FieldName = 'CodDrv'
+      Origin = 'KDriver.CodDrv'
+    end
+    object qrDriverListShemD: TStringField
+      DisplayLabel = #1513#1501' '#1492#1504#1492#1490
+      FieldName = 'ShemD'
+      Origin = 'KDriver.ShemD'
+      Size = 25
+    end
+    object qrDriverListZeut: TStringField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514
+      FieldName = 'Zeut'
+      Origin = 'KDriver.Zeut'
+      Size = 11
+    end
+    object qrDriverListShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Origin = 'KClient.Shem'
+      Size = 30
+    end
+    object qrDriverListFreze: TBooleanField
+      FieldName = 'Freze'
+      Origin = 'KDriver.Freze'
+    end
+    object qrDriverListMissing: TBooleanField
+      FieldName = 'Missing'
+      Origin = 'KDriver.Missing'
+    end
+    object qrDriverListClientId: TIntegerField
+      FieldName = 'ClientId'
+      Origin = 'KDriver.ClientId'
+    end
+    object qrDriverListLicenceNum: TStringField
+      FieldName = 'LicenceNum'
+      Origin = 'KDriver.LicenceNum'
+      Size = 7
+    end
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    Params = <>
+    Left = 40
+    Top = 112
+  end
+  object dsDriverList: TDataSource
+    DataSet = qrDriverList
+    OnDataChange = dsDriverListDataChange
+    Left = 104
+    Top = 32
+  end
+  object frdbDrvList: TfrxDBDataset
+    UserName = 'frdbDrvList'
+    CloseDataSource = False
+    FieldAliases.Strings = (
+      'Id=ID'
+      'CodDrv=CodDrv'
+      'ShemD=ShemD'
+      'Zeut=Zeut'
+      'Shem=Shem'
+      'Freze=Freze'
+      'Missing=Missing'
+      'ClientId=ClientId'
+      'LicenceNum=LicenceNum')
+    DataSet = qrDriverList
+    BCDToCurrency = False
+    Left = 105
+    Top = 112
+  end
+end

@@ -1,0 +1,26 @@
+unit GnrlListArhivDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps;
+
+type
+  TdmGnrlListArhiv = class(TDataModule)
+    qrList: TEDBQuery;
+    qrGnrl: TEDBQuery;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmGnrlListArhiv: TdmGnrlListArhiv;
+
+implementation
+uses
+  DataDM;
+{$R *.dfm}
+
+end.

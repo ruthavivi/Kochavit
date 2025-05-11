@@ -1,0 +1,174 @@
+inherited frmAnualFilter: TfrmAnualFilter
+  Caption = #1514#1493#1499#1504#1497#1514' '#1506#1489#1493#1491#1492' '#1513#1504#1514#1497#1514
+  ClientHeight = 160
+  OldCreateOrder = True
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  ExplicitWidth = 451
+  ExplicitHeight = 187
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 129
+    ExplicitTop = 129
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    Height = 129
+    ExplicitHeight = 129
+    inherited grbMain: TGroupBox
+      Height = 127
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1514#1493#1499#1504#1497#1514' '#1506#1489#1493#1491#1492' '#1513#1504#1514#1497#1514
+      ExplicitHeight = 127
+      DesignSize = (
+        441
+        127)
+      object lbEOved: TLabel
+        Left = 285
+        Top = 60
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Left = 336
+        Top = 32
+        Width = 81
+        Height = 16
+        Anchors = [akTop, akRight]
+        AutoSize = False
+        Caption = #1514#1493#1499#1504#1497#1514' '#1500#1513#1504#1514':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object cxEOved: TCheckBox
+        Left = 336
+        Top = 60
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 1
+        OnClick = cxEOvedClick
+      end
+      object cbEOved: TComboBox
+        Left = 112
+        Top = 60
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 2
+        OnEnter = cbEOvedEnter
+      end
+      object edYear: TSpinEdit
+        Left = 112
+        Top = 32
+        Width = 169
+        Height = 22
+        Anchors = [akTop, akRight]
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxValue = 0
+        MinValue = 0
+        ParentFont = False
+        TabOrder = 0
+        Value = 0
+      end
+    end
+  end
+  inherited tbl: TEDBTable
+    Left = 120
+    Top = 96
+  end
+  object dsCars: TDataSource [3]
+    Left = 49
+    Top = 33
+  end
+  object tbAnualTipul: TEDBTable [4]
+    TableName = 'KAnualTipul'
+    Left = 41
+    Top = 97
+  end
+  inherited qrFilter: TEDBQuery
+    Left = 184
+  end
+  inherited qrGnrl: TEDBQuery
+    Left = 240
+  end
+  object qrTipul: TEDBQuery
+    DataSource = dsCars
+    SQL.Strings = (
+      
+        'SELECT EXTRACT(MONTH FROM DateDone) M, EXTRACT(DAY FROM DateDone' +
+        ') D'
+      'FROM KCrTipulHis CTh'
+      '       LEFT JOIN KTblTipul tTp ON (CTh.TipulId = tTp.Id)'
+      
+        'WHERE  Tipul = '#39#1489#1497#1511#1493#1512#1514' '#1495#1493#1491#1513#1497#1514#39' and CarId = :ID and EXTRACT(YEAR ' +
+        'FROM DateDone) = :pYear')
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'Id'
+        ParamType = ptInput
+        Size = 4
+      end
+      item
+        DataType = ftUnknown
+        Name = 'pYear'
+        ParamType = ptInput
+      end>
+    Left = 345
+    Top = 89
+  end
+  object qrCars: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    SQL.Strings = (
+      
+        'SELECT Cr.Id, Cr.IdCar, Cl.Shem, Cr.Number, tTp.Type, tOv.Oved, ' +
+        'tAt.Atar'
+      'FROM KCar Cr'
+      '          LEFT JOIN KClient Cl ON (Cr.ClientId = Cl.Id)'
+      '          LEFT JOIN KTblType tTp ON (Cr.TypeId = tTp.Id)'
+      '          LEFT JOIN KTblOved tOv ON (Cr.OvedId = tOv.Id)'
+      '          LEFT JOIN KTblAtar tAt ON (Cr.AtarId = tAt.Id) ')
+    Params = <>
+    Left = 9
+    Top = 33
+  end
+end

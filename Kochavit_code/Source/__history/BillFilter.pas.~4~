@@ -1,0 +1,149 @@
+unit BillFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, DateUtils,
+  edbcomps;
+
+type
+  TfrmBillFilter = class(TfrmGnrlFilter)
+    lbAProduceD: TLabel;
+    lbZProduceD: TLabel;
+    lbEShem: TLabel;
+    edAProduceD: TMaskEdit;
+    edZProduceD: TMaskEdit;
+    cbProduceD: TCheckBox;
+    cbShem: TCheckBox;
+    cbEShem: TComboBox;
+    lbAToPayD: TLabel;
+    lbZToPayD: TLabel;
+    edAToPayD: TMaskEdit;
+    edZToPayD: TMaskEdit;
+    cbToPayD: TCheckBox;
+    lbAPaydD: TLabel;
+    lbZPaydD: TLabel;
+    edAPaydD: TMaskEdit;
+    edZPaydD: TMaskEdit;
+    cbPaydD: TCheckBox;
+    cbReciptNo: TCheckBox;
+    lbAReciptNo: TLabel;
+    lbZReciptNo: TLabel;
+    edAReciptNo: TMaskEdit;
+    edZReciptNo: TMaskEdit;
+    cbSumA: TCheckBox;
+    lbASumA: TLabel;
+    lbZSumA: TLabel;
+    edASumA: TMaskEdit;
+    edZSumA: TMaskEdit;
+    Label1: TLabel;
+    Label2: TLabel;
+    qrFilterId: TIntegerField;
+    qrFilterClientId: TIntegerField;
+    qrFilterSumA: TCurrencyField;
+    qrFilterProduceD: TDateField;
+    qrFilterToPayD: TDateField;
+    qrFilterAPeriod: TDateField;
+    qrFilterZPeriod: TDateField;
+    qrFilterRemark: TMemoField;
+    qrFilterPaydD: TDateField;
+    qrFilterShem: TStringField;
+    qrFilterDelta: TFloatField;
+    qrFilterKabala: TIntegerField;
+    dsFilter: TDataSource;
+    qrFilterReciptNo: TFloatField;
+    procedure cbReciptNoClick(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure edAProduceDExit(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+    procedure LoadPrfx;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBillFilter: TfrmBillFilter;
+
+implementation
+
+{$R *.dfm}
+uses
+  BillFilterDM, BillReport, KbFunc;
+
+procedure TfrmBillFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmBillFilter := TdmBillFilter.Create(Self);
+end;
+
+procedure TfrmBillFilter.cbReciptNoClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmBillFilter.LoadItemsInComboBox(Sender: TObject; pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmBillFilter.LoadItems(vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmBillFilter.cbEShemEnter(Sender: TObject);
+begin
+  inherited;
+   tbl.TableName := 'KClient';
+   ItemsInCmbBox(cbEShem, 'Shem');
+end;
+
+procedure TfrmBillFilter.edAProduceDExit(Sender: TObject);
+begin
+  inherited;
+   if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus;
+end;
+
+procedure TfrmBillFilter.btnExecuteClick(Sender: TObject);
+var
+   Path, whereLn: String;
+begin
+  inherited;
+   Screen.Cursor := crHourGlass;
+   Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+   prfxList := TStringList.Create;
+   try
+       LoadPrfx;
+       with qrFilter do
+       begin
+           SQL.LoadFromFile(Path+'BillSQL.TXT');
+           WhereLn := GetWhereLn;
+           if (WhereLn = '') then
+               SQL[3] := ''
+           else
+               SQL[3] := 'WHERE ' + WhereLn;
+           Open;
+           selectRec := RecordCount;
+       end;
+       frmBillReport := TfrmBillReport.Create(Self);
+   finally
+       prfxList.Free;
+       Screen.Cursor := crDefault;
+   end;
+end;
+
+end.

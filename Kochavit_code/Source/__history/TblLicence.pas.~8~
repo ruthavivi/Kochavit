@@ -1,0 +1,45 @@
+unit TblLicence;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, edbcomps, ActnList, ImgList, Grids, DBGrids, MyChkDBGrid,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, frxClass, frxDBSet, Vcl.StdActns;
+
+type
+  TfrmLicenceTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblLicence: TStringField;
+    tbTblIncl1: TStringField;
+    tbTblIncl2: TStringField;
+    tbTblIncl3: TStringField;
+    frdbLicence: TfrxDBDataset;
+    procedure acDeleteExecute(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmLicenceTbl: TfrmLicenceTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmLicenceTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('LicenceId', tbTblId.AsString, ['KDrivers']) then
+    inherited;
+end;
+
+procedure TfrmLicenceTbl.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpLicence');
+end;
+
+end.

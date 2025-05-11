@@ -1,0 +1,59 @@
+unit ImportPhoto;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlImport, StdCtrls, Buttons, Mask, JvExMask, JvToolEdit, ExtCtrls,
+  ExtDlgs;
+
+type
+  TdlgImportPhoto = class(TdlgGnrlImport)
+    OpenPictureDialog: TOpenPictureDialog;
+    procedure FormActivate(Sender: TObject);
+    procedure btnAbortClick(Sender: TObject);
+  private
+    function ImportPhoto: Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  dlgImportPhoto: TdlgImportPhoto;
+
+implementation
+
+{$R *.dfm}
+
+procedure TdlgImportPhoto.FormActivate(Sender: TObject);
+begin
+  inherited;
+  if not ImportPhoto then
+  begin
+    Self.ModalResult := mrAbort;
+    Self.Close;
+  end;
+end;
+
+function TdlgImportPhoto.ImportPhoto: Boolean;
+begin
+  Result := False;
+  with OpenPictureDialog do
+  begin
+    InitialDir := ExtractFilePath(Application.ExeName) + 'Photo\';
+    DefaultExt :=  GraphicExtension(TBitmap);
+    if Execute then
+    begin
+      imDisplay.Picture.LoadFromFile(FileName);
+      Result := True;
+    end;
+  end;
+end;
+
+procedure TdlgImportPhoto.btnAbortClick(Sender: TObject);
+begin
+  inherited;
+  Close;
+end;
+
+end.

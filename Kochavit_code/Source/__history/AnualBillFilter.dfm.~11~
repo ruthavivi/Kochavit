@@ -1,0 +1,103 @@
+inherited frmAnualBillFilter: TfrmAnualBillFilter
+  Caption = #1502#1510#1489' '#1495#1513#1489#1493#1504#1493#1514' '#1500#1511#1493#1495#1493#1514
+  ClientHeight = 124
+  ClientWidth = 399
+  ExplicitWidth = 415
+  ExplicitHeight = 163
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 93
+    Width = 399
+    ExplicitTop = 93
+    ExplicitWidth = 399
+    inherited btnExecute: TBitBtn
+      Left = 240
+      Top = 6
+      OnClick = btnExecuteClick
+      ExplicitLeft = 240
+      ExplicitTop = 6
+    end
+    inherited btnClose: TBitBtn
+      Left = 153
+      Top = 6
+      ExplicitLeft = 153
+      ExplicitTop = 6
+    end
+    inherited cxIncludeArhiv: TCheckBox
+      Left = 1
+      Top = 6
+      ExplicitLeft = 1
+      ExplicitTop = 6
+    end
+  end
+  inherited Panel2: TPanel
+    Width = 399
+    Height = 93
+    ExplicitWidth = 399
+    ExplicitHeight = 93
+    inherited grbMain: TGroupBox
+      Width = 397
+      Height = 91
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1495#1513#1489#1493#1504#1493#1514
+      ExplicitWidth = 397
+      ExplicitHeight = 91
+      DesignSize = (
+        397
+        91)
+      object lbEOved: TLabel
+        Tag = 5
+        Left = 243
+        Top = 37
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object cbOved: TCheckBox
+        Tag = 5
+        Left = 292
+        Top = 37
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1488#1495#1512#1488#1497' '#1490#1489#1497#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cbOvedClick
+      end
+      object cbEOved: TComboBox
+        Tag = 5
+        Left = 68
+        Top = 37
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        Sorted = True
+        TabOrder = 1
+        OnEnter = cbEOvedEnter
+      end
+    end
+  end
+end

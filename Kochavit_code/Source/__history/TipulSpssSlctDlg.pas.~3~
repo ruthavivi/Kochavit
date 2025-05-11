@@ -1,0 +1,25 @@
+unit TipulSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlSpssSlctDlg, edbcomps, DB, RpRave, RpDefine, RpBase, RpSystem,
+  Spin, StdCtrls, Buttons, ExtCtrls;
+
+type
+  TfrmGnrlSpssSlctDlg2 = class(TfrmGnrlSpssSlctDlg)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGnrlSpssSlctDlg2: TfrmGnrlSpssSlctDlg2;
+
+implementation
+
+{$R *.dfm}
+
+end.

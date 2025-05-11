@@ -1,0 +1,55 @@
+inherited dmHeiterFilter: TdmHeiterFilter
+  OldCreateOrder = True
+  inherited qrFilter: TEDBQuery
+    ReadOnly = True
+    SQL.Strings = (
+      
+        'SELECT Id, Heiter, DateDone, CodDrv, ShemD, Zeut, Cod, Shem, Ove' +
+        'd'
+      'FROM KDrHeiterHis Dh'
+      '  LEFT JOIN KDriver Dr ON Dh.DriverId = Dr.Id'
+      '    LEFT JOIN KClient Cl ON Dr.ClientId = Cl.Id'
+      '  LEFT JOIN KTblHeiter tH ON Dh.HeiterId = tH.Id'
+      '  LEFT JOIN KTblOved Tm ON Dr.OvedId = Tm.Id')
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterHeiter: TStringField
+      DisplayLabel = #1513#1501' '#1492#1492#1497#1514#1512
+      FieldName = 'Heiter'
+      Size = 30
+    end
+    object qrFilterDateDone: TDateField
+      DisplayLabel = #1489#1493#1510#1506' '#1489#1514#1488#1512#1497#1498
+      FieldName = 'DateDone'
+    end
+    object qrFilterCodDrv: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1497#1491#1493#1512#1497' '#1504#1492#1490
+      FieldName = 'CodDrv'
+    end
+    object qrFilterShemD: TStringField
+      DisplayLabel = #1513#1501' '#1492#1504#1492#1490
+      FieldName = 'ShemD'
+      Size = 25
+    end
+    object qrFilterZeut: TStringField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514
+      FieldName = 'Zeut'
+      Size = 11
+    end
+    object qrFilterCod: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1491#1493#1512#1497' '#1495#1489#1512#1492
+      FieldName = 'Cod'
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrFilterOved: TStringField
+      DisplayLabel = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497
+      FieldName = 'Oved'
+      Size = 25
+    end
+  end
+end

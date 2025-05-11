@@ -1,0 +1,72 @@
+object dmClientEditOld: TdmClientEditOld
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 182
+  Width = 236
+  object tbClFollow: TTable
+    AfterOpen = tbClFollowAfterOpen
+    DatabaseName = 'KB'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dmMainOld.dsClientOld
+    TableName = 'KClFollowOld.db'
+    Left = 40
+    Top = 32
+    object tbClFollowMoed: TDateField
+      FieldName = 'Moed'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbClFollowSha: TTimeField
+      FieldName = 'Sha'
+      EditMask = '!90:00;1; '
+    end
+    object tbClFollowRemark: TStringField
+      FieldName = 'Remark'
+      Size = 60
+    end
+    object tbClFollowId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbClFollowClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+  end
+  object dsClFollow: TDataSource
+    DataSet = tbClFollow
+    Left = 104
+    Top = 32
+  end
+  object tbTofes: TTable
+    DatabaseName = 'KBBig'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dmMainOld.dsClientOld
+    TableName = 'KClTofesOld.DB'
+    Left = 40
+    Top = 96
+    object tbTofesId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTofesClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object tbTofesMoed: TDateField
+      FieldName = 'Moed'
+    end
+    object tbTofesName: TStringField
+      FieldName = 'Name'
+      Size = 30
+    end
+    object tbTofesTofes: TBlobField
+      FieldName = 'Tofes'
+      BlobType = ftParadoxOle
+    end
+    object tbTofesExt: TStringField
+      FieldName = 'Ext'
+      Size = 3
+    end
+  end
+end

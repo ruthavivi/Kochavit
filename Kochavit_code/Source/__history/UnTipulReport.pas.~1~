@@ -1,0 +1,54 @@
+unit UnTipulReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmUnTipulReport = class(TfrmGnrlReport)
+    procedure acPrintExecute(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure FormCreate(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUnTipulReport: TfrmUnTipulReport;
+
+implementation
+uses
+  UnTplHtrFilter, UnTipulRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmUnTipulReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Shem');
+end;
+
+procedure TfrmUnTipulReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmUnTplHtrFilter.qrFilter, Column);
+end;
+
+procedure TfrmUnTipulReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmUnTplHtrFilter.qrFilter);
+end;
+
+procedure TfrmUnTipulReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmUnTipulRprtSlctDlg := TfrmUnTipulRprtSlctDlg.Create(Self);
+end;
+
+end.

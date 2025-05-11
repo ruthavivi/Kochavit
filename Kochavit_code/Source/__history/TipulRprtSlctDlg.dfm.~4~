@@ -1,0 +1,50 @@
+inherited frmTipulRprtSlctDlg: TfrmTipulRprtSlctDlg
+  OldCreateOrder = True
+  ExplicitWidth = 408
+  ExplicitHeight = 266
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnRTFClick
+    end
+  end
+  inherited RvRprt: TRvProject
+    Left = 120
+    Top = 24
+  end
+  inherited RvSystem: TRvSystem
+    Left = 80
+    Top = 24
+  end
+  object rqTipulRprt: TRvQueryConnection [7]
+    RuntimeVisibility = rtDeveloper
+    Left = 16
+    Top = 24
+  end
+  object rqTipulDtl: TRvQueryConnection [8]
+    RuntimeVisibility = rtDeveloper
+    Left = 128
+    Top = 120
+  end
+  object qrTipulDtl: TEDBQuery
+    DatabaseName = 'Kb'
+    DataSource = frmTipulFilter.dsFilter
+    SQL.Strings = (
+      'SELECT Tp.TipulId, tB.BikoretDtl'
+      'FROM KCrTipulDtlHis.db Tp'
+      'LEFT JOIN KTblBikoretDtl.db tB ON (tB.Id = Tp.BikoretDtlId)')
+    Params = <>
+    Left = 192
+    Top = 72
+  end
+end

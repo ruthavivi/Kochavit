@@ -1,0 +1,252 @@
+inherited frmCrAcdntFilter: TfrmCrAcdntFilter
+  Caption = #1513#1488#1497#1500#1514#1492' '#1500#1514#1488#1493#1504#1493#1514' '#1512#1499#1489#1497#1501
+  ClientHeight = 178
+  OldCreateOrder = True
+  OnCreate = FormCreate
+  ExplicitHeight = 205
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 147
+    ExplicitTop = 140
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    Height = 147
+    ExplicitHeight = 140
+    inherited grbMain: TGroupBox
+      Height = 138
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1514#1488#1493#1504#1493#1514' '#1512#1499#1489
+      ExplicitHeight = 138
+      object lbAAcdntD: TLabel
+        Left = 323
+        Top = 32
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZAcdntZ: TLabel
+        Left = 144
+        Top = 32
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEType: TLabel
+        Tag = 1
+        Left = 293
+        Top = 54
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEShem: TLabel
+        Tag = 2
+        Left = 293
+        Top = 76
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edAAcdntD: TMaskEdit
+        Left = 176
+        Top = 32
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 1
+        Text = '  /  /    '
+        OnExit = edAAcdntDExit
+      end
+      object edZAcdntD: TMaskEdit
+        Left = 23
+        Top = 32
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 2
+        Text = '  /  /    '
+        OnExit = edAAcdntDExit
+      end
+      object cxDAcdntD: TCheckBox
+        Left = 339
+        Top = 32
+        Width = 94
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1496#1497#1508#1493#1500':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cxDAcdntDClick
+      end
+      object cxEType: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 54
+        Width = 94
+        Height = 14
+        Caption = #1505#1493#1490' '#1492#1512#1499#1489':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = cxDAcdntDClick
+      end
+      object cbEType: TComboBox
+        Tag = 1
+        Left = 128
+        Top = 54
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 0
+        ParentFont = False
+        Sorted = True
+        TabOrder = 4
+        OnEnter = cbETypeEnter
+      end
+      object cxEShem: TCheckBox
+        Tag = 2
+        Left = 339
+        Top = 76
+        Width = 94
+        Height = 14
+        Caption = #1513#1501' '#1495#1489#1512#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
+        OnClick = cxDAcdntDClick
+      end
+      object cbEShem: TComboBox
+        Tag = 2
+        Left = 128
+        Top = 76
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 0
+        ParentFont = False
+        Sorted = True
+        TabOrder = 6
+        OnEnter = cbEShemEnter
+      end
+    end
+  end
+  inherited tbl: TEDBTable
+    Left = 64
+    Top = 96
+  end
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      
+        'SELECT Ca.Id, Ca.AcdntD, Ca.Descrpt, Ca.Status, Cr.Number, tT.Ty' +
+        'pe, Cl.Shem'
+      'FROM KCrAcdnt.db Ca'
+      '   LEFT JOIN KCar.db Cr ON Ca.CarId = Cr.Id'
+      '         LEFT JOIN KClient.db Cl ON Cr.ClientId = Cl.Id'
+      '         LEFT JOIN KTblType.db tT ON Cr.TypeId = tT.Id'
+      'WHERE 0=0'
+      'ORDER BY Ca.AcdntD')
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterAcdntD: TDateField
+      FieldName = 'AcdntD'
+    end
+    object qrFilterDescrpt: TStringField
+      FieldName = 'Descrpt'
+      Size = 30
+    end
+    object qrFilterStatus: TStringField
+      FieldName = 'Status'
+    end
+    object qrFilterNumber: TStringField
+      FieldName = 'Number'
+      Size = 9
+    end
+    object qrFilterType: TStringField
+      FieldName = 'Type'
+    end
+    object qrFilterShem: TStringField
+      FieldName = 'Shem'
+      Size = 30
+    end
+  end
+end

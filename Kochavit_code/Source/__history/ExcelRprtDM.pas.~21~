@@ -1,0 +1,168 @@
+unit ExcelRprtDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, Data.DB, edbcomps;
+
+type
+  TdmExcelRprt = class(TDataModule)
+    qrGnrl: TEDBQuery;
+    qrGnrlX: TEDBQuery;
+    procedure DataModuleDestroy(Sender: TObject);
+  private
+    TipulList: TStringList;
+    Cl_Number, Cl_Name: string;
+    procedure LoadTipulList(ClientId: string);
+    procedure CreateTable;
+    procedure LoadTable(ClientId: string);
+    procedure SetDataForExcel(Action: string);
+  public
+    procedure CreateRprt(ClientId, ClientNumber: Integer; ClientName, Action: string);
+  end;
+
+var
+  dmExcelRprt: TdmExcelRprt;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TdmExcelRprt }
+
+uses
+  MainDM, ExportToExcel;
+
+procedure TdmExcelRprt.CreateRprt(ClientId, ClientNumber: Integer; ClientName, Action: string);
+begin
+  Cl_Number := IntToStr(ClientNumber);
+  Cl_Name := ClientName;
+  TipulList := TStringList.Create;
+  LoadTipulList(IntToStr(ClientId));
+  CreateTable;
+  LoadTable(IntToStr(ClientId));
+  SetDataForExcel(Action);
+end;
+
+procedure TdmExcelRprt.LoadTipulList(ClientId: string);
+begin
+  qrGnrl.SQL.Text := 'SELECT TipulId, Tipul FROM KCrTipul Ct ' +
+      'LEFT JOIN KTblTipul tT ON (Ct.TipulId = tT.Id)' +
+      'LEFT JOIN KCar Kc ON (Ct.CarId = Kc.Id)' +
+      'WHERE ClientId = ' + ClientId + ' GROUP BY TipulId';
+  TipulList.Clear;
+  TipulList.NameValueSeparator := '=';
+  try
+    qrGnrl.Open;
+    while not qrGnrl.Eof do
+    begin
+      TipulList.Add(qrGnrl.FieldByName('Tipul').AsString +'='+ qrGnrl.FieldByName('TipulId').AsString);
+      qrGnrl.Next;
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmExcelRprt.CreateTable;
+var
+  I: Integer;
+  Query: string;
+begin
+  qrGnrl.SQL.Text := 'DROP TABLE ClientTpl';
+  qrGnrl.ExecSQL;
+  Query := 'CREATE TABLE "ClientTpl" '+
+      '("ID" INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 0, INCREMENT BY 1), ' +
+      '"CarNumber" VARCHAR(8) COLLATE "ANSI_CI", ' +
+      '"CarType" VARCHAR(25) COLLATE "ANSI_CI", ';
+  for I := 0 to TipulList.Count -1 do
+    Query := Query + '"Tp_'+TipulList.ValueFromIndex[I]+'" VARCHAR(10) COLLATE "ANSI_CI", ';
+
+  SetLength(Query, Length(Query)-2);
+  qrGnrl.SQL.Text := Query + ')';
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmExcelRprt.LoadTable(ClientId: string);
+var
+  I, J: Integer;
+  QueryX, RemQueryX: string;
+  CarNumber: string;
+begin
+  qrGnrl.SQL.Text := 'SELECT Number, TipulId, Tipul, Type, DateToDo ' +
+      'FROM KCrTipul Ct LEFT JOIN KTblTipul tT ON (Ct.TipulId = tT.Id) ' +
+      'LEFT JOIN KCar Kc ON (Ct.CarId = Kc.Id) ' +
+      'LEFT JOIN KTblType tY ON (Kc.TypeId = tY.Id) '+
+      'WHERE ClientId = ' + ClientId + ' ORDER BY Number, TipulId';
+
+  QueryX := 'INSERT INTO ClientTpl (CarNumber, CarType, ';
+  for I := 0 to TipulList.Count -1 do
+    QueryX := QueryX + 'Tp_'+TipulList.ValueFromIndex[I] + ', ';
+  SetLength(QueryX, Length(QueryX)-2);
+  QueryX := QueryX + ') VALUES (';
+
+   try
+    qrGnrl.Open;
+    while not qrGnrl.Eof do
+    begin
+      RemQueryX := QueryX;
+      CarNumber := qrGnrl.FieldByName('Number').AsString;
+      QueryX := QueryX + QuotedStr(qrGnrl.FieldByName('Number').AsString) +
+          ', ' + QuotedStr(qrGnrl.FieldByName('Type').AsString) + ', ';
+
+      J:=0;
+      while (qrGnrl.FieldByName('Number').AsString = CarNumber) and (not qrGnrl.Eof) do
+      begin
+        if qrGnrl.FieldByName('DateToDo').AsString <> '' then
+          QueryX := QueryX + QuotedStr(FormatDateTime('dd/mm/yyyy', qrGnrl.FieldByName('DateToDo').AsDateTime)) + ', '
+        else
+          QueryX := QueryX + QuotedStr('NULL') + ', ';
+        Inc(J);
+        qrGnrl.Next;
+      end;
+      while J <= TipulList.Count-1 do
+      begin
+        QueryX := QueryX + QuotedStr('NULL') + ', ';
+        Inc(J);
+      end;
+
+      SetLength(QueryX, Length(QueryX)-2);
+      qrGnrlX.SQL.Text := QueryX + ')';
+      qrGnrlX.ExecSQL;
+      QueryX := RemQueryX;
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmExcelRprt.SetDataForExcel(Action: string);
+var
+  I, J: Integer;
+begin
+  qrGnrl.SQL.Text := 'SELECT * FROM ClientTpl';
+  qrGnrl.Open;
+  qrGnrl.Fields[1].DisplayLabel := 'מספר רישוי';
+  qrGnrl.Fields[2].DisplayLabel := 'סוג רכב';
+  for I := 3 to qrGnrl.FieldCount - 1 do
+  begin
+    for J := 0 to TipulList.Count - 1 do
+    begin
+      if qrGnrl.Fields[I].FieldName = 'Tp_'+TipulList.ValueFromIndex[J] then
+        qrGnrl.Fields[I].DisplayLabel := TipulList.Names[J];
+    end;
+  end;
+
+  frmExportToExcel := TfrmExportToExcel.Create(Self);
+  frmExportToExcel.SendToExcelFile(qrGnrl, Cl_Name, 'Status_'+Cl_Number, Action);
+  qrGnrl.Close;
+end;
+
+procedure TdmExcelRprt.DataModuleDestroy(Sender: TObject);
+begin
+  TipulList.Free;
+end;
+
+end.

@@ -1,0 +1,27 @@
+unit ChecksReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, StdActns, DBActns, ActnList,
+  StdCtrls, Buttons, ComCtrls, ToolWin, Grids, DBGrids;
+
+type
+  TfrmChecksReport = class(TfrmGnrlReport)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChecksReport: TfrmChecksReport;
+
+implementation
+uses
+   ChecksFilterDM, LogErrorUtil; //ChecksRprtSlctDlg, ChecksSpssSlctDlg,
+
+{$R *.dfm}
+
+end.

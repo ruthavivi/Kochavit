@@ -1,0 +1,183 @@
+unit CarListOld;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlListOld, DB, Menus, ActnList, ImgList, ComCtrls,
+  StdCtrls, Mask, DBCtrls, ToolWin, Grids, DBGrids, ExtCtrls;
+
+type
+  TfrmCarListOld = class(TfrmGnrlListOld)
+    acBitulOld: TAction;
+    ToolButton4: TToolButton;
+    N5: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure edSearchChange(Sender: TObject);
+    procedure acCauseExecute(Sender: TObject);
+    procedure acReturnExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acBitulOldExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+    procedure CloseCarOld;
+    procedure FreeDM;
+  public
+  end;
+
+var
+   frmCarListOld: TfrmCarListOld;
+
+implementation
+uses
+   MainDMOld, CauseMsg, UtilsDMOld, ReturnDlg, LogErrorUtil;
+
+{$R *.dfm}
+
+procedure TfrmCarListOld.FormCreate(Sender: TObject);
+begin
+  inherited;
+   try
+       dmMainOld.qrCarOld.Open;
+   except
+       on E: EDatabaseError do
+       begin
+           CloseCarOld;
+           HandelError('!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+           Self.Destroy;
+       end;
+   end;
+   LoadPosition('CarOld', (Sender as TForm));
+   MarkIndexColumn('Number');
+   ordField := 'Number';
+   typField := TStringField;
+   UpdateStatusBar('סה"כ רכבים: ' + IntToStr(dmMainOld.qrCarOld.RecordCount));
+end;
+
+procedure TfrmCarListOld.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+   ChangeOrder(dmMainOld.qrCarOld, Column);
+end;
+
+procedure TfrmCarListOld.edSearchChange(Sender: TObject);
+var
+   Value: Variant;
+begin
+  inherited;
+   if (typField = TIntegerField) then
+       Value := StrToIntDef(edSearch.Text, 0)
+   else
+       Value := edSearch.Text;
+   dmMainOld.qrCarOld.Locate(ordField, Value, [loPartialKey]);
+end;
+
+procedure TfrmCarListOld.acCauseExecute(Sender: TObject);
+begin
+  inherited;
+  frmCauseMsg := TfrmCauseMsg.Create(Self);
+  with dmMainOld.qrGnrl do
+  begin
+    SQL.Text := 'SELECT Sb.Moed, Tc.CauseCr FROM KCrSiba Sb ' +
+                'LEFT JOIN KTblCause Tc ON Tc.Id = Sb.IdSiba ' +
+                'WHERE Sb.IdOwn = :Id';
+    DataSource := dmMainOld.dsCarOld;
+    try
+      Open;
+      if not IsEmpty then
+      begin
+        frmCauseMsg.lbMoed.Caption := 'תאריך העברה: ' +
+            FieldByName('Moed').AsString;
+        frmCauseMsg.lbSiba.Caption := 'סיבת העברה: ' +
+            FieldByName('CauseCr').AsString;
+        frmCauseMsg.ShowModal;
+      end;
+    finally
+      Close;
+      frmCauseMsg.Free;
+    end;
+  end;
+end;
+
+procedure TfrmCarListOld.acReturnExecute(Sender: TObject);
+begin
+  inherited;
+   frmReturnDlg := TfrmReturnDlg.Create(Self);
+   with frmReturnDlg do
+   begin
+       lbHead.Caption := 'להחזיר רכב מספר ' +
+                       dmMainOld.qrCarOld.FieldByName('Number').AsString +
+                       ' לחברה?';
+       if (ShowModal = mrYes) then
+       begin
+           Screen.Cursor := crHourGlass;
+           dmUtilsOld := TdmUtilsOld.Create(Self);
+           with dmUtilsOld do
+           begin
+               tbDest.TableName := 'KCar';
+               ShiftOneCar(dmMainOld.qrCarOld.FieldByName('Id').AsString, newId);
+               DeleteOneCar(dmMainOld.qrCarOld.FieldByName('Id').AsString);
+               dmMainOld.qrCarOld.Close;
+               dmMainOld.qrCarOld.Open;
+               Free;
+           end;
+           Screen.Cursor := crDefault;
+       end;
+       Free;
+   end;
+end;
+
+procedure TfrmCarListOld.acBitulOldExecute(Sender: TObject);
+begin
+  inherited;
+  if (MessageDlg('למחוק סופית רכב ' +
+          dmMainOld.qrCarOld.FieldByName('Number').AsString,
+           mtConfirmation, mbYesNoCancel, 0) = mrYes) then
+  begin
+    Screen.Cursor := crHourGlass;
+    dmUtilsOld := TdmUtilsOld.Create(Self);
+    with dmUtilsOld do
+    begin
+        DeleteOneCar(dmMainOld.qrCarOld.FieldByName('Id').AsString);
+        dmMainOld.qrCarOld.Close;
+        dmMainOld.qrCarOld.Open;
+        Free;
+    end;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmCarListOld.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  dmMainOld.RvRprt.ExecuteReport('rpCarOld');
+end;
+
+procedure TfrmCarListOld.CloseCarOld;
+begin
+   dmMainOld.qrCarOld.Close;
+end;
+
+procedure TfrmCarListOld.FreeDM;
+begin
+   if not dmMainOld.tbClientOld.Active and
+           not dmMainOld.qrDriverOld.Active then
+       FreeAndNil(dmMainOld);
+end;
+
+procedure TfrmCarListOld.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   SavePosition('CarOld', (Sender as TForm));
+   CloseCarOld;
+   FreeDM;
+  inherited;
+   frmCarListOld := nil;
+end;
+
+
+
+
+end.

@@ -1,0 +1,27 @@
+inherited frmCrFollowRprtSlctDlg: TfrmCrFollowRprtSlctDlg
+  ExplicitWidth = 416
+  ExplicitHeight = 313
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+  end
+  inherited RvRprt: TRvProject
+    ProjectFile = 
+      'C:\Users\sorin\Documents\RAD Studio\Projects\Kochavit4\Reports\K' +
+      'vRprt.rav'
+  end
+  object frdbFollow: TfrxDBDataset
+    UserName = 'frdbFollow'
+    CloseDataSource = False
+    DataSet = dmCrFollowFilter.qrFilter
+    BCDToCurrency = False
+    Left = 224
+    Top = 104
+  end
+end

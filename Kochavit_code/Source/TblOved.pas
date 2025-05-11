@@ -1,0 +1,47 @@
+unit TblOved;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, edbcomps, StdActns,
+  frxClass, frxDBSet, System.Actions, System.ImageList;
+
+type
+  TfrmOvedTbl = class(TfrmGnrlTbl)
+    tbTblID: TAutoIncField;
+    tbTblOved: TStringField;
+    frdbOved: TfrxDBDataset;
+    tbTblUserName: TStringField;
+    tbTblUser_Password: TStringField;
+    tbTblUser_Role: TStringField;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmOvedTbl: TfrmOvedTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmOvedTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('OvedId', tbTblId.AsString, ['KCar']) then
+    inherited;
+end;
+
+procedure TfrmOvedTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpOved');
+end;
+
+end.
+

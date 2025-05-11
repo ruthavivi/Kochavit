@@ -1,0 +1,56 @@
+unit HeiterRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, Spin, StdCtrls, Buttons, ExtCtrls, DB, DBTables,
+  RpBase, RpSystem, RpDefine, RpRave, RpCon, RpConDS, RpConBDE, RpRender,
+  RpRenderRTF;
+
+type
+  TfrmHeiterRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqHeiterRprt: TRvQueryConnection;
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmHeiterRprtSlctDlg: TfrmHeiterRprtSlctDlg;
+
+implementation
+uses
+   HeiterFilter;
+{$R *.dfm}
+
+procedure TfrmHeiterRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('H');
+end;
+
+procedure TfrmHeiterRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmHeiterRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+procedure TfrmHeiterRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+end.

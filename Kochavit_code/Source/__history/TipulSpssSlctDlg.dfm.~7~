@@ -1,0 +1,62 @@
+inherited frmTipulSpssSlctDlg: TfrmTipulSpssSlctDlg
+  Caption = #1489#1495#1497#1512#1514' '#1491#1493'"'#1495' '#1505#1496#1497#1505#1496#1497
+  ExplicitWidth = 442
+  ExplicitHeight = 379
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    ExplicitHeight = 266
+    inherited edTitle: TMemo
+      ExplicitTop = 221
+    end
+    inherited rgReports: TRadioGroup
+      ExplicitHeight = 220
+    end
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 266
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited qrSpss: TEDBQuery
+    SQL.Strings = (
+      'SELECT Tipul, COUNT(Id) Num'
+      
+        'FROM ( SELECT Id, Tipul, DateDone, Km, Oved, NoBkr, Remark, CodC' +
+        'ar, Number, Type, Producer, '
+      'Cod, Shem'
+      'FROM KCrTipulHis Tp   '
+      'LEFT JOIN KCar Cr ON Cr.Id = Tp.CarId     '
+      'LEFT JOIN KTblType tY ON tY.Id = Cr.TypeId     '
+      'LEFT JOIN KTblProducer tR ON tR.Id = Cr.ProducerId     '
+      'LEFT JOIN KClient Cl ON Cl.Id = Cr.ClientId   '
+      'LEFT JOIN KTblTipul Tt ON Tt.Id = Tp.TipulId   '
+      'LEFT JOIN KTblOved Tm ON Tm.Id = Tp.OvedId'
+      'WHERE Pail = True'
+      'ORDER BY DateDone ) AS BaseSql'
+      'GROUP BY Tipul'
+      'ORDER BY Tipul')
+  end
+  object ccChartsTpl: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsTplGetCols
+    OnGetRow = ccChartsTplGetRow
+    Left = 257
+    Top = 48
+  end
+  object frdbTipul: TfrxDBDataset
+    UserName = 'frdbTipul'
+    CloseDataSource = False
+    DataSet = qrSpss
+    BCDToCurrency = False
+    Left = 216
+    Top = 176
+  end
+end

@@ -1,0 +1,41 @@
+unit BillFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmBillFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterClientId: TIntegerField;
+    qrFilterSumA: TFloatField;
+    qrFilterProduceD: TDateField;
+    qrFilterToPayD: TDateField;
+    qrFilterReciptNo: TStringField;
+    qrFilterRemark: TStringField;
+    qrFilterPaydD: TDateField;
+    qrFilterKabala: TIntegerField;
+    qrFilterPayd: TBooleanField;
+    qrFilterShem: TStringField;
+    qrFilterIsuv: TStringField;
+    qrFilterTel1: TStringField;
+    qrFilterTel2: TStringField;
+    qrFilterPaydTrg: TStringField;
+    qrFilterACounter: TStringField;
+    qrFilterTelA: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmBillFilter: TdmBillFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

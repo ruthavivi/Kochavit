@@ -1,0 +1,73 @@
+unit CarOldReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmCarOldReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCarOldReport: TfrmCarOldReport;
+
+implementation
+uses
+  CarOldFilter, CarOldRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmCarOldReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Number');
+  SetStatusBar;
+  LoadPosition('CarOldRpt', (Sender as TForm));
+end;
+
+procedure TfrmCarOldReport.SetStatusBar;
+var
+   procent: Real;
+begin
+  try
+    procent := frmCarOldFilter.selectRec /
+        frmCarOldFilter.totalRec * 100;
+  except
+    on EInvalidOp do procent := 0;
+  end;
+
+  StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmCarOldFilter.selectRec) +
+       ' רכבים מתוך ' + IntToStr(frmCarOldFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmCarOldReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmCarOldFilter.qrFilter, Column);
+end;
+
+procedure TfrmCarOldReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmCarOldRprtSlctDlg := TfrmCarOldRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmCarOldReport.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SavePosition('CarOldRpt', (Sender as TForm));
+  frmCarOldFilter.qrFilter.Close;
+  inherited;
+end;
+
+end.

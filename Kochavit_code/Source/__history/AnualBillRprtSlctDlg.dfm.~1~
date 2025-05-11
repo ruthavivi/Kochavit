@@ -1,0 +1,48 @@
+inherited frmAnualBillRprtSlctDlg: TfrmAnualBillRprtSlctDlg
+  BorderStyle = bsDialog
+  ClientHeight = 215
+  ClientWidth = 372
+  FormStyle = fsNormal
+  Visible = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    Width = 372
+    Height = 157
+    ExplicitWidth = 372
+    ExplicitHeight = 157
+    inherited edTitle: TMemo
+      Top = 112
+      Width = 370
+      ExplicitTop = 112
+      ExplicitWidth = 370
+    end
+    inherited rgReports: TRadioGroup
+      Width = 370
+      Height = 111
+      ExplicitWidth = 370
+      ExplicitHeight = 111
+    end
+  end
+  inherited Panel1: TPanel
+    Top = 157
+    Width = 372
+    ExplicitTop = 157
+    ExplicitWidth = 372
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnRTFClick
+    end
+  end
+  object rqAnualBillRprt: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = frmAnualBillFilter.qrFilter
+    Left = 16
+    Top = 24
+  end
+end

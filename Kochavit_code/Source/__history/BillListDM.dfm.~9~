@@ -1,0 +1,65 @@
+object dmBillList: TdmBillList
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 211
+  Width = 136
+  object qrBillList: TEDBQuery
+    AutoCalcFields = False
+    BeforeOpen = qrBillListBeforeOpen
+    AfterOpen = qrBillListAfterOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    SQL.Strings = (
+      'SELECT Id, ReciptNo, ProduceD, SumA, ToPayD, Shem'
+      'FROM KBill Bl'
+      'LEFT JOIN KClient Cl ON Bl.ClientId = Cl.Id'
+      'WHERE Bl.Payd = FALSE AND Cl.Pail = True'
+      'ORDER BY ReciptNo')
+    Params = <>
+    ReadOnly = True
+    Left = 40
+    Top = 32
+    object qrBillListclSign: TStringField
+      DisplayLabel = ' '
+      FieldKind = fkCalculated
+      FieldName = 'clSign'
+      OnGetText = qrBillListclSignGetText
+      Calculated = True
+    end
+    object qrBillListId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrBillListReciptNo: TStringField
+      DisplayLabel = #1502#1505#39' '#1495#1513#1489#1493#1504#1497#1514
+      FieldName = 'ReciptNo'
+      Size = 10
+    end
+    object qrBillListProduceD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1492#1508#1511#1492
+      FieldName = 'ProduceD'
+    end
+    object qrBillListToPayD: TDateField
+      DisplayLabel = #1500#1514#1513#1500#1493#1501' '#1506#1491
+      FieldName = 'ToPayD'
+    end
+    object qrBillListShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrBillListSumA: TFloatField
+      DisplayLabel = #1505#1492'"'#1499
+      FieldName = 'SumA'
+    end
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    Params = <>
+    Left = 40
+    Top = 112
+  end
+end

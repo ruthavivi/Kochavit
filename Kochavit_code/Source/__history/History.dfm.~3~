@@ -1,0 +1,125 @@
+object frmHistory: TfrmHistory
+  Left = 0
+  Top = 0
+  BiDiMode = bdRightToLeft
+  Caption = #1512#1513#1497#1502#1514' '#1495#1489#1512#1493#1514' '#1492#1497#1505#1496#1493#1512#1497#1492
+  ClientHeight = 305
+  ClientWidth = 378
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  ParentBiDiMode = False
+  Position = poDesktopCenter
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 378
+    Height = 41
+    Align = alTop
+    Caption = 'Panel1'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 0
+    ExplicitLeft = 48
+    ExplicitTop = 80
+    ExplicitWidth = 185
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 41
+    Width = 378
+    Height = 223
+    Align = alClient
+    TabOrder = 1
+    ExplicitLeft = 96
+    ExplicitTop = 128
+    ExplicitWidth = 185
+    ExplicitHeight = 41
+    object DBGrid1: TDBGrid
+      Left = 1
+      Top = 1
+      Width = 376
+      Height = 221
+      Align = alClient
+      DataSource = dsHistory
+      TabOrder = 0
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'Tahoma'
+      TitleFont.Style = []
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Shem'
+          Title.Caption = #1513#1501' '#1492#1495#1489#1512#1492
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'Tahoma'
+          Title.Font.Style = [fsBold]
+          Width = 164
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Moed'
+          Title.Caption = #1514#1488#1512#1497#1498' '#1492#1506#1489#1512#1492' '#1500#1488#1512#1499#1497#1493#1503
+          Title.Font.Charset = DEFAULT_CHARSET
+          Title.Font.Color = clWindowText
+          Title.Font.Height = -11
+          Title.Font.Name = 'Tahoma'
+          Title.Font.Style = [fsBold]
+          Width = 156
+          Visible = True
+        end>
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 264
+    Width = 378
+    Height = 41
+    Align = alBottom
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 2
+    ExplicitLeft = 64
+    ExplicitTop = 184
+    ExplicitWidth = 185
+    object BitBtn1: TBitBtn
+      Left = 104
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = '&'#1488#1497#1513#1493#1512
+      DoubleBuffered = True
+      Kind = bkOK
+      ParentDoubleBuffered = False
+      TabOrder = 0
+    end
+  end
+  object qrHistory: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 128
+    Top = 120
+  end
+  object dsHistory: TDataSource
+    DataSet = qrHistory
+    Left = 192
+    Top = 120
+  end
+end

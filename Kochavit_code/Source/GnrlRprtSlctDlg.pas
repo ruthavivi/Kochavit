@@ -1,0 +1,151 @@
+unit GnrlRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Spin, StdCtrls, Buttons, ExtCtrls, DB, StrUtils,
+  edbcomps, frxClass, frxDBSet;
+
+type
+  TfrmGnrlRprtSlctDlg = class(TForm)
+    Panel2: TPanel;
+    edTitle: TMemo;
+    rgReports: TRadioGroup;
+    Panel1: TPanel;
+    Label1: TLabel;
+    btnPrint: TBitBtn;
+    btnClose: TBitBtn;
+    SpinEdit: TSpinEdit;
+    btnPreview: TBitBtn;
+    tbRprtList: TEDBTable;
+    qrSpss: TEDBQuery;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCloseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure rgReportsClick(Sender: TObject);
+  private
+    Path, RprtName: String;
+  public
+    { Public declarations }
+    totRec: Integer;
+    PathSpss, FileSpss: String;
+    procedure LoadRprtItems(pUtil: String);
+    procedure OpenSql(sqlStr: string);
+    procedure OpenSqlSpss(pWhrLn: String);
+    procedure OpenSqlTmpSpss(pSqlFile, pWhrLn: String);
+    function GetHeader: TCaption;
+
+    procedure PrintReport();
+    procedure PreviewReport();
+    procedure SetReportParm();
+  end;
+
+var
+  frmGnrlRprtSlctDlg: TfrmGnrlRprtSlctDlg;
+
+implementation
+uses
+  DataDM;
+{$R *.dfm}
+
+{ TfrmGnrlRprtSlctDlg }
+procedure TfrmGnrlRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Report\';
+  Screen.Cursor := crHourGlass;
+  PathSpss := ExtractFilePath(Application.ExeName) + 'SQL\Spss\';
+  Screen.Cursor := crDefault;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.LoadRprtItems(pUtil: String);
+begin
+  tbRprtList.Open;
+  while not tbRprtList.Eof do
+  begin
+    if (tbRprtList.FieldByName('Group').AsString = pUtil) then
+      rgReports.Items.Add(tbRprtList.FieldByName('RprtShem').AsString);
+    tbRprtList.Next;
+  end;
+  tbRprtList.IndexFieldNames := 'RprtShem';
+  rgReports.ItemIndex := 0;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.rgReportsClick(Sender: TObject);
+begin
+  tbRprtList.FindKey([rgReports.Items[rgReports.ItemIndex]]);
+  FileSpss := tbRprtList.FieldByName('SpssFile').AsString + '.SQL';
+  RprtName := tbRprtList.FieldByName('RprtName').AsString;
+end;
+
+function TfrmGnrlRprtSlctDlg.GetHeader: TCaption;
+begin
+   Result := '';
+   if (edTitle.Text <> 'הקלד כותרת משנית כאן...'#$D#$A) and
+       (edTitle.Text <> '') then
+       Result := edTitle.Text;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.OpenSql(sqlStr: string);
+begin
+   with qrSpss do
+   begin
+       Close;
+       SQL.Text := sqlStr;
+       Open;
+   end;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.OpenSqlSpss(pWhrLn: String);
+begin
+  qrSpss.SQL.LoadFromFile(PathSpss + FileSpss);
+  qrSpss.SQL.Insert(qrSpss.SQL.Count -2, pWhrLn);
+  qrSpss.Open;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.OpenSqlTmpSpss(pSqlfile, pWhrLn: String);
+begin
+  qrSpss.SQL.LoadFromFile(PathSpss + pSqlFile);
+  qrSpss.SQL.Add(' AND ' + Copy(pWhrLn, 7, 100));
+  qrSpss.Open;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.PrintReport;
+begin
+  SetReportParm();
+  dmData.frxReport.PrepareReport(True);
+  dmData.frxReport.Print;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.PreviewReport;
+begin
+  SetReportParm();
+  dmData.frxReport.ShowReport();
+end;
+
+procedure TfrmGnrlRprtSlctDlg.SetReportParm;
+var
+  fmSubHeadLine: TfrxMemoView;
+begin
+  dmData.frxReport.LoadFromFile(Path + RprtName + '.fr3');
+  if (edTitle.Text <> 'הקלד כותרת משנית כאן...'#$D#$A) and
+       (edTitle.Text <> '') then
+  begin
+    fmSubHeadLine := dmData.frxReport.FindObject('mmSubHeadLine') as TfrxMemoView;
+    fmSubHeadLine.Text := edTitle.Text;
+  end;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.btnCloseClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmGnrlRprtSlctDlg.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   tbRprtList.Close;
+   Action := caFree;
+end;
+
+end.

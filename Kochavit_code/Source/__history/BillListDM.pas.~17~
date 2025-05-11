@@ -1,0 +1,127 @@
+unit BillListDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps;
+
+type
+  TdmBillList = class(TDataModule)
+    qrBillList: TEDBQuery;
+    qrGnrl: TEDBQuery;
+    qrBillListId: TIntegerField;
+    qrBillListReciptNo: TStringField;
+    qrBillListProduceD: TDateField;
+    qrBillListToPayD: TDateField;
+    qrBillListShem: TStringField;
+    qrBillListclSign: TStringField;
+    qrBillListSumA: TFloatField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrBillListBeforeOpen(DataSet: TDataSet);
+    procedure qrBillListAfterOpen(DataSet: TDataSet);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure qrBillListclSignGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+  private
+    whrAdd: String;
+  public
+    BillOrder, BillRecNo: String;
+    procedure ReOpenTable(pId: Integer);
+    procedure UpdatePayd_Kabala(pPaydD: TDateTime; pKabala: String);
+    procedure UpdatePayd;
+  end;
+
+var
+  dmBillList: TdmBillList;
+
+const
+   // when one client selected
+   whrSlctBl = 'WHERE Bl.Payd = FALSE AND Cl.Pail = TRUE AND ClientId = :Id ';
+  // when "כל החברות" selected
+   whrAll = 'WHERE Bl.Payd = FALSE AND Cl.Pail = TRUE ';
+
+implementation
+uses
+  MainDM, LogErrorUtil, KbFunc;
+{$R *.dfm}
+
+procedure TdmBillList.DataModuleCreate(Sender: TObject);
+begin
+  BillOrder := GetIniValue('Bill', 'Order', 'ReciptNo');
+
+  try
+    qrBillList.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmBillList.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmBillList.qrBillListBeforeOpen(DataSet: TDataSet);
+begin
+  if dmMain.SelectAll then
+    qrBillList.SQL[qrBillList.SQL.Count-2] :=  whrAll + whrAdd
+  else
+    qrBillList.SQL[qrBillList.SQL.Count-2] :=  whrSlctBl + whrAdd;
+
+  qrBillList.SQL[qrBillList.SQL.Count-1] := 'ORDER BY '+ BillOrder;
+end;
+
+procedure TdmBillList.qrBillListAfterOpen(DataSet: TDataSet);
+begin
+  BillRecNo := IntToStr(qrBillList.RecordCount);
+end;
+
+procedure TdmBillList.qrBillListclSignGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  if qrBillListToPayD.AsDateTime < Date then
+    Text := '!';
+end;
+
+procedure TdmBillList.ReOpenTable(pId: Integer);
+begin
+  try
+    qrBillList.DisableControls;
+    qrBillList.Close;
+    qrBillList.Open;
+    qrBillList.Locate('Id', pId, []);
+  finally
+    qrBillList.EnableControls;
+  end;
+end;
+
+procedure TdmBillList.UpdatePayd_Kabala(pPaydD: TDateTime; pKabala: String);
+var
+  PaydD: String;
+begin
+  PaydD := ' DATE ' + QuotedStr(FormatDateTime('yyyy-mm-dd',  pPaydD));
+  qrGnrl.SQL.Text := 'UPDATE KBill SET PaydD = ' + PaydD + ', Kabala = ' + pKabala +
+                  ', Payd = True WHERE Id = ' + qrBillListId.AsString;
+  qrGnrl.ExecSQL;
+  qrBillList.Refresh;
+end;
+
+procedure TdmBillList.UpdatePayd;
+begin
+  qrGnrl.SQL.Text := 'UPDATE KBill SET Payd = True WHERE Id = ' + qrBillListId.AsString;
+  try
+    qrGnrl.ExecSQL;
+  finally
+    qrGnrl.Free;
+  end;
+  qrBillList.Refresh;
+  dmMain.qrClientList.Refresh;
+end;
+
+procedure TdmBillList.DataModuleDestroy(Sender: TObject);
+begin
+  SetIniValue('Bill', 'Order', BillOrder);
+  qrBillList.Close;
+  dmBillList := nil;
+end;
+
+end.

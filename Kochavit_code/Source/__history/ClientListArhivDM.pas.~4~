@@ -1,0 +1,74 @@
+unit ClientListArhivDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlListArhivDM, DB, edbcomps;
+
+type
+  TdmClientListArhiv = class(TdmGnrlListArhiv)
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrListBeforeOpen(DataSet: TDataSet);
+    procedure qrListAfterRefresh(DataSet: TDataSet);
+    procedure DataModuleDestroy(Sender: TObject);
+  private
+    procedure ShiftToPail;
+  public
+    ClientOrder: String;
+    ClnRecNo: Integer;
+  end;
+
+var
+  dmClientListArhiv: TdmClientListArhiv;
+
+implementation
+uses
+  KbFunc, LogErrorUtil;
+
+{$R *.dfm}
+
+procedure TdmClientListArhiv.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  ClientOrder := GetIniValue('Client', 'Order', 'Shem');
+  try
+    qrList.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmClientListArhiv.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmClientListArhiv.qrListBeforeOpen(DataSet: TDataSet);
+begin
+  inherited;
+  qrList.SQL[qrList.SQL.Count-1] := 'ORDER BY ' + ClientOrder;
+end;
+
+procedure TdmClientListArhiv.qrListAfterRefresh(DataSet: TDataSet);
+begin
+  inherited;
+  ClnRecNo := qrList.RecordCount;
+end;
+
+procedure TdmClientListArhiv.ShiftToPail;
+begin
+  qrGnrl.SQL.Text := 'UPDATE KClient SET Pail = True ' +
+                'WHERE Id = ' + qrList.FieldByName('Id').AsString;
+  qrGnrl.ExecSQL;
+  ReOpenTable(0);
+end;
+
+procedure TdmClientListArhiv.DataModuleDestroy(Sender: TObject);
+begin
+  inherited;
+  SetIniValue('Client', 'Order', ClientOrder);
+  qrList.Close;
+  dmClientlListArhiv := nil;
+end;
+
+end.

@@ -1,0 +1,2904 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6fb019fc-3604-427f-857c-2c9af2058fc9}</ProjectGuid>
+        <MainSource>Kochavit.dpr</MainSource>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+        <DCC_DependencyCheckOutputName>..\Kochavit.exe</DCC_DependencyCheckOutputName>
+        <ProjectVersion>18.2</ProjectVersion>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <FrameworkType>VCL</FrameworkType>
+        <Base>True</Base>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>3</TargetedPlatforms>
+        <AppType>Application</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+        <Cfg_1_Win64>true</Cfg_1_Win64>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+        <Cfg_2_Win64>true</Cfg_2_Win64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <SanitizedProjectName>Kochavit</SanitizedProjectName>
+        <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;Bde;System.Win;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_MajorVer>4</VerInfo_MajorVer>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1037</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=Nemo;FileDescription=;FileVersion=4.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=Kpchavit4;ProductVersion=1.0.0.0</VerInfo_Keys>
+        <DCC_UnitSearchPath>..\..\GnrlEDBUtils;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UsePackage>vclx;vcl;dbrtl;Rave76VCL;bdertl;rtl;vclactnband;vcldb;vcldbx;dsnap;dsnapcon;TeeUI;TeeDB;Tee;adortl;vclib;ibxpress;xmlrtl;inet;intrawebdb_100_120;Intraweb_100_120;VclSmp;vclie;websnap;webdsnap;inetdbbde;inetdbxpress;soaprtl;vclribbon;DbxCommonDriver;DbxClientDriver;DBXInterBaseDriver;DBXMySQLDriver;dbexpress;dbxcds;DTwain;dclExcelExportPack9;ExcelExportPack9;Jcl;JclVcl;JvCoreD12R;JvSystemD12R;JvStdCtrlsD12R;JvAppFrmD12R;JvBandsD12R;JvDBD12R;JvDlgsD12R;JvBDED12R;JvCmpD12R;JvCryptD12R;JvCtrlsD12R;JvCustomD12R;JvDockingD12R;JvDotNetCtrlsD12R;JvEDID12R;JvGlobusD12R;JvHMID12R;JvInterpreterD12R;JvJansD12R;JvManagedThreadsD12R;JvMMD12R;JvNetD12R;JvPageCompsD12R;JvPluginD12R;JvPrintPreviewD12R;JvRuntimeDesignD12R;JvTimeFrameworkD12R;JvValidatorsD12R;JvWizardD12R;JvXPCtrlsD12R;MyComp;CnpPackage;IndyCore130;IndySystem130;IndyProtocols130;TestPack;edb203r2009run;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_ExeOutput>..\</DCC_ExeOutput>
+        <DCC_DependencyCheckOutputName>..\Kochavit.exe</DCC_DependencyCheckOutputName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <DCC_ExeOutput>D:\My Programs\Kochavit4\</DCC_ExeOutput>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <Icon_MainIcon>..\..\General Gliphs\Icons\Kochavit.ico</Icon_MainIcon>
+        <DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Debugger_DebugSourcePath>C:\Program Files\Borland\BDS\4.0\Projects\GnrlMethod\Utils;C:\Program Files\Borland\BDS\4.0\Projects\GnrlMethod\Utils\;C:\Program Files\CodeGear\RAD Studio\6.0\3rdParty\DelphiTwain\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_ExeOutput>D:\My Programs\Kochavit4\</DCC_ExeOutput>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+        <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <DCC_Namespace>Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;$(DCC_Namespace)</DCC_Namespace>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Icon_MainIcon>..\..\General Gliphs\Icons\Kochavit.ico</Icon_MainIcon>
+        <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <Version>7.0</Version>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+        <DCC_LocalDebugSymbols>False</DCC_LocalDebugSymbols>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_MapFile>3</DCC_MapFile>
+        <DCC_ObjOutput>C:\Program Files\Borland\BDS\4.0\Projects\Kochavit\Source</DCC_ObjOutput>
+        <DCC_HppOutput>C:\Program Files\Borland\BDS\4.0\Projects\Kochavit\Source</DCC_HppOutput>
+        <DCC_ResourcePath>C:\Program Files\Borland\BDS\4.0\3rdParty\DelphiTwain;C:\Program Files\Borland\BDS\4.0\3rdParty\MyComp;$(DCC_ResourcePath)</DCC_ResourcePath>
+        <DCC_ObjPath>C:\Program Files\Borland\BDS\4.0\3rdParty\DelphiTwain;C:\Program Files\Borland\BDS\4.0\3rdParty\MyComp;$(DCC_ObjPath)</DCC_ObjPath>
+        <DCC_IncludePath>C:\Program Files\Borland\BDS\4.0\3rdParty\DelphiTwain;C:\Program Files\Borland\BDS\4.0\3rdParty\MyComp;$(DCC_IncludePath)</DCC_IncludePath>
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+        <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+        <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+        <DCC_ExeOutput>D:\My Programs\Kochavit4\</DCC_ExeOutput>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <Icon_MainIcon>Kochavit_Icon4.ico</Icon_MainIcon>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
+        <BT_BuildType>Debug</BT_BuildType>
+        <DCC_ExeOutput>D:\My Programs\Kochavit4\</DCC_ExeOutput>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <Icon_MainIcon>Kochavit_Icon4.ico</Icon_MainIcon>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+        <Version>7.0</Version>
+        <DCC_MapFile>3</DCC_MapFile>
+        <DCC_ObjOutput>C:\Documents and Settings\Sorin\My Documents\RAD Studio\Projects\Kochavit\Source</DCC_ObjOutput>
+        <DCC_HppOutput>C:\Documents and Settings\Sorin\My Documents\RAD Studio\Projects\Kochavit\Source</DCC_HppOutput>
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_UNSAFE_TYPE>True</DCC_UNSAFE_TYPE>
+        <DCC_UNSAFE_CODE>True</DCC_UNSAFE_CODE>
+        <DCC_UNSAFE_CAST>True</DCC_UNSAFE_CAST>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>
+        <DCC_DebugInfoInTds>true</DCC_DebugInfoInTds>
+        <DCC_BplOutput> </DCC_BplOutput>
+        <UWP_DelphiLogo44>D:\My Programs\General Gliphs\Icons\Kochavit.png</UWP_DelphiLogo44>
+        <UWP_DelphiLogo150>D:\My Programs\General Gliphs\Icons\Kochavit.png</UWP_DelphiLogo150>
+        <Icon_MainIcon>Kochavit_Icon4.ico</Icon_MainIcon>
+        <AppEnableHighDPI>true</AppEnableHighDPI>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <BT_BuildType>Debug</BT_BuildType>
+        <DCC_ExeOutput>D:\My Programs\Kochavit4\</DCC_ExeOutput>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2_Win64)'!=''">
+        <VerInfo_Keys>CompanyName=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductVersion=1.0.0.0;Comments=;ProgramID=com.embarcadero.$(MSBuildProjectName);FileDescription=$(MSBuildProjectName);ProductName=$(MSBuildProjectName)</VerInfo_Keys>
+        <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <Icon_MainIcon>Kochavit_Icon4.ico</Icon_MainIcon>
+        <VerInfo_MajorVer>1</VerInfo_MajorVer>
+        <BT_BuildType>Debug</BT_BuildType>
+    </PropertyGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Parameters>
+                    <Parameters Name="DebugSourceDirs">C:\Program Files\Borland\BDS\4.0\Projects\GnrlMethod\Utils;C:\Program Files\Borland\BDS\4.0\Projects\GnrlMethod\Utils\;C:\Program Files\CodeGear\RAD Studio\6.0\3rdParty\DelphiTwain\</Parameters>
+                    <Parameters Name="UseLauncher">False</Parameters>
+                    <Parameters Name="LoadAllSymbols">True</Parameters>
+                    <Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
+                </Parameters>
+                <VersionInfo>
+                    <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
+                    <VersionInfo Name="AutoIncBuild">False</VersionInfo>
+                    <VersionInfo Name="MajorVer">4</VersionInfo>
+                    <VersionInfo Name="MinorVer">0</VersionInfo>
+                    <VersionInfo Name="Release">0</VersionInfo>
+                    <VersionInfo Name="Build">0</VersionInfo>
+                    <VersionInfo Name="Debug">False</VersionInfo>
+                    <VersionInfo Name="PreRelease">False</VersionInfo>
+                    <VersionInfo Name="Special">False</VersionInfo>
+                    <VersionInfo Name="Private">False</VersionInfo>
+                    <VersionInfo Name="DLL">False</VersionInfo>
+                    <VersionInfo Name="Locale">1037</VersionInfo>
+                    <VersionInfo Name="CodePage">1255</VersionInfo>
+                </VersionInfo>
+                <VersionInfoKeys>
+                    <VersionInfoKeys Name="CompanyName">Nemo</VersionInfoKeys>
+                    <VersionInfoKeys Name="FileDescription"/>
+                    <VersionInfoKeys Name="FileVersion">4.0.0.0</VersionInfoKeys>
+                    <VersionInfoKeys Name="InternalName"/>
+                    <VersionInfoKeys Name="LegalCopyright"/>
+                    <VersionInfoKeys Name="LegalTrademarks"/>
+                    <VersionInfoKeys Name="OriginalFilename"/>
+                    <VersionInfoKeys Name="ProductName">Kpchavit4</VersionInfoKeys>
+                    <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
+                </VersionInfoKeys>
+                <Source>
+                    <Source Name="MainSource">Kochavit.dpr</Source>
+                </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k240.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp240.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
+                    <Excluded_Packages Name="D:\Program Files (x86)\FastReport 6 VCL Standard\LibD24\dclfrxIBX24.bpl">FastReport 6.0 IBX Components</Excluded_Packages>
+                    <Excluded_Packages Name="D:\Program Files (x86)\FastReport 6 VCL Standard\LibD24\dclfsIBX24.bpl">FastScript 1.9 IBX Components</Excluded_Packages>
+                </Excluded_Packages>
+            </Delphi.Personality>
+            <ModelSupport>True</ModelSupport>
+            <Platforms>
+                <Platform value="Win32">True</Platform>
+                <Platform value="Win64">True</Platform>
+            </Platforms>
+            <Deployment Version="3">
+                <DeployFile LocalName="ModelSupport_Kochavit\CauseMsg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrAcdntFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Dymo_TLB\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillPayd\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CrAcdntSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblBikoret\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Unit2\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Default\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ToDoDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\LogErrorUtil\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlSpssSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverOnCarFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnHeiterReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\WordEdit\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrCourseRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\SendMsg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrCourseSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrCourseFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\SelectivePrintDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntDrRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\WordFunc\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CourseRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualBillFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CrFollowRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualTipulRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTofesCarRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrBdikaRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverEditDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\MainPrintDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Main\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\SlctOther\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblAtar\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntFilter\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnSumRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Cause\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTplHtrFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\SendEMail\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarEdit\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\HeiterFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\LabelWriter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\About\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Splash\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\SqlStates\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\PrintTofes\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\WrnList\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ImportFile\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientListArhivDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlListArhiv\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarFilterDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GraphicUtils\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntDrReport\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblProducer\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\About\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualBillRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarListArhivDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\History\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ScanUtil\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntDrFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTipulReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTofesDrvRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTipulRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Kochavit\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTofesClnReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ProblemDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ChecksListDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblTipul\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrAcdntRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblTipulOut\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\Kochavit.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>Kochavit.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrAviraReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrTahoReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TipulRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlList\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\IOUtils\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblHeiter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlSpssChart\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrAcdntSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ImportPhoto\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarListArhiv\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntDrFilter\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTofesCarReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ChecksFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTofesFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CourseReport\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\General Gliphs\Icons\Kochavit.ico" Configuration="Debug" Class="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo150x150.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Kochavit4\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualTipulFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlImport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ReturnDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblBank\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualTipulFilter\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\StatusCars\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTofesClnRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\RegistryUtils\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CrAcdntFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ShowScan\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CheckEditDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrBdikaFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TrapActionUtils\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ChecksFilter\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\OpenToSendEmail\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="c:\program files (x86)\embarcadero\studio\18.0\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png" Configuration="Debug" Class="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo44x44.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ExpFile\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="c:\program files (x86)\embarcadero\studio\18.0\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png" Configuration="Debug" Class="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo150x150.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarList\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\FolderList\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ExcelRprtDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ShowNotif\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\General Gliphs\icons8-container-truck-480.png" Configuration="Debug" Class="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo150x150.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\WordVer\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlFilterDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblCargo\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrBdikaReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlTbl\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AddAuto\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\General Gliphs\iconfinder_truck-front-01_1988878.ico" Configuration="Debug" Class="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo150x150.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrTahoFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\MailSendListCr\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillList\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlEditDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlEdit\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarListDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblLicence\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TipulFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblOved\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientListArhiv\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnSumReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrAviraRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlBigDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DataDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntReport\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\WrnListDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientFilterDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CourseFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Unit2\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblOfenPay\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\KbFunc\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientEdit\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblDocumentCar\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DocSend\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UtilsDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblDocumentClient\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DeleteOldDocuments\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrAcdntReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblCourse\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverEdit\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\LikuySendMsg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\MobileInterfaceDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrCourseReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DialogsHeb\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientEditDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblInsure\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\EmailClasses\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillEditDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverList\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CrAcdntRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DocUtils\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\SendMailNew\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrTahoSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrTahoRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\HeiterRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TahoRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TipulSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ChecksRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BdikaFilterDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TipulReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ExportToExcel\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblCause\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\OpenToPrint\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\General Gliphs\iconfinder_truck_50844.ico" Configuration="Debug" Class="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo150x150.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="..\..\General Gliphs\Icons\Kochavit.png" Configuration="Debug" Class="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets\</RemoteDir>
+                        <RemoteName>Logo150x150.png</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillListDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DeleteBigFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AnualBillReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DrAviraFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnSumFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarEditDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverListArhivDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlFreze\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverListDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ImportFromMasafon\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TipulFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CrAcdntReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BillEdit\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblType\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\AcdntSpssSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\HeiterSpssSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BdikaRprtSlctDlg\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\MainDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TahoReport\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\PasswordDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\Password\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\TblDocumentDriver\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnHeiterRprtSlctDlg\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlListArhivDM\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\HeiterReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ScanImport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverListArhiv\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\CarFilter\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\DriverOnCarReport\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\UnTofesDrvReport\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ClientsList\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\ImportMasofonDataDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\GnrlBigDM\default.txaPackage" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="ModelSupport_Kochavit\BuiltSqlWhere\default.txvpck" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployClass Name="DependencyModule">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.dll;.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXResource">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\Resources</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidClassesDexFile">
+                    <Platform Name="Android">
+                        <RemoteDir>classes</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AdditionalDebugSymbols">
+                    <Platform Name="Win32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch768">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon144">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xxhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeMipsFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\mips</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="ProjectOutput">
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="Linux64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DependencyFramework">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.framework</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectUWPManifest">
+                    <Platform Name="Win32">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1024">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceDebug">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <RemoteDir>..\$(PROJECTNAME).app.dSYM\Contents\Resources\DWARF</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch320">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSInfoPList">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidLibnativeArmeabiFile">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="DebugSymbols">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch1536">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage470">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-normal</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon96">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xhdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage640">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-large</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPhone_Launch640x1136">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo44">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSEntitlements">
+                    <Platform Name="iOSDevice64">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon72">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-hdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidGDBServer">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXInfoPList">
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectOSXEntitlements">
+                    <Platform Name="OSX32">
+                        <RemoteDir>..\</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="UWP_DelphiLogo150">
+                    <Platform Name="Win32">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="Win64">
+                        <RemoteDir>Assets</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="iPad_Launch2048">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashStyles">
+                    <Platform Name="Android">
+                        <RemoteDir>res\values</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage426">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-small</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidSplashImageDef">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSResource">
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectAndroidManifest">
+                    <Platform Name="Android">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_DefaultAppIcon">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="File">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\Resources\StartUp\</RemoteDir>
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="Android">
+                        <Operation>0</Operation>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>0</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="AndroidServiceOutput">
+                    <Platform Name="Android">
+                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Required="true" Name="DependencyPackage">
+                    <Platform Name="Win32">
+                        <Operation>0</Operation>
+                        <Extensions>.bpl</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="OSX32">
+                        <RemoteDir>Contents\MacOS</RemoteDir>
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                    <Platform Name="iOSSimulator">
+                        <Operation>1</Operation>
+                        <Extensions>.dylib</Extensions>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon48">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-mdpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_SplashImage960">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-xlarge</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="Android_LauncherIcon36">
+                    <Platform Name="Android">
+                        <RemoteDir>res\drawable-ldpi</RemoteDir>
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <DeployClass Name="ProjectiOSDeviceResourceRules">
+                    <Platform Name="iOSDevice64">
+                        <Operation>1</Operation>
+                    </Platform>
+                    <Platform Name="iOSDevice32">
+                        <Operation>1</Operation>
+                    </Platform>
+                </DeployClass>
+                <ProjectRoot Platform="iOSDevice64" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Win64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="iOSDevice32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Linux64" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="Win32" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="OSX32" Name="$(PROJECTNAME).app"/>
+                <ProjectRoot Platform="Android" Name="$(PROJECTNAME)"/>
+                <ProjectRoot Platform="iOSSimulator" Name="$(PROJECTNAME).app"/>
+            </Deployment>
+        </BorlandProject>
+        <ProjectFileVersion>12</ProjectFileVersion>
+    </ProjectExtensions>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="Main.pas">
+            <Form>frmMain</Form>
+        </DCCReference>
+        <DCCReference Include="MainDM.pas">
+            <Form>dmMain</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="GnrlList.pas">
+            <Form>frmGnrlList</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlTbl.pas">
+            <Form>frmGnrlTbl</Form>
+        </DCCReference>
+        <DCCReference Include="TblType.pas">
+            <Form>frmTypeTbl</Form>
+        </DCCReference>
+        <DCCReference Include="TblInsure.pas">
+            <Form>frmTblInsure</Form>
+        </DCCReference>
+        <DCCReference Include="TblProducer.pas">
+            <Form>frmProducerTbl</Form>
+        </DCCReference>
+        <DCCReference Include="DriverList.pas">
+            <Form>frmDriverList</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlEdit.pas">
+            <Form>frmGnrlEdit</Form>
+        </DCCReference>
+        <DCCReference Include="ClientEdit.pas">
+            <Form>frmClientEdit</Form>
+        </DCCReference>
+        <DCCReference Include="CarEdit.pas">
+            <Form>frmCarEdit</Form>
+        </DCCReference>
+        <DCCReference Include="TblCargo.pas">
+            <Form>frmCargoTbl</Form>
+        </DCCReference>
+        <DCCReference Include="TblTipul.pas">
+            <Form>frmTipulTbl</Form>
+        </DCCReference>
+        <DCCReference Include="KbFunc.pas"/>
+        <DCCReference Include="WrnList.pas">
+            <Form>frmWrnList</Form>
+        </DCCReference>
+        <DCCReference Include="DriverEdit.pas">
+            <Form>frmDriverEdit</Form>
+        </DCCReference>
+        <DCCReference Include="TblHeiter.pas">
+            <Form>frmTblHeiter</Form>
+        </DCCReference>
+        <DCCReference Include="TblCourse.pas">
+            <Form>frmCourseTbl</Form>
+        </DCCReference>
+        <DCCReference Include="ToDoDlg.pas">
+            <Form>frmToDoDlg</Form>
+        </DCCReference>
+        <DCCReference Include="WordFunc.pas"/>
+        <DCCReference Include="OpenToPrint.pas">
+            <Form>frmOpenToPrint</Form>
+        </DCCReference>
+        <DCCReference Include="TblCause.pas">
+            <Form>frmCauseTbl</Form>
+        </DCCReference>
+        <DCCReference Include="Cause.pas">
+            <Form>frmCause</Form>
+        </DCCReference>
+        <DCCReference Include="UtilsDM.pas">
+            <Form>dmUtils</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="BillList.pas">
+            <Form>frmBillList</Form>
+        </DCCReference>
+        <DCCReference Include="BillEdit.pas">
+            <Form>frmBillEdit</Form>
+        </DCCReference>
+        <DCCReference Include="TblBikoret.pas">
+            <Form>frmTblBikoret</Form>
+        </DCCReference>
+        <DCCReference Include="PasswordDlg.pas">
+            <Form>frmPasswordDlg</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlFilter.pas">
+            <Form>frmGnrlFilter</Form>
+        </DCCReference>
+        <DCCReference Include="TipulFilter.pas">
+            <Form>frmTipulFilter</Form>
+        </DCCReference>
+        <DCCReference Include="BillPayd.pas">
+            <Form>frmBillPayd</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlReport.pas">
+            <Form>frmGnrlReport</Form>
+        </DCCReference>
+        <DCCReference Include="TipulReport.pas">
+            <Form>frmTipulReport</Form>
+        </DCCReference>
+        <DCCReference Include="BillFilter.pas">
+            <Form>frmBillFilter</Form>
+        </DCCReference>
+        <DCCReference Include="BillReport.pas">
+            <Form>frmBillReport</Form>
+        </DCCReference>
+        <DCCReference Include="HeiterFilter.pas">
+            <Form>frmHeiterFilter</Form>
+        </DCCReference>
+        <DCCReference Include="HeiterReport.pas">
+            <Form>frmHeiterReport</Form>
+        </DCCReference>
+        <DCCReference Include="ReturnDlg.pas">
+            <Form>frmReturnDlg</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlRprtSlctDlg.pas">
+            <Form>frmGnrlRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="TipulRprtSlctDlg.pas">
+            <Form>frmTipulRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="HeiterRprtSlctDlg.pas">
+            <Form>frmHeiterRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="BillRprtSlctDlg.pas">
+            <Form>frmBillRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="About.pas">
+            <Form>frmAbout</Form>
+        </DCCReference>
+        <DCCReference Include="Splash.pas">
+            <Form>frmSplash</Form>
+        </DCCReference>
+        <DCCReference Include="ProblemDlg.pas">
+            <Form>frmProblem</Form>
+        </DCCReference>
+        <DCCReference Include="WordVer.pas"/>
+        <DCCReference Include="Default.pas">
+            <Form>frmDefault</Form>
+        </DCCReference>
+        <DCCReference Include="TblOved.pas">
+            <Form>frmOvedTbl</Form>
+        </DCCReference>
+        <DCCReference Include="ClientFilter.pas">
+            <Form>frmClientFilter</Form>
+        </DCCReference>
+        <DCCReference Include="ClientReport.pas">
+            <Form>frmClientReport</Form>
+        </DCCReference>
+        <DCCReference Include="ClientRprtSlctDlg.pas">
+            <Form>frmClientRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="CarFilter.pas">
+            <Form>frmCarFilter</Form>
+        </DCCReference>
+        <DCCReference Include="CarReport.pas">
+            <Form>frmCarReport</Form>
+        </DCCReference>
+        <DCCReference Include="CarRprtSlctDlg.pas">
+            <Form>frmCarRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="CarSpssSlctDlg.pas">
+            <Form>frmCarSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="DriverFilter.pas">
+            <Form>frmDriverFilter</Form>
+        </DCCReference>
+        <DCCReference Include="DriverRprtSlctDlg.pas">
+            <Form>frmDriverRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="TblAtar.pas">
+            <Form>frmAtarTbl</Form>
+        </DCCReference>
+        <DCCReference Include="AnualTipulReport.pas">
+            <Form>frmAnualTipulReport</Form>
+        </DCCReference>
+        <DCCReference Include="AnualTipulFilter.pas">
+            <Form>frmAnualTipulFilter</Form>
+        </DCCReference>
+        <DCCReference Include="AnualTipulRprtSlctDlg.pas">
+            <Form>frmAnualTipulRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="PrintTofes.pas"/>
+        <DCCReference Include="AcdntFilter.pas">
+            <Form>frmAcdntFilter</Form>
+        </DCCReference>
+        <DCCReference Include="AcdntReport.pas">
+            <Form>frmAcdntReport</Form>
+        </DCCReference>
+        <DCCReference Include="AcdntRprtSlctDlg.pas">
+            <Form>frmAcdntRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="TahoFilter.pas">
+            <Form>frmTahoFilter</Form>
+        </DCCReference>
+        <DCCReference Include="TahoReport.pas">
+            <Form>frmTahoReport</Form>
+        </DCCReference>
+        <DCCReference Include="TahoRprtSlctDlg.pas">
+            <Form>frmTahoRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="AcdntDrReport.pas">
+            <Form>frmDrAcdntReport</Form>
+        </DCCReference>
+        <DCCReference Include="AcdntDrRprtSlctDlg.pas">
+            <Form>frmAcdntDrRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="AviraFilter.pas">
+            <Form>frmAviraFilter</Form>
+        </DCCReference>
+        <DCCReference Include="AviraReport.pas">
+            <Form>frmAviraReport</Form>
+        </DCCReference>
+        <DCCReference Include="AviraRprtSlctDlg.pas">
+            <Form>frmAviraRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="CourseFilter.pas">
+            <Form>frmCourseFilter</Form>
+        </DCCReference>
+        <DCCReference Include="CourseReport.pas">
+            <Form>frmCourseReport</Form>
+        </DCCReference>
+        <DCCReference Include="CourseRprtSlctDlg.pas">
+            <Form>frmCourseRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="BdikaFilter.pas">
+            <Form>frmBdikaFilter</Form>
+        </DCCReference>
+        <DCCReference Include="BdikaReport.pas">
+            <Form>frmBdikaReport</Form>
+        </DCCReference>
+        <DCCReference Include="BdikaRprtSlctDlg.pas">
+            <Form>frmBdikaRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlFreze.pas">
+            <Form>frmGnrlFreze</Form>
+        </DCCReference>
+        <DCCReference Include="TblTipulOut.pas">
+            <Form>frmTipulOutTbl</Form>
+        </DCCReference>
+        <DCCReference Include="ExpFile.pas"/>
+        <DCCReference Include="AnualBillFilter.pas">
+            <Form>frmAnualBillFilter</Form>
+        </DCCReference>
+        <DCCReference Include="AnualBillReport.pas">
+            <Form>frmAnualBillReport</Form>
+        </DCCReference>
+        <DCCReference Include="AnualBillRprtSlctDlg.pas">
+            <Form>frmAnualBillRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="..\..\GnrlMethod\Utils\DialogsHeb.pas"/>
+        <DCCReference Include="..\..\GnrlMethod\Utils\TrapActionUtils.pas"/>
+        <DCCReference Include="ExportToExcel.pas">
+            <Form>frmExportToExcel</Form>
+        </DCCReference>
+        <DCCReference Include="DocUtils.pas"/>
+        <DCCReference Include="WordEdit.pas"/>
+        <DCCReference Include="..\..\GnrlMethod\RegistryMethod\RegistryUtils.pas"/>
+        <DCCReference Include="AddAuto.pas">
+            <Form>frmAddAuto</Form>
+        </DCCReference>
+        <DCCReference Include="LabelWriter.pas"/>
+        <DCCReference Include="TblOfenPay.pas">
+            <Form>frmOfenPayTbl</Form>
+        </DCCReference>
+        <DCCReference Include="..\..\GnrlMethod\Utils\GraphicUtils.pas"/>
+        <DCCReference Include="..\..\GnrlMethod\Utils\IOUtils.pas"/>
+        <DCCReference Include="CarEditDM.pas">
+            <Form>dmCarEdit</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="GnrlEditDM.pas">
+            <Form>dmGnrlEdit</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="ClientEditDM.pas">
+            <Form>dmClientEdit</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DriverEditDM.pas">
+            <Form>dmDriverEdit</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="BillEditDM.pas">
+            <Form>dmBillEdit</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="WrnListDM.pas">
+            <Form>dmWrnList</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="GnrlImport.pas">
+            <Form>dlgGnrlImport</Form>
+        </DCCReference>
+        <DCCReference Include="ImportPhoto.pas">
+            <Form>dlgImportPhoto</Form>
+        </DCCReference>
+        <DCCReference Include="ImportFile.pas">
+            <Form>dlgImportFile</Form>
+        </DCCReference>
+        <DCCReference Include="SelectivePrintDlg.pas">
+            <Form>dlgSelectivePrint</Form>
+        </DCCReference>
+        <DCCReference Include="ClientsList.pas">
+            <Form>frmeClientsList</Form>
+            <DesignClass>TFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DataDM.pas">
+            <Form>dmData</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\..\GnrlEDBUtils\LogErrorUtil.pas"/>
+        <DCCReference Include="..\..\GnrlEDBUtils\ShowNotif.pas">
+            <Form>frmShowNotif</Form>
+        </DCCReference>
+        <DCCReference Include="ScanImport.pas">
+            <Form>dlgScanImport</Form>
+        </DCCReference>
+        <DCCReference Include="CarListDM.pas">
+            <Form>dmCarList</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DriverListDM.pas">
+            <Form>dmDriverList</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="MainPrintDM.pas">
+            <Form>dmMainPrint</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="GnrlBigDM.pas">
+            <Form>dmGnrlBig</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="FolderList.pas">
+            <Form>frmFolderList</Form>
+        </DCCReference>
+        <DCCReference Include="TblLicence.pas">
+            <Form>frmLicenceTbl</Form>
+        </DCCReference>
+        <DCCReference Include="TblDocumentClient.pas">
+            <Form>frmDocumentClientTbl</Form>
+        </DCCReference>
+        <DCCReference Include="TblDocumentDriver.pas">
+            <Form>frmDocumentDriverTbl</Form>
+        </DCCReference>
+        <DCCReference Include="BillListDM.pas">
+            <Form>dmBillList</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="GnrlListArhiv.pas">
+            <Form>frmGnrlListArhiv</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlListArhivDM.pas">
+            <Form>dmGnrlListArhiv</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="CauseMsg.pas">
+            <Form>frmCauseMsg</Form>
+        </DCCReference>
+        <DCCReference Include="History.pas">
+            <Form>frmHistory</Form>
+        </DCCReference>
+        <DCCReference Include="GnrlFilterDM.pas">
+            <Form>dmGnrlFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="SqlStates.pas"/>
+        <DCCReference Include="ClientFilterDM.pas">
+            <Form>dmClientFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="BuiltSqlWhere.pas"/>
+        <DCCReference Include="CarFilterDM.pas">
+            <Form>dmCarFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="GnrlSpssSlctDlg.pas">
+            <Form>frmGnrlSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="ClientSpssSlctDlg.pas">
+            <Form>frmClientSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="DriverFilterDM.pas">
+            <Form>dmDriverFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DriverReport.pas">
+            <Form>frmDriverReport</Form>
+        </DCCReference>
+        <DCCReference Include="TipulFilterDM.pas">
+            <Form>dmTipulFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="TipulSpssSlctDlg.pas">
+            <Form>frmTipulSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="BillFilterDM.pas">
+            <Form>dmBillFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="BillSpssSlctDlg.pas">
+            <Form>frmBillSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="AcdntFilterDM.pas">
+            <Form>dmAcdntFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="AcdntSpssSlctDlg.pas">
+            <Form>frmAcdntSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="HeiterFilterDM.pas">
+            <Form>dmHeiterFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="HeiterSpssSlctDlg.pas">
+            <Form>frmHeiterSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="TahoFilterDM.pas">
+            <Form>dmTahoFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="AcdntDrFilterDM.pas">
+            <Form>dmAcdntDrFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="AcdntDrFilter.pas">
+            <Form>frmAcdntDrFilter</Form>
+        </DCCReference>
+        <DCCReference Include="CourseFilterDM.pas">
+            <Form>dmCourseFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="AviraFilterDM.pas">
+            <Form>dmAviraFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="BdikaFilterDM.pas">
+            <Form>dmBdikaFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="AnualTipulFilterDM.pas">
+            <Form>dmAnualTipulFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="AnualBillFilterDM.pas">
+            <Form>dmAnualBillFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="ClientListArhivDM.pas">
+            <Form>dmClientListArhiv</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="ClientListArhiv.pas">
+            <Form>frmClientListArhiv</Form>
+        </DCCReference>
+        <DCCReference Include="CarListArhivDM.pas">
+            <Form>dmCarListArhiv</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="CarListArhiv.pas">
+            <Form>frmCarListArhiv</Form>
+        </DCCReference>
+        <DCCReference Include="DriverListArhivDM.pas">
+            <Form>dmDriverListArhiv</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DriverListArhiv.pas">
+            <Form>frmDriverListArhiv</Form>
+        </DCCReference>
+        <DCCReference Include="CarList.pas">
+            <Form>frmCarList</Form>
+        </DCCReference>
+        <DCCReference Include="ExportToMasofon.pas">
+            <Form>dmExportToMasofon</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="ImportFromMasafon.pas">
+            <Form>dmImportFromMasafon</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="ImportMasofonDataDM.pas">
+            <Form>dmImportMasofonData</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="SlctOther.pas">
+            <Form>frmSlctOther</Form>
+        </DCCReference>
+        <DCCReference Include="TblBank.pas">
+            <Form>frmBankTbl</Form>
+        </DCCReference>
+        <DCCReference Include="ChecksListDM.pas">
+            <Form>dmChecksList</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="ChecksList.pas">
+            <Form>frmChecksList</Form>
+        </DCCReference>
+        <DCCReference Include="CheckEditDM.pas">
+            <Form>dmCheckEdit</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="CheckEdit.pas">
+            <Form>frmCheckEdit</Form>
+        </DCCReference>
+        <DCCReference Include="ChecksFilterDM.pas">
+            <Form>dmChecksFilter</Form>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="ChecksFilter.pas">
+            <Form>frmChecksFilter</Form>
+        </DCCReference>
+        <DCCReference Include="ChecksReport.pas">
+            <Form>frmChecksReport</Form>
+        </DCCReference>
+        <DCCReference Include="ChecksRprtSlctDlg.pas">
+            <Form>frmChecksRprtSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="ChecksSpssSlctDlg.pas">
+            <Form>frmChecksSpssSlctDlg</Form>
+        </DCCReference>
+        <DCCReference Include="ImportMasofonRec.pas"/>
+        <DCCReference Include="Dymo_TLB.pas"/>
+        <DCCReference Include="GnrlSendMsg.pas">
+            <Form>dlgGnrlSendMsg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="LikuySendMsg.pas">
+            <Form>dlgLikuySendMsg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="StatusCars.pas">
+            <Form>dlgStatusCars</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="CrFollowFilter.pas">
+            <Form>frmCrFollowFilter</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="CrFollowFilterDM.pas">
+            <Form>dmCrFollowFilter</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="CrFollowReport.pas">
+            <Form>frmCrFollowReport</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="CrFollowRprtSlctDlg.pas">
+            <Form>frmCrFollowRprtSlctDlg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="OpenToSendEmail.pas">
+            <Form>frmOpenToSendEmail</Form>
+        </DCCReference>
+        <DCCReference Include="SlctFields.pas">
+            <Form>frmSlctFields</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="MailSendListDr.pas">
+            <Form>frmMailSendListDr</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="DriverOnCarFilterDM.pas">
+            <Form>dmDriverOnCarFilter</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DriverOnCarFilter.pas">
+            <Form>frmDriverOnCarFilter</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="DriverOnCarReport.pas">
+            <Form>frmDriverOnCarReport</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="DriverOnCarRprtSlctDlg.pas">
+            <Form>frmDriverOnCarRprtSlctDlg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="DeleteOldDocuments.pas">
+            <Form>frmDeleteOldDocuments</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ExportFilesDM.pas">
+            <Form>dmExportFiles</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="..\..\SendEMail\SendEMail.pas">
+            <Form>frmSendEMail</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="..\..\SendEMail\EmailClasses.pas"/>
+        <DCCReference Include="MailSendListCr.pas">
+            <Form>frmMailSendListCr</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ExcelRprtDrvsDM.pas">
+            <Form>dmExcelRprtDrvs</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="WrnSendMsg.pas">
+            <Form>dlgWrnSendMsg</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="StatusDrvs.pas">
+            <Form>dlgStatusDrvs</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="ExcelRprtDM.pas">
+            <Form>dmExcelRprt</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="DownloadWebDataDM.pas">
+            <Form>dmDownloadWebData</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="UploadWebDataDM.pas">
+            <Form>dmUploadWebData</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
+        <DCCReference Include="TblGroup.pas">
+            <Form>frmGroupTbl</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="PassSign.pas">
+            <Form>frmPassSign</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="carDetail_gov.pas">
+            <Form>frmCarDetail_gov</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <None Include="ModelSupport_Kochavit\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\About\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\Kochavit4\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\About\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\DrCourseRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GraphicUtils\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblDocumentCar\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrBdikaReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ExpFile\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DocUtils\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\AddAuto\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlTbl\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\History\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblHeiter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BuiltSqlWhere\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\SendMailNew\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\MainPrintDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\WrnListDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\Default\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrCourseSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverEdit\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\KbFunc\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarListArhivDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrBdikaRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrAviraRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverListArhivDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\AnualReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblAtar\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientEditDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlEditDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlList\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrCourseFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnSumRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTofesDrvRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlImport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrAviraFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CrAcdntRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillList\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\HeiterReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlListArhiv\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\WordVer\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\Cause\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\SelectivePrintDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillEdit\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DataDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillListDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\AnualRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlFreze\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTofesCarReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrTahoReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TrapActionUtils\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\WordEdit\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblOved\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\AnualBillReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarFilterDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrAcdntReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblTipul\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\Password\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\PasswordDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DialogsHeb\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblDocumentClient\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTofesCarRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblBikoret\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnHeiterRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\HeiterSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\AnualFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UtilsDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlEdit\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTplHtrFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ToDoDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrCourseReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TipulReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarList\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTofesFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrTahoFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ImportPhoto\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblDocumentDriver\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\LabelWriter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrTahoRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnSumFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrBdikaFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TipulSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\Splash\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\HeiterRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\IOUtils\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ExportToExcel\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverListArhiv\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverListDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CrAcdntSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillEditDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblProducer\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTofesClnReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnSumReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CrAcdntFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\PrintTofes\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblCause\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\AnualBillFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\OpenToPrint\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\LogErrorUtil\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\Main\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarListDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CrAcdntReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverEditDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblCargo\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrAcdntRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrAcdntSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\WrnList\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\AnualBillRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblLicence\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblInsure\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlListArhivDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlFilterDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlBigDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DeleteBigFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\SendMsg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DocSend\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ReturnDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\SlctOther\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblOfenPay\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientListArhiv\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DriverList\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\WordFunc\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ProblemDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrAcdntFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientFilterDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlSpssChart\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\SqlStates\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarEdit\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ScanImport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientListArhivDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ShowScan\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTofesDrvReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientsList\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ClientEdit\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTipulRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ShowNotif\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblTipulOut\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TipulRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnHeiterReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CauseMsg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarListArhiv\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\CarEditDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrAviraReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTofesClnRprtSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\UnTipulReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillReport\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ScanUtil\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblType\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\ImportFile\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\HeiterFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\RegistryUtils\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TblCourse\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\DrTahoSpssSlctDlg\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\BillPayd\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TipulFilter\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\FolderList\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\MainDM\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\GnrlBigDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\GnrlSpssSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\DriverFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\Unit2\default.txvpck"/>
+        <None Include="ModelSupport_Kochavit\TipulFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\Unit2\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\BillFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntSpssSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntFilter\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntReport\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\TahoRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\TahoReport\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntDrFilter\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntDrReport\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntDrFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AcdntDrRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\CourseRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\CourseReport\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AnualTipulFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\ChecksFilter\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\ChecksFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\ChecksRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\BdikaRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\Kochavit\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\MobileInterfaceDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\CrFollowRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AnualTipulRprtSlctDlg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\DriverOnCarFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\TblBank\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\AnualTipulFilter\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\MailSendListCr\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\EmailClasses\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\CheckEditDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\ImportFromMasafon\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\Dymo_TLB\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\LikuySendMsg\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\ExcelRprtDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\ImportMasofonDataDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\SendEMail\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\DriverOnCarReport\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\ChecksListDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\StatusCars\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\DeleteOldDocuments\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\CourseFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\BdikaFilterDM\default.txaPackage"/>
+        <None Include="ModelSupport_Kochavit\OpenToSendEmail\default.txaPackage"/>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+    <Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj"/>
+    <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
+</Project>

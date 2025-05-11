@@ -1,0 +1,170 @@
+unit GnrlTbl;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, DBTables, Grids, DBGrids, StdCtrls, ComCtrls, ImgList,
+  ExtCtrls, ToolWin, ActnList, DBCtrls, MyChkDBGrid, RpCon, RpConDS,
+  RpConBDE, RpRave, RpDefine, RpBase, RpSystem, edbcomps;
+
+type
+  TfrmGnrlTbl = class(TForm)
+    ToolBar1: TToolBar;
+    StatusBar: TStatusBar;
+    Panel1: TPanel;
+    ImageList1: TImageList;
+    btnAppend: TToolButton;
+    btnDelete: TToolButton;
+    btnPrint: TToolButton;
+    edSearch: TEdit;
+    dsTbl: TDataSource;
+    dbNav: TDBNavigator;
+    ActionList1: TActionList;
+    acAppend: TAction;
+    acDelete: TAction;
+    acPrint: TAction;
+    dbGrid: TCheckDBGrid;
+    RvSystem: TRvSystem;
+    RvTbl: TRvProject;
+    tbTbl: TEDBTable;
+    tmpTbl: TEDBTable;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure edSearchChange(Sender: TObject);
+    procedure acAppendExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure tbTblAfterOpen(DataSet: TDataSet);
+    procedure tbTblBeforePost(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    function KeepIntegrity(fldName, IdVal: String;
+        FilesUses: array of String): Boolean;
+  end;
+
+var
+  frmGnrlTbl: TfrmGnrlTbl;
+
+implementation
+
+{$R *.dfm}
+uses
+   LogErrorUtil, DialogsHeb, UtilsDM;
+
+procedure TfrmGnrlTbl.FormCreate(Sender: TObject);
+begin
+  try
+    tbTbl.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      tbTbl.Close;
+      HandelError('!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+  RvTbl.ProjectFile := ExtractFilePath(Application.ExeName) +
+                        'Reports\KvTbl.rav';
+end;
+
+procedure TfrmGnrlTbl.acAppendExecute(Sender: TObject);
+begin
+   tbTbl.Append;
+end;
+
+procedure TfrmGnrlTbl.edSearchChange(Sender: TObject);
+begin
+   tbTbl.FindNearest([edSearch.Text]);
+end;
+
+procedure TfrmGnrlTbl.tbTblBeforePost(DataSet: TDataSet);
+var
+  vValue: String;
+begin
+  vValue := dbGrid.SelectedField.Text;
+  if (vValue = '') then
+  begin
+    MessageDlgH('חובה להקליד ערך', mtError, [mbOK], 0, 0);
+    Abort;
+  end
+  else
+  begin
+    with tmpTbl do
+    begin
+      TableName := tbTbl.TableName;
+      IndexFieldNames := tbTbl.IndexFieldNames;
+      try
+        Open;
+        if FindKey([vValue]) then
+        begin
+          MessageDlgH('הערך ' + vValue + ' קיים כבר', mtError, [mbOK], 0, 0);
+          Abort;
+        end;
+      finally
+        Close;
+      end;
+    end;
+  end;
+end;
+
+function TfrmGnrlTbl.KeepIntegrity(fldName, IdVal: String;
+  FilesUses: array of String): Boolean;
+var
+  msgVal: String;
+begin
+  Result := True;
+  msgVal := DBGrid.SelectedField.Text;
+  dmUtils := TdmUtils.Create(Self);
+  try
+    if dmUtils.IsValueInFiles(fldName, IdVal, msgVal, FilesUses) then
+    begin
+      Result := False;
+      Abort;
+    end;
+  finally
+    dmUtils.Free;
+  end;
+end;
+
+procedure TfrmGnrlTbl.acDeleteExecute(Sender: TObject);
+begin
+   if MessageDlgH('לבטל את הערך ' + dbGrid.SelectedField.Value,
+           mtConfirmation, [mbYes, mbNo],0, 0) = mrYes then
+       tbTbl.Delete;
+end;
+
+procedure TfrmGnrlTbl.tbTblAfterOpen(DataSet: TDataSet);
+begin
+   StatusBar.Panels[0].Text := 'סה"כ ערכים בטבלה: ' +
+           IntToStr(tbTbl.RecordCount);
+end;
+
+procedure TfrmGnrlTbl.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  with tbTbl do
+  begin
+    if (State in dsEditModes) then
+    begin
+      case MessageDlgH('קיימים נתונים חדשים בטבלה. האם לשמור',
+               mtConfirmation, [mbYes, mbNo, mbCancel], 0, 0) of
+          id_Yes: Post;
+          id_No:  begin
+                    Cancel;
+                    CanClose := True;
+                  end;
+          id_Cancel: CanClose := False;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmGnrlTbl.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   tbTbl.Close;
+   Action := caFree;
+end;
+
+end.

@@ -1,0 +1,129 @@
+unit GnrlFilterDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps, SqlStates, Forms, Controls;
+
+type
+  TdmGnrlFilter = class(TDataModule)
+    qrFilter: TEDBQuery;
+    qrGnrl: TEDBQuery;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrFilterBeforeOpen(DataSet: TDataSet);
+    procedure DataModuleDestroy(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    SqlState: TSqlStates;
+    TotalRec, TotalSelectRec: String;
+    procedure SetTotalRec(pTbl: String);
+    function OpenData: Boolean;
+    procedure LoadItems(pTbl, pField, pWhere: String; var ListItem: TStringList);
+    procedure ReOpen;
+    function GetId(pTbl, pField, pValue: String): String;
+  end;
+
+var
+  dmGnrlFilter: TdmGnrlFilter;
+
+implementation
+uses
+  LogErrorUtil;
+
+{$R *.dfm}
+
+procedure TdmGnrlFilter.DataModuleCreate(Sender: TObject);
+begin
+  SqlState := TSqlStates.Create;
+end;
+
+function TdmGnrlFilter.OpenData: Boolean;
+begin
+  Result := False;
+  try
+    qrFilter.Open;
+    TotalSelectRec := IntToStr(qrFilter.RecordCount);
+    Result := True;
+  except
+    on E: EDatabaseError do
+      HandelError('TdmGnrlFilter.OpenData', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmGnrlFilter.qrFilterBeforeOpen(DataSet: TDataSet);
+begin
+  qrFilter.SQL.Clear;
+  SqlState.SetFinalStatement;
+  qrFilter.SQl.Text := SqlState.Statement;
+end;
+
+procedure TdmGnrlFilter.SetTotalRec(pTbl: String);
+begin
+  qrGnrl.SQL.Text := 'SELECT COUNT(Id) TotalRec FROM ' + pTbl;
+  try
+    qrGnrl.Open;
+    TotalRec := qrGnrl.FieldByName('TotalRec').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmGnrlFilter.LoadItems(pTbl, pField, pWhere: String;
+  var ListItem: TStringList);
+begin
+  qrGnrl.SQL.Text := 'SELECT ' + pField + ' FROM ' + pTbl + pWhere;
+  try
+    qrGnrl.Open;
+    while not qrGnrl.Eof do
+    begin
+      ListItem.Add(qrGnrl.FieldByName(pField).AsString);
+      qrGnrl.Next;
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmGnrlFilter.ReOpen;
+begin
+  qrFilter.DisableControls;
+  Screen.Cursor := crHourGlass;
+  qrFilter.Close;
+  try
+    try
+      qrFilter.Open;
+    except
+    on E: EDatabaseError do
+      HandelError('TdmGnrlFilter.ReOpen', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+    end;
+  finally
+    qrFilter.EnableControls;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+function TdmGnrlFilter.GetId(pTbl, pField, pValue: String): String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Id FROM ' + pTbl +
+                    ' WHERE ' + pField + ' = ' + QuotedStr(pValue);
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('Id').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmGnrlFilter.DataModuleDestroy(Sender: TObject);
+var
+  Comp: TComponent;
+begin
+  for Comp in Self do
+    if (Comp is TDataSet) and TDataSet(Comp).Active then
+      TDataSet(Comp).Close;
+
+  FreeAndNil(SqlState);
+end;
+
+end.

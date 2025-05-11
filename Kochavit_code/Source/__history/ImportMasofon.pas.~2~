@@ -1,0 +1,33 @@
+unit ImportMasofon;
+
+interface
+
+type
+  TImportMasofon = class
+    private
+      FNoBkr, FKm: Integer;
+      FShem, FTel, FContact, FTelD, FNumber: String;
+      FType, FProducer, FWeightT: String;
+      FAtar, FRemark: String;
+      FDateDone, FDateToDo: TDate;
+
+      function GetNoBkr: Integer;
+    public
+      property NoBkr: Integer read FNoBkr write FNoBkr;
+      property Km: Integer read FKm write FKm;
+      property DateDone: TDate read FDateDone write FDateDone;
+      property DateToDo: TDate read FDateToDo write FDateToDo;
+
+
+  end;
+
+implementation
+
+{ TImportMasofon }
+
+function TImportMasofon.GetNoBkr: Integer;
+begin
+
+end;
+
+end.

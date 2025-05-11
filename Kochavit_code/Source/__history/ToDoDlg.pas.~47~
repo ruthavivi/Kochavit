@@ -1,0 +1,513 @@
+unit ToDoDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, ComCtrls, ExtCtrls, ImgList, DB,
+  Mask, ToolWin, ActnList, StrUtils, System.Actions, System.ImageList;
+
+type
+  TfrmToDoDlg = class(TForm)
+    ImageList1: TImageList;
+    dsTblBikoret: TDataSource;
+    Panel2: TPanel;
+    trvDtl: TTreeView;
+    Panel1: TPanel;
+    lbHead: TStaticText;
+    stxHead: TStaticText;
+    Panel3: TPanel;
+    Label5: TLabel;
+    edRem: TMemo;
+    Panel4: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    dtP2: TDateTimePicker;
+    dtP1: TDateTimePicker;
+    cbOved: TComboBox;
+    edKm: TEdit;
+    Panel5: TPanel;
+    btnOk: TBitBtn;
+    btnClose: TBitBtn;
+    Label6: TLabel;
+    edNoBkr: TEdit;
+    lbDay: TLabel;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ActionList1: TActionList;
+    acPhoto: TAction;
+    acScan: TAction;
+    acAtacched: TAction;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    ImageList2: TImageList;
+    Label7: TLabel;
+    edPolisaN: TEdit;
+    procedure dtP1Change(Sender: TObject);
+    procedure dtP2Change(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure edKmExit(Sender: TObject);
+    procedure trvDtlMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure acPhotoExecute(Sender: TObject);
+    procedure acScanExecute(Sender: TObject);
+    procedure acAtacchedExecute(Sender: TObject);
+  private
+    Caller: String;
+    Spido:  String;
+    procedure LoadOved;
+    procedure LoadBikorot;
+    function  GetKm: String;
+    function  GetNextMoedCar: TDateTime;
+    function  GetNextMoedDrv: TDateTime;
+    procedure SetResultData;
+    function  GetBikoretDtlId(pBikoretDtl: String): String;
+    procedure ChangeImage(treeNode: TTreeNode);
+    procedure ChangeParentImage(treeNode: TTreeNode);
+  public
+    Problem, Oved, NoBkr, Km, PolisaN, Rem: String;
+    BikoretDtlId: TStringList;
+    procedure SetDefaults(pCaller, pTipul: String);
+    procedure SetMultiDefaults(pCaller: String);
+    function  GetDayOfWeek(pDate: TDate): String;
+    procedure MovePhoto(pPhoto: PWideChar);
+  end;
+
+var
+  frmToDoDlg: TfrmToDoDlg;
+
+implementation
+uses
+   MainDM, GnrlBigDM, ImportPhoto, ScanImport, ImportFile;
+{$R *.dfm}
+
+procedure TfrmToDoDlg.FormCreate(Sender: TObject);
+begin
+   LoadOved;
+end;
+
+procedure TfrmToDoDlg.SetDefaults(pCaller, pTipul: String);
+begin
+  Caller := pCaller;
+  dtP1.Date := Date;
+  if (Caller = 'Car') then
+  begin
+    edKm.Text := GetKm;
+    dtP2.Date := GetNextMoedCar;
+  end
+  else
+    dtP2.Date := GetNextMoedDrv;
+  lbDay.Caption := GetDayOfWeek(dtP2.Date);
+
+  if (Caller = 'Car') then
+  begin
+    if (pTipul = 'ביקורת חודשית') or (pTipul = 'ביקורת דו חודשית') then
+      LoadBikorot
+    else
+    begin
+      Panel2.Visible := False;
+      Self.AutoSize := True;
+    end;
+  end
+  else
+  begin
+    Label3.Visible := False;
+    Label4.Visible := False;
+    Label6.Visible := False;
+    cbOved.Visible := False;
+    edKm.Visible := False;
+    edNoBkr.Visible := False;
+    Panel2.Visible := False;
+    Self.AutoSize := True;
+  end
+end;
+
+procedure TfrmToDoDlg.SetMultiDefaults(pCaller: String);
+begin
+  Caller := 'Car';
+  dtP1.Date := Date;
+  dtP2.Date := GetNextMoedCar;
+  lbDay.Caption := GetDayOfWeek(dtP2.Date);
+  Panel2.Visible := False;
+  Label4.Visible := False;
+  Label6.Visible := False;
+  edKm.Visible := False;
+  edNoBkr.Visible := False;
+end;
+
+procedure TfrmToDoDlg.LoadBikorot;
+var
+   rootNode: TTreeNode;
+   Bikoret: String;
+begin
+  trvDtl.Items.Clear;
+  with dmMain do
+  begin
+    qrGnrl.SQL.Text := 'SELECT Bikoret, BikoretDtl FROM KTblBikoret tB ' +
+                'LEFT JOIN KTblBikoretDtl tBd ON (tB.ID = tBd.IdBikoret) ' +
+                'ORDER BY Bikoret';
+    try
+      qrGnrl.Open;
+      rootNode := trvDtl.Items.Add(nil, qrGnrl.FieldByName('Bikoret').AsString);
+      Bikoret := qrGnrl.FieldByName('Bikoret').AsString;
+      while not qrGnrl.Eof do
+      begin
+        if (qrGnrl.FieldByName('Bikoret').AsString = Bikoret) then
+        begin
+          trvDtl.Items.AddChild(rootNode, qrGnrl.FieldByName('BikoretDtl').AsString);
+          Bikoret := qrGnrl.FieldByName('Bikoret').AsString;
+        end
+        else
+        begin
+          Bikoret := qrGnrl.FieldByName('Bikoret').AsString;
+          rootNode := trvDtl.Items.Add(rootNode, qrGnrl.FieldByName('Bikoret').AsString);
+          trvDtl.Items.AddChild(rootNode, qrGnrl.FieldByName('BikoretDtl').AsString);
+        end;
+        qrGnrl.Next;
+      end;
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+procedure TfrmToDoDlg.LoadOved;
+begin
+  cbOved.Clear;
+  with dmMain do
+  begin
+    qrGnrl.SQL.Text := 'SELECT Oved FROM KTblOved ORDER BY Oved';
+    try
+      qrGnrl.Open;
+      while not qrGnrl.Eof do
+      begin
+        cbOved.Items.Add(qrGnrl.FieldByName('Oved').AsString);
+        qrGnrl.Next;
+      end;
+    finally
+      qrGnrl.Close;
+    end;
+    cbOved.SelText := qrWrnCarOved.AsString;
+  end;
+end;
+
+procedure TfrmToDoDlg.trvDtlMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+var
+  HitTest: THitTests;
+begin
+  HitTest := trvDtl.GetHitTestInfoAt(X, Y);
+  if ((htOnIcon in HitTest) and not trvDtl.Selected.HasChildren) then
+    ChangeImage(trvDtl.Selected);
+end;
+
+procedure TfrmToDoDlg.ChangeImage(treeNode: TTreeNode);
+begin
+  if (treeNode.ImageIndex = 0) then
+  begin
+    treeNode.ImageIndex := 1;
+    treeNode.SelectedIndex := 1;
+    ChangeParentImage(treeNode);
+  end
+  else
+  begin
+    treeNode.ImageIndex := 0;
+    treeNode.SelectedIndex := 0;
+    ChangeParentImage(treeNode);
+  end;
+
+  trvDtl.Repaint;
+end;
+
+procedure TfrmToDoDlg.ChangeParentImage(treeNode: TTreeNode);
+var
+  ParentNode, ChildNode: TTreeNode;
+  ImageIndex: Integer;
+begin
+  ImageIndex := 0;
+  ParentNode := treeNode.Parent;
+  ChildNode := ParentNode.GetFirstChild;
+  while (ChildNode <> nil) do
+  begin
+    if ChildNode.ImageIndex = 1 then
+    begin
+      ImageIndex := 1;
+      Break;
+    end;
+    ChildNode := ParentNode.GetNextChild(ChildNode)
+  end;
+  ParentNode.ImageIndex := ImageIndex;
+  ParentNode.SelectedIndex := ImageIndex;
+end;
+
+procedure TfrmToDoDlg.dtP1Change(Sender: TObject);
+begin
+  if (Caller = 'Car') then
+    dtP2.Date := GetNextMoedCar
+  else
+    dtP2.Date := GetNextMoedDrv;
+  lbDay.Caption := GetDayOfWeek(dtP2.Date);
+end;
+
+procedure TfrmToDoDlg.dtP2Change(Sender: TObject);
+begin
+   lbDay.Caption := GetDayOfWeek(dtP2.Date);
+end;
+
+procedure TfrmToDoDlg.btnOkClick(Sender: TObject);
+begin
+  SetResultData;
+end;
+
+procedure TfrmToDoDlg.SetResultData;
+var
+   pNode, iNode: TTreeNode;
+begin
+  Problem := 'False';
+  BikoretDtlId := TStringList.Create;
+  pNode := trvDtl.Items.GetFirstNode;
+  while pNode <> nil do
+  begin
+    iNode := pNode.GetFirstChild;
+    while iNode <> nil do
+    begin
+      if iNode.ImageIndex = 1 then
+      begin
+        Problem := 'True';
+        BikoretDtlId.Add(GetBikoretDtlId(iNode.Text));
+      end;
+      iNode := pNode.GetNextChild(iNode);
+    end;
+    pNode := pNode.getNextSibling;
+  end;
+
+  if (edKm.Text = '') then Km := 'NULL' else Km := edKm.Text;
+  if (edNoBkr.Text = '') then NoBkr := 'NULL' else NoBkr := edNoBkr.Text;
+  if (cbOved.Text = '') then Oved := 'NULL' else Oved := cbOved.Text;
+  if (edPolisaN = '') then PolisaN := 'NULL' else PolisaN := edPolisaN.Text;
+  if (edRem.Text = '') then
+    Rem := 'NULL'
+  else
+  begin
+    Rem := QuotedStr(edRem.Text);
+    Problem := 'True';
+  end;
+end;
+
+function TfrmToDoDlg.GetBikoretDtlId(pBikoretDtl: String): String;
+begin
+  dmMain.qrGnrl.SQL.Text := 'SELECT Id FROM KTblBikoretDtl ' +
+                            'WHERE BikoretDtl = ' + QuotedStr(pBikoretDtl);
+  try
+    dmMain.qrGnrl.Open;
+    Result := dmMain.qrGnrl.FieldByName('Id').AsString;
+  finally
+    dmMain.qrGnrl.Close;
+  end;
+end;
+
+function TfrmToDoDlg.GetDayOfWeek(pDate: TDate): String;
+begin
+   case DayOfWeek(dtP2.Date) of
+     1: Result := 'ראשון';
+     2: Result := 'שני';
+     3: Result := 'שלישי';
+     4: Result := 'רביעי';
+     5: Result := 'חמישי';
+     6: Result := 'שישי';
+     7: Result := 'שבת';
+   end;
+end;
+
+function TfrmToDoDlg.GetKm: String;
+begin
+  with dmMain do
+  begin
+    qrGnrl.SQL.Text := 'SELECT Spido FROM KCar ' +
+                'WHERE Number = ' + QuotedStr(dmMain.qrWrnCarNumber.AsString);
+    try
+      qrGnrl.Open;
+      Spido := qrGnrl.FieldByName('Spido').AsString;
+      Result := Spido;
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+procedure TfrmToDoDlg.edKmExit(Sender: TObject);
+begin
+  if (StrToIntDef(edKm.Text, 0) < StrToIntDef(Spido, 0)) then
+  begin
+    MessageDlg('הקלדת מד אוץ נמוך ממד אוץ רשום', mtWarning, [mbOK], 0);
+    edKm.Text := Spido;
+    edKm.SetFocus;
+  end;
+end;
+
+function TfrmToDoDlg.GetNextMoedCar: TDateTime;
+begin
+  with dmMain do
+  begin
+    qrGnrl.SQL.Text := 'SELECT Tedirut, MoedKavua FROM KTblTipul ' +
+                'WHERE Tipul = ' + QuotedStr(dmMain.qrWrnCarTipul.AsString);
+    try
+      qrGnrl.Open;
+      if qrGnrl.FieldByName('MoedKavua').AsBoolean then
+        Result := IncMonth(dmMain.qrWrnCarDateToDo.AsDateTime,
+                            qrGnrl.FieldByName('Tedirut').AsInteger)
+      else
+        Result := IncMonth(dtP1.Date, qrGnrl.FieldByName('Tedirut').AsInteger);
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+function TfrmToDoDlg.GetNextMoedDrv: TDateTime;
+begin
+  with dmMain do
+  begin
+    qrGnrl.SQL.Text := 'SELECT Tedirut, MoedKavua FROM KTblHeiter ' +
+                'WHERE Heiter = ' + QuotedStr(dmMain.qrWrnDrvHeiter.AsString);
+    try
+      qrGnrl.Open;
+      if qrGnrl.FieldByName('MoedKavua').AsBoolean then
+        Result := IncMonth(dmMain.qrWrnDrvDateToDo.AsDateTime,
+                            qrGnrl.FieldByName('Tedirut').AsInteger)
+      else
+        Result := IncMonth(dtP1.Date, qrGnrl.FieldByName('Tedirut').AsInteger);
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+procedure TfrmToDoDlg.acPhotoExecute(Sender: TObject);
+var
+  DestFile: PWideChar;
+begin
+  dlgImportPhoto := TdlgImportPhoto.Create(Self);
+  try
+    with dlgImportPhoto do
+    begin
+      if (ShowModal = mrOk) then
+      begin
+        dmGnrlBig := TdmGnrlBig.Create(Self);
+        try
+          if (Caller = 'Car') then
+          begin
+            dmGnrlBig.SetProperties('KCrTofes');
+            dmGnrlBig.SaveBigData(dmMain.qrWrnCarCarId.AsInteger, 'CarId',
+                OpenPictureDialog.FileName, edDocName.Text,
+                ReplaceStr(ExtractFileExt(OpenPictureDialog.FileName), '.', ''),
+                SaveOnFolder);
+          end
+          else
+          begin
+            dmGnrlBig.SetProperties('KDrTofes');
+            dmGnrlBig.SaveBigData(dmMain.qrWrnDrvDriverId.AsInteger, 'DriverId',
+                OpenPictureDialog.FileName, edDocName.Text,
+                ReplaceStr(ExtractFileExt(OpenPictureDialog.FileName), '.', ''),
+                SaveOnFolder);
+          end;
+          DestFile := PWideChar(ExtractFilePath(Application.ExeName) + 'PhotoUsed\' +
+              ExtractFileName(OpenPictureDialog.FileName));
+       finally
+         dmGnrlBig.Free;
+       end;
+      end;
+    end;
+  finally
+    dlgImportPhoto.Free;
+  end;
+end;
+
+procedure TfrmToDoDlg.MovePhoto(pPhoto: PWideChar);
+var
+  DestFile: PWideChar;
+begin
+  DestFile := PWideChar(ExtractFilePath(Application.ExeName) + 'PhotoUsed\' +
+      ExtractFileName(pPhoto));
+  if MoveFileEx(pPhoto, DestFile, MOVEFILE_COPY_ALLOWED) = False then
+    ShowMessage('המסמך לא צורף. בדוק שהמסמך קיים והוא לא פתוח');
+end;
+
+procedure TfrmToDoDlg.acScanExecute(Sender: TObject);
+begin
+  dlgScanImport := TdlgScanImport.Create(Self);
+  try
+    with dlgScanImport do
+    begin
+      if (ShowModal = mrOk) then
+      begin
+        dmGnrlBig := TdmGnrlBig.Create(Self);
+        try
+          if (Caller = 'Car') then
+          begin
+            dmGnrlBig.SetProperties('KCrTofes');
+            dmGnrlBig.SaveBigData(dmMain.qrWrnCarCarId.AsInteger, 'CarId',
+                PathAndFile, edDocName.Text,
+                ReplaceStr(ExtractFileExt(PathAndFile), '.', ''), SaveOnFolder);
+          end
+          else
+          begin
+            dmGnrlBig.SetProperties('KDrTofes');
+            dmGnrlBig.SaveBigData(dmMain.qrWrnDrvDriverId.AsInteger, 'DriverId',
+                PathAndFile, edDocName.Text,
+                ReplaceStr(ExtractFileExt(PathAndFile), '.', ''), SaveOnFolder);
+          end
+        finally
+          dmGnrlBig.Free;
+        end;
+      end;
+    end;
+  finally
+    dlgScanImport.Free;
+  end;
+end;
+
+procedure TfrmToDoDlg.acAtacchedExecute(Sender: TObject);
+begin
+  dlgImportFile := TdlgImportFile.Create(Self);
+  try
+    with dlgImportFile do
+    begin
+      if (ShowModal = mrOk) then
+      begin
+        dmGnrlBig := TdmGnrlBig.Create(Self);
+        try
+          if (Caller = 'Car') then
+          begin
+            dmGnrlBig.SetProperties('KCrTofes');
+            dmGnrlBig.SaveBigData(dmMain.qrWrnCarCarId.AsInteger, 'CarId',
+                PathAndFile, edDocName.Text,
+                ReplaceStr(ExtractFileExt(PathAndFile), '.', ''), SaveOnFolder);
+          end
+          else
+          begin
+            dmGnrlBig.SetProperties('KDrTofes');
+            dmGnrlBig.SaveBigData(dmMain.qrWrnDrvDriverId.AsInteger, 'DriverId',
+                PathAndFile, edDocName.Text,
+                ReplaceStr(ExtractFileExt(PathAndFile), '.', ''), SaveOnFolder);
+          end;
+        finally
+          dmGnrlBig.Free;
+        end;
+      end;
+    end;
+  finally
+    dlgImportFile.Free;
+  end;
+end;
+
+procedure TfrmToDoDlg.FormDestroy(Sender: TObject);
+begin
+  BikoretDtlId.Free;
+end;
+
+end.

@@ -1,0 +1,47 @@
+inherited frmAtarTbl: TfrmAtarTbl
+  Caption = #1512#1513#1497#1502#1514' '#1488#1514#1512#1497' '#1489#1497#1511#1493#1512#1514
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited StatusBar: TStatusBar
+    ExplicitTop = 308
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 36
+    ExplicitHeight = 272
+    inherited dbGrid: TCheckDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Atar'
+          Width = 160
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+  end
+  inherited tbTbl: TEDBTable
+    IndexFieldNames = 'Atar'
+    TableName = 'KTblAtar'
+    object tbTblID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblAtar: TStringField
+      DisplayLabel = #1488#1514#1512' '#1489#1497#1511#1493#1512#1514
+      FieldName = 'Atar'
+      Size = 15
+    end
+  end
+  object rtAtar: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Table = tbTbl
+    Left = 120
+    Top = 80
+  end
+end

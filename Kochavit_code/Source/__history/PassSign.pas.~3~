@@ -1,0 +1,38 @@
+unit PassSign;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Datasnap.DBClient,
+  System.ImageList, Vcl.ImgList, Vcl.ComCtrls, Vcl.Grids, Vcl.DBGrids, MyDBGrid,
+  Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.ToolWin;
+
+type
+  TfrmPassSign = class(TForm)
+    ToolBar1: TToolBar;
+    dbNav: TDBNavigator;
+    btnAppend: TToolButton;
+    btnDelete: TToolButton;
+    btnPrint: TToolButton;
+    ToolButton2: TToolButton;
+    Panel1: TPanel;
+    StatusBar: TStatusBar;
+    ImageList1: TImageList;
+    cdsPasswords: TClientDataSet;
+    dsTbl: TDataSource;
+    DBGrid1: TDBGrid;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPassSign: TfrmPassSign;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,84 @@
+unit AcdntDrReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, StdActns, DBActns;
+
+type
+  TfrmDrAcdntReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDrAcdntReport: TfrmDrAcdntReport;
+
+implementation
+uses
+   AcdntDrFilterDM, DrAcdntRprtSlctDlg, DrAcdntSpssSlctDlg;
+{$R *.dfm}
+
+procedure TfrmDrAcdntReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('AcdntD');
+  SetStatusBar;
+end;
+
+procedure TfrmDrAcdntReport.SetStatusBar;
+var
+   procent: String;
+begin
+  Procent := FormatFloat('#.##', StrToInt(dmAcdntDrFilter.TotalSelectRec) /
+          StrToInt(dmAcdntDrFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ תאונות בדו"ח: ' + dmAcdntDrFilter.TotalSelectRec +
+      ' מתוך ' + dmAcdntDrFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmDrAcdntReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmAcdntDrFilter.SqlState.Order := GetOrders(Column);
+  dmAcdntDrFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmDrAcdntReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmDrAcdntRprtSlctDlg := TfrmDrAcdntRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmDrAcdntReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmDrAcdntSpssSlctDlg := TfrmDrAcdntSpssSlctDlg.Create(Self);
+end;
+
+procedure TfrmDrAcdntReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(dmAcdntDrFilter.qrFilter);
+end;
+
+procedure TfrmDrAcdntReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  inherited;
+  dmAcdntDrFilter.qrFilter.Close;
+  inherited;
+  frmDrAcdntReport := nil;
+end;
+
+end.

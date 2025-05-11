@@ -1,0 +1,58 @@
+unit AnualBillReport;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Controls, Forms, GnrlReport, DB, Menus,
+  ActnList, ComCtrls, Buttons, ExtCtrls, Grids,
+  DBCtrls, ImgList, Dialogs, StdCtrls, ToolWin, DBGrids;
+
+type
+  TfrmAnualBillReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAnualBillReport: TfrmAnualBillReport;
+
+implementation
+uses
+   AnualBillFilter, AnualBillRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmAnualBillReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadPosition('AnualBillRpt', (Sender as TForm));
+end;
+
+procedure TfrmAnualBillReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmAnualBillRprtSlctDlg := TfrmAnualBillRprtSlctDlg.Create(Self);
+  frmAnualBillRprtSlctDlg.ShowModal;
+end;
+
+procedure TfrmAnualBillReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmAnualBillFilter.qrFilter);
+end;
+
+procedure TfrmAnualBillReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('AnualBillRpt', (Sender as TForm));
+  frmAnualBillFilter.qrFilter.Close;
+  inherited;
+end;
+
+
+end.

@@ -1,0 +1,14 @@
+inherited dmClientlListArhiv: TdmClientlListArhiv
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  inherited qrList: TEDBQuery
+    BeforeOpen = qrListBeforeOpen
+    AfterOpen = qrListAfterRefresh
+    AfterRefresh = qrListAfterRefresh
+    SQL.Strings = (
+      'SELECT Id, Cod, Shem'
+      'FROM KClient    '
+      'WHERE Pail = False'
+      'ORDER BY Shem')
+  end
+end

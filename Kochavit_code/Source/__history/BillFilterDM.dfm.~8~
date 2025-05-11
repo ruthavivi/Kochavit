@@ -1,0 +1,107 @@
+inherited dmBillFilter: TdmBillFilter
+  OldCreateOrder = True
+  inherited qrFilter: TEDBQuery
+    ReadOnly = True
+    SQL.Strings = (
+      
+        'SELECT Bl.*, Shem, Isuv, Tel1, Tel2,  ACounter, TelA, IF (Payd T' +
+        'HEN '#39#235#239#39' ELSE '#39#236#224#39') AS PaydTrg, Oved'
+      'FROM KBill Bl'
+      'LEFT JOIN KClient Cl ON Bl.ClientId = Cl.Id'
+      'LEFT JOIN KTblOved O ON Cl.OvedId = O.Id')
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+      Origin = 'KBill.Id'
+    end
+    object qrFilterClientId: TIntegerField
+      FieldName = 'ClientId'
+      Origin = 'KBill.ClientId'
+    end
+    object qrFilterSumA: TFloatField
+      DisplayLabel = #1505#1499#1493#1501
+      FieldName = 'SumA'
+      Origin = 'KBill.SumA'
+    end
+    object qrFilterProduceD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1492#1508#1511#1492
+      FieldName = 'ProduceD'
+      Origin = 'KBill.ProduceD'
+    end
+    object qrFilterToPayD: TDateField
+      DisplayLabel = #1500#1514#1513#1500#1493#1501' '#1506#1491
+      FieldName = 'ToPayD'
+      Origin = 'KBill.ToPayD'
+    end
+    object qrFilterReciptNo: TStringField
+      DisplayLabel = #1502#1505#39' '#1495#1513#1489#1493#1504#1497#1514
+      FieldName = 'ReciptNo'
+      Origin = 'KBill.ReciptNo'
+      Size = 10
+    end
+    object qrFilterRemark: TStringField
+      DisplayLabel = #1492#1506#1512#1493#1514
+      FieldName = 'Remark'
+      Origin = 'KBill.Remark'
+      Size = 120
+    end
+    object qrFilterPaydD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1514#1513#1500#1493#1501
+      FieldName = 'PaydD'
+      Origin = 'KBill.PaydD'
+    end
+    object qrFilterKabala: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1511#1489#1500#1492
+      FieldName = 'Kabala'
+      Origin = 'KBill.Kabala'
+    end
+    object qrFilterPayd: TBooleanField
+      FieldName = 'Payd'
+      Origin = 'KBill.Payd'
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Origin = 'KClient.Shem'
+      Size = 30
+    end
+    object qrFilterIsuv: TStringField
+      DisplayLabel = #1497#1513#1493#1489
+      FieldName = 'Isuv'
+      Origin = 'KClient.Isuv'
+      Size = 15
+    end
+    object qrFilterTel1: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503' 1'
+      FieldName = 'Tel1'
+      Origin = 'KClient.Tel1'
+      Size = 11
+    end
+    object qrFilterTel2: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503' 2'
+      FieldName = 'Tel2'
+      Origin = 'KClient.Tel2'
+      Size = 11
+    end
+    object qrFilterACounter: TStringField
+      DisplayLabel = #1502#1504#1492#1500' '#1495#1513#1489#1493#1504#1493#1514
+      FieldName = 'ACounter'
+      Origin = 'KClient.ACounter'
+      Size = 30
+    end
+    object qrFilterTelA: TStringField
+      DisplayLabel = #1496#1500'. '#1502'. '#1495#1513#1489#1493#1504#1493#1514
+      FieldName = 'TelA'
+      Origin = 'KClient.TelA'
+      Size = 11
+    end
+    object qrFilterPaydTrg: TStringField
+      DisplayLabel = #1513#1493#1500#1501
+      FieldName = 'PaydTrg'
+      Size = 2
+    end
+    object qrFilterOved: TStringField
+      FieldName = 'Oved'
+      Size = 25
+    end
+  end
+end

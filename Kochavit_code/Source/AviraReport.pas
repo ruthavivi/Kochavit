@@ -1,0 +1,84 @@
+unit AviraReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, StdActns, DBActns,
+  System.Actions;
+
+type
+  TfrmAviraReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAviraReport: TfrmAviraReport;
+
+implementation
+uses
+  AviraFilterDM, AviraRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmAviraReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('AviraD');
+  SetStatusBar;
+end;
+
+procedure TfrmAviraReport.SetStatusBar;
+var
+  Procent: String;
+begin
+  if (StrToInt(dmAviraFilter.TotalRec) = 0) then
+    Procent := '0'
+  else
+    Procent := FormatFloat('#.##', StrToInt(dmAviraFilter.TotalSelectRec) /
+          StrToInt(dmAviraFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ קורסים בדו"ח: ' + dmAviraFilter.TotalSelectRec +
+      ' מתוך ' + dmAviraFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmAviraReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmAviraFilter.SqlState.Order := GetOrders(Column);
+  dmAviraFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmAviraReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmAviraRprtSlctDlg := TfrmAviraRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmAviraReport.acExcelExecute(Sender: TObject);
+var
+  FileName: String;
+begin
+  inherited;
+  if SelectFields('Av', dmAviraFilter.qrFilter) then
+    if GetExprtFile(FileName, 'Excel', 2) then
+      SaveToExcel(dmAviraFilter.qrFilter, FileName);
+end;
+
+procedure TfrmAviraReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmAviraFilter.qrFilter.Close;
+  inherited;
+  frmAviraReport := nil;
+end;
+
+end.

@@ -1,0 +1,173 @@
+unit GnrlEdit;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Graphics, Controls, Forms,
+  Dialogs, ActnList, ExtCtrls, ComCtrls, StdCtrls, Buttons, Menus, ToolWin,
+  ImgList, Registry, ExtDlgs, StdActns, System.Actions, System.ImageList;
+
+type
+  TfrmGnrlEdit = class(TForm)
+    ActionList1: TActionList;
+    ToolBar1: TToolBar;
+    btnMail: TToolButton;
+    btnPrint: TToolButton;
+    btnShowScan: TToolButton;
+    MainMenu1: TMainMenu;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    acSave: TAction;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    acMail: TAction;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    acPrint: TAction;
+    N6: TMenuItem;
+    acShowScan: TAction;
+    N7: TMenuItem;
+    OpenDialog: TOpenDialog;
+    btnPhoto: TToolButton;
+    acScan: TAction;
+    N5: TMenuItem;
+    btnScan: TToolButton;
+    acPhoto: TAction;
+    N8: TMenuItem;
+    dlgOpenPhoto: TOpenPictureDialog;
+    acDocument: TAction;
+    ToolButton2: TToolButton;
+    ToolButton8: TToolButton;
+    btnPrintLabel: TToolButton;
+    acPrintLabel: TAction;
+    acClose: TWindowClose;
+    BitBtn1: TBitBtn;
+    ImageList: TImageList;
+    stClientName: TStaticText;
+    acShowFolder: TAction;
+    pmShowScan: TPopupMenu;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+  public
+    { Public declarations }
+    function CtrlHasValue(edCtrl: TWinControl; pVal, pDeny,
+        pMsg: String): Boolean;
+    function SelectDoc(var WorkFile, nCopy: OleVariant;
+               var vButton, vMemo: String; vPath: String;
+               var vSave: Boolean): Boolean;
+    procedure MovePhoto(pPhoto: PWideChar);
+    procedure OpenEmailUtil(Dest: TStringList; DestName, InitialDir,
+      ClientId, CarId, DriverId: string);
+    function HaveEMails(ClientId: string; ToEmails: TStringList): Boolean;
+    procedure SaveEmailSend(ClientId, CarId, DriverId, Subject, Attached: string);
+  end;
+
+var
+  frmGnrlEdit: TfrmGnrlEdit;
+
+implementation
+
+{$R *.dfm}
+uses
+   MainDM, OpenToPrint, DialogsHeb, OpenToSendEmail;
+
+function TfrmGnrlEdit.CtrlHasValue(edCtrl: TWinControl; pVal, pDeny,
+  pMsg: String): Boolean;
+begin
+  Result := True;
+  if Trim(pVal) = pDeny then
+  begin
+    Result := False;
+    edCtrl.SetFocus;
+    MessageDlgH(pMsg, mtError, [mbOK], 0, 0);
+  end;
+end;
+
+function TfrmGnrlEdit.SelectDoc(var WorkFile, nCopy: OleVariant;
+    var vButton, vMemo: String; vPath: String; var vSave: Boolean): Boolean;
+begin
+   Result := False;
+   frmOpenToPrint := TfrmOpenToPrint.Create(self);
+   with frmOpenToPrint do
+   begin
+       DirectoryListBox.Directory := vPath;
+       SetDfltFilter(0);
+       if ShowModal = mrOK then
+       begin
+           vPath := DirectoryListBox.Directory;
+           WorkFile := vPath + '\' + Edit.Text;
+           vButton := btnPress;
+           nCopy := SpinEdit.Value;
+           vSave := cbSave.Checked;
+           Result := True;
+       end;
+       Free;
+   end
+end;
+
+function TfrmGnrlEdit.HaveEMails(ClientId: string; ToEmails: TStringList): Boolean;
+begin
+  Result := False;
+  ToEmails.Clear;
+  dmMain.qrGnrl.SQL.Text := 'SELECT Email, EmailX FROM KClient WHERE Id = '+ClientId;
+  try
+    dmMain.qrGnrl.Open;
+    if dmMain.qrGnrl.FieldByName('Email').AsString <> '' then
+    begin
+      ToEmails.Add(dmMain.qrGnrl.FieldByName('Email').AsString);
+      Result := True;
+    end;
+    if dmMain.qrGnrl.FieldByName('EmailX').AsString <> '' then
+    begin
+      ToEmails.Add(dmMain.qrGnrl.FieldByName('EmailX').AsString);
+      Result := True;
+    end;
+  finally
+    dmMain.qrGnrl.Close;
+  end;
+end;
+
+procedure TfrmGnrlEdit.OpenEmailUtil(Dest: TStringList; DestName, InitialDir,
+      ClientId, CarId, DriverId: string);
+begin
+  frmOpenToSendEmail := TfrmOpenToSendEmail.Create(Self);
+  try
+    frmOpenToSendEmail.SetData(InitialDir, DestName, Dest);
+    if (frmOpenToSendEmail.ShowModal = mrOk) then
+    begin
+        SaveEmailSend(ClientId, CarId, DriverId, frmOpenToSendEMail.edSubject.Text,
+        frmOpenToSendEMail.lstAttached.Items.Text);
+    end;
+  finally
+    frmOpenToSendEmail.Free;
+  end;
+end;
+
+procedure TfrmGnrlEdit.SaveEmailSend(ClientId, CarId, DriverId,
+  Subject, Attached: string);
+begin
+  dmMain.qrGnrl.SQL.Text := 'INSERT INTO KEMailsSend (ClientId, CarId, DriverId, ' +
+      'Subject, Attached) VALUES (' + ClientId + ', ' + CarId + ', ' + DriverId +
+      ', '+ QuotedStr(Subject) + ', ' + QuotedStr(Attached) +')';
+  dmMain.qrGnrl.ExecSQL;
+end;
+
+procedure TfrmGnrlEdit.MovePhoto(pPhoto: PWideChar);
+var
+  DestFile: PWideChar;
+begin
+  DestFile := PWideChar(ExtractFilePath(Application.ExeName) + 'PhotoUsed\' +
+      ExtractFileName(pPhoto));
+  if MoveFileEx(pPhoto, DestFile, MOVEFILE_COPY_ALLOWED) = False then
+    ShowMessage('המסמך לא צורף. בדוק שהמסמך קיים והוא לא פתוח');
+end;
+
+procedure TfrmGnrlEdit.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+end.

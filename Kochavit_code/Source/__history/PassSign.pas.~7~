@@ -1,0 +1,55 @@
+unit PassSign;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Datasnap.DBClient,
+  System.ImageList, Vcl.ImgList, Vcl.ComCtrls, Vcl.Grids, Vcl.DBGrids, MyDBGrid,
+  Vcl.ExtCtrls, Vcl.DBCtrls, Vcl.ToolWin, Vcl.StdActns, System.Actions,
+  Vcl.ActnList, Vcl.DBActns, edbcomps;
+
+type
+  TfrmPassSign = class(TForm)
+    ToolBar1: TToolBar;
+    dbNav: TDBNavigator;
+    btnAppend: TToolButton;
+    btnDelete: TToolButton;
+    btnPrint: TToolButton;
+    ToolButton2: TToolButton;
+    Panel1: TPanel;
+    StatusBar: TStatusBar;
+    ImageList1: TImageList;
+    dsTbl: TDataSource;
+    DBGrid1: TDBGrid;
+    ActionList1: TActionList;
+    actInsert: TDataSetInsert;
+    actDelete: TAction;
+    actClose: TWindowClose;
+    tbEnter: TEDBTable;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmPassSign: TfrmPassSign;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmPassSign.FormCreate(Sender: TObject);
+begin
+  tbEnter.Active := True;
+end;
+
+procedure TfrmPassSign.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  tbEnter.Active := False;
+end;
+
+end.

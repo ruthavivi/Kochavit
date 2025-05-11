@@ -1,0 +1,56 @@
+unit DrBdikaRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  RpCon, RpConDS, RpConBDE, RpBase, RpSystem, RpDefine, RpRave, RpRender,
+  RpRenderRTF;
+
+type
+  TfrmDrBdikaRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqDrBdika: TRvQueryConnection;
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDrBdikaRprtSlctDlg: TfrmDrBdikaRprtSlctDlg;
+
+implementation
+uses
+   DrBdikaFilter;
+{$R *.dfm}
+
+procedure TfrmDrBdikaRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('DB');
+end;
+
+procedure TfrmDrBdikaRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmDrBdikaRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+procedure TfrmDrBdikaRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+end.

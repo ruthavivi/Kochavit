@@ -1,0 +1,125 @@
+unit GnrlListArhiv;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Menus, DBActns, ActnList, ImgList, DB, Grids, DBGrids, ExtCtrls,
+  StdCtrls, Mask, ComCtrls, Buttons, ToolWin;
+
+type
+  TfrmGnrlListArhiv = class(TForm)
+    StatusBar: TStatusBar;
+    ToolBar1: TToolBar;
+    btnClose: TBitBtn;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    edSearch: TMaskEdit;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    Panel1: TPanel;
+    DBGrid: TDBGrid;
+    dsList: TDataSource;
+    ImageList1: TImageList;
+    ActionList1: TActionList;
+    DataSetFirst: TDataSetFirst;
+    DataSetLast: TDataSetLast;
+    acReturn: TAction;
+    acSiba: TAction;
+    acDelete: TAction;
+    procedure btnCloseClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetSearchMode(Column: TColumn);
+  public
+    typField: TClass;
+    procedure LoadColOrder(pDBGrid: TDBGrid; pFile: String);
+    procedure MarkIndexColumn(fldName: String);
+    procedure SaveColOrder(pDBGrid: TDBGrid; pFile: String);
+  end;
+
+var
+  frmGnrlListArhiv: TfrmGnrlListArhiv;
+
+implementation
+
+{$R *.dfm}
+
+{ TfrmGnrlListArhiv }
+
+procedure TfrmGnrlListArhiv.LoadColOrder(pDBGrid: TDBGrid; pFile: String);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Txt\';
+  if FileExists(Path + pFile) then
+    pDBGrid.Columns.LoadFromFile(Path + pFile);
+end;
+
+procedure TfrmGnrlListArhiv.MarkIndexColumn(fldName: String);
+var
+   i: Integer;
+begin
+  with dbGrid do
+  begin
+    for i := 0 to Columns.Count -1 do
+    begin
+      if Columns[i].FieldName = fldName then
+      begin
+        Columns[i].Title.Font.Color := clRed;
+        SetSearchMode(Columns[i]);
+      end
+      else
+        Columns[i].Title.Font.Color := clBlack;
+    end;
+  end;
+end;
+
+procedure TfrmGnrlListArhiv.SetSearchMode(Column: TColumn);
+begin
+  typField := Column.Field.ClassType;
+  edSearch.Clear;
+  if Column.FieldName = 'Number' then
+  begin
+    edSearch.BiDiMode := bdLeftToRight;
+    edSearch.EditMask := '!00\-000\-00;1; ';
+  end
+  else if (Column.FieldName = 'Zeut') then
+  begin
+    edSearch.BiDiMode := bdLeftToRight;
+    edSearch.EditMask := 'a\-aaaaaaa\-a;1; ';
+  end
+  else
+  if typField = TIntegerField then
+  begin
+    edSearch.BiDiMode := bdLeftToRight;
+    edSearch.EditMask := '999999999999;0; ';
+  end
+  else
+  begin
+    edSearch.BiDiMode := bdRightToLeft;
+    edSearch.EditMask := 'ccccccccccccccc;0; ';
+  end;
+end;
+
+procedure TfrmGnrlListArhiv.SaveColOrder(pDBGrid: TDBGrid; pFile: String);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Txt\';
+  pDBGrid.Columns.SaveToFile(Path + pFile);
+end;
+
+procedure TfrmGnrlListArhiv.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmGnrlListArhiv.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+end.

@@ -1,0 +1,52 @@
+object dmUtils: TdmUtils
+  OldCreateOrder = False
+  Height = 278
+  Width = 370
+  object qrSrcLvl1: TQuery
+    DatabaseName = 'Kb'
+    Left = 88
+    Top = 24
+  end
+  object bmGnrl: TBatchMove
+    Destination = tbDest
+    Source = qrSrcLvl1
+    Left = 168
+    Top = 24
+  end
+  object tbDest: TTable
+    DatabaseName = 'Kb'
+    Left = 264
+    Top = 24
+  end
+  object qrSrcLvl2: TQuery
+    DatabaseName = 'Kb'
+    Left = 88
+    Top = 72
+  end
+  object qrSrcLvl3: TQuery
+    DatabaseName = 'Kb'
+    Left = 88
+    Top = 128
+  end
+  object qrSrcLvl4: TQuery
+    DatabaseName = 'Kb'
+    Left = 88
+    Top = 184
+  end
+  object qrSrcTofes: TQuery
+    DatabaseName = 'KBBig'
+    Left = 160
+    Top = 184
+  end
+  object tbDestTofes: TTable
+    DatabaseName = 'KBBig'
+    Left = 264
+    Top = 88
+  end
+  object bmGnrlTofes: TBatchMove
+    Destination = tbDestTofes
+    Source = qrSrcTofes
+    Left = 168
+    Top = 80
+  end
+end

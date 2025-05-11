@@ -1,0 +1,139 @@
+unit SendMsg;
+
+interface
+
+uses Windows, SysUtils, Classes, Graphics, Forms, Controls, StdCtrls,
+  Buttons, ExtCtrls, Spin, DateUtils, DB, DBTables, ComCtrls, edbcomps;
+
+type
+  TdlgSendMsg = class(TForm)
+    Panel1: TPanel;
+    Label1: TLabel;
+    btnPrint: TBitBtn;
+    btnCancel: TBitBtn;
+    edTill: TDateTimePicker;
+    btnEMail: TBitBtn;
+    btnPreview: TBitBtn;
+    qrWrnDrv: TEDBQuery;
+    qrWrnCar: TEDBQuery;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+  private
+    procedure SetParams;
+    procedure AddTirgum(lstPerut: TStringList);
+    procedure SendMessage(pWorkFile: OleVariant; pButton: String;
+        arDSet: array of TDataSet; arStrt: array of String;
+        arTblNum: array of Integer; arList: array of TStringList;
+        lstPerut: TStringList);
+  public
+    { Public declarations }
+  end;
+
+var
+  dlgSendMsg: TdlgSendMsg;
+
+implementation
+uses
+   MainDM, ClientList, DocUtils;
+{$R *.dfm}
+
+procedure TdlgSendMsg.FormCreate(Sender: TObject);
+begin
+  edTill.DateTime := EndOfTheMonth(IncDay(Date, 20));
+end;
+
+procedure TdlgSendMsg.btnPrintClick(Sender: TObject);
+var
+  vPath: String;
+  WorkFile: OleVariant;
+  lstPerut: TStringList;
+  arDSet: array of TDataSet;
+  arStrt: array of String;
+  arTblNum: array of Integer;
+  arList: array of TStringList;
+begin
+  vPath := ExtractFilePath(Application.ExeName) + 'Docs\Wrn\';
+  WorkFile := vPath+'Message.Doc';
+  lstPerut := TStringList.Create;
+  try
+    Screen.Cursor := crHourGlass;
+    SetLength(arDSet, 2);
+    arDSet[0] := qrWrnCar;
+    arDSet[1] := qrWrnDrv;
+    SetLength(arStrt, 2);
+    arStrt[0] := 'sc';
+    arStrt[1] := 'sd';
+    SetLength(arTblNum, 2);
+    arTblNum[0] := 1;
+    arTblNum[1] := 2;
+    SetLength(arList, 1);
+    arList[0] := lstPerut;
+    SetParams;
+
+    if (Owner = frmClientList) then
+    begin
+      dmMain.tbClient.First;
+      while not dmMain.tbClient.Eof do
+      begin
+        SendMessage(WorkFile, (Sender as TBitBtn).Name, arDSet, arStrt,
+        arTblNum, arList, lstPerut);
+        dmMain.tbClient.Next;
+      end;
+    end
+    else
+      SendMessage(WorkFile, (Sender as TBitBtn).Name, arDSet, arStrt,
+        arTblNum, arList, lstPerut);
+  finally
+    lstPerut.Free;
+    Screen.Cursor := crDefault;
+  end;
+  Close;
+end;
+
+procedure TdlgSendMsg.SendMessage(pWorkFile: OleVariant; pButton: String;
+  arDSet: array of TDataSet; arStrt: array of String;
+  arTblNum: array of Integer; arList: array of TStringList;
+  lstPerut: TStringList);
+var
+  OneDoc: TDocUtils;
+begin
+  OneDoc := TDocUtils.Create(pButton, 1, False, 'הודעה לחברה',
+      dmMain.tbClientFax.AsString, dmMain.tbClientEMail.AsString,
+      pWorkFile);
+  try
+    AddTirgum(lstPerut);
+    qrWrnCar.Open;
+    qrWrnDrv.Open;
+    OneDoc.SendDoc(dmMain.tbClient, arDSet, arStrt, arTblNum, arList, nil);
+  finally
+    qrWrnCar.Close;
+    qrWrnDrv.Close;
+    OneDoc.Free;
+  end;
+end;
+
+procedure TdlgSendMsg.SetParams;
+begin
+   qrWrnCar.ParamByName('pTillDate').AsDate := edTill.DateTime;
+   qrWrnDrv.ParamByName('pTillDate').AsDate := edTill.DateTime;
+end;
+
+procedure TdlgSendMsg.AddTirgum(lstPerut: TStringList);
+begin
+  lstPerut.Clear;
+  lstPerut.Add('Moed='+FormatDateTime('dd/mmmm/yyyy', edTill.DateTime));
+end;
+
+procedure TdlgSendMsg.btnCancelClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TdlgSendMsg.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+end.

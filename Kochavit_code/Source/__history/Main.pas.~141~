@@ -1,0 +1,720 @@
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ActnList, Menus, ImgList, ToolWin, ComCtrls, DB,
+  Grids, DBGrids, StdCtrls, Mask, DBCtrls, ExtCtrls, DeleteOldDocuments,
+  ClientsList, edbcomps, System.Actions, System.ImageList;
+
+type
+  TfrmMain = class(TForm)
+    Images: TImageList;
+    MainMenu1: TMainMenu;
+    ActionList1: TActionList;
+    acWarn: TAction;
+    acCar: TAction;
+    acDriver: TAction;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    ToolBar1: TToolBar;
+    edWarn: TToolButton;
+    edCar: TToolButton;
+    edDriver: TToolButton;
+    acTblType: TAction;
+    acTblProducer: TAction;
+    N6: TMenuItem;
+    N7: TMenuItem;
+    N8: TMenuItem;
+    N9: TMenuItem;
+    acTblInsure: TAction;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    acTblCargo: TAction;
+    N12: TMenuItem;
+    acTblTipul: TAction;
+    acTblHeiter: TAction;
+    N14: TMenuItem;
+    N13: TMenuItem;
+    ToolButton1: TToolButton;
+    btnTbl: TToolButton;
+    btnRprt: TToolButton;
+    pmTbl: TPopupMenu;
+    btnArchive: TToolButton;
+    acTblCourse: TAction;
+    N21: TMenuItem;
+    N23: TMenuItem;
+    N24: TMenuItem;
+    N25: TMenuItem;
+    acTblCause: TAction;
+    acExit: TAction;
+    N26: TMenuItem;
+    acEditWord: TAction;
+    N27: TMenuItem;
+    N28: TMenuItem;
+    od: TOpenDialog;
+    N29: TMenuItem;
+    N30: TMenuItem;
+    ToolButton5: TToolButton;
+    acBill: TAction;
+    N32: TMenuItem;
+    acTblBikoret: TAction;
+    N33: TMenuItem;
+    acPassword: TAction;
+    N35: TMenuItem;
+    acTipulFilter: TAction;
+    pmRprt: TPopupMenu;
+    acBillFilter: TAction;
+    acHeiter: TAction;
+    pmArchive: TPopupMenu;
+    N42: TMenuItem;
+    N43: TMenuItem;
+    N44: TMenuItem;
+    N45: TMenuItem;
+    N46: TMenuItem;
+    N47: TMenuItem;
+    acAbout: TAction;
+    N48: TMenuItem;
+    acHelp: TAction;
+    acDefault: TAction;
+    N50: TMenuItem;
+    acTblOved: TAction;
+    N51: TMenuItem;
+    acClientFilter: TAction;
+    acCarFilter: TAction;
+    acDriverFilter: TAction;
+    acNoDataTipul: TAction;
+    acTblAtar: TAction;
+    N64: TMenuItem;
+    acAnualTipulFilter: TAction;
+    acAcdntFilter: TAction;
+    acTahoFilter: TAction;
+    acDrAcdntFilter: TAction;
+    acAviraFilter: TAction;
+    acCourseFilter: TAction;
+    acBdikaFilter: TAction;
+    acTblTipulOut: TAction;
+    N85: TMenuItem;
+    acExpClients: TAction;
+    N86: TMenuItem;
+    acAnualBillFilter: TAction;
+    N89: TMenuItem;
+    N90: TMenuItem;
+    N91: TMenuItem;
+    N92: TMenuItem;
+    N93: TMenuItem;
+    N94: TMenuItem;
+    N95: TMenuItem;
+    N96: TMenuItem;
+    N97: TMenuItem;
+    N15: TMenuItem;
+    N16: TMenuItem;
+    N17: TMenuItem;
+    N18: TMenuItem;
+    N19: TMenuItem;
+    N22: TMenuItem;
+    PrinterSetupDialog: TPrinterSetupDialog;
+    acRunSetUp: TAction;
+    N31: TMenuItem;
+    N65: TMenuItem;
+    N84: TMenuItem;
+    N36: TMenuItem;
+    N58: TMenuItem;
+    mnClient: TMenuItem;
+    N73: TMenuItem;
+    N57: TMenuItem;
+    N39: TMenuItem;
+    N56: TMenuItem;
+    N40: TMenuItem;
+    N67: TMenuItem;
+    N99: TMenuItem;
+    N100: TMenuItem;
+    N101: TMenuItem;
+    N102: TMenuItem;
+    N61: TMenuItem;
+    N70: TMenuItem;
+    N75: TMenuItem;
+    N81: TMenuItem;
+    N83: TMenuItem;
+    N103: TMenuItem;
+    N38: TMenuItem;
+    N60: TMenuItem;
+    N105: TMenuItem;
+    N106: TMenuItem;
+    N37: TMenuItem;
+    N55: TMenuItem;
+    N41: TMenuItem;
+    N72: TMenuItem;
+    N107: TMenuItem;
+    N108: TMenuItem;
+    N109: TMenuItem;
+    N110: TMenuItem;
+    N54: TMenuItem;
+    N62: TMenuItem;
+    N74: TMenuItem;
+    acTblOfenPay: TAction;
+    N113: TMenuItem;
+    N114: TMenuItem;
+    Panel1: TPanel;
+    Splitter1: TSplitter;
+    frmeClientsList: TfrmeClientsList;
+    acTblLicence: TAction;
+    N66: TMenuItem;
+    N115: TMenuItem;
+    acClientListArhiv: TAction;
+    acDriverListArhiv: TAction;
+    acCarListArhiv: TAction;
+    acExportToMasofon: TAction;
+    acImportFromMasofon: TAction;
+    N20: TMenuItem;
+    N34: TMenuItem;
+    acTblBank: TAction;
+    N52: TMenuItem;
+    N53: TMenuItem;
+    acChecks: TAction;
+    ToolButton2: TToolButton;
+    N59: TMenuItem;
+    acChecksFilter: TAction;
+    N63: TMenuItem;
+    N68: TMenuItem;
+    acCrFollowFilter: TAction;
+    N69: TMenuItem;
+    N71: TMenuItem;
+    mnTile: TMenuItem;
+    acDriverOnCarFilter: TAction;
+    N49: TMenuItem;
+    N76: TMenuItem;
+    acDeleteOldDocuments: TAction;
+    N77: TMenuItem;
+    acWebInteraction: TAction;
+    N78: TMenuItem;
+    acTblGroup: TAction;
+    N79: TMenuItem;
+    N80: TMenuItem;
+    procedure acRunSetUpExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure acCarExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acTblTypeExecute(Sender: TObject);
+    procedure acTblInsureExecute(Sender: TObject);
+    procedure acTblProducerExecute(Sender: TObject);
+    procedure acDriverExecute(Sender: TObject);
+    procedure acTblCargoExecute(Sender: TObject);
+    procedure acTblTipulExecute(Sender: TObject);
+    procedure acWarnExecute(Sender: TObject);
+    procedure acTblHeiterExecute(Sender: TObject);
+    procedure acTblCourseExecute(Sender: TObject);
+    procedure acExitExecute(Sender: TObject);
+    procedure acEditWordExecute(Sender: TObject);
+    procedure acTblCauseExecute(Sender: TObject);
+    procedure acBillExecute(Sender: TObject);
+    procedure acTblBikoretExecute(Sender: TObject);
+    procedure acPasswordExecute(Sender: TObject);
+    procedure acTipulFilterExecute(Sender: TObject);
+    procedure acBillFilterExecute(Sender: TObject);
+    procedure acHeiterExecute(Sender: TObject);
+    procedure acAboutExecute(Sender: TObject);
+    procedure acHelpExecute(Sender: TObject);
+    procedure acDefaultExecute(Sender: TObject);
+    procedure acTblOvedExecute(Sender: TObject);
+    procedure acClientFilterExecute(Sender: TObject);
+    procedure acCarFilterExecute(Sender: TObject);
+    procedure acDriverFilterExecute(Sender: TObject);
+    procedure acTblAtarExecute(Sender: TObject);
+    procedure acAnualTipulFilterExecute(Sender: TObject);
+    procedure acAcdntFilterExecute(Sender: TObject);
+    procedure acTahoFilterExecute(Sender: TObject);
+    procedure acDrAcdntFilterExecute(Sender: TObject);
+    procedure acAviraFilterExecute(Sender: TObject);
+    procedure acCourseFilterExecute(Sender: TObject);
+    procedure acBdikaFilterExecute(Sender: TObject);
+    procedure acTblTipulOutExecute(Sender: TObject);
+    procedure acExpClientsExecute(Sender: TObject);
+    procedure acAnualBillFilterExecute(Sender: TObject);
+    procedure acTblOfenPayExecute(Sender: TObject);
+    procedure acTblLicenceExecute(Sender: TObject);
+    procedure acClientListArhivExecute(Sender: TObject);
+    procedure acCarListArhivExecute(Sender: TObject);
+    procedure acDriverListArhivExecute(Sender: TObject);
+    procedure acExportToMasofonExecute(Sender: TObject);
+    procedure acImportFromMasofonExecute(Sender: TObject);
+    procedure acTblBankExecute(Sender: TObject);
+    procedure acChecksExecute(Sender: TObject);
+    procedure acChecksFilterExecute(Sender: TObject);
+    procedure acCrFollowFilterExecute(Sender: TObject);
+    procedure mnTileClick(Sender: TObject);
+    procedure acDriverOnCarFilterExecute(Sender: TObject);
+    procedure acDeleteOldDocumentsExecute(Sender: TObject);
+    procedure frmeClientsListbtnSendMsgClick(Sender: TObject);
+    procedure frmeClientsListN1Click(Sender: TObject);
+    procedure frmeClientsListacStatusCarExecute(Sender: TObject);
+    procedure acWebInteractionExecute(Sender: TObject);
+    procedure acTblGroupExecute(Sender: TObject);
+  private
+    { Private declarations }
+    function CheckPassword: Boolean;
+    procedure AppException(Sender: TObject; E: Exception);
+  public
+    { Public declarations }
+    UserName, Role: string;
+  end;
+
+var
+  frmMain: TfrmMain;
+
+implementation
+{$R *.dfm}
+uses
+  DataDM, MainDM, DialogsHeb, WrnList, WordFunc, About, LogErrorUtil, TblGroup,
+  CarList, DriverList, BillList, ChecksList, Password, PasswordDlg, Default,
+  TblTipul, TblType, TblInsure, TblProducer, TblCargo, TblHeiter, TblTipulOut,
+  TblCourse, TblCause, TblBikoret, TblOved, TblAtar, TblOfenPay, TblBank,
+  TblLicence, TipulFilter, HeiterFilter, BillFilter, ChecksFilter, CrFollowfilter,
+  ClientFilter, CarFilter, DriverFilter, AnualTipulFilter, AnualBillFilter,
+  AcdntFilter, TahoFilter, AcdntDrFilter, AviraFilter, CourseFilter, BdikaFilter,
+  DriverOnCarFilter, ClientListArhiv, CarListArhiv, DriverListArhiv, ExpFile, KbFunc,
+  ExportToMasofon, ImportMasofonDataDM, StatusCars, WebInteraction, PassSign;
+
+procedure TfrmMain.FormCreate(Sender: TObject);
+begin
+  FormatSettings.ShortDateFormat := 'dd/MM/yyyy';
+  if CheckPassword then
+    Application.OnException := AppException
+  else
+    Application.Terminate;
+
+  Panel1.Width := StrToInt(GetIniValue('Client', 'Width', '100'));
+  frmeClientsList.MarkIndexColumn;
+  frmeClientsList.LoadColOrder(frmeClientsList.dbgClient, 'ClientList');
+end;
+
+function TfrmMain.CheckPassword: Boolean;
+begin
+  Result := True;
+  dmData.qrGnrl.SQL.Text := 'SELECT Id FROM KEnter';
+  try
+    dmMain.qrGnrl.Open;
+    if not dmMain.qrGnrl.IsEmpty then
+    begin
+      frmPasswordDlg := TfrmPasswordDlg.Create(Self);
+      frmPasswordDlg.ShowModal;
+      if frmPasswordDlg.oK = False then
+          Result :=  False;
+    end
+    else
+      Result := False;
+  finally
+    dmMain.qrGnrl.Close;
+  end;
+end;
+
+procedure TfrmMain.frmeClientsListbtnSendMsgClick(Sender: TObject);
+begin
+  frmeClientsList.acWrnSendMsgExecute(Sender);
+end;
+
+procedure TfrmMain.frmeClientsListN1Click(Sender: TObject);
+begin
+  frmeClientsList.acLikuySendMsgExecute(Sender);
+end;
+
+procedure TfrmMain.frmeClientsListacStatusCarExecute(Sender: TObject);
+begin
+  frmeClientsList.acStatusCarExecute(Sender);
+end;
+
+procedure TfrmMain.mnTileClick(Sender: TObject);
+begin
+  Tile;
+end;
+
+procedure TfrmMain.AppException(Sender: TObject; E: Exception);
+begin
+//  LogError('TfrmMain.AppException', E);
+  ShowException(E);
+end;
+
+procedure TfrmMain.acWarnExecute(Sender: TObject);
+begin
+  if not Assigned(frmWrnList) then
+    frmWrnList := TfrmWrnList.Create(Self)
+  else
+    frmWrnList.Show;
+end;
+
+procedure TfrmMain.acCarExecute(Sender: TObject);
+begin
+  if not Assigned(frmCarList) then
+    frmCarList := TfrmCarList.Create(Self)
+  else
+    frmCarList.Show;
+end;
+
+procedure TfrmMain.acDriverExecute(Sender: TObject);
+begin
+  if not Assigned(frmDriverList) then
+    frmDriverList := TfrmDriverList.Create(Self)
+  else
+    frmDriverList.Show;
+end;
+
+procedure TfrmMain.acBillExecute(Sender: TObject);
+begin
+  //fldName := 'BillPass';
+  if not Assigned(frmBillList) and CheckPassword then
+    frmBillList := TfrmBillList.Create(Self)
+  else
+    frmBillList.Show;
+end;
+
+procedure TfrmMain.acChecksExecute(Sender: TObject);
+begin
+  //fldName := 'BillPass';
+  if not Assigned(frmChecksList) and CheckPassword then
+    frmChecksList := TfrmChecksList.Create(Self)
+  else
+    frmChecksList.Show;
+end;
+
+procedure TfrmMain.acClientListArhivExecute(Sender: TObject);
+begin
+  if not Assigned(frmClientListArhiv) then
+    frmClientListArhiv := TfrmClientListArhiv.Create(Self)
+  else
+    frmClientListArhiv.Show;
+end;
+
+procedure TfrmMain.acCarListArhivExecute(Sender: TObject);
+begin
+  if not Assigned(frmCarListArhiv) then
+    frmCarListArhiv := TfrmCarListArhiv.Create(Self)
+  else
+    frmCarListArhiv.Show;
+end;
+
+procedure TfrmMain.acDriverListArhivExecute(Sender: TObject);
+begin
+  if not Assigned(frmDriverListArhiv) then
+    frmDriverListArhiv := TfrmDriverListArhiv.Create(Self)
+  else
+    frmDriverListArhiv.Show;
+end;
+
+procedure TfrmMain.acTblTipulExecute(Sender: TObject);
+begin
+   TfrmTipulTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblTipulOutExecute(Sender: TObject);
+begin
+   TfrmTipulOutTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblBikoretExecute(Sender: TObject);
+begin
+   TfrmTblBikoret.Create(Self);
+end;
+
+procedure TfrmMain.acTblTypeExecute(Sender: TObject);
+begin
+   TfrmTypeTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblProducerExecute(Sender: TObject);
+begin
+   TfrmProducerTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblCargoExecute(Sender: TObject);
+begin
+   TfrmCargoTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblInsureExecute(Sender: TObject);
+begin
+   TfrmTblInsure.Create(Self);
+end;
+
+procedure TfrmMain.acTblLicenceExecute(Sender: TObject);
+begin
+  TfrmLicenceTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblHeiterExecute(Sender: TObject);
+begin
+   TfrmTblHeiter.Create(Self);
+end;
+
+procedure TfrmMain.acTblCourseExecute(Sender: TObject);
+begin
+   TfrmCourseTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblGroupExecute(Sender: TObject);
+begin
+  TfrmGroupTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblCauseExecute(Sender: TObject);
+begin
+   TfrmCauseTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblOvedExecute(Sender: TObject);
+begin
+  TfrmOvedTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblOfenPayExecute(Sender: TObject);
+begin
+  TfrmOfenPayTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblAtarExecute(Sender: TObject);
+begin
+  TfrmAtarTbl.Create(Self);
+end;
+
+procedure TfrmMain.acTblBankExecute(Sender: TObject);
+begin
+  TfrmBankTbl.Create(Self);
+end;
+
+procedure TfrmMain.acClientFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmClientFilter) then
+    frmClientFilter := TfrmClientFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח חברות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acCarFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmCarFilter) then
+    frmCarFilter := TfrmCarFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח רכבים כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acTipulFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmTipulFilter) then
+    frmTipulFilter := TfrmTipulFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח טיפולים כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acDriverOnCarFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmDriverOnCarFilter) then
+    frmDriverOnCarFilter := TfrmDriverOnCarFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח נהגים צמודים כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acAcdntFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmAcdntFilter) then
+    frmAcdntFilter := TfrmAcdntFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח תאונות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acCrFollowFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmCrFollowFilter) then
+    frmCrFollowFilter := TfrmCrFollowFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח תאונות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acDriverFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmDriverFilter) then
+    frmDriverFilter := TfrmDriverFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח נהגים כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acHeiterExecute(Sender: TObject);
+begin
+  if not Assigned(frmHeiterFilter) then
+    frmHeiterFilter := TfrmHeiterFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח היתרים כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acTahoFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmTahoFilter) then
+    frmTahoFilter := TfrmTahoFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח בדיקות טכוגרף כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acDrAcdntFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmAcdntDrFilter) then
+    frmAcdntDrFilter := TfrmAcdntDrFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח תאונות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acAviraFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmAviraFilter) then
+    frmAviraFilter := TfrmAviraFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח עבירות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acCourseFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmCourseFilter) then
+    frmCourseFilter := TfrmCourseFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח קורסים כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acBdikaFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmBdikaFilter) then
+    frmBdikaFilter := TfrmBdikaFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח בדיקות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acAnualTipulFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmAnualTipulFilter) then
+    frmAnualTipulFilter := TfrmAnualTipulFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח תוכנית שנתית כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acBillFilterExecute(Sender: TObject);
+begin
+  //fldName := 'BillPass';
+  if not Assigned(frmBillFilter) and CheckPassword then
+    frmBillFilter := TfrmBillFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח חשבונות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acChecksFilterExecute(Sender: TObject);
+begin
+  //fldName := 'BillPass';
+  if not Assigned(frmChecksFilter) and CheckPassword then
+    frmChecksFilter := TfrmChecksFilter.Create(Self)
+  else
+    MessageDlgH('דו"ח המחאות כבר פתוח', mtError, [mbOk], 0, 0);
+end;
+
+procedure TfrmMain.acAnualBillFilterExecute(Sender: TObject);
+begin
+  if not Assigned(frmAnualBillFilter) then
+    frmAnualBillFilter := TfrmAnualBillFilter.Create(Self);
+end;
+
+procedure TfrmMain.acEditWordExecute(Sender: TObject);
+var
+   WordObj: TWordObj;
+   WorkFile: OleVariant;
+begin
+   od.InitialDir := ExtractFilePath(Application.ExeName) +  'Docs\';
+   if (od.Execute = True) then
+   begin
+       WorkFile := od.FileName;
+       WordObj := TWordObj.Create;
+       if WordObj.ConnectWord then
+       begin
+           WordObj.OpenDoc(WorkFile);
+           WordObj.EditDoc;
+           WordObj.CloseWord;
+           WordObj.Free;
+       end;
+   end;
+end;
+
+procedure TfrmMain.acPasswordExecute(Sender: TObject);
+begin
+//   TfrmPassword.Create(Self);
+  frmPassSign := TfrmPassSign.Create(Self);
+end;
+
+procedure TfrmMain.acDefaultExecute(Sender: TObject);
+begin
+  TfrmDefault.Create(Self);
+end;
+
+procedure TfrmMain.acRunSetUpExecute(Sender: TObject);
+begin
+   PrinterSetupDialog.Execute;
+end;
+
+procedure TfrmMain.acHelpExecute(Sender: TObject);
+begin
+   Application.HelpCommand(HELP_FINDER, 0);
+end;
+
+procedure TfrmMain.acDeleteOldDocumentsExecute(Sender: TObject);
+begin
+  TfrmDeleteOldDocuments.Create(Self);
+end;
+
+procedure TfrmMain.acAboutExecute(Sender: TObject);
+begin
+   TfrmAbout.Create(Self);
+end;
+
+procedure TfrmMain.acExitExecute(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmMain.acExpClientsExecute(Sender: TObject);
+begin
+  ExpFile.ExpClients;
+end;
+
+procedure TfrmMain.acExportToMasofonExecute(Sender: TObject);
+begin
+  dmExportToMasofon := TdmExportToMasofon.Create(Self);
+  dmExportToMasofon.ExportData;
+  dmExportToMasofon.Free;
+end;
+
+procedure TfrmMain.acImportFromMasofonExecute(Sender: TObject);
+begin
+  dmImportMasofonData := TdmImportMasofonData.Create(Self);
+  dmImportMasofonData.Free;
+end;
+
+procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+   i: Integer;
+begin
+  SetIniValue('Client', 'Width', IntToStr(Panel1.Width));
+  frmeClientsList.SaveColOrder(frmeClientsList.dbgClient, 'ClientList');
+  try
+    for i := 0 to MdiChildCount -1 do
+      if Assigned(MDIChildren[i]) then
+        MdiChildren[i].Close;
+  except
+    on E: Exception do
+        ShowMessage('Error Closing child win');
+  end;
+end;
+
+procedure TfrmMain.acWebInteractionExecute(Sender: TObject);
+begin
+  frmWebInteraction := TfrmWebInteraction.Create(Self);
+  frmWebInteraction.Show;
+  Caption := dmMain.LastSync;
+end;
+
+end.

@@ -1,0 +1,47 @@
+inherited frmDriverRprtSlctDlg: TfrmDriverRprtSlctDlg
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnRTFClick
+    end
+  end
+  inherited RvRprt: TRvProject
+    Left = 176
+  end
+  object rqDriverRprt: TRvQueryConnection [7]
+    RuntimeVisibility = rtDeveloper
+    Left = 16
+    Top = 24
+  end
+  object qrDrTofes: TQuery [8]
+    DatabaseName = 'KBBig'
+    FilterOptions = [foNoPartialCompare]
+    SQL.Strings = (
+      'SELECT DriverId, Moed, Name'
+      'FROM  KDrTofes')
+    Left = 64
+    Top = 120
+  end
+  object rqDrTofes: TRvQueryConnection [9]
+    RuntimeVisibility = rtDeveloper
+    Query = qrDrTofes
+    Left = 112
+    Top = 120
+  end
+  object EDBQuery1: TEDBQuery
+    Params = <>
+    Left = 64
+    Top = 120
+  end
+end

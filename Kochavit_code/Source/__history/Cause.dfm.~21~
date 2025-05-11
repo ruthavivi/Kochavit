@@ -1,0 +1,237 @@
+object frmCause: TfrmCause
+  Left = 262
+  Top = 211
+  BiDiMode = bdRightToLeft
+  BorderStyle = bsDialog
+  Caption = #1505#1497#1489#1514' '#1492#1506#1489#1512#1492' '#1500#1488#1512#1499#1497#1493#1503
+  ClientHeight = 177
+  ClientWidth = 322
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  ParentBiDiMode = False
+  Position = poMainFormCenter
+  OnClose = FormClose
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 136
+    Width = 322
+    Height = 41
+    Align = alBottom
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 1
+    DesignSize = (
+      322
+      41)
+    object btnYes: TBitBtn
+      Left = 160
+      Top = 8
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = '&'#1488#1497#1513#1493#1512
+      DoubleBuffered = True
+      Kind = bkYes
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = btnYesClick
+    end
+    object btnCancel: TBitBtn
+      Left = 64
+      Top = 8
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = '&'#1489#1497#1496#1493#1500
+      DoubleBuffered = True
+      Kind = bkCancel
+      ParentDoubleBuffered = False
+      TabOrder = 1
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 41
+    Width = 322
+    Height = 95
+    Align = alClient
+    TabOrder = 0
+    DesignSize = (
+      322
+      95)
+    object Label1: TLabel
+      Left = 240
+      Top = 16
+      Width = 66
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = #1502#1493#1506#1491' '#1492#1506#1489#1512#1492':'
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
+    end
+    object Label2: TLabel
+      Left = 240
+      Top = 48
+      Width = 66
+      Height = 13
+      Anchors = [akTop, akRight]
+      Caption = #1505#1497#1489#1514' '#1492#1506#1489#1512#1492':'
+      Color = clBtnFace
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentColor = False
+      ParentFont = False
+    end
+    object edMoed: TDBEdit
+      Left = 82
+      Top = 16
+      Width = 153
+      Height = 21
+      Anchors = [akTop, akRight]
+      BiDiMode = bdLeftToRight
+      DataField = 'Moed'
+      DataSource = dsCause
+      ParentBiDiMode = False
+      TabOrder = 0
+      OnExit = edMoedExit
+      OnKeyDown = edMoedKeyDown
+    end
+    object edSibaId: TDBLookupComboBox
+      Left = 82
+      Top = 48
+      Width = 152
+      Height = 21
+      DataField = 'LkpSiba'
+      DataSource = dsCause
+      TabOrder = 1
+      OnExit = edSibaIdExit
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 0
+    Width = 322
+    Height = 41
+    Align = alTop
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clRed
+    Font.Height = -16
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 2
+  end
+  object dsCause: TDataSource
+    DataSet = tbCrSiba
+    Left = 8
+    Top = 8
+  end
+  object tbCause: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xOwnerId'
+    MasterFields = 'Id'
+    MasterSource = dmMain.dsClient
+    TableName = 'KClSiba'
+    Left = 64
+    Top = 8
+    object tbCauseId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCauseOwnerId: TIntegerField
+      FieldName = 'OwnerId'
+    end
+    object tbCauseMoed: TDateField
+      FieldName = 'Moed'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCauseSibaId: TIntegerField
+      FieldName = 'SibaId'
+    end
+    object tbCauseLkpSiba: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpSibaCl'
+      LookupDataSet = tbTblCause
+      LookupKeyFields = 'Id'
+      LookupResultField = 'CauseCl'
+      KeyFields = 'SibaId'
+      Lookup = True
+    end
+  end
+  object tbTblCause: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KTblCause'
+    Left = 280
+    Top = 8
+    object tbTblCauseId: TAutoIncField
+      FieldName = 'Id'
+    end
+    object tbTblCauseCauseCl: TStringField
+      FieldName = 'CauseCl'
+      Size = 15
+    end
+    object tbTblCauseCauseCr: TStringField
+      FieldName = 'CauseCr'
+      Size = 15
+    end
+    object tbTblCauseCauseDr: TStringField
+      FieldName = 'CauseDr'
+      Size = 15
+    end
+  end
+  object tbCrSiba: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xOwnerId'
+    MasterFields = 'ID'
+    MasterSource = dmCarList.dsCarList
+    TableName = 'KCrSiba'
+    Left = 120
+    Top = 8
+    object tbCrSibaId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrSibaOwnerId: TIntegerField
+      FieldName = 'OwnerId'
+    end
+    object tbCrSibaMoed: TDateField
+      FieldName = 'Moed'
+      OnSetText = tbCrSibaMoedSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbCrSibaSibaId: TIntegerField
+      FieldName = 'SibaId'
+    end
+    object tbCrSibaClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object tbCrSibaLkpSiba: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpSiba'
+      LookupDataSet = tbTblCause
+      LookupKeyFields = 'Id'
+      LookupResultField = 'CauseCr'
+      KeyFields = 'SibaId'
+      Lookup = True
+    end
+  end
+end

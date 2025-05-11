@@ -1,0 +1,24 @@
+unit HeiterFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmHeiterFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmHeiterFilter: TdmHeiterFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

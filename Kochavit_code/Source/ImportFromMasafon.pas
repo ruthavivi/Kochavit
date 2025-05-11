@@ -1,0 +1,110 @@
+unit ImportFromMasafon;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps;
+
+type
+  TdmImportFromMasafon = class(TDataModule)
+    qrGnrl: TEDBQuery;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+  private
+    { Private declarations }
+    Path: String;
+    ImportDataList, LikuyIdList: TStringList;
+    BikoretTipulId: Integer;
+    procedure LoadId(pString: String);
+    procedure LoadLikuyIdList(pFoundNum: Integer; pOneRec: String);
+
+    function  GetBikoretTipulId: Integer;
+  public
+     procedure ImportData;
+  end;
+
+var
+  dmImportFromMasafon: TdmImportFromMasafon;
+
+implementation
+uses
+  MainDM, StrUtils;
+{$R *.dfm}
+
+procedure TdmImportFromMasafon.DataModuleCreate(Sender: TObject);
+begin
+  Path := ExtractFilePath(ParamStr(0)) + 'ImportFiles';
+  ImportDataList := TStringList.Create;
+  ImportDataList.LoadFromFile(Path+'FeedBackNew5.Txt');
+  BikoretTipulId := GetBikoretTipulId;
+end;
+
+procedure TdmImportFromMasafon.ImportData;
+//var
+//  I: Integer;
+begin
+//  LikuyIdList := TStringList.Create;
+//  for I := 0 to ImportDataList.Count - 1 do
+//  begin
+//    DateDone := GetDateDone(I);
+//    DateToDo := GetDateToDo(I);
+//    Number := GetCarNumber(I);
+//    Remark := GetRemark(I);
+//    OvedId := GetIdOved(I);
+//    Km := GetKm(I);
+//    LoadLikuyIdList(0, ImportDataList[I]);
+//    UpdateData;
+//  end;
+//  LikuyIdList.Free;
+
+
+end;
+
+procedure TdmImportFromMasafon.LoadLikuyIdList(pFoundNum: Integer; pOneRec: String);
+var
+  FoundPos: Integer;
+begin
+  FoundPos := Pos('|', pOneRec);
+  if (FoundPos > 0) and (Pos('לא תקין', pOneRec) > 0) then
+  begin
+    if (pFoundNum > 1) then
+      LoadId(Copy(pOneRec, 30, FoundPos-30));
+    Inc(pFoundNum);
+    LoadLikuyIdList(pFoundNum, Copy(pOneRec, FoundPos+1, Length(pOneRec)));
+  end;
+end;
+
+procedure TdmImportFromMasafon.LoadId(pString: String);
+var
+  FoundPos: Integer;
+begin
+  FoundPos := Pos(';', pString);
+  if (FoundPos > 0) then
+  begin
+    if (Copy(pString, 0, FoundPos-1) <> '1') then
+      LikuyIdList.Add(Copy(pString, 0, FoundPos-1));
+    LoadId(Copy(pString, FoundPos+1, Length(pString)-FoundPos));
+  end;
+end;
+
+function TdmImportFromMasafon.GetBikoretTipulId: Integer;
+begin
+  qrGnrl.SQL.Text := 'SELECT Id FROM KTblTipul WHERE Tipul = ' +
+      QuotedStr('ביקורת חודשית');
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('Id').AsInteger;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmImportFromMasafon.DataModuleDestroy(Sender: TObject);
+begin
+  ImportDataList.Free;
+end;
+
+end.
+
+
+

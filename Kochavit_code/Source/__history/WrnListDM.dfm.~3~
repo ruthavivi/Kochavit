@@ -1,0 +1,13 @@
+object dmWrnList: TdmWrnList
+  OldCreateOrder = False
+  OnDestroy = DataModuleDestroy
+  Height = 254
+  Width = 329
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 80
+    Top = 72
+  end
+end

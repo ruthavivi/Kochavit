@@ -1,0 +1,25 @@
+unit DriverOnCarFilterDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, GnrlFilterDM, Data.DB, edbcomps;
+
+type
+  TdmGnrlFilter1 = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmGnrlFilter1: TdmGnrlFilter1;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

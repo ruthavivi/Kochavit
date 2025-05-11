@@ -1,0 +1,81 @@
+unit DrBdikaReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmDrBdikaReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDrBdikaReport: TfrmDrBdikaReport;
+
+implementation
+uses
+   DrBdikaFilter, DrBdikaRprtSlctDlg;//, DrBdikaSpssSlctDlg;
+{$R *.dfm}
+
+procedure TfrmDrBdikaReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('BdikaD');
+  SetStatusBar;
+  LoadPosition('DrBdikaRpt', (Sender as TForm));
+end;
+
+procedure TfrmDrBdikaReport.SetStatusBar;
+var
+   procent: Real;
+begin
+   try
+       procent := frmDrBdikaFilter.selectRec /
+                   frmDrBdikaFilter.totalRec * 100;
+   except
+       on EInvalidOp do procent := 0;
+   end;
+
+   StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmDrBdikaFilter.selectRec) +
+       ' בדיקות רפואיות ' + IntToStr(frmDrBdikaFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmDrBdikaReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmDrBdikaFilter.qrFilter, Column);
+end;
+
+procedure TfrmDrBdikaReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmDrBdikaRprtSlctDlg := TfrmDrBdikaRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmDrBdikaReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmDrBdikaFilter.qrFilter);
+end;
+
+procedure TfrmDrBdikaReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('DrBdikaRpt', (Sender as TForm));
+  frmDrBdikaFilter.qrFilter.Close;
+  inherited;
+end;
+
+end.

@@ -1,0 +1,10 @@
+object dmExportFiles: TdmExportFiles
+  OldCreateOrder = False
+  Height = 150
+  Width = 215
+  object qrGnrl: TEDBQuery
+    Params = <>
+    Left = 88
+    Top = 56
+  end
+end

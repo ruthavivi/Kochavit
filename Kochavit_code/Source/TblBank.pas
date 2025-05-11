@@ -1,0 +1,42 @@
+unit TblBank;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, edbcomps, StdActns, ActnList, ImgList, Grids, DBGrids,
+  MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, frxClass, frxDBSet;
+
+type
+  TfrmBankTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblBank: TStringField;
+    frdbBank: TfrxDBDataset;
+    procedure acDeleteExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBankTbl: TfrmBankTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmBankTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('BankId', tbTblId.AsString, ['KChecks']) then
+    inherited;
+end;
+
+procedure TfrmBankTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpBank');
+end;
+
+end.

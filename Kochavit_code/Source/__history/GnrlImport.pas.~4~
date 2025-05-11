@@ -1,0 +1,46 @@
+unit GnrlImport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, ExtDlgs, ExtCtrls, Buttons, Mask, JvExMask, JvToolEdit;
+
+type
+  TdlgGnrlImport = class(TForm)
+    imDisplay: TImage;
+    Panel1: TPanel;
+    Panel2: TPanel;
+    lbFileName: TLabel;
+    edDocName: TEdit;
+    Label2: TLabel;
+    btnAbort: TBitBtn;
+    btnOk: TBitBtn;
+    edDeleteDate: TJvDateEdit;
+    cbSaveOnFolder: TCheckBox;
+    procedure edDocNameChange(Sender: TObject);
+    procedure cbSaveOnFolderClick(Sender: TObject);
+  private
+
+  public
+    SaveOnFolder: Boolean;
+  end;
+
+var
+  dlgGnrlImport: TdlgGnrlImport;
+
+implementation
+{$R *.dfm}
+
+
+procedure TdlgGnrlImport.edDocNameChange(Sender: TObject);
+begin
+  btnOk.Enabled := not VarIsEmpty(edDocName.Text);
+end;
+
+procedure TdlgGnrlImport.cbSaveOnFolderClick(Sender: TObject);
+begin
+  SaveOnFolder := cbSaveOnFolder.Checked;
+end;
+
+end.

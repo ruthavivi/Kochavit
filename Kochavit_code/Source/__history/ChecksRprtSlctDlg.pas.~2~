@@ -1,0 +1,25 @@
+unit ChecksRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, edbcomps, DB, RpRender, RpRenderHTML, RpBase,
+  RpSystem, RpDefine, RpRave, Spin, StdCtrls, Buttons, ExtCtrls;
+
+type
+  TfrmChecksRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChecksRprtSlctDlg: TfrmChecksRprtSlctDlg;
+
+implementation
+
+{$R *.dfm}
+
+end.

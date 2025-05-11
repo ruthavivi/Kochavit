@@ -1,0 +1,48 @@
+inherited frmTipulOutTbl: TfrmTipulOutTbl
+  Left = 244
+  Top = 145
+  Caption = #1496#1489#1500#1514' '#1496#1497#1508#1493#1500#1497' '#1502#1493#1505#1498
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited StatusBar: TStatusBar
+    ExplicitTop = 308
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 36
+    ExplicitHeight = 272
+    inherited dbGrid: TCheckDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'TipulOut'
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+  end
+  inherited tbTbl: TEDBTable
+    IndexFieldNames = 'TipulOut'
+    TableName = 'KTblTipulOut'
+    object tbTblId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTblTipulOut: TStringField
+      DisplayLabel = #1505#1493#1490' '#1496#1497#1508#1493#1500
+      FieldName = 'TipulOut'
+      Size = 30
+    end
+  end
+  object rtTipulOut: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Table = tbTbl
+    Left = 128
+    Top = 112
+  end
+end

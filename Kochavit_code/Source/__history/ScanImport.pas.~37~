@@ -1,0 +1,128 @@
+unit ScanImport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlImport, StdCtrls, Buttons, ExtCtrls, DB, edbcomps, EnScan,
+  EnTifGr, EnImgScr;
+
+type
+  TScanInfo = record
+    TifFileName : String;
+    TifGraphic  : TTiffGraphic;
+    PageCount   : Integer;
+end;
+
+type
+  TdlgScanImport = class(TdlgGnrlImport)
+    qrGnrl: TEDBQuery;
+    btnScan: TButton;
+    procedure btnAbortClick(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+    procedure btnScanClick(Sender: TObject);
+  private
+    FScanner        : TScanner;
+    FScanInfo       : TScanInfo;
+    procedure ImportScan;
+    procedure AcquirePage( const DibHandle    : THandle;
+                     const XDpi         : Word;
+                     const YDpi         : Word;
+                     const CallBackData : Pointer );
+    function GetPageFromTempTifFile( const ImageNo: Integer;
+            var   FreeGraphic : Boolean ) : TGraphic;
+  public
+    PathAndFile: String;
+  end;
+
+var
+  dlgScanImport: TdlgScanImport;
+
+implementation
+uses
+  DialogsHeb, EnPdfGr, EnMisc, EnDiGrph;
+{$R *.dfm}
+
+{ TdlgScanImport }
+
+procedure TdlgScanImport.FormActivate(Sender: TObject);
+begin
+  FScanner := TScanner.Create;
+end;
+
+function TdlgScanImport.GetPageFromTempTifFile(const ImageNo: Integer;
+  var FreeGraphic: Boolean): TGraphic;
+begin
+  Result := TTiffGraphic.Create;
+  TTiffGraphic(Result).ImageToLoad := ImageNo;
+  Result.LoadFromFile( FScanInfo.TifFileName );
+  FreeGraphic := True;
+end;
+
+procedure TdlgScanImport.btnScanClick(Sender: TObject);
+begin
+  inherited;
+  ImportScan;
+  edDocName.Enabled := True;
+  lbFileName.Enabled := True;
+end;
+
+procedure TdlgScanImport.ImportScan;
+var
+  PdfFileName: string;
+  PdfGraphic: TPdfGraphic;
+begin
+  if not FScanner.IsConfigured then
+  begin
+    ShowMessage('לא הוגדר סורק במחשב');
+    Exit;
+  end;
+
+  PdfFileName := ExtractFilePath(Application.ExeName)+'Temp\Temp.pdf';
+//ShowMessage(PdfFileName);
+  FScanInfo.TifFileName := EnMisc.GetTempFileName( 'Tmp', 'tif' );
+//ShowMessage(FScanInfo.TifFileName );
+  FScanInfo.TifGraphic  := TTiffGraphic.Create;
+  FScanInfo.PageCount   := 0;
+  PdfGraphic            := TPdfGraphic.Create;
+  try
+    FScanInfo.TifGraphic.Compression  := tcZLib;
+//ShowMessage(FScanInfo.TifGraphic.Compression);
+    FScanner.Acquire( AcquirePage, nil );
+
+    if FScanInfo.PageCount > 0 then
+    begin
+        PdfGraphic.MultiSaveToFile( PdfFileName, FScanInfo.PageCount, GetPageFromTempTifFile );
+        imDisplay.Picture.Assign(PdfGraphic);
+        PathAndFile := PdfFileName;
+    end;
+
+  finally
+      FScanInfo.TifGraphic.Free;
+      DeleteFile( FScanInfo.TifFileName );
+      PdfGraphic.Free;
+      FScanner.Free;
+  end;
+end;
+
+procedure TdlgScanImport.AcquirePage(const DibHandle: THandle; const XDpi,
+  YDpi: Word; const CallBackData: Pointer);
+begin
+    FScanInfo.TifGraphic.AssignFromDibHandle(DibHandle);
+    FScanInfo.TifGraphic.XDotsPerInch := XDpi;
+    FScanInfo.TifGraphic.YDotsPerInch := YDpi;
+
+    if FScanInfo.PageCount = 0 then
+        FScanInfo.TifGraphic.SaveToFile(FScanInfo.TifFileName)
+    else
+        FScanInfo.TifGraphic.AppendToFile(FScanInfo.TifFileName);
+    Inc(FScanInfo.PageCount);
+end;
+
+procedure TdlgScanImport.btnAbortClick(Sender: TObject);
+begin
+  inherited;
+  Close;
+end;
+
+end.

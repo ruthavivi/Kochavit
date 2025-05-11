@@ -1,0 +1,104 @@
+unit GnrlFreze;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, DBTables, StdCtrls, Mask, DBCtrls, Buttons, ExtCtrls, edbcomps,
+  ComCtrls;
+
+type
+  TfrmGnrlFreze = class(TForm)
+    StaticText1: TStaticText;
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    dsFreze: TDataSource;
+    rgSlct: TRadioGroup;
+    tbFreze: TEDBTable;
+    tbFrezeId: TAutoIncField;
+    tbFrezeClientId: TIntegerField;
+    tbFrezeCarId: TIntegerField;
+    tbFrezeDriverId: TIntegerField;
+    tbFrezeMoed: TDateField;
+    edMoed: TDateTimePicker;
+    procedure FormCreate(Sender: TObject);
+    procedure tbFrezeMoedSetText(Sender: TField; const Text: String);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure rgSlctClick(Sender: TObject);
+  private
+    Caller: String;
+    procedure SetValue;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGnrlFreze: TfrmGnrlFreze;
+
+implementation
+uses
+  ClientList, CarList, DriverList, MainDM, KbFunc;
+{$R *.dfm}
+
+procedure TfrmGnrlFreze.FormCreate(Sender: TObject);
+begin
+  Caller := Owner.Name;
+end;
+
+procedure TfrmGnrlFreze.rgSlctClick(Sender: TObject);
+begin
+  if (rgSlct.ItemIndex = 1) then
+  begin
+    edMoed.Enabled := True;
+//    SetValue;
+    edMoed.SetFocus;
+  end
+  else
+  begin
+    edMoed.Enabled := False;
+    tbFreze.Close;
+  end
+end;
+
+procedure TfrmGnrlFreze.SetValue;
+begin
+//  tbFreze.Open;
+//  tbFreze.Append;
+//  if (Caller = 'frmClientList') then
+//    tbFrezeClientId.AsInteger := dmMain.tbClientId.AsInteger
+//  else if (Caller = 'frmCarList') then
+//    tbFrezeCarId.AsInteger := dmMain.qrCarID.AsInteger
+//  else if (Caller = 'frmDriverList') then
+//    tbFrezeDriverId.AsInteger := dmMain.qrDriverID.AsInteger;
+end;
+
+procedure TfrmGnrlFreze.tbFrezeMoedSetText(Sender: TField;
+  const Text: String);
+begin
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TfrmGnrlFreze.BitBtn2Click(Sender: TObject);
+begin
+  if (tbFreze.State = dsInsert) then
+    tbFreze.Post;
+end;
+
+procedure TfrmGnrlFreze.BitBtn1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmGnrlFreze.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  if tbFreze.Active then
+    tbFreze.Close;
+  Action := caFree;
+end;
+
+end.

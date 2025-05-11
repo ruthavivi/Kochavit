@@ -1,0 +1,186 @@
+unit WrnTofes;
+
+interface
+
+uses
+  Classes, SysUtils, Forms, StrUtils, WordFunc, WrnList, WordVer,
+  KbFunc, DbTables, WrnListDM, edbcomps;
+
+  function  GetTofesDoc(pType: String): String;
+  function  GetSetNextNo: Integer;
+  procedure ProccessTofes;
+  procedure InsertData(pI: String);
+  procedure PrintSelected(pSelectedIdList: TStringList);
+  procedure PrintAll;
+  procedure OpenWordFile;
+  procedure InsertMainData;
+  procedure InsertSubData(pPosition: String; pQr: TEDBquery);
+var
+  NoBkr: Integer;
+  NumberBrCode, Remark: String;
+  WorkFile: OleVariant;
+  Ver: Integer;
+  WordObj: TWordObj;
+
+implementation
+
+procedure ProccessTofes(pSelectedIdList: TStringList);
+begin
+  Ver := GetCurrentWordMajorVersion;
+  WordObj := TWordObj.Create;
+  WordObj.ConnectWord;
+  with dmWrnList do
+  begin
+    try
+      qrTofesMain.Open;
+      qrTofesLikuy.Open;
+      qrTofesTipul.Open;
+      qrTofesHeiter.Open;
+      if (pSelectedIdList.Count > 0) then
+        PrintSelected(pSelectedIdList)
+      else
+        PrintAll;
+    finally
+      qrTofesMain.Close;
+      qrTofesLikuy.Close;
+      qrTofesTipul.Close;
+      qrTofesHeiter.Close;
+      WordObj.Free;
+    end;
+  end;
+end;
+
+function GetTofesDoc(pType: String): String;
+begin
+  Result := 'Tofes.Doc';
+  with dmWrnList do
+  begin
+    try
+      qrGnrl.SQL.Text := 'SELECT Doc FROM KTblType ' +
+                        'WHERE Type = ' + QuotedStr(pType);
+      qrGnrl.Open;
+      if not qrGnrl.Eof then
+        Result := qrGnrl.FieldByName('Doc').AsString;
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+function GetSetNextNo: Integer;
+begin
+  with dmWrnList do
+  begin
+    try
+      qrGnrl.SQL.Text := 'SELECT NextNoBkr FROM KDefault';
+      qrGnrl.Open;
+      Result := qrGnrl.FieldByName('NextNoBkr').AsInteger;
+      qrGnrl.Close;
+      qrGnrl.SQL.Text := 'UPDATE KDefault SET NextNoBkr = ' + IntToStr(Result + 1);
+      qrGnrl.ExecSQL;
+    finally
+      qrGnrl.Close;
+    end;
+  end;
+end;
+
+procedure PrintSelected(pSelectedIdList: TStringList);
+var
+  I: Integer;
+begin
+  for I := 0 to pSelectedIdList.Count - 1 do
+  begin
+    OpenWordFile;
+    dmWrnList.qrTofesMain.Locate('Id', pSelectedIdList[I], []);
+    InsertMainData;
+
+    WordObj.CloseDoc;
+  end;
+end;
+
+procedure PrintAll;
+begin
+  OpenWordFile;
+  while not dmWrnList.qrTofesMain.Eof do
+  begin
+    InsertMainData;
+    dmWrnList.qrTofesMain.Next;
+  end;
+  WordObj.CloseDoc;
+end;
+
+procedure OpenWordFile;
+begin
+  NoBkr := GetSetNextNo;
+  WorkFile := ExtractFilePath(Application.ExeName) + 'Docs\Tofes\' +
+                GetTofesDoc(dmWrnList.qrTofesMain.FieldByName('Type').AsString);
+  WordObj.OpenDoc(WorkFile);
+end;
+
+procedure InsertMainData;
+var
+  I: Integer;
+  FldName, FldValue: String;
+begin
+  for I := 0 to dmWrnList.qrTofesMain.FieldCount - 1 do
+  begin
+    FldName := dmWrnList.qrTofesMain.Fields[I].FieldName;
+    FldValue := dmWrnList.qrTofesMain.FieldByName(FldName).AsString;
+
+    if (Ver = 9) then
+    begin
+      if ((FldName = 'Number') or (FldName = 'Tel')  or (FldName = 'Tel1')
+           or (FldName = 'TelC'))   then
+        FldValue := RevStr(FldValue);
+    end;
+    if (FldName = 'Number') then
+      NumberBrCode := FldValue;
+    if (FldName = 'Remark') then
+      Remark := FldValue
+    else
+      WordObj.InsertBookMark(FldName, RevStr(FldValue));
+      WordObj.InsertBookMark(FldName +'A', RevStr(FldValue));
+  end;
+end;
+
+procedure InsertSubData(pPosition: String; pQr: TEDBquery);
+var
+  I: Integer;
+  FldValue: String;
+begin
+  if WordObj.ExistBookMark(pPosition) then
+  begin
+    WordObj.InsertBookMark(pPosition, '');
+    while not pQr.Eof do
+    begin
+      FldValue := '';
+      if (pPosition = 'tp') or (pPosition = 'dh') then
+        FldValue := '!';
+      for I := 0 to pQr.FieldCount - 1 do
+        FldValue := FldValue + pQr.Fields[i].AsString;
+
+      WordObj.WriteNewLine(FldValue);
+      pQr.Next;
+    end;
+  end;
+  if (pPosition = 'sp') and (Remark <> '') then
+    WordObj.WriteNewLine(Remark);
+end;
+
+procedure InsertData(pI: String);
+begin
+
+
+  WordObj.InsertBookMark('NoBkr', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NoBkrB', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NoBkrC', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NumberBrCode', NumberBrCode);
+
+  WordObj.InsertBookMark('pI', pI);
+
+//  WordObj.EditDoc;
+  WordObj.PrintDoc('1');
+  WordObj.CloseWord;
+end;
+
+end.

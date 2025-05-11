@@ -1,0 +1,88 @@
+unit CrAcdntReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmCrAcdntReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCrAcdntReport: TfrmCrAcdntReport;
+
+implementation
+uses
+   CrAcdntFilter, CrAcdntRprtSlctDlg, CrAcdntSpssSlctDlg;
+{$R *.dfm}
+
+procedure TfrmCrAcdntReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('AcdntD');
+  SetStatusBar;
+  LoadPosition('CrAcdntRpt', (Sender as TForm));
+end;
+
+procedure TfrmCrAcdntReport.SetStatusBar;
+var
+   procent: Real;
+begin
+   try
+       procent := frmCrAcdntFilter.selectRec /
+                   frmCrAcdntFilter.totalRec * 100;
+   except
+       on EInvalidOp do procent := 0;
+   end;
+
+   StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmCrAcdntFilter.selectRec) +
+       ' תאונות ' + IntToStr(frmCrAcdntFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmCrAcdntReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmCrAcdntFilter.qrFilter, Column);
+end;
+
+procedure TfrmCrAcdntReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmCrAcdntRprtSlctDlg := TfrmCrAcdntRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmCrAcdntReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmCrAcdntSpssSlctDlg := TfrmCrAcdntSpssSlctDlg.Create(Self);
+end;
+
+procedure TfrmCrAcdntReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmCrAcdntFilter.qrFilter);
+end;
+
+procedure TfrmCrAcdntReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('CrAcdntRpt', (Sender as TForm));
+  frmCrAcdntFilter.qrFilter.Close;
+  inherited;
+end;
+
+end.

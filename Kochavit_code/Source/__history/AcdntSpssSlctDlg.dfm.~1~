@@ -1,0 +1,5 @@
+inherited frmGnrlSpssSlctDlg2: TfrmGnrlSpssSlctDlg2
+  Caption = 'frmGnrlSpssSlctDlg2'
+  PixelsPerInch = 96
+  TextHeight = 13
+end

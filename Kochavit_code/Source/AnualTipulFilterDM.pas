@@ -1,0 +1,43 @@
+unit AnualTipulFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmAnualTipulFilter = class(TdmGnrlFilter)
+    qrFilterCod: TIntegerField;
+    qrFilterShem: TStringField;
+    qrFilterOved: TStringField;
+    qrFilterNumber: TStringField;
+    qrFilterContact: TStringField;
+    qrFilterAtar: TStringField;
+    qrFilterJan_Day: TIntegerField;
+    qrFilterFeb_Day: TIntegerField;
+    qrFilterMar_Day: TIntegerField;
+    qrFilterApr_Day: TIntegerField;
+    qrFilterMay_Day: TIntegerField;
+    qrFilterJun_Day: TIntegerField;
+    qrFilterJul_Day: TIntegerField;
+    qrFilterAug_Day: TIntegerField;
+    qrFilterSep_Day: TIntegerField;
+    qrFilterOct_Day: TIntegerField;
+    qrFilterNov_Day: TIntegerField;
+    qrFilterDec_Day: TIntegerField;
+    qrFilterType: TStringField;
+    qrFilterTel: TStringField;
+  private
+    { Private declarations }
+  public
+  end;
+
+var
+  dmAnualTipulFilter: TdmAnualTipulFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

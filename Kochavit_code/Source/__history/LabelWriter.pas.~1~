@@ -1,0 +1,65 @@
+unit LabelWriter;
+
+interface
+
+uses
+  ComObj, Dymo_TLB, Classes, Shlobj, Windows, SysUtils;
+
+  procedure SetSpecialPath;
+  procedure PrintLabel(pText: WideString);
+  procedure PrintLM(pText: WideString);
+
+var
+  DL: IDymoAddIn4;
+  LB: IDymoLabels;
+  LM: TDymoTape;
+  LabelFile: String;
+
+const
+  //Dymo Library classes names:
+  IDymoAddInName = 'Dymo.DymoAddIn';
+  IDymoLabelsName = 'Dymo.DymoLabels';
+
+implementation
+
+//const LabelFile = 'C:\Documents and Settings\All Users\Documents\DYMO Label\Label Files\MP (11354).LWL';
+
+procedure SetSpecialPath;
+var
+   r: Bool;
+   path: array[0..Max_Path] of Char;
+begin
+  r := ShGetSpecialFolderPath(0, path, CSIDL_COMMON_DOCUMENTS, False) ;
+  if not r then
+  raise
+    Exception.Create('Could not find MyDocuments folder location.') ;
+
+  LabelFile := Path + 'DYMO Label\Label Files\MP (11354).LWL';
+end;
+
+procedure PrintLabel(pText: WideString);
+begin
+  DL := CreateOleObject(IDymoAddInName) as IDymoAddIn5;
+  LB := CreateOleObject(IDymoLabelsName) as IDymoLabels;
+  SetSpecialPath;
+  DL.Open(LabelFile); // open the label file.
+  LB.SetField('Text', pText); // Send the text from the Memo
+// control.
+  DL.Print(1, True); // Print one label.
+end;
+
+
+procedure PrintLM(pText: WideString);
+begin
+  try
+    LM := TDymoTape.Create(nil);
+    LM.New;
+    LM.SetTapeWidth(2);
+    LM.AddText(pText, 'Arial, 36, bold', false, false);
+    LM.Print(1);
+  finally
+    LM.Free;
+  end;
+end;
+
+end.

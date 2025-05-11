@@ -1,0 +1,196 @@
+unit MainPrintDM;
+
+interface
+
+uses
+  SysUtils, Classes, Forms, edbcomps, DB, RpCon, RpConDS, RpRave, RpDefine,
+  RpBase, RpSystem, frxClass, frxDBSet;
+
+type
+  TdmMainPrint = class(TDataModule)
+    RvSystem: TRvSystem;
+    RvRprt: TRvProject;
+    qrToPrint: TEDBQuery;
+    rqGnrl: TRvDataSetConnection;
+    qrToPrintDtl1: TEDBQuery;
+    rqGnrlDtl1: TRvDataSetConnection;
+    qrToPrintDtl2: TEDBQuery;
+    rqGnrlDtl2: TRvDataSetConnection;
+    qrGnrl: TEDBQuery;
+    frdbGnrl: TfrxDBDataset;
+    frdbGnrlDtl1: TfrxDBDataset;
+    frdbGnrlDtl2: TfrxDBDataset;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    Path, PathFrx, ReportName: String;
+    FromDate, TillDate, TillDateDtl: TDate;
+    Oved, Atar: String;
+    Print: Boolean;
+    function  GetTillDateDtl: TDate;
+    procedure SetRvSysremState(pPreview: Boolean);
+    procedure SetRprtParameter(pDate, pAtar, pOved: String); overload;
+    procedure SetRprtParameter; overload;
+    procedure SetSqlParam(pSql: String; pDateA, pDateZ: TDate; pQr: TEDBQuery); overload;
+    procedure SetSqlParam(pSql: String; pQueryList: TStrings); overload;
+    procedure RunReport(pRprtName: String);
+    procedure PrintReport;
+  public
+    procedure RprtPrint(pSql, pRprtName, pAtar, pOved: String;
+        pDateA, pDateZ: TDate; pQr: TEDBQuery; pPreview: Boolean); overload;
+    procedure RprtPrint(pSql, pRprtName, pAtar, pOved: String;
+        pFromDate, pTillDate: TDate; pQueryList: TStrings; pPreview: Boolean); overload;
+  end;
+
+var
+  dmMainPrint: TdmMainPrint;
+
+implementation
+uses
+  MainDM, DataDM;
+{$R *.dfm}
+
+{ TdmMainPrint }
+procedure TdmMainPrint.DataModuleCreate(Sender: TObject);
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'SQL\';
+  PathFrx := ExtractFilePath(Application.ExeName) + 'Report\';
+  RvRprt.ProjectFile := ExtractFilePath(Application.ExeName) +
+        'Reports\KvRprt.rav';
+end;
+
+procedure TdmMainPrint.RprtPrint(pSql, pRprtName, pAtar, pOved: String;
+  pFromDate, pTillDate: TDate; pQueryList: TStrings; pPreview: Boolean);
+begin
+  Oved := pOved;
+  Atar := pAtar;
+  FromDate := pFromDate;
+  TillDate := pTillDate;
+  TillDateDtl := GetTillDateDtl;
+  SetRvSysremState(pPreview);
+  Print := True;
+  if pPreview then
+    Print := False;
+  ReportName := pRprtName;
+  SetSqlParam(pSql, pQueryList);
+  SetRprtParameter;
+//  RunReport(pRprtName);
+  PrintReport;
+end;
+
+function TdmMainPrint.GetTillDateDtl: TDate;
+begin
+  Result := IncMonth(Date);
+  qrGnrl.SQL.Text := 'SELECT MonthLmt FROM KDefault';
+  try
+    qrGnrl.Open;
+    Result := IncMonth(Date, qrGnrl.FieldByName('MonthLmt').AsInteger);
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmMainPrint.SetRvSysremState(pPreview: Boolean);
+begin
+  RvSystem.DefaultDest := rdPrinter;
+  if pPreview then
+    RvSystem.DefaultDest := rdPreview;
+end;
+
+procedure TdmMainPrint.SetRprtParameter;
+var
+  Header1, Header2: String;
+  fHeader1, fHeader2: TfrxMemoView;
+begin
+  Header1 := 'מתאריך: ' + DateToStr(FromDate) + ' עד תאריך: ' + DateToStr(TillDate);
+  Header2 := '';
+  if Atar <> 'כל האתרים' then
+    Header2 := Header2 + '  אתר ביקורת: ' + Atar;
+  if Oved <> 'כל המטפלים' then
+    Header2 := Header2 + ' שם המטפל: ' + Oved;
+  RvRprt.SetParam('SubHeader', Header1);
+  RvRprt.SetParam('AutHeader', Header2);
+
+  dmData.frxReport.LoadFromFile(PathFrx + ReportName + '.fr3');
+  dmData.frxReport.PrepareReport;
+  if (Header1 <> '') then
+  begin
+    fHeader1 := dmData.frxReport.FindObject('mmHeader1') as TfrxMemoView;
+    fHeader1.Text := Header1;
+  end;
+  if (Header2 <> '') then
+  begin
+    fHeader2 := dmData.frxReport.FindObject('mmHeader2') as TfrxMemoView;
+    fHeader2.Text := Header2;
+  end;
+end;
+
+procedure TdmMainPrint.SetSqlParam(pSql: String; pQueryList: TStrings);
+begin
+  qrToPrint.SQL.LoadFromFile(Path+pSql);
+  qrToPrint.SQL.Add(pQueryList[pQueryList.Count-2]);
+  qrToPrint.SQL.Add(pQueryList[pQueryList.Count-1]);
+  qrToPrint.ParamByName('prmDateF').AsDate := FromDate;
+  qrToPrint.ParamByName('prmDateP').AsDate := TillDate;
+  qrToPrintDtl2.ParamByName('prmDateP').AsDate := TillDateDtl;
+  if not dmMain.SelectAll then
+    qrToPrint.ParamByName('Id').AsInteger := dmMain.qrClientList.FieldByName('Id').AsInteger;
+end;
+
+procedure TdmMainPrint.RunReport(pRprtName: String);
+begin
+  try
+    qrToPrint.Open;
+    RvRprt.Open;
+    RvRprt.ExecuteReport(pRprtName);
+  finally
+    RvRprt.Close;
+    qrToPrint.Close;
+  end;
+end;
+
+procedure TdmMainPrint.PrintReport;
+begin
+  dmData.frxReport.PrepareReport();
+  if Print then
+    dmData.frxReport.Print
+  else
+    dmData.frxReport.ShowReport();
+end;
+
+procedure TdmMainPrint.RprtPrint(pSql, pRprtName, pAtar, pOved: String; pDateA,
+  pDateZ: TDate; pQr: TEDBQuery; pPreview: Boolean);
+begin
+  SetRvSysremState(pPreview);
+  SetRprtParameter(DateToStr(pDateA), pAtar, pOved);
+  SetSqlParam(pSql, pDateA, pDateZ, pQr);
+  RunReport(pRprtName);
+end;
+
+procedure TdmMainPrint.SetRprtParameter(pDate, pAtar, pOved: String);
+var
+  Header1, Header2: String;
+begin
+  Header1 := 'עד תאריך: ' + pDate;
+  Header2 := '';
+  if pAtar <> 'כל האתרים' then
+    Header2 := Header2 + '  אתר ביקורת: ' + pAtar;
+  if pOved <> 'כל המטפלים' then
+    Header2 := Header2 + ' שם המטפל: ' + pOved;
+  RvRprt.SetParam('SubHeader', Header1);
+  RvRprt.SetParam('AutHeader', Header2);
+end;
+
+procedure TdmMainPrint.SetSqlParam(pSql: String; pDateA, pDateZ: TDate;
+  pQr: TEDBQuery);
+begin
+  qrToPrint.SQL.LoadFromFile(Path+pSql);
+  qrToPrint.SQL.Add(pQr.SQL[pQr.SQL.Count -2]);
+  qrToPrint.SQL.Add(pQr.SQL[pQr.SQL.Count -1]);
+  if not dmMain.SelectAll then
+    qrToPrint.ParamByName('Id').AsInteger := dmMain.qrClientList.FieldByName('Id').AsInteger;
+  qrToPrint.ParamByName('prmDateP').AsDate := pDateA;
+  qrToPrint.ParamByName('prmDateF').AsDate := pDateZ;
+  qrToPrintDtl2.ParamByName('prmDateP').AsDate := pDateA;
+end;
+
+end.

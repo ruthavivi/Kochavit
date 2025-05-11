@@ -1,0 +1,205 @@
+inherited dmClientFilter: TdmClientFilter
+  OldCreateOrder = True
+  inherited qrFilter: TEDBQuery
+    ReadOnly = True
+    SQL.Strings = (
+      
+        'SELECT Cl.*, Oved, OfenPay, Msira, COUNT(Id) AS CarNum, SUM(Shum' +
+        ') AS CarSum, SUM(Shum) / COUNT(Id) AS ShumPerCar'
+      'FROM KClient Cl        '
+      'LEFT JOIN KTblOved tV ON Cl.OvedId = tV.Id'
+      'LEFT JOIN KTblOfenPay tP ON Cl.OfenPayId = tP.Id'
+      'LEFT JOIN KCar Cr ON Cl.Id = Cr.ClientId       '
+      'WHERE Pail = True'
+      'GROUP BY Cl.Id')
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterCod: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1497#1491#1493#1512#1497
+      FieldName = 'Cod'
+    end
+    object qrFilterHp: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1495#1489#1512#1492
+      FieldName = 'Hp'
+    end
+    object qrFilterOpenDate: TDateField
+      DisplayLabel = #1502#1493#1506#1491' '#1512#1497#1513#1493#1501
+      FieldName = 'OpenDate'
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrFilterBahalim1: TStringField
+      DisplayLabel = #1513#1501' '#1489#1506#1500#1497#1501' 1'
+      FieldName = 'Bahalim1'
+      Size = 30
+    end
+    object qrFilterTelB1: TStringField
+      DisplayLabel = #1496#1500'. '#1489#1506#1500#1497#1501' 1'
+      FieldName = 'TelB1'
+      Size = 11
+    end
+    object qrFilterBahalim2: TStringField
+      DisplayLabel = #1513#1501' '#1489#1506#1500#1497#1501' 2'
+      FieldName = 'Bahalim2'
+      Size = 30
+    end
+    object qrFilterTelB2: TStringField
+      DisplayLabel = #1496#1500' '#1489#1506#1500#1497#1501' 2'
+      FieldName = 'TelB2'
+      Size = 11
+    end
+    object qrFilterKtovet: TStringField
+      DisplayLabel = #1499#1514#1493#1489#1514
+      FieldName = 'Ktovet'
+      Size = 30
+    end
+    object qrFilterIsuv: TStringField
+      DisplayLabel = #1497#1513#1493#1489
+      FieldName = 'Isuv'
+      Size = 15
+    end
+    object qrFilterMikud: TIntegerField
+      DisplayLabel = #1502#1497#1511#1493#1491
+      FieldName = 'Mikud'
+    end
+    object qrFilterTel1: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503' 1'
+      FieldName = 'Tel1'
+      Size = 12
+    end
+    object qrFilterTel2: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503' 2'
+      FieldName = 'Tel2'
+      Size = 11
+    end
+    object qrFilterFax: TStringField
+      DisplayLabel = #1508#1511#1505
+      FieldName = 'Fax'
+      Size = 10
+    end
+    object qrFilterEMail: TStringField
+      DisplayLabel = #1491#1493#1488'"'#1500' 1'
+      FieldName = 'EMail'
+      Size = 30
+    end
+    object qrFilterEMailX: TStringField
+      DisplayLabel = #1491#1493#1488'"'#1500' 2'
+      FieldName = 'EMailX'
+      Size = 30
+    end
+    object qrFilterContact: TStringField
+      DisplayLabel = #1488#1497#1513' '#1511#1513#1512
+      FieldName = 'Contact'
+      Size = 30
+    end
+    object qrFilterTelC: TStringField
+      DisplayLabel = #1496#1500'. '#1488#1497#1513#1512' '#1511#1513#1512
+      FieldName = 'TelC'
+      Size = 11
+    end
+    object qrFilterAcounter: TStringField
+      DisplayLabel = #1502'. '#1495#1513#1489#1493#1504#1493#1514
+      FieldName = 'Acounter'
+      Size = 30
+    end
+    object qrFilterTelA: TStringField
+      DisplayLabel = #1496#1500'. '#1502'. '#1495#1513#1489#1493#1504#1493#1514
+      FieldName = 'TelA'
+      Size = 11
+    end
+    object qrFilterProfesion: TStringField
+      DisplayLabel = #1502'. '#1502#1511#1510#1493#1506#1497
+      FieldName = 'Profesion'
+      Size = 30
+    end
+    object qrFilterTelP: TStringField
+      DisplayLabel = #1496#1500'. '#1502'. '#1502#1497#1511#1510#1493#1506#1497
+      FieldName = 'TelP'
+      Size = 11
+    end
+    object qrFilterZeutP: TIntegerField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514' '#1502'. '#1502#1511#1510#1493#1506#1497
+      FieldName = 'ZeutP'
+    end
+    object qrFilterKtovetP: TStringField
+      DisplayLabel = #1499#1514#1493#1489#1514' '#1502'. '#1495#1504#1497#1492
+      FieldName = 'KtovetP'
+      Size = 30
+    end
+    object qrFilterSizeP: TIntegerField
+      DisplayLabel = #1513#1496#1495' '#1502'. '#1495#1504#1497#1492
+      FieldName = 'SizeP'
+    end
+    object qrFilterPeriodPay: TSmallintField
+      DisplayLabel = #1514#1511#1493#1508#1514' '#1514#1513#1500#1493#1501
+      FieldName = 'PeriodPay'
+    end
+    object qrFilterCreditPay: TSmallintField
+      DisplayLabel = #1497#1502#1497' '#1488#1513#1512#1488#1497
+      FieldName = 'CreditPay'
+    end
+    object qrFilterOvedId: TSmallintField
+      FieldName = 'OvedId'
+    end
+    object qrFilterRemark: TMemoField
+      FieldName = 'Remark'
+      BlobType = ftMemo
+    end
+    object qrFilterDept: TFloatField
+      DisplayLabel = #1495#1493#1489' '#1499#1505#1508#1497
+      FieldName = 'Dept'
+      DisplayFormat = '0.00'
+    end
+    object qrFilterFreze: TBooleanField
+      FieldName = 'Freze'
+    end
+    object qrFilterMovil: TStringField
+      DisplayLabel = #1512#1513#1497#1493#1503' '#1502#1493#1489#1497#1500
+      FieldName = 'Movil'
+      Size = 30
+    end
+    object qrFilterZeutM: TIntegerField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514' '#1512'. '#1502#1493#1489#1497#1500
+      FieldName = 'ZeutM'
+    end
+    object qrFilterOfenPayId: TIntegerField
+      FieldName = 'OfenPayId'
+    end
+    object qrFilterPail: TBooleanField
+      FieldName = 'Pail'
+    end
+    object qrFilterStamp: TDateTimeField
+      FieldName = 'Stamp'
+    end
+    object qrFilterOved: TStringField
+      DisplayLabel = #1488#1495#1512#1488#1497' '#1490#1489#1497#1492
+      FieldName = 'Oved'
+      Size = 25
+    end
+    object qrFilterOfenPay: TStringField
+      DisplayLabel = #1488#1493#1508#1503' '#1514#1513#1500#1493#1501
+      FieldName = 'OfenPay'
+    end
+    object qrFilterCarNum: TIntegerField
+      DisplayLabel = #1505#1492'"'#1499' '#1512#1499#1489#1497#1501
+      FieldName = 'CarNum'
+    end
+    object qrFilterCarSum: TFloatField
+      DisplayLabel = #1505#1492'"'#1499' '#1500#1514#1513#1500#1493#1501
+      FieldName = 'CarSum'
+      DisplayFormat = '0.00'
+    end
+    object qrFilterShumPerCar: TFloatField
+      FieldName = 'ShumPerCar'
+    end
+    object qrFilterMsira: TBooleanField
+      DisplayLabel = #1502#1505#1497#1512#1492' '#1489#1491#1493#1488#1512
+      FieldName = 'Msira'
+      OnGetText = qrFilterMsiraGetText
+    end
+  end
+end

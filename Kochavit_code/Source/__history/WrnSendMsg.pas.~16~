@@ -1,0 +1,158 @@
+unit WrnSendMsg;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlSendMsg, Data.DB, edbcomps,
+  Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, DateUtils;
+
+type
+  TdlgWrnSendMsg = class(TdlgGnrlSendMsg)
+    Label1: TLabel;
+    edTill: TDateTimePicker;
+    qrWrnCar: TEDBQuery;
+    qrWrnDrv: TEDBQuery;
+    dsClient: TDataSource;
+    qrGnrl1: TEDBQuery;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+  private
+    procedure SetParams;
+    procedure AddTirgum(lstPerut: TStringList);
+    function HaveEMails: Boolean;
+    procedure SendMessage(pWorkFile: OleVariant; pButton: String;
+        arDSet: array of TDataSet; arStrt: array of String;
+        arTblNum: array of Integer; arList: array of TStringList;
+        lstPerut: TStringList);
+    procedure SaveSendMail;
+  public
+    { Public declarations }
+  end;
+
+var
+  dlgWrnSendMsg: TdlgWrnSendMsg;
+
+implementation
+uses
+   MainDM, ClientEditDM, ClientEdit, DocUtils;
+{$R *.dfm}
+
+procedure TdlgWrnSendMsg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  edTill.DateTime := EndOfTheMonth(IncDay(Date, 20));
+  if (Owner.Name = 'frmClientEdit') then
+    qrGnrl.DataSource := dmClientEdit.dsClient
+  else
+  begin
+    qrGnrl.DataSource := dmMain.dsClient;
+    btnPreview.Enabled := False;
+  end;
+end;
+
+procedure TdlgWrnSendMsg.btnPrintClick(Sender: TObject);
+var
+  WorkFile: OleVariant;
+  lstPerut: TStringList;
+  arDSet: array of TDataSet;
+  arStrt: array of String;
+  arTblNum: array of Integer;
+  arList: array of TStringList;
+begin
+  WorkFile := ExtractFilePath(Application.ExeName) + 'Docs\Wrn\Message.DOT';
+  lstPerut := TStringList.Create;
+  try
+    Screen.Cursor := crHourGlass;
+    SetLength(arDSet, 2);
+    arDSet[0] := qrWrnCar;
+    arDSet[1] := qrWrnDrv;
+    SetLength(arStrt, 2);
+    arStrt[0] := 'sc';
+    arStrt[1] := 'sd';
+    SetLength(arTblNum, 2);
+    arTblNum[0] := 1;
+    arTblNum[1] := 2;
+    SetLength(arList, 1);
+    arList[0] := lstPerut;
+    SetParams;
+
+    AddTirgum(lstPerut);
+    qrGnrl.Open;
+    qrWrnCar.Open;
+    qrWrnDrv.Open;
+    if (Owner.Name = 'frmeClientsList') then
+    begin
+      dmMain.qrClientList.First;
+      while not dmMain.qrClientList.Eof do
+      begin
+        if not dmMain.qrClientList.FieldByName('Freze').AsBoolean and HaveEMails then
+          SendMessage(WorkFile, (Sender as TBitBtn).Name, arDSet, arStrt,
+                arTblNum, arList, lstPerut);
+        dmMain.qrClientList.Next;
+      end;
+    end
+    else
+      SendMessage(WorkFile, (Sender as TBitBtn).Name, arDSet, arStrt,
+        arTblNum, arList, lstPerut);
+  finally
+    qrWrnCar.Close;
+    qrWrnDrv.Close;
+    qrGnrl.Close;
+    Screen.Cursor := crDefault;
+  end;
+  Close;
+end;
+
+function TdlgWrnSendMsg.HaveEMails: Boolean;
+begin
+  Result := False;
+  if (qrGnrl.FieldByName('EMail').AsString <> '') and
+      (qrGnrl.FieldByName('EMailX').AsString <> '') then
+    Result := True;
+end;
+
+procedure TdlgWrnSendMsg.SendMessage(pWorkFile: OleVariant; pButton: String;
+  arDSet: array of TDataSet; arStrt: array of String;
+  arTblNum: array of Integer; arList: array of TStringList;
+  lstPerut: TStringList);
+var
+  OneDoc: TDocUtils;
+  ToEmails: TStringList;
+begin
+  ToEmails := TStringList.Create;
+  ToEmails.Add(qrGnrl.FieldByName('EMail').AsString);
+  ToEmails.Add(qrGnrl.FieldByName('EMailX').AsString);
+  OneDoc := TDocUtils.Create(pButton, 'מצורפת הודעה עם רשימת הטיפולים לתקופה הקרובה',
+    1, False, ToEmails, pWorkFile);
+  try
+    OneDoc.SendDoc(qrGnrl, arDSet, arStrt, arTblNum, arList, nil);
+    if (pButton = 'btnPrint') or (pButton = 'btnEmail') then
+      SaveSendMail;
+  finally
+    ToEmails.Free;
+    OneDoc.Free;
+  end;
+end;
+
+procedure TdlgWrnSendMsg.SetParams;
+begin
+  qrWrnCar.ParamByName('pTillDate').AsDate := edTill.DateTime;
+  qrWrnDrv.ParamByName('pTillDate').AsDate := edTill.DateTime;
+end;
+
+procedure TdlgWrnSendMsg.AddTirgum(lstPerut: TStringList);
+begin
+  lstPerut.Clear;
+  lstPerut.Add('Moed='+FormatDateTime('dd/mmmm/yyyy', edTill.DateTime));
+end;
+
+procedure TdlgWrnSendMsg.SaveSendMail;
+begin
+  qrGnrl1.SQL.Text := 'INSERT INTO KClientMailSend '+
+      '(ClientId , Subject) VALUES (' + dmMain.qrClientListId.AsString + ', '+
+      QuotedStr('הודעה על רשימת טיפולים קרובים') + ')';
+  qrGnrl1.ExecSQL;
+end;
+
+end.

@@ -1,0 +1,143 @@
+object frmGnrlFreze: TfrmGnrlFreze
+  Left = 303
+  Top = 212
+  BiDiMode = bdRightToLeft
+  BorderStyle = bsDialog
+  Caption = #1514#1511#1493#1508#1514' '#1492#1511#1508#1488#1492
+  ClientHeight = 152
+  ClientWidth = 212
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  ParentBiDiMode = False
+  Position = poScreenCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  DesignSize = (
+    212
+    152)
+  PixelsPerInch = 96
+  TextHeight = 13
+  object StaticText1: TStaticText
+    Left = 0
+    Top = 0
+    Width = 212
+    Height = 20
+    Align = alTop
+    Alignment = taCenter
+    BiDiMode = bdLeftToRight
+    Caption = #1513#1495#1512#1493#1512' '#1502#1492#1511#1508#1488#1492
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlue
+    Font.Height = -13
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentBiDiMode = False
+    ParentFont = False
+    TabOrder = 0
+    ExplicitWidth = 101
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 111
+    Width = 212
+    Height = 41
+    Align = alBottom
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 1
+    DesignSize = (
+      212
+      41)
+    object BitBtn1: TBitBtn
+      Left = 16
+      Top = 8
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1489#1497#1496#1493#1500
+      DoubleBuffered = True
+      Kind = bkCancel
+      ParentDoubleBuffered = False
+      TabOrder = 0
+      OnClick = BitBtn1Click
+    end
+    object BitBtn2: TBitBtn
+      Left = 120
+      Top = 8
+      Width = 75
+      Height = 25
+      Anchors = [akTop, akRight]
+      Caption = #1488#1497#1513#1493#1512
+      DoubleBuffered = True
+      Kind = bkOK
+      ParentDoubleBuffered = False
+      TabOrder = 1
+      OnClick = BitBtn2Click
+    end
+  end
+  object rgSlct: TRadioGroup
+    Left = 0
+    Top = 20
+    Width = 212
+    Height = 91
+    Align = alClient
+    ItemIndex = 0
+    Items.Strings = (
+      #1500#1488' '#1502#1493#1490#1491#1512
+      #1513#1495#1512#1493#1512' '#1489#1514#1488#1512#1497#1498':')
+    TabOrder = 2
+    OnClick = rgSlctClick
+  end
+  object edMoed: TDBEdit
+    Left = 16
+    Top = 80
+    Width = 81
+    Height = 21
+    Anchors = [akTop, akRight]
+    BiDiMode = bdLeftToRight
+    DataField = 'Moed'
+    DataSource = dsFreze
+    Enabled = False
+    ParentBiDiMode = False
+    TabOrder = 3
+  end
+  object dsFreze: TDataSource
+    DataSet = tbFreze
+    Left = 64
+    Top = 36
+  end
+  object tbFreze: TEDBTable
+    DatabaseName = 'KB'
+    TableName = 'KFreze.DB'
+    Left = 16
+    Top = 36
+    object tbFrezeId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbFrezeClientId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ClientId'
+    end
+    object tbFrezeCarId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CarId'
+    end
+    object tbFrezeDriverId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'DriverId'
+    end
+    object tbFrezeMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+      OnSetText = tbFrezeMoedSetText
+      EditMask = '!99/99/9999;1; '
+    end
+  end
+end

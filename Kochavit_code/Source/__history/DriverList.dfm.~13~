@@ -1,0 +1,137 @@
+inherited frmDriverList: TfrmDriverList
+  Left = 9
+  Top = 294
+  Caption = #1512#1513#1497#1502#1514' '#1504#1492#1490#1497#1501
+  ClientHeight = 426
+  ClientWidth = 647
+  OldCreateOrder = True
+  ScreenSnap = True
+  SnapBuffer = 20
+  ExplicitWidth = 655
+  ExplicitHeight = 472
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 647
+    ParentShowHint = False
+    ShowHint = True
+    ExplicitWidth = 647
+    inherited edSearch: TMaskEdit
+      Width = 97
+      OnChange = edSearchChange
+      ExplicitWidth = 97
+    end
+    inherited ToolButton3: TToolButton
+      Left = 246
+      ExplicitLeft = 246
+    end
+    inherited ToolButton4: TToolButton
+      Left = 283
+      ExplicitLeft = 283
+    end
+    inherited ToolButton5: TToolButton
+      Left = 320
+      ExplicitLeft = 320
+    end
+    inherited ToolButton6: TToolButton
+      Left = 357
+      ExplicitLeft = 357
+    end
+  end
+  inherited Panel1: TPanel
+    Width = 647
+    Height = 359
+    ExplicitWidth = 647
+    ExplicitHeight = 359
+    inherited DBGrid: TDBGrid
+      Width = 645
+      Height = 357
+      DataSource = dsList
+      OnDrawColumnCell = DBGridDrawColumnCell
+      OnDblClick = acEditExecute
+      OnTitleClick = DBGridTitleClick
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'CodDrv'
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'ShemD'
+          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Zeut'
+          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'LicenceNum'
+          Title.Caption = #1502#1505#39' '#1512#1513#1497#1493#1503
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Shem'
+          Width = 64
+          Visible = True
+        end>
+    end
+  end
+  inherited StatusBar: TStatusBar
+    Top = 407
+    Width = 647
+    Panels = <
+      item
+        Width = 150
+      end
+      item
+        Width = 150
+      end
+      item
+        Width = 50
+      end>
+    ExplicitTop = 407
+    ExplicitWidth = 647
+  end
+  inherited ActionList1: TActionList
+    inherited acAppend: TAction
+      OnExecute = acAppendExecute
+      OnUpdate = acAppendUpdate
+    end
+    inherited acEdit: TAction
+      OnExecute = acEditExecute
+    end
+    inherited acArchive: TAction
+      OnExecute = acArchiveExecute
+    end
+    inherited acDelete: TAction
+      ShortCut = 0
+      OnExecute = acDeleteExecute
+    end
+    inherited acFreze: TAction
+      OnExecute = acFrezeExecute
+      OnUpdate = acFrezeUpdate
+    end
+    inherited DataSetFirst: TDataSetFirst
+      DataSource = dsList
+    end
+    inherited DataSetLast: TDataSetLast
+      DataSource = dsList
+    end
+  end
+  inherited MainMenu1: TMainMenu
+    inherited N1: TMenuItem
+      inherited N3: TMenuItem
+        ShortCut = 13
+      end
+    end
+  end
+  inherited dsList: TDataSource
+    DataSet = dmDriverList.qrDriverList
+  end
+end

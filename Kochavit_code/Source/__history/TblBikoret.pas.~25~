@@ -1,0 +1,177 @@
+unit TblBikoret;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, ActnList, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, MyDBGrid,
+  edbcomps, frxClass, frxDBSet, Vcl.StdActns, System.Actions, System.ImageList;
+
+type
+  TfrmTblBikoret = class(TfrmGnrlTbl)
+    ToolBar2: TToolBar;
+    DBNavigator1: TDBNavigator;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    dsTblScnd: TDataSource;
+    acAppendScnd: TAction;
+    acDeleteScnd: TAction;
+    tbTblID: TAutoIncField;
+    tbTblBikoret: TStringField;
+    dbGridScnd: TMyDBGrid;
+    tbTblScnd: TEDBTable;
+    tbTblScndID: TAutoIncField;
+    tbTblScndIdBikoret: TIntegerField;
+    tbTblScndBikoretDtl: TStringField;
+    frdbBikoret: TfrxDBDataset;
+    frdbBikoretDtl: TfrxDBDataset;
+    PanelHead: TPanel;
+    toolbarHead: TToolBar;
+    DBNavigator2: TDBNavigator;
+    Edit1: TEdit;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    DBGrid1: TDBGrid;
+    tbTblHead: TEDBTable;
+    tbTblHeadId: TAutoIncField;
+    tbTblHeadGroup: TStringField;
+    dsTblHead: TDataSource;
+    tbTblGroupId: TIntegerField;
+    procedure FormCreate(Sender: TObject);
+    procedure acAppendScndExecute(Sender: TObject);
+    procedure tbTblScndBeforePost(DataSet: TDataSet);
+    procedure tbTblBeforeDelete(DataSet: TDataSet);
+    procedure acDeleteScndExecute(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acPrintExecute(Sender: TObject);
+    procedure tbTblScndBeforeInsert(DataSet: TDataSet);
+    procedure tbTblBeforePost(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTblBikoret: TfrmTblBikoret;
+
+implementation
+
+{$R *.dfm}
+uses
+   LogErrorUtil, DialogsHeb, MainDM, UtilsDM;
+
+procedure TfrmTblBikoret.FormCreate(Sender: TObject);
+begin
+  inherited;
+  try
+    tbTblHead.Open;
+    tbTblScnd.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      tbTblScnd.Close;
+      HandelError('TfrmTblBikoret.FormCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TfrmTblBikoret.tbTblBeforePost(DataSet: TDataSet);
+var
+  NewValue: Variant;
+begin
+  NewValue := tbTbl.FieldByName('Bikoret').NewValue;
+  if (NewValue = Null) or (NewValue = '') then
+  begin
+    MessageDlgH('חובה להקליד ערך', mtError, [mbOK], 0, 0);
+    Abort;
+  end
+end;
+
+procedure TfrmTblBikoret.acAppendScndExecute(Sender: TObject);
+begin
+  inherited;
+   tbTblScnd.Append;
+end;
+
+procedure TfrmTblBikoret.tbTblScndBeforePost(DataSet: TDataSet);
+var
+  FieldName: String;
+  NewValue: Variant;
+begin
+  FieldName := 'BikoretDtl';
+  NewValue := tbTblScnd.FieldByName(FieldName).NewValue;
+  if (NewValue = Null) or (NewValue = '') then
+  begin
+    MessageDlgH('חובה להקליד ערך', mtError, [mbOK], 0, 0);
+    Abort;
+  end;
+end;
+
+procedure TfrmTblBikoret.tbTblBeforeDelete(DataSet: TDataSet);
+begin
+  inherited;
+  while not tbTbl.Eof do
+  begin
+    while not tbTblScnd.Eof do
+      tbTblScnd.Delete;
+    tbTbl.Delete;
+  end;
+end;
+
+procedure TfrmTblBikoret.tbTblScndBeforeInsert(DataSet: TDataSet);
+begin
+  inherited;
+   if (tbTbl.State <> dsBrowse) then
+       tbtbl.Post;
+end;
+
+procedure TfrmTblBikoret.acDeleteScndExecute(Sender: TObject);
+begin
+  if KeepIntegrity('BikoretDtlId', tbTblId.AsString, ['KCrTipulDtl', 'KCrTipulDtlHis']) then
+    inherited;
+  if MessageDlgH('לבטל את הערך ' + dbGridScnd.SelectedField.Value,
+           mtConfirmation, [mbYes, mbNo],0, 0) = mrYes then
+    tbTblScnd.Delete;
+end;
+
+procedure TfrmTblBikoret.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpBikoret');
+end;
+
+procedure TfrmTblBikoret.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  inherited;
+   with tbTblScnd do
+   begin
+       if (State in dsEditModes) then
+       begin
+           case MessageDlgH('קיימים נתונים חדשים בטבלה. האם לשמור',
+               mtConfirmation, [mbYes, mbNo, mbCancel], 0, 0) of
+               id_Yes: Post;
+               id_No:  begin
+                           Cancel;
+                           CanClose := True;
+                       end;
+               id_Cancel: CanClose := False;
+           end;
+       end;
+   end;
+end;
+
+procedure TfrmTblBikoret.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   tbTblScnd.Close;
+   tbTblHead.Close;
+  inherited;
+end;
+
+end.

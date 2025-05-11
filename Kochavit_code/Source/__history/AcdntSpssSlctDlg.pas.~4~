@@ -1,0 +1,77 @@
+unit AcdntSpssSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlSpssSlctDlg, edbcomps, DB, RpRave, RpDefine, RpBase, RpSystem,
+  Spin, StdCtrls, Buttons, ExtCtrls, RpCon;
+
+type
+  TfrmAcdntSpssSlctDlg = class(TfrmGnrlSpssSlctDlg)
+    ccChartsAcdnt: TRvCustomConnection;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure ccChartsAcdntGetCols(Connection: TRvCustomConnection);
+    procedure ccChartsAcdntGetRow(Connection: TRvCustomConnection);
+  private
+    procedure SetChart(pLabel, pCmt: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcdntSpssSlctDlg: TfrmAcdntSpssSlctDlg;
+
+implementation
+uses
+  AcdntFilterDM, RPTChart, GnrlSpssChart;
+
+{$R *.dfm}
+
+procedure TfrmAcdntSpssSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('AS');
+end;
+
+procedure TfrmAcdntSpssSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  try
+    SetTotals(IntToStr(dmAcdntFilter.qrFilter.RecordCount), '');
+    LoadSpssSql(dmAcdntFilter.qrFilter.SQL.Text);
+    qrSpss.Open;
+    frmChart := TfrmChart.Create(Self);
+    SetChart(qrSpss.Fields[0].FieldName, 'Num');
+    ExecuteRprt('', Copy((Sender as TBitBtn).Name, 4, 7));
+  finally
+    qrSpss.Close;
+    frmChart.Free;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmAcdntSpssSlctDlg.ccChartsAcdntGetCols(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  Connection.WriteField('ChartAcdnt', dtGraphic, 30, '', '');
+end;
+
+procedure TfrmAcdntSpssSlctDlg.ccChartsAcdntGetRow(
+  Connection: TRvCustomConnection);
+begin
+  inherited;
+  WriteChartData(Connection, frmChart.dcChart);
+end;
+
+procedure TfrmAcdntSpssSlctDlg.SetChart(pLabel, pCmt: String);
+begin
+  frmChart.dcChart.Series[0].DataSource := qrSpss;
+  frmChart.dcChart.Series[0].XLabelsSource := pLabel;
+  frmChart.dcChart.Series[0].YValues.ValueSource := pCmt;
+end;
+
+end.

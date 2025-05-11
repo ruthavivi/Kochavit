@@ -1,0 +1,107 @@
+inherited dmDriverFilter: TdmDriverFilter
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      'SELECT Dr.*, Shem, Hp, Isuv, Tel1, Tel2'
+      'FROM KDriver Dr'
+      'LEFT JOIN KClient Cl ON (Dr.ClientId = Cl.Id)')
+    ReadOnly = True
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterCodDrv: TIntegerField
+      FieldName = 'CodDrv'
+    end
+    object qrFilterZeut: TStringField
+      FieldName = 'Zeut'
+      Size = 11
+    end
+    object qrFilterShemD: TStringField
+      FieldName = 'ShemD'
+      Size = 25
+    end
+    object qrFilterKtovetD: TStringField
+      FieldName = 'KtovetD'
+      Size = 25
+    end
+    object qrFilterIsuvD: TStringField
+      FieldName = 'IsuvD'
+      Size = 15
+    end
+    object qrFilterMikudD: TIntegerField
+      FieldName = 'MikudD'
+    end
+    object qrFilterTelD: TStringField
+      FieldName = 'TelD'
+      Size = 11
+    end
+    object qrFilterCelD: TStringField
+      FieldName = 'CelD'
+      Size = 11
+    end
+    object qrFilterBorn: TDateField
+      FieldName = 'Born'
+    end
+    object qrFilterLicenceNum: TStringField
+      FieldName = 'LicenceNum'
+      Size = 7
+    end
+    object qrFilterLicenceTyp: TStringField
+      FieldName = 'LicenceTyp'
+      Size = 10
+    end
+    object qrFilterLicenceId: TIntegerField
+      FieldName = 'LicenceId'
+    end
+    object qrFilterLicencePrd: TSmallintField
+      FieldName = 'LicencePrd'
+    end
+    object qrFilterLimit: TStringField
+      FieldName = 'Limit'
+      Size = 30
+    end
+    object qrFilterWorkStrt: TDateField
+      FieldName = 'WorkStrt'
+    end
+    object qrFilterOvedId: TSmallintField
+      FieldName = 'OvedId'
+    end
+    object qrFilterRemark: TStringField
+      FieldName = 'Remark'
+      Size = 120
+    end
+    object qrFilterClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object qrFilterFreze: TBooleanField
+      FieldName = 'Freze'
+    end
+    object qrFilterMissing: TBooleanField
+      FieldName = 'Missing'
+    end
+    object qrFilterPail: TBooleanField
+      FieldName = 'Pail'
+    end
+    object qrFilterStamp: TDateTimeField
+      FieldName = 'Stamp'
+    end
+    object qrFilterShem: TStringField
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrFilterHp: TIntegerField
+      FieldName = 'Hp'
+    end
+    object qrFilterIsuv: TStringField
+      FieldName = 'Isuv'
+      Size = 15
+    end
+    object qrFilterTel1: TStringField
+      FieldName = 'Tel1'
+      Size = 12
+    end
+    object qrFilterTel2: TStringField
+      FieldName = 'Tel2'
+      Size = 11
+    end
+  end
+end

@@ -1,0 +1,56 @@
+unit ChecksRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, edbcomps, DB, RpRender, RpRenderHTML, RpBase,
+  RpSystem, RpDefine, RpRave, Spin, StdCtrls, Buttons, ExtCtrls, RpCon, RpConDS;
+
+type
+  TfrmChecksRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqCheckRprt: TRvDataSetConnection;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+    procedure btnRTFClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChecksRprtSlctDlg: TfrmChecksRprtSlctDlg;
+
+implementation
+uses
+  ChecksFilterDM;
+
+{$R *.dfm}
+
+procedure TfrmChecksRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('CH');
+end;
+
+procedure TfrmChecksRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmChecksRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+procedure TfrmChecksRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+end.

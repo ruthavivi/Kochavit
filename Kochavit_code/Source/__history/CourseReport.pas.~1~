@@ -1,0 +1,88 @@
+unit CourseReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, StdActns, DBActns;
+
+type
+  TfrmCourseReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCourseReport: TfrmCourseReport;
+
+implementation
+uses
+   DrCourseFilter, DrCourseRprtSlctDlg, DrCourseSpssSlctDlg;
+{$R *.dfm}
+
+procedure TfrmCourseReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('StartD');
+  SetStatusBar;
+  LoadPosition('DrCourseRpt', (Sender as TForm));
+end;
+
+procedure TfrmCourseReport.SetStatusBar;
+var
+   procent: Real;
+begin
+   try
+       procent := frmDrCourseFilter.selectRec /
+                   frmDrCourseFilter.totalRec * 100;
+   except
+       on EInvalidOp do procent := 0;
+   end;
+
+   StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmDrCourseFilter.selectRec) +
+       ' קורסים ' + IntToStr(frmDrCourseFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmCourseReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmDrCourseFilter.qrFilter, Column);
+end;
+
+procedure TfrmCourseReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmDrCourseRprtSlctDlg := TfrmDrCourseRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmCourseReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmDrCourseSpssSlctDlg := TfrmDrCourseSpssSlctDlg.Create(Self);
+end;
+
+procedure TfrmCourseReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmDrCourseFilter.qrFilter);
+end;
+
+procedure TfrmCourseReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('DrCourseRpt', (Sender as TForm));
+  frmDrCourseFilter.qrFilter.Close;
+  inherited;
+end;
+
+end.

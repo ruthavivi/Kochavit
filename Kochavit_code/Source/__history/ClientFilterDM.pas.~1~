@@ -1,0 +1,24 @@
+unit ClientFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmClientFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmClientFilter: TdmClientFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

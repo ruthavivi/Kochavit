@@ -1,0 +1,6 @@
+SELECT Cl.IdClient, Cl.Hp, Cl.Shem
+FROM KClient Cl
+WHERE Id NOT IN
+(SELECT DISTINCT ClientId 
+FROM ":KbBig:KClTofes.db"
+WHERE Name = 

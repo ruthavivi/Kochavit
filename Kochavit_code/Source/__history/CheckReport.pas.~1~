@@ -1,0 +1,88 @@
+unit CheckReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmCheckReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCheckReport: TfrmCheckReport;
+
+implementation
+uses
+  CheckFilter, CheckRprtSlctDlg, CheckSpssSlctDlg;
+{$R *.dfm}
+
+procedure TfrmCheckReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('PidyonD');
+  SetStatusBar;
+  LoadPosition('ChecksRpt', (Sender as TForm));
+end;
+
+procedure TfrmCheckReport.SetStatusBar;
+var
+   procent: Real;
+begin
+   try
+       procent := frmCheckFilter.selectRec /
+                   frmCheckFilter.totalRec * 100;
+   except
+       on EInvalidOp do procent := 0;
+   end;
+
+   StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmCheckFilter.selectRec) +
+       ' חשבונות מתוך ' + IntToStr(frmCheckFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmCheckReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmCheckFilter.qrFilter, Column);
+end;
+
+procedure TfrmCheckReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmCheckRprtSlctDlg := TfrmCheckRprtSlctDlg.Create(Self);
+end;
+
+procedure TfrmCheckReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmCheckSpssSlctDlg := TfrmCheckSpssSlctDlg.Create(Self);
+end;
+
+procedure TfrmCheckReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmCheckFilter.qrFilter);
+end;
+
+procedure TfrmCheckReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('ChecksRpt', (Sender as TForm));
+  frmCheckFilter.qrFilter.Close;
+  inherited;
+end;
+
+end.

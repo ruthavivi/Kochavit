@@ -1,0 +1,44 @@
+unit TblGroup;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlTbl, Data.DB, edbcomps,
+  Vcl.StdActns, System.Actions, Vcl.ActnList, System.ImageList, Vcl.ImgList,
+  Vcl.Grids, Vcl.DBGrids, MyChkDBGrid, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.StdCtrls,
+  Vcl.DBCtrls, Vcl.ToolWin;
+
+type
+  TfrmGroupTbl = class(TfrmGnrlTbl)
+    tbTblId: TAutoIncField;
+    tbTblGroup: TStringField;
+    procedure acDeleteExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGroupTbl: TfrmGroupTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmGroupTbl.acDeleteExecute(Sender: TObject);
+begin
+  inherited;
+   if KeepIntegrity('GroupId', tbTblId.AsString, ['KTblType, KTblBikoret']) then
+    inherited;
+end;
+
+procedure TfrmGroupTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpGroup');
+end;
+
+end.

@@ -1,0 +1,23 @@
+unit AnualTipulFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmAnualTipulFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+  end;
+
+var
+  dmAnualTipulFilter: TdmAnualTipulFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

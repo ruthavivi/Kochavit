@@ -1,0 +1,120 @@
+unit OpenToPrint;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  StdCtrls, FileCtrl, Spin, Buttons, ExtCtrls, Grids, DirOutln,
+  Db, DBTables, DBCtrls, edbcomps;
+
+type
+  TfrmOpenToPrint = class(TForm)
+    Panel: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    SpinEdit: TSpinEdit;
+    FileListBox: TFileListBox;
+    DirectoryListBox: TDirectoryListBox;
+    DriveComboBox1: TDriveComboBox;
+    Label8: TLabel;
+    Edit: TEdit;
+    dsEtek: TDataSource;
+    dsEtekList: TDataSource;
+    cbEtek: TDBLookupComboBox;
+    Memo: TMemo;
+    cbFilter: TCheckBox;
+    cbSave: TCheckBox;
+    tbEtek: TEDBTable;
+    tbEtekDescrpt: TStringField;
+    tbEtekList: TEDBTable;
+    tbEtekListDescrpt: TStringField;
+    tbEtekListName: TStringField;
+    btnClose: TBitBtn;
+    btnPreview: TBitBtn;
+    btnEmail: TBitBtn;
+    btnPrint: TBitBtn;
+    FilterComboBox: TFilterComboBox;
+    procedure MemoChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure cbEtekClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure btnCloseClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure FillItems;
+    procedure CloseFiles;
+  public
+    { Public declarations }
+    btnPress: String;
+  end;
+
+var
+  frmOpenToPrint: TfrmOpenToPrint;
+  DirStr: String;
+
+implementation
+
+{$R *.DFM}
+
+procedure TfrmOpenToPrint.MemoChange(Sender: TObject);
+begin
+   SpinEdit.Value := Memo.Lines.Count +1;
+end;
+
+procedure TfrmOpenToPrint.cbEtekClick(Sender: TObject);
+begin
+   if (cbEtek.Text <> '') then
+       FillItems;
+end;
+
+procedure TfrmOpenToPrint.FillItems;
+begin
+   Memo.Lines.Clear;
+   with tbEtekList do
+   begin
+       First;
+       while not EOF do
+       begin
+           Memo.Lines.Add(FieldByName('Name').AsString);
+           Next;
+       end;
+   end;
+end;
+
+procedure TfrmOpenToPrint.btnPrintClick(Sender: TObject);
+begin
+   if (Edit.Text = '') then
+   begin
+       MessageDlg('לא בחרת מיסמך', mtWarning, [mbOK], 0);
+       self.ModalResult := mrNone;
+   end
+   else
+   begin
+       btnPress := (Sender as TBitBtn).Name;
+       self.ModalResult := mrOk;
+   end;
+end;
+
+procedure TfrmOpenToPrint.CloseFiles;
+begin
+   tbEtek.Close;
+   tbEtekList.Close;
+end;
+
+procedure TfrmOpenToPrint.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   CloseFiles;
+end;
+
+procedure TfrmOpenToPrint.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+end.

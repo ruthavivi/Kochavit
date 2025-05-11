@@ -1,0 +1,86 @@
+inherited dmBillEdit: TdmBillEdit
+  OldCreateOrder = True
+  Height = 223
+  Width = 294
+  inherited qrGnrl: TEDBQuery
+    DataSource = dsBill
+    Top = 112
+  end
+  object dsBill: TDataSource
+    DataSet = tbBill
+    Left = 88
+    Top = 48
+  end
+  object tbBill: TEDBTable
+    AfterPost = tbBillAfterPost
+    AfterDelete = tbBillAfterPost
+    OnNewRecord = tbBillNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KBill'
+    Left = 40
+    Top = 48
+    object tbBillId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbBillClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object tbBillSumA: TFloatField
+      FieldName = 'SumA'
+      currency = True
+    end
+    object tbBillProduceD: TDateField
+      FieldName = 'ProduceD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbBillToPayD: TDateField
+      FieldName = 'ToPayD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbBillReciptNo: TStringField
+      FieldName = 'ReciptNo'
+      OnValidate = tbBillReciptNoValidate
+      Size = 10
+    end
+    object tbBillRemark: TStringField
+      FieldName = 'Remark'
+      Size = 120
+    end
+    object tbBillPaydD: TDateField
+      FieldName = 'PaydD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbBillKabala: TIntegerField
+      FieldName = 'Kabala'
+    end
+    object tbBillPayd: TBooleanField
+      FieldName = 'Payd'
+    end
+  end
+  object qrAllFields: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsBill
+    SQL.Strings = (
+      
+        'SELECT Bl.ReciptNo, Bl.ProduceD, Bl.ToPayD, Bl.SumA, Bl.APeriod,' +
+        ' Bl.ZPeriod, Bl.Remark,Cl.Shem, Cl.Ktovet, Cl.Isuv, Cl.Mikud, Cl' +
+        '.Hp, tP.OfenPay'
+      'FROM KBill Bl'
+      'LEFT JOIN KClient Cl ON (Bl.ClientId = Cl.Id)'
+      ''
+      'LEFT JOIN KTblOfenPay tP ON Cl.OfenPayId = tP.Id'
+      ''
+      'WHERE Bl.Id = :Id')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptInput
+      end>
+    Left = 144
+    Top = 120
+  end
+end

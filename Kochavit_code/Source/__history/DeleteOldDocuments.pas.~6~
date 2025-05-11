@@ -1,0 +1,117 @@
+unit   DeleteOldDocuments;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
+  System.IOUtils, DateUtils,
+  System.Types, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.Mask, Vcl.ExtCtrls, Vcl.Buttons;
+
+type
+  TfrmDeleteOldDocuments = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    btnCancel: TBitBtn;
+    btnOk: TBitBtn;
+    rgOptions: TRadioGroup;
+    edTillMoed: TMaskEdit;
+    Memo1: TMemo;
+    procedure btnOkClick(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
+  private
+    TillDate: TDate;
+    procedure DeleteDirDocuments(pPath: String);
+    procedure LoopOnDirectorys(pMainPath: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDeleteOldDocuments: TfrmDeleteOldDocuments;
+
+implementation
+uses
+  DialogsHeb;
+
+{$R *.dfm}
+
+{ TfrmDeleteOldDocuments }
+
+
+procedure TfrmDeleteOldDocuments.btnOkClick(Sender: TObject);
+var
+  MainPath: String;
+begin
+  Self.Cursor := crHourGlass;
+  MainPath := ExtractFileDir(Application.ExeName) + '\Documents';
+
+  try
+    if rgOptions.ItemIndex = 0 then
+    begin
+      TillDate := IncYear(Now, -7);
+      LoopOnDirectorys(MainPath);
+    end
+    else if rgOptions.ItemIndex = 1 then
+    begin
+        if CompareDate(IncYear(Now, -7), StrToDate(edTillMoed.Text)) = LessThanValue then
+          MessageDlgH('!לא ניתן לבטל  מסמכים מ 7 השנים האחרונות', mtError, [mbOk], 0, 0)
+        else
+        begin
+          TillDate := StrToDate(edTillMoed.Text);
+          LoopOnDirectorys(MainPath);
+        end;
+    end;
+  finally
+    Self.Cursor :=  crDefault;
+//    Close;
+  end;
+end;
+
+procedure TfrmDeleteOldDocuments.LoopOnDirectorys(pMainPath: String);
+var
+  Directories, SubDirectories: TStringDynArray;
+  i, j: Integer;
+  a: String;
+begin
+  Directories := TDirectory.GetDirectories(pMainPath + '\Car');
+  for I := 0 to Length(Directories) do
+    DeleteDirDocuments(Directories[i]);
+end;
+
+function FileTimeToDateTime(const FileTime: TFileTime): TDateTime;
+var
+  LocalFileTime: TFileTime;
+  SystemTime: TSystemTime;
+begin
+  FileTimeToLocalFileTime(FileTime, LocalFileTime);
+  FileTimeToSystemTime(LocalFileTime, SystemTime);
+  Result := SystemTimeToDateTime(SystemTime);
+end;
+
+procedure TfrmDeleteOldDocuments.DeleteDirDocuments(pPath: String);
+var
+  Files: TstringDynArray;
+  Filter: TDirectory.TFilterPredicate;
+  DateStart, DateStop: TDate;
+  i: Integer;
+begin
+  Filter := function(const pPath: string; const SearchRec: TSearchRec): Boolean
+            var
+              DT: TDateTime;
+            begin
+              DT := FileTimeToDateTime(SearchRec.FindData.ftLastWriteTime);
+              Result := (DT <= TillDate);
+              Result := (DT <= StrToDate('31/10/2015'));
+            end;
+  Files := TDirectory.GetFiles(pPath, Filter);
+  for I := 0 to Length(Files) do
+    Memo1.Lines.Add(Files[i]);
+end;
+
+procedure TfrmDeleteOldDocuments.btnCancelClick(Sender: TObject);
+begin
+  Close;
+end;
+
+end.

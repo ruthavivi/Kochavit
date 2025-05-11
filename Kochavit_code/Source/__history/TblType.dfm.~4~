@@ -1,0 +1,128 @@
+inherited frmTypeTbl: TfrmTypeTbl
+  Left = 235
+  Caption = #1496#1489#1500#1514' '#1505#1493#1490#1497' '#1512#1499#1489#1497#1501
+  ClientHeight = 335
+  ClientWidth = 430
+  OldCreateOrder = True
+  ExplicitWidth = 438
+  ExplicitHeight = 362
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 430
+    ExplicitWidth = 406
+    inherited dbNav: TDBNavigator
+      Hints.Strings = ()
+    end
+  end
+  inherited StatusBar: TStatusBar
+    Top = 316
+    Width = 430
+    ExplicitTop = 292
+    ExplicitWidth = 406
+  end
+  inherited Panel1: TPanel
+    Width = 430
+    Height = 280
+    ExplicitWidth = 406
+    ExplicitHeight = 256
+    inherited dbGrid: TCheckDBGrid
+      Width = 428
+      Height = 278
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Type'
+          Width = 176
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'Doc'
+          Width = 114
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'Engine'
+          PickList.Strings = (
+            #1499#1503
+            #1500#1488)
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'LkpLicence'
+          Title.Caption = #1505#1493#1490' '#1512#1513#1497#1493#1503
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited ImageList1: TImageList
+    Left = 24
+    Top = 192
+  end
+  inherited ActionList1: TActionList
+    Left = 24
+    Top = 128
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+  end
+  inherited tbTbl: TEDBTable
+    OnNewRecord = tbTblNewRecord
+    IndexFieldNames = 'Type'
+    TableName = 'KTblType'
+    object tbTblID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblType: TStringField
+      DisplayLabel = #1505#1493#1490#1497' '#1512#1499#1489#1497#1501
+      FieldName = 'Type'
+      Size = 30
+    end
+    object tbTblDoc: TStringField
+      DisplayLabel = #1502#1505#1502#1498' '#1489#1497#1511#1493#1512#1514
+      FieldName = 'Doc'
+    end
+    object tbTblEngine: TStringField
+      DisplayLabel = #1502#1502#1493#1504#1506
+      FieldName = 'Engine'
+      Size = 2
+    end
+    object tbTblLicenceId: TIntegerField
+      FieldName = 'LicenceId'
+    end
+    object tbTblLkpLicence: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpLicence'
+      LookupDataSet = tbTblLicence
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Licence'
+      KeyFields = 'LicenceId'
+      Lookup = True
+    end
+  end
+  object rtType: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Table = tbTbl
+    Left = 112
+    Top = 64
+  end
+  object tbTblLicence: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KTblLicence'
+    Left = 192
+    Top = 136
+  end
+end

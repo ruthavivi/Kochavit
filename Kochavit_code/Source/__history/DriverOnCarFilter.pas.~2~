@@ -1,0 +1,40 @@
+unit DriverOnCarFilter;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlFilter, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls;
+
+type
+  TfrmDriverOnCarFilter = class(TfrmGnrlFilter)
+    cbShemD: TCheckBox;
+    cbEShemD: TComboBox;
+    lbETipul: TLabel;
+    cbTZeut: TCheckBox;
+    cbETZeut: TComboBox;
+    Label1: TLabel;
+    cbLicenceTyp: TCheckBox;
+    בנELןבקמבקTטפ: TComboBox;
+    Label2: TLabel;
+    cbType: TCheckBox;
+    cbEType: TComboBox;
+    Label3: TLabel;
+    cbEShem: TComboBox;
+    lbEShem: TLabel;
+    cbShem: TCheckBox;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverOnCarFilter: TfrmDriverOnCarFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

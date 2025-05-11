@@ -1,0 +1,35 @@
+unit TblInsure;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem;
+
+type
+  TfrmTblInsure = class(TfrmGnrlTbl)
+    tbTblInsure: TStringField;
+    rtInsure: TRvTableConnection;
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTblInsure: TfrmTblInsure;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmTblInsure.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  RvTbl.ExecuteReport('rpInsure');
+end;
+
+end.

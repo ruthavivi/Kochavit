@@ -1,0 +1,184 @@
+inherited frmProducerTbl: TfrmProducerTbl
+  Left = 428
+  Top = 250
+  Caption = #1496#1489#1500#1514' '#1497#1510#1512#1504#1497#1501' '#1493#1491#1490#1502#1497#1501
+  ClientHeight = 407
+  ClientWidth = 299
+  OldCreateOrder = True
+  ExplicitWidth = 307
+  ExplicitHeight = 434
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 299
+    ExplicitWidth = 239
+    ExplicitHeight = 72
+  end
+  inherited StatusBar: TStatusBar
+    Top = 388
+    Width = 299
+    ExplicitTop = 285
+    ExplicitWidth = 239
+  end
+  inherited Panel1: TPanel
+    Width = 299
+    Height = 352
+    ExplicitTop = 72
+    ExplicitWidth = 239
+    ExplicitHeight = 213
+    inherited dbGrid: TCheckDBGrid
+      Width = 297
+      Height = 120
+      Align = alTop
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Producer'
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+    object ToolBar2: TToolBar
+      Left = 1
+      Top = 121
+      Width = 297
+      Height = 36
+      AutoSize = True
+      ButtonHeight = 36
+      ButtonWidth = 37
+      Caption = 'ToolBar1'
+      Images = ImageList1
+      TabOrder = 1
+      ExplicitWidth = 237
+      object DBNavigator1: TDBNavigator
+        Left = 0
+        Top = 0
+        Width = 60
+        Height = 36
+        Cursor = crHandPoint
+        DataSource = dsTblScnd
+        VisibleButtons = [nbFirst, nbLast]
+        Flat = True
+        Hints.Strings = (
+          #1492#1514#1495#1500#1492
+          #1505#1493#1507)
+        TabOrder = 0
+      end
+      object ToolButton1: TToolButton
+        Left = 60
+        Top = 0
+        Cursor = crHandPoint
+        Action = acAppendScnd
+      end
+      object ToolButton2: TToolButton
+        Left = 97
+        Top = 0
+        Cursor = crHandPoint
+        Action = acDeleteScnd
+      end
+    end
+    object dbGridScnd: TCheckDBGrid
+      Left = 1
+      Top = 157
+      Width = 297
+      Height = 194
+      Align = alClient
+      DataSource = dsTblScnd
+      TabOrder = 2
+      TitleFont.Charset = DEFAULT_CHARSET
+      TitleFont.Color = clWindowText
+      TitleFont.Height = -11
+      TitleFont.Name = 'MS Sans Serif'
+      TitleFont.Style = []
+      AllowAppend = False
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Dgam'
+          Width = 202
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited ImageList1: TImageList
+    Left = 160
+    Top = 112
+  end
+  inherited dsTbl: TDataSource
+    Left = 80
+    Top = 112
+  end
+  inherited ActionList1: TActionList
+    Top = 112
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    object acAppendScnd: TAction
+      Caption = #1492#1493#1505#1508#1514' '#1491#1490#1501
+      Hint = #1492#1493#1505#1508#1514' '#1491#1490#1501
+      ImageIndex = 0
+      OnExecute = acAppendScndExecute
+    end
+    object acDeleteScnd: TAction
+      Caption = #1489#1497#1496#1493#1500' '#1491#1490#1501
+      Hint = #1489#1497#1496#1493#1500' '#1491#1490#1501
+      ImageIndex = 1
+      OnExecute = acDeleteScndExecute
+    end
+  end
+  inherited tbTbl: TEDBTable
+    BeforeDelete = tbTblBeforeDelete
+    IndexFieldNames = 'Producer'
+    TableName = 'KTblProducer'
+    Left = 120
+    Top = 112
+    object tbTblID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblProducer: TStringField
+      DisplayLabel = #1513#1501' '#1492#1497#1510#1512#1503
+      FieldName = 'Producer'
+    end
+  end
+  object dsTblScnd: TDataSource
+    DataSet = tbTblScnd
+    Left = 80
+    Top = 192
+  end
+  object rtProducer: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Table = tbTbl
+    Left = 128
+    Top = 72
+  end
+  object rtDgam: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Left = 176
+    Top = 200
+  end
+  object tbTblScnd: TEDBTable
+    BeforeInsert = tbTblScndBeforeInsert
+    BeforePost = tbTblScndBeforePost
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'IdP'
+    MasterFields = 'ID'
+    MasterSource = dsTbl
+    TableName = 'KTblDgam'
+    Left = 120
+    Top = 192
+    object tbTblScndDgam: TStringField
+      DisplayLabel = #1505#1493#1490' '#1492#1491#1490#1501
+      DisplayWidth = 20
+      FieldName = 'Dgam'
+    end
+    object tbTblScndIdP: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'IdP'
+    end
+  end
+end

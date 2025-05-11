@@ -1,0 +1,116 @@
+unit UnTofesFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls;
+
+type
+  TfrmUnTofesFilter = class(TfrmGnrlFilter)
+    lbTofes: TLabel;
+    cbTofesCar: TComboBox;
+    cxTofesCar: TCheckBox;
+    Label1: TLabel;
+    cxTofesCln: TCheckBox;
+    cbTofesCln: TComboBox;
+    Label2: TLabel;
+    cxTofesDrv: TCheckBox;
+    cbTofesDrv: TComboBox;
+    procedure cbTofesDrvEnter(Sender: TObject);
+    procedure cbTofesClnEnter(Sender: TObject);
+    procedure cxTofesCarClick(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure cbTofesCarEnter(Sender: TObject);
+  private
+    procedure LoadItems(pCb: TComboBox; pFileName: String);
+    procedure LoadQuery(pSqlFile: String; cbTofes: TComboBox);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUnTofesFilter: TfrmUnTofesFilter;
+
+implementation
+uses
+  UnTofesClnReport, UnTofesCarReport, UnTofesDrvReport;
+
+{$R *.dfm}
+
+procedure TfrmUnTofesFilter.cxTofesCarClick(Sender: TObject);
+begin
+  inherited;
+  ChkBoxClick(Sender as TCheckBox);
+end;
+
+procedure TfrmUnTofesFilter.cbTofesClnEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItems(cbTofesCln, 'KClTofes');
+end;
+
+procedure TfrmUnTofesFilter.cbTofesCarEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItems(cbTofesCar, 'KCrTofes');
+end;
+
+procedure TfrmUnTofesFilter.cbTofesDrvEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItems(cbTofesDrv, 'KDrTofes');
+end;
+
+procedure TfrmUnTofesFilter.LoadItems(pCb: TComboBox; pFileName: String);
+begin
+  qrGnrl.SQL.Text := 'SELECT DISTINCT Name FROM ' + pFileName +
+                    ' ORDER BY Name';
+  qrGnrl.Open;
+  pCb.Clear;
+  while not qrGnrl.Eof do
+  begin
+    pCb.Items.Add(qrGnrl.FieldByName('Name').AsString);
+    qrGnrl.Next;
+  end;
+  qrGnrl.Close;
+end;
+
+procedure TfrmUnTofesFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  try
+    if cxTofesCln.Checked then
+    begin
+      LoadQuery('UnTofesClnSQL.Txt', cbTofesCln);
+      frmUnTofesClnReport := TfrmUnTofesClnReport.Create(Self);
+    end
+    else if cxTofesCar.Checked then
+    begin
+      LoadQuery('UnTofesCarSQL.Txt', cbTofesCar);
+      frmUnTofesCarReport := TfrmUnTofesCarReport.Create(Self);
+    end
+    else if cxTofesDrv.Checked then
+    begin
+      LoadQuery('UnTofesDrvSQL.Txt', cbTofesDrv);
+      frmUnTofesDrvReport := TfrmUnTofesDrvReport.Create(Self);
+    end;
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmUnTofesFilter.LoadQuery(pSqlFile: String; cbTofes: TComboBox);
+var
+   Path: String;
+begin
+  Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+  qrFilter.SQL.LoadFromFile(Path+pSqlFile);
+  qrFilter.SQL.Text := qrFilter.SQL.Text +
+        QuotedStr(cbTofes.Text)  + ')';
+  qrFilter.SQL.Add('Order by Cl.Shem');
+  qrFilter.Open;
+end;
+
+end.

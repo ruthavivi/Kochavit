@@ -1,0 +1,26 @@
+unit GnrlSpssChart;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, TeEngine, Series, ExtCtrls, TeeProcs, Chart, DbChart;
+
+type
+  TfrmChart = class(TForm)
+    dcChart: TDBChart;
+    Series1: TBarSeries;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChart: TfrmChart;
+
+implementation
+
+{$R *.dfm}
+
+end.

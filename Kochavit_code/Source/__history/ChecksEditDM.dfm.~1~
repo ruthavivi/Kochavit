@@ -1,0 +1,118 @@
+inherited dmChecksEdit: TdmChecksEdit
+  OldCreateOrder = True
+  Height = 314
+  Width = 267
+  inherited tbTofes: TTable
+    Left = 96
+    Top = 152
+  end
+  inherited qrGnrl: TQuery
+    DatabaseName = 'dnChecksEdit'
+    DataSource = dmMain.dsClient
+    SQL.Strings = (
+      
+        'SELECT C.BankId, C.Acount, C.CheckNo, C.CheckSum, C.AfkadaD, C.P' +
+        'idyonD, C.Bill, C.Kabala'
+      'FROM KChecks C'
+      'WHERE C.ClientId = :Id')
+    Left = 32
+    Top = 152
+    ParamData = <
+      item
+        DataType = ftUnknown
+        Name = 'Id'
+        ParamType = ptUnknown
+      end>
+  end
+  inherited tbDefault: TTable
+    DatabaseName = 'dnChecksEdit'
+    Left = 152
+    Top = 152
+  end
+  inherited RvKartis: TRvProject
+    Left = 112
+    Top = 216
+  end
+  inherited RvSystem: TRvSystem
+    Left = 64
+    Top = 216
+  end
+  object tbChecks: TTable
+    OnNewRecord = tbChecksNewRecord
+    DatabaseName = 'dnChecksEdit'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dmMain.dsClient
+    TableName = 'KChecks.db'
+    Left = 24
+    Top = 72
+    object tbChecksId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbChecksClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object tbChecksBankId: TSmallintField
+      FieldName = 'BankId'
+    end
+    object tbChecksAcount: TIntegerField
+      FieldName = 'Acount'
+    end
+    object tbChecksCheckNo: TIntegerField
+      FieldName = 'CheckNo'
+    end
+    object tbChecksCheckSum: TCurrencyField
+      FieldName = 'CheckSum'
+    end
+    object tbChecksAfkadaD: TDateField
+      FieldName = 'AfkadaD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbChecksPidyonD: TDateField
+      FieldName = 'PidyonD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbChecksBill: TIntegerField
+      FieldName = 'Bill'
+    end
+    object tbChecksKabala: TIntegerField
+      FieldName = 'Kabala'
+    end
+    object tbCheckslkpBank: TStringField
+      FieldKind = fkLookup
+      FieldName = 'lkpBank'
+      LookupDataSet = tbTblBank
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Bank'
+      KeyFields = 'BankId'
+      Lookup = True
+    end
+  end
+  object dsChecks: TDataSource
+    DataSet = tbChecks
+    Left = 96
+    Top = 72
+  end
+  object tbTblBank: TTable
+    DatabaseName = 'dnChecksEdit'
+    TableName = 'KTblBank.db'
+    Left = 172
+    Top = 27
+  end
+  object RvProject1: TRvProject
+    Engine = RvSystem
+    ProjectFile = 
+      'C:\Documents and Settings\Sorin\My Documents\RAD Studio\Projects' +
+      '\Kochavit\Reports\KvKartis.rav'
+    Left = 184
+    Top = 216
+  end
+  object dbChecksEdit: TDatabase
+    AliasName = 'Kb'
+    DatabaseName = 'dnChecksEdit'
+    SessionName = 'Default'
+    Left = 24
+    Top = 16
+  end
+end

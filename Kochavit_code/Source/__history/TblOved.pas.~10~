@@ -1,0 +1,84 @@
+unit TblOved;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, edbcomps, StdActns,
+  frxClass, frxDBSet, System.Actions, System.ImageList;
+
+type
+  TfrmOvedTbl = class(TfrmGnrlTbl)
+    tbTblID: TAutoIncField;
+    tbTblOved: TStringField;
+    frdbOved: TfrxDBDataset;
+    tbTblUserName: TStringField;
+    tbTblUser_Password: TStringField;
+    tbTblUser_Role: TStringField;
+    Edit1: TEdit;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+    procedure dbGridColExit(Sender: TObject);
+    procedure dbGridKeyPress(Sender: TObject; var Key: Char);
+    procedure Edit1Change(Sender: TObject);
+    procedure Edit1Enter(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmOvedTbl: TfrmOvedTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmOvedTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('OvedId', tbTblId.AsString, ['KCar']) then
+    inherited;
+end;
+
+procedure TfrmOvedTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpOved');
+end;
+
+procedure TfrmOvedTbl.dbGridColExit(Sender: TObject);
+begin
+  inherited;
+   Edit1.Visible := False;
+end;
+
+procedure TfrmOvedTbl.dbGridKeyPress(Sender: TObject; var Key: Char);
+begin
+  inherited;
+   if Key = Chr(9) then Exit;
+
+  if (Sender as TDBGrid).SelectedField.FieldName = 'User_Password' then
+  begin
+    Edit1.SetFocus;
+    SendMessage(Edit1.Handle, WM_CHAR, word(Key), 0);
+  end;
+
+end;
+
+procedure TfrmOvedTbl.Edit1Change(Sender: TObject);
+begin
+  inherited;
+   if DBGrid.DataSource.State in [dsEdit, dsInsert] then
+    DBGrid.DataSource.DataSet.FieldByName('User_Password').AsString := Edit1.Text;
+end;
+procedure TfrmOvedTbl.Edit1Enter(Sender: TObject);
+begin
+  inherited;
+  DBGrid.DataSource.Edit;
+end;
+
+
+end.
+

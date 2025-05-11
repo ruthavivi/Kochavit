@@ -1,0 +1,98 @@
+unit CrFollowFilter;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlFilter, Vcl.StdCtrls, Vcl.Buttons,
+  Vcl.ExtCtrls, Vcl.Mask;
+
+type
+  TfrmCrFollowFilter = class(TfrmGnrlFilter)
+    lbADateDone: TLabel;
+    lbZDateDone: TLabel;
+    edAMoed: TMaskEdit;
+    edZMoed: TMaskEdit;
+    cbMoed: TCheckBox;
+    lbEShem: TLabel;
+    cbEShem: TComboBox;
+    cbShem: TCheckBox;
+    procedure cbMoedClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure edAMoedExit(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCrFollowFilter: TfrmCrFollowFilter;
+
+implementation
+uses
+  CrFollowFilterDM, KbFunc;
+{$R *.dfm}
+
+procedure TfrmCrFollowFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmCrFollowFilter := TdmCrFollowFilter.Create(Self);
+end;
+
+procedure TfrmCrFollowFilter.cbMoedClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmCrFollowFilter.edAMoedExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAMoed.Text,
+               edZMoed.Text) = False) then
+           edAMoed.SetFocus;
+end;
+
+procedure TfrmCrFollowFilter.cbEShemEnter(Sender: TObject);
+var
+  ListItem: TStringList;
+begin
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmCrFollowFilter.LoadItems('KClient', 'Shem', '', ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmCrFollowFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+//  if not Assigned(frmCrFollowReport) then
+  begin
+    with dmCrFollowFilter do
+    begin
+      SetTotalRec('KCrCrFollowHis');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\CrFollowFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'Moed';
+      if OpenData then
+//        frmCrFollowReport := TfrmCrFollowReport.Create(Self);
+    end;
+  end;
+end;
+
+end.

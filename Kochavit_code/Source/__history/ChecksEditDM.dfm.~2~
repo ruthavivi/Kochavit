@@ -1,0 +1,99 @@
+inherited dmChecksEdit: TdmChecksEdit
+  OldCreateOrder = True
+  Height = 314
+  Width = 267
+  inherited RvKartis: TRvProject
+    Left = 112
+    Top = 216
+  end
+  inherited RvSystem: TRvSystem
+    Left = 64
+    Top = 216
+  end
+  object tbChecks: TTable [2]
+    OnNewRecord = tbChecksNewRecord
+    DatabaseName = 'dnChecksEdit'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dmMain.dsClient
+    TableName = 'KChecks.db'
+    Left = 24
+    Top = 72
+    object tbChecksId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbChecksClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object tbChecksBankId: TSmallintField
+      FieldName = 'BankId'
+    end
+    object tbChecksAcount: TIntegerField
+      FieldName = 'Acount'
+    end
+    object tbChecksCheckNo: TIntegerField
+      FieldName = 'CheckNo'
+    end
+    object tbChecksCheckSum: TCurrencyField
+      FieldName = 'CheckSum'
+    end
+    object tbChecksAfkadaD: TDateField
+      FieldName = 'AfkadaD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbChecksPidyonD: TDateField
+      FieldName = 'PidyonD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbChecksBill: TIntegerField
+      FieldName = 'Bill'
+    end
+    object tbChecksKabala: TIntegerField
+      FieldName = 'Kabala'
+    end
+    object tbCheckslkpBank: TStringField
+      FieldKind = fkLookup
+      FieldName = 'lkpBank'
+      LookupDataSet = tbTblBank
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Bank'
+      KeyFields = 'BankId'
+      Lookup = True
+    end
+  end
+  object dsChecks: TDataSource [3]
+    DataSet = tbChecks
+    Left = 96
+    Top = 72
+  end
+  object tbTblBank: TTable [4]
+    DatabaseName = 'dnChecksEdit'
+    TableName = 'KTblBank.db'
+    Left = 172
+    Top = 27
+  end
+  object RvProject1: TRvProject [5]
+    Engine = RvSystem
+    ProjectFile = 
+      'C:\Documents and Settings\Sorin\My Documents\RAD Studio\Projects' +
+      '\Kochavit\Reports\KvKartis.rav'
+    Left = 184
+    Top = 216
+  end
+  object dbChecksEdit: TDatabase [6]
+    AliasName = 'Kb'
+    DatabaseName = 'dnChecksEdit'
+    SessionName = 'Default'
+    Left = 24
+    Top = 16
+  end
+  object EDBTable1: TEDBTable
+    Left = 24
+    Top = 72
+  end
+  object EDBTable2: TEDBTable
+    Left = 176
+    Top = 24
+  end
+end

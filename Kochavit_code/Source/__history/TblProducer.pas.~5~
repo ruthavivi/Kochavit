@@ -1,0 +1,160 @@
+unit TblProducer;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, MyChkDBGrid, RpCon,
+  RpConDS, RpConBDE, RpRave, RpDefine, RpBase, RpSystem, edbcomps;
+
+type
+  TfrmProducerTbl = class(TfrmGnrlTbl)
+    dsTblScnd: TDataSource;
+    tbTblProducer: TStringField;
+    tbTblID: TAutoIncField;
+    ToolBar2: TToolBar;
+    DBNavigator1: TDBNavigator;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    acAppendScnd: TAction;
+    acDeleteScnd: TAction;
+    dbGridScnd: TCheckDBGrid;
+    tbTblScnd: TEDBTable;
+    tbTblScndDgam: TStringField;
+    tbTblScndIdP: TIntegerField;
+    rtProducer: TRvDataSetConnection;
+    rtDgam: TRvDataSetConnection;
+    procedure FormCreate(Sender: TObject);
+    procedure tbTblScndBeforePost(DataSet: TDataSet);
+    procedure acAppendScndExecute(Sender: TObject);
+    procedure acDeleteScndExecute(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure tbTblBeforeDelete(DataSet: TDataSet);
+    procedure acPrintExecute(Sender: TObject);
+    procedure tbTblScndBeforeInsert(DataSet: TDataSet);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProducerTbl: TfrmProducerTbl;
+
+implementation
+
+{$R *.dfm}
+uses
+  LogErrorUtil, DialogsHeb, UtilsDM;
+
+procedure TfrmProducerTbl.FormCreate(Sender: TObject);
+begin
+  inherited;
+   try
+       tbTblScnd.Open;
+   except
+       on E: EDatabaseError do
+       begin
+           tbTblScnd.Close;
+           HandelError('!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+           Self.Destroy;
+       end;
+   end;
+end;
+
+procedure TfrmProducerTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('ProducerId', tbTblId.AsString, ['KCar']) then
+    inherited;
+end;
+
+procedure TfrmProducerTbl.acAppendScndExecute(Sender: TObject);
+begin
+  inherited;
+   tbTblScnd.Append;
+end;
+
+procedure TfrmProducerTbl.tbTblScndBeforeInsert(DataSet: TDataSet);
+begin
+  inherited;
+   if (tbTbl.State <> dsBrowse) then
+       tbtbl.Post;
+end;
+
+procedure TfrmProducerTbl.tbTblScndBeforePost(DataSet: TDataSet);
+var
+  FieldName: String;
+  NewValue: Variant;
+begin
+  FieldName := tbTbl.IndexFieldNames;
+  NewValue := tbTbl.FieldByName(FieldName).NewValue;
+  if (NewValue = Null) or (NewValue = '') then
+  begin
+    MessageDlgH('חובה להקליד ערך', mtError, [mbOK], 0, 0);
+    Abort;
+  end
+  else if (NewValue <> tbTbl.FieldByName(FieldName).OldValue) then
+  begin
+    dmUtils := TdmUtils.Create(Self);
+    try
+      if dmUtils.IsNotUnique(tbTbl.TableName, FieldName, NewValue) then
+        Abort;
+    finally
+      dmUtils.Free;
+    end;
+  end;
+end;
+
+procedure TfrmProducerTbl.tbTblBeforeDelete(DataSet: TDataSet);
+begin
+  inherited;
+   while not tbTblScnd.Eof do
+       tbTblScnd.Delete;
+end;
+
+procedure TfrmProducerTbl.acDeleteScndExecute(Sender: TObject);
+begin
+  inherited;
+   if MessageDlg('לבטל את הערך ' + dbGridScnd.SelectedField.Value,
+           mtConfirmation, [mbYes, mbNo],0) = mrYes then
+       tbTblScnd.Delete;
+end;
+
+procedure TfrmProducerTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  RvTbl.ExecuteReport('rpProducer');
+end;
+
+procedure TfrmProducerTbl.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  inherited;
+   with tbTblScnd do
+   begin
+       if (State in dsEditModes) then
+       begin
+           case MessageDlg('קיימים נתונים חדשים בטבלה. האם לשמור',
+               mtConfirmation, [mbYes, mbNo, mbCancel], 0) of
+               id_Yes: Post;
+               id_No:  begin
+                           Cancel;
+                           CanClose := True;
+                       end;
+               id_Cancel: CanClose := False;
+           end;
+       end;
+   end;
+end;
+
+procedure TfrmProducerTbl.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   tbTblScnd.Close;
+  inherited;
+end;
+
+end.

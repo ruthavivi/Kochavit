@@ -1,0 +1,891 @@
+inherited frmBillFilter: TfrmBillFilter
+  Top = 197
+  Caption = #1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1495#1513#1489#1493#1504#1493#1514
+  ClientHeight = 266
+  ClientWidth = 459
+  OldCreateOrder = True
+  OnCreate = FormCreate
+  ExplicitWidth = 467
+  ExplicitHeight = 293
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 235
+    Width = 459
+    ExplicitTop = 235
+    ExplicitWidth = 459
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    Width = 459
+    Height = 235
+    ExplicitWidth = 459
+    ExplicitHeight = 235
+    inherited grbMain: TGroupBox
+      Width = 457
+      Height = 233
+      ExplicitWidth = 457
+      ExplicitHeight = 233
+      object lbAProduceD: TLabel
+        Left = 315
+        Top = 48
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZProduceD: TLabel
+        Left = 136
+        Top = 48
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEShem: TLabel
+        Tag = 1
+        Left = 285
+        Top = 188
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAToPayD: TLabel
+        Left = 315
+        Top = 68
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZToPayD: TLabel
+        Left = 136
+        Top = 68
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAPaydD: TLabel
+        Left = 315
+        Top = 88
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZPaydD: TLabel
+        Left = 136
+        Top = 88
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAAPeriod: TLabel
+        Left = 315
+        Top = 108
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZAPeriod: TLabel
+        Left = 136
+        Top = 108
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAZPeriod: TLabel
+        Left = 315
+        Top = 127
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZZPeriod: TLabel
+        Left = 136
+        Top = 127
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAReciptNo: TLabel
+        Left = 315
+        Top = 27
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZReciptNo: TLabel
+        Left = 136
+        Top = 27
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbASumA: TLabel
+        Left = 315
+        Top = 147
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZSumA: TLabel
+        Left = 136
+        Top = 147
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbADelta: TLabel
+        Left = 315
+        Top = 167
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZDelta: TLabel
+        Left = 136
+        Top = 167
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label1: TLabel
+        Left = 164
+        Top = 155
+        Width = 21
+        Height = 13
+        Caption = #1513'"'#1495
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label2: TLabel
+        Left = 12
+        Top = 155
+        Width = 21
+        Height = 13
+        Caption = #1513'"'#1495
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label3: TLabel
+        Left = 161
+        Top = 172
+        Width = 24
+        Height = 13
+        Caption = #1497#1502#1497#1501
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object Label4: TLabel
+        Left = 9
+        Top = 172
+        Width = 24
+        Height = 13
+        Caption = #1497#1502#1497#1501
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edAProduceD: TMaskEdit
+        Left = 168
+        Top = 48
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 4
+        Text = '  /  /    '
+        OnExit = edAProduceDExit
+      end
+      object edZProduceD: TMaskEdit
+        Left = 15
+        Top = 48
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 5
+        Text = '  /  /    '
+        OnExit = edAProduceDExit
+      end
+      object cxDProduceD: TCheckBox
+        Left = 339
+        Top = 48
+        Width = 94
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1492#1508#1511#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = cxNReciptNoClick
+      end
+      object cxEShem: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 188
+        Width = 94
+        Height = 14
+        Caption = #1513#1501' '#1495#1489#1512#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 24
+        OnClick = cxNReciptNoClick
+      end
+      object cbEShem: TComboBox
+        Tag = 1
+        Left = 120
+        Top = 188
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 25
+        OnEnter = cbEShemEnter
+      end
+      object edAToPayD: TMaskEdit
+        Left = 168
+        Top = 68
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 7
+        Text = '  /  /    '
+      end
+      object edZToPayD: TMaskEdit
+        Left = 15
+        Top = 68
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 8
+        Text = '  /  /    '
+        OnExit = edAProduceDExit
+      end
+      object cxDToPayD: TCheckBox
+        Left = 328
+        Top = 68
+        Width = 105
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1500#1514#1513#1500#1493#1501':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 6
+        OnClick = cxNReciptNoClick
+      end
+      object edAPaydD: TMaskEdit
+        Left = 168
+        Top = 88
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 10
+        Text = '  /  /    '
+      end
+      object edZPaydD: TMaskEdit
+        Left = 15
+        Top = 88
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 11
+        Text = '  /  /    '
+        OnExit = edAProduceDExit
+      end
+      object cxDPaydD: TCheckBox
+        Left = 336
+        Top = 88
+        Width = 97
+        Height = 14
+        Caption = #1513#1493#1500#1501' '#1489#1508#1493#1506#1500':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 9
+        OnClick = cxNReciptNoClick
+      end
+      object edAAPeriod: TMaskEdit
+        Left = 168
+        Top = 108
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 13
+        Text = '  /  /    '
+      end
+      object edZAPeriod: TMaskEdit
+        Left = 15
+        Top = 108
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 14
+        Text = '  /  /    '
+        OnExit = edAProduceDExit
+      end
+      object cxDAPeriod: TCheckBox
+        Left = 336
+        Top = 108
+        Width = 97
+        Height = 14
+        Caption = #1514#1495#1497#1500#1514' '#1514#1511#1493#1508#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 12
+        OnClick = cxNReciptNoClick
+      end
+      object edAZPeriod: TMaskEdit
+        Left = 168
+        Top = 127
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 16
+        Text = '  /  /    '
+      end
+      object edZZPeriod: TMaskEdit
+        Left = 15
+        Top = 127
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 17
+        Text = '  /  /    '
+        OnExit = edAProduceDExit
+      end
+      object cxDZPeriod: TCheckBox
+        Left = 336
+        Top = 127
+        Width = 97
+        Height = 14
+        Caption = #1505#1497#1493#1501' '#1514#1511#1493#1508#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 15
+        OnClick = cxNReciptNoClick
+      end
+      object cxNReciptNo: TCheckBox
+        Left = 339
+        Top = 27
+        Width = 94
+        Height = 14
+        Caption = #1502#1505#39' '#1495#1513#1489#1493#1504#1497#1514':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cxNReciptNoClick
+      end
+      object edAReciptNo: TMaskEdit
+        Left = 168
+        Top = 27
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 9
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 1
+        Text = '         '
+      end
+      object edZReciptNo: TMaskEdit
+        Left = 15
+        Top = 27
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 9
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 2
+        Text = '         '
+      end
+      object cxNSumA: TCheckBox
+        Left = 339
+        Top = 147
+        Width = 94
+        Height = 14
+        Caption = #1505#1499#1493#1501' '#1500#1514#1513#1500#1493#1501':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 18
+        OnClick = cxNReciptNoClick
+      end
+      object edASumA: TMaskEdit
+        Left = 185
+        Top = 147
+        Width = 96
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 6
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 19
+        Text = '      '
+      end
+      object edZSumA: TMaskEdit
+        Left = 32
+        Top = 147
+        Width = 88
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 6
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 20
+        Text = '      '
+      end
+      object cxSDelta: TCheckBox
+        Left = 336
+        Top = 167
+        Width = 97
+        Height = 14
+        Caption = #1488#1497#1495#1493#1512' '#1489#1514#1513#1500#1493#1501':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 21
+        OnClick = cxNReciptNoClick
+      end
+      object edADelta: TMaskEdit
+        Left = 187
+        Top = 167
+        Width = 94
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '99999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 5
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 22
+        Text = '     '
+      end
+      object edZDelta: TMaskEdit
+        Left = 32
+        Top = 167
+        Width = 88
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '99999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 5
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 23
+        Text = '     '
+      end
+    end
+  end
+  inherited tbl: TTable
+    Left = 80
+    Top = 200
+  end
+  inherited qrFilter: TQuery
+    SQL.Strings = (
+      
+        'SELECT CAST(Bl.ReciptNo AS NUMERIC) ReciptNo, Bl.Id, Bl.ClientId' +
+        ', Bl.ProduceD, Bl.SumA,Bl.ToPayD, Bl.APeriod, Bl.ZPeriod, Bl.Pay' +
+        'dD, Bl.Remark, Cl.Shem, (Bl.PaydD-Bl.ToPayD) Delta, Bl.Kabala'
+      'FROM KBillHis Bl'
+      'LEFT JOIN KClient Cl ON Cl.Id = Bl.ClientId'
+      'WHERE 0=0'
+      'ORDER BY Bl.ReciptNo')
+    Left = 56
+    Top = 144
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+      Origin = 'KB."KBillHis".Id'
+    end
+    object qrFilterClientId: TIntegerField
+      FieldName = 'ClientId'
+      Origin = 'KB."KBillHis".ClientId'
+    end
+    object qrFilterReciptNo: TFloatField
+      DisplayLabel = #1502#1505#39' '#1495#1513#1489#1493#1504#1497#1514
+      FieldName = 'ReciptNo'
+    end
+    object qrFilterProduceD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1492#1508#1511#1492
+      FieldName = 'ProduceD'
+      Origin = 'KB."KBillHis".ProduceD'
+    end
+    object qrFilterSumA: TCurrencyField
+      DisplayLabel = #1505#1499#1493#1501
+      DisplayWidth = 10
+      FieldName = 'SumA'
+      Origin = 'KB."KBillHis".SumA'
+    end
+    object qrFilterToPayD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1500#1514#1513#1500#1493#1501
+      FieldName = 'ToPayD'
+      Origin = 'KB."KBillHis".ToPayD'
+    end
+    object qrFilterAPeriod: TDateField
+      DisplayLabel = #1502#1514#1488#1512#1497#1498
+      FieldName = 'APeriod'
+      Origin = 'KB."KBillHis".APeriod'
+    end
+    object qrFilterZPeriod: TDateField
+      DisplayLabel = #1506#1491' '#1514#1488#1512#1497#1498
+      FieldName = 'ZPeriod'
+      Origin = 'KB."KBillHis".ZPeriod'
+    end
+    object qrFilterRemark: TMemoField
+      FieldName = 'Remark'
+      Origin = 'KB."KBillHis".Remark'
+      BlobType = ftMemo
+      Size = 60
+    end
+    object qrFilterPaydD: TDateField
+      DisplayLabel = #1513#1493#1500#1501' '#1489#1508#1493#1506#1500
+      FieldName = 'PaydD'
+      Origin = 'KB."KBillHis".PaydD'
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Origin = 'KB."KClient".Shem'
+      Size = 30
+    end
+    object qrFilterDelta: TFloatField
+      DisplayLabel = #1488#1497#1495#1493#1512' '#1489#1497#1502#1497#1501
+      FieldName = 'Delta'
+    end
+    object qrFilterKabala: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1511#1489#1500#1492
+      FieldName = 'Kabala'
+    end
+  end
+  object dsFilter: TDataSource
+    DataSet = qrFilter
+    Left = 105
+    Top = 145
+  end
+end

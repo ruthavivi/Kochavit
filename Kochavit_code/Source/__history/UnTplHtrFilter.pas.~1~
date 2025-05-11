@@ -1,0 +1,88 @@
+unit UnTplHtrFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls;
+
+type
+  TfrmUnTplHtrFilter = class(TfrmGnrlFilter)
+    lbTofes: TLabel;
+    Label2: TLabel;
+    cxETipul: TCheckBox;
+    cbETipul: TComboBox;
+    cxEHeiter: TCheckBox;
+    cbEHeiter: TComboBox;
+    Table1: TTable;
+    procedure btnExecuteClick(Sender: TObject);
+    procedure cbEHeiterEnter(Sender: TObject);
+    procedure cbETipulEnter(Sender: TObject);
+    procedure cxETipulClick(Sender: TObject);
+  private
+    procedure LoadQuery(pSqlFile: String; cbBox: TComboBox);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUnTplHtrFilter: TfrmUnTplHtrFilter;
+
+implementation
+uses
+  UnTipulReport, UnHeiterReport;
+{$R *.dfm}
+
+procedure TfrmUnTplHtrFilter.cxETipulClick(Sender: TObject);
+begin
+  inherited;
+  ChkBoxClick(Sender as TCheckBox);
+end;
+
+procedure TfrmUnTplHtrFilter.cbETipulEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KTblTipul.db';
+  ItemsInCmbBox(cbETipul, 'Tipul');
+end;
+
+procedure TfrmUnTplHtrFilter.cbEHeiterEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KTblHeiter.db';
+  ItemsInCmbBox(cbEHeiter, 'Heiter');
+end;
+
+procedure TfrmUnTplHtrFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  try
+    if cxETipul.Checked then
+    begin
+      LoadQuery('UnTipulSQL.Txt', cbETipul);
+      frmUnTipulReport := TfrmUnTipulReport.Create(Self);
+    end
+    else if cxEHeiter.Checked then
+    begin
+      LoadQuery('UnHeiterSQL.Txt', cbEHeiter);
+      frmUnHeiterReport := TfrmUnHeiterReport.Create(Self);
+    end;
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmUnTplHtrFilter.LoadQuery(pSqlFile: String; cbBox: TComboBox);
+var
+   Path: String;
+begin
+  Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+  qrFilter.SQL.LoadFromFile(Path+pSqlFile);
+  qrFilter.SQL.Text := qrFilter.SQL.Text +
+        QuotedStr(cbBox.Text)  + ')';
+  qrFilter.SQL.Add('Order by Cl.Shem');
+  qrFilter.Open;
+end;
+
+end.

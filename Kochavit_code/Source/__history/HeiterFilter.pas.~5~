@@ -1,0 +1,132 @@
+unit HeiterFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmHeiterFilter = class(TfrmGnrlFilter)
+    lbADateDone: TLabel;
+    lbZDateDone: TLabel;
+    lbEShemD: TLabel;
+    lbEHeiter: TLabel;
+    edADateDone: TMaskEdit;
+    edZDateDone: TMaskEdit;
+    cbDateDone: TCheckBox;
+    cbShemD: TCheckBox;
+    cbEShemD: TComboBox;
+    cbHeiter: TCheckBox;
+    cbEHeiter: TComboBox;
+    qrFilterId: TIntegerField;
+    qrFilterIdDriver: TIntegerField;
+    qrFilterIdHeiter: TIntegerField;
+    qrFilterDateDone: TDateField;
+    qrFilterShemD: TStringField;
+    qrFilterShem: TStringField;
+    qrFilterHeiter: TStringField;
+    procedure FormCreate(Sender: TObject);
+    procedure cbDateDoneClick(Sender: TObject);
+    procedure edADateDoneExit(Sender: TObject);
+    procedure cbEShemDEnter(Sender: TObject);
+    procedure cbEHeiterEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmHeiterFilter: TfrmHeiterFilter;
+
+implementation
+
+{$R *.dfm}
+uses
+  HeiterFilterDM, HeiterReport, KbFunc;
+
+
+procedure TfrmHeiterFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmHeiterFilter := TdmHeiterFilter.Create(Self);
+end;
+
+procedure TfrmHeiterFilter.cbDateDoneClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmHeiterFilter.edADateDoneExit(Sender: TObject);
+begin
+  inherited;
+   if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edADateDone.Text,
+               edZDateDone.Text) = False) then
+           edADateDone.SetFocus;
+end;
+
+procedure TfrmHeiterFilter.LoadItemsInComboBox(Sender: TObject; pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmHeiterFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmHeiterFilter.cbEShemDEnter(Sender: TObject);
+var
+  ListItem: TStringList;
+begin
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmHeiterFilter.LoadItems('KClient', 'Shem', '', ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmHeiterFilter.cbEHeiterEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmHeiterFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(frmHeiterReport) then
+  begin
+    with dmHeiterFilter do
+    begin
+      SetTotalRec('KDrHeiterHis');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\HeiterFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'DateDone';
+      if OpenData then
+        frmHeiterReport := TfrmHeiterReport.Create(Self);
+    end;
+  end;
+end;
+
+end.

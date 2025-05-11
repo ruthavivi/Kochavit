@@ -1,0 +1,232 @@
+unit CarList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlList, DB, Menus, ImgList, StdActns, DBActns, ActnList, ComCtrls,
+  Grids, DBGrids, ExtCtrls, StdCtrls, Mask, Buttons, ToolWin, edbcomps, edberror,
+  System.Actions, System.ImageList;
+
+type
+  TfrmCarList = class(TfrmGnrlList)
+    N10: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure edSearchChange(Sender: TObject);
+    procedure acArchiveExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+    procedure acFrezeUpdate(Sender: TObject);
+    procedure acFrezeExecute(Sender: TObject);
+    procedure acAppendUpdate(Sender: TObject);
+    procedure acAppendExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acEditExecute(Sender: TObject);
+    procedure dsListDataChange(Sender: TObject; Field: TField);
+    procedure acPrintListExecute(Sender: TObject);
+  private
+    procedure UpdateStatusBar;
+    procedure OpenOneRec(pState: Boolean);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCarList: TfrmCarList;
+
+implementation
+uses
+  MainDM, CarListDM, DialogsHeb, LogErrorUtil, CarEditDM, CarEdit, GnrlFreze,
+  Cause;
+{$R *.dfm}
+
+procedure TfrmCarList.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmCarList := TdmCarList.Create(Self);
+  LoadColOrder(DBGrid, 'CarList');
+  MarkIndexColumn(dmCarList.CarOrder);
+  UpdateStatusBar;
+end;
+
+procedure TfrmCarList.UpdateStatusBar;
+begin
+  StatusBar.Panels[0].Text := 'סה"כ רכבים: ' +
+        IntToStr(dmCarList.qrCarList.RecordCount);
+  StatusBar.Panels[1].Text := 'סה"כ מוקפאים: ' + dmCarList.CarFrzRecNo;
+end;
+
+procedure TfrmCarList.dsListDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  if Assigned(dmCarList) then
+    UpdateStatusBar;
+end;
+
+procedure TfrmCarList.DBGridDrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+begin
+  inherited;
+  if dmCarList.qrCarListFreze.AsBoolean then
+      DBGrid.Canvas.Brush.Color := clSilver;
+  if dmCarList.qrCarListMissing.AsBoolean then
+      DBGrid.Canvas.Font.Color := clRed;
+
+  DBGrid.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+procedure TfrmCarList.DBGridTitleClick(Column: TColumn);
+begin
+  dmCarList.CarOrder := Column.FieldName;
+  dmCarList.ReOpenTable(dmCarList.qrCarListId.AsInteger);
+  MarkIndexColumn(Column.FieldName);
+  edSearch.SetFocus;
+end;
+
+procedure TfrmCarList.edSearchChange(Sender: TObject);
+var
+  SearchVal: Variant;
+begin
+  inherited;
+  SearchVal := edSearch.Text;
+  if (typField = TIntegerField) then
+    SearchVal := StrToIntDef(SearchVal, 0);
+
+  dmCarList.qrCarList.Locate(dmCarList.CarOrder, Trim(SearchVal), [loPartialKey]);
+end;
+
+procedure TfrmCarList.acArchiveExecute(Sender: TObject);
+begin
+  inherited;
+  frmCause := TfrmCause.Create(Self);
+  frmCause.Panel3.Caption := 'מספר רישוי: ' +
+                       dmCarList.qrCarList.FieldByName('Number').AsString;
+  frmCause.OpenRecord(frmCause.tbCrSiba);
+  frmCause.tbCrSiba.FieldByName('ClientId').AsInteger :=
+                    dmCarList.qrCarListClientId.AsInteger;
+  try
+    if (frmCause.ShowModal = mrYes) then
+    begin
+      try
+        dmCarList.ShiftToArchive;
+      except
+        on E: EDatabaseError do
+          HandelError('TfrmeCarList.acToArchiveExecute', 'כרטיס לא נשמר' + E.Message, E);
+      end;
+    end;
+  finally
+    frmCause.Free;
+  end;
+end;
+
+procedure TfrmCarList.acDeleteExecute(Sender: TObject);
+begin
+  inherited;
+  if ConfirmAction('למחוק סופית רכב מספר ' + dmCarList.qrCarListNumber.AsString) then
+  begin
+    Screen.Cursor := crHourGlass;
+    try
+      dmCarList.DeleteCar;
+      UpdateStatusBar;
+    finally
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+procedure TfrmCarList.acFrezeUpdate(Sender: TObject);
+begin
+  inherited;
+  if not dmCarList.qrCarListFreze.AsBoolean then
+  begin
+    acFreze.Hint := 'השבתת רכב';
+    acFreze.ImageIndex := 5;
+  end
+  else
+  begin
+    acFreze.Hint := 'שיחרור מהשבתה';
+    acFreze.ImageIndex := 6;
+  end;
+end;
+
+procedure TfrmCarList.acFrezeExecute(Sender: TObject);
+begin
+  inherited;
+  if (acFreze.ImageIndex = 5) then
+  begin
+    frmGnrlFreze := TfrmGnrlFreze.Create(Self);
+    if (frmGnrlFreze.ShowModal = mrOk) then
+      dmMain.UpdateFrezeState(True, frmGnrlFreze.rgSlct.ItemIndex = 1,
+          'KCrFreze', 'CarId', dmCarList.qrCarListId.AsString,
+          Engine.DateToSQLStr(frmGnrlFreze.edMoed.Date), 'KCar');
+  end
+  else
+    dmMain.UpdateFrezeState(False, False, '', '',
+        dmCarList.qrCarListId.AsString, '', 'KCar');
+  dmCarList.qrCarList.Refresh;
+end;
+
+procedure TfrmCarList.acAppendUpdate(Sender: TObject);
+begin
+  inherited;
+  acAppend.Enabled := not dmMain.SelectAll;
+end;
+
+procedure TfrmCarList.acAppendExecute(Sender: TObject);
+begin
+  inherited;
+  OpenOneRec(True);
+end;
+
+procedure TfrmCarList.acEditExecute(Sender: TObject);
+begin
+  inherited;
+  OpenOneRec(False);
+end;
+
+procedure TfrmCarList.acPrintListExecute(Sender: TObject);
+var
+  Path: String;
+begin
+  inherited;
+  Path := ExtractFilePath(Application.ExeName) + 'Report\';
+  dmCarList.frdbCarList.LoadFromFile(Path+'rpCarsList.fr3');
+  dmCarList.frdbCarList.PrepareReport;
+  dmCarList.frdbCarList.Print;
+end;
+
+procedure TfrmCarList.OpenOneRec(pState: Boolean);
+begin
+  if not Assigned(frmCarEdit) then
+  begin
+    try
+      dmCarEdit := TdmCarEdit.Create(Self);
+      dmCarEdit.SetDataState(pState, dmCarList.qrCarListId.AsInteger);
+      frmCarEdit := TfrmCarEdit.Create(Self);
+    except on E: Exception do
+      begin
+        if (E is EEDBError) then
+        begin
+          if (EEDBError(E).ErrorCode = EDB_ERROR_LOCKROW) then
+            MessageDlgH('כרטיס פתוח ע"י משתמש אחר', mtError, [mbOK], 0, 0)
+          else
+            HandelError('TfrmCarList.OpenOneRec', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmCarList.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SaveColOrder(DBGrid, 'CarList');
+  dmCarList.Free;
+  inherited;
+  frmCarList := nil;
+end;
+
+end.

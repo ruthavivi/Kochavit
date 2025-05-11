@@ -1,0 +1,15 @@
+inherited dlgImportPhoto: TdlgImportPhoto
+  Caption = #1492#1493#1505#1508#1514' '#1502#1505#1502#1498' '#1502#1510#1493#1500#1501
+  OnActivate = FormActivate
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited btnAbort: TBitBtn
+      OnClick = btnAbortClick
+    end
+  end
+  object OpenPictureDialog: TOpenPictureDialog
+    Left = 64
+    Top = 64
+  end
+end

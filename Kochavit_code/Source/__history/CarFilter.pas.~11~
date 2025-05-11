@@ -1,0 +1,134 @@
+unit CarFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmCarFilter = class(TfrmGnrlFilter)
+    lbAIdCar: TLabel;
+    lbZIdCar: TLabel;
+    cbCodCar: TCheckBox;
+    edACodCar: TMaskEdit;
+    edZCodCar: TMaskEdit;
+    lbEType: TLabel;
+    cbType: TCheckBox;
+    cbEType: TComboBox;
+    lbEProducer: TLabel;
+    cbProducer: TCheckBox;
+    cbEProducer: TComboBox;
+    lbEDgam: TLabel;
+    cbDgam: TCheckBox;
+    cbEDgam: TComboBox;
+    lbAModel: TLabel;
+    lbZModel: TLabel;
+    cbModel: TCheckBox;
+    edAModel: TMaskEdit;
+    edZModel: TMaskEdit;
+    lbEGear: TLabel;
+    cbGear: TCheckBox;
+    cbEGear: TComboBox;
+    lbECargo: TLabel;
+    cbCargo: TCheckBox;
+    cbECargo: TComboBox;
+    lbAWeightT: TLabel;
+    lbZWeightT: TLabel;
+    cbWeightT: TCheckBox;
+    edAWeightT: TMaskEdit;
+    edZWeightT: TMaskEdit;
+    lbEOved: TLabel;
+    cbOved: TCheckBox;
+    cbEOved: TComboBox;
+    lbEEngine: TLabel;
+    cbEngine: TCheckBox;
+    cbEEngine: TComboBox;
+    procedure cbETypeEnter(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure cbCodCarClick(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure cbEDgamEnter(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCarFilter: TfrmCarFilter;
+
+implementation
+uses
+  CarFilterDM, CarReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmCarFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmCarFilter := TdmCarFilter.Create(Self);
+end;
+
+procedure TfrmCarFilter.cbCodCarClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmCarFilter.LoadItemsInComboBox(Sender: TObject; pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmCarFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmCarFilter.cbETypeEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmCarFilter.cbEDgamEnter(Sender: TObject);
+var
+  Where, ProducerId: String;
+begin
+  inherited;
+  if cbProducer.Checked then
+  begin
+    ProducerId := dmCarFilter.GetId('KTblProducer', 'Producer', cbEProducer.Text);
+    Where := ' WHERE IdP = ' + ProducerId;
+  end;
+  LoadItemsInComboBox(Sender, Where);
+end;
+
+procedure TfrmCarFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(frmCarReport) then
+  begin
+    with dmCarFilter do
+    begin
+      SetTotalRec('KCar');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\CarFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'Number';
+      if OpenData then
+        frmCarReport := TfrmCarReport.Create(Self);
+    end;
+  end;
+end;
+
+end.

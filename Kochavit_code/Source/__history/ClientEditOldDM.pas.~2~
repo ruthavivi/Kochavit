@@ -1,0 +1,83 @@
+unit ClientEditOldDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, DBTables, edbcomps;
+
+type
+  TdmClientEditOld = class(TDataModule)
+    dsClFollow: TDataSource;
+    tbClFollow: TEDBTable;
+    tbClFollowMoed: TDateField;
+    tbClFollowSha: TTimeField;
+    tbClFollowRemark: TStringField;
+    tbClFollowId: TAutoIncField;
+    tbClFollowClientId: TIntegerField;
+    tbTofes: TEDBTable;
+    tbTofesId: TAutoIncField;
+    tbTofesClientId: TIntegerField;
+    tbTofesMoed: TDateField;
+    tbTofesName: TStringField;
+    tbTofesTofes: TBlobField;
+    tbTofesExt: TStringField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure tbClFollowAfterOpen(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    procedure SaveTofes(pName, pFile, pExt: String);
+  end;
+
+var
+  dmClientEditOld: TdmClientEditOld;
+
+implementation
+uses
+  LogErrorUtil;
+{$R *.dfm}
+
+procedure TdmClientEditOld.DataModuleCreate(Sender: TObject);
+begin
+  try
+    tbClFollow.Open;
+  except
+     on E: EDatabaseError do
+     begin
+         HandelError('!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+         Self.Destroy;
+     end;
+  end;
+end;
+
+procedure TdmClientEditOld.tbClFollowAfterOpen(DataSet: TDataSet);
+begin
+  tbClFollow.Last;
+end;
+
+procedure TdmClientEditOld.SaveTofes(pName, pFile, pExt: String);
+begin
+  try
+    tbTofes.Open;
+    tbTofes.Append;
+    tbTofesMoed.AsDateTime := Date;
+    tbTofesName.AsString := pName;
+    tbTofesExt.AsString := pExt;
+    tbTofesTofes.LoadFromFile(pFile);
+    tbTofes.Post;
+  except
+    on E: EDBEngineError do
+    begin
+      HandelError('!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      tbTofes.Close;
+    end;
+  end;
+end;
+
+procedure TdmClientEditOld.DataModuleDestroy(Sender: TObject);
+begin
+  tbClFollow.Close;
+end;
+
+end.

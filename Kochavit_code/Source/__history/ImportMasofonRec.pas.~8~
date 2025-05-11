@@ -1,0 +1,51 @@
+unit ImportMasofonRec;
+
+interface
+uses
+  StrUtils;
+
+type
+  TImportRecord = class
+    private
+      FId: String;
+      FOvedId: String;
+      FNoBkr: String;
+      FNumber: String;
+      FKm: String;
+      FDateDone: String;
+      FDateToDo: String;
+      FRemark: String;
+      FProblem: String;
+
+      procedure SetDateDone(pDateDone: String);
+      procedure SetDateToDo(pDateToDo: String);
+    public
+      property Id: String read FId write FId;
+      property OvedId: String read FOvedId write FOvedId;
+      property NoBkr: String read FNoBkr write FNoBkr;
+      property Number: String read FNumber write FNumber;
+      property Km: String read FKm write FKm;
+      property DateDone: String read FDateDone write SetDateDone;
+      property DateToDo: String read FDateToDo write SetDateToDo;
+      property Remark: String read FRemark write FRemark;
+      property Problem: String read FProblem write FProblem;
+
+  end;
+
+implementation
+
+{ TImportRecord }
+
+procedure TImportRecord.SetDateDone(pDateDone: String);
+begin
+  FDateDone := LeftStr(pDateDone, 4) + '-' + Copy(pDateDone, 3, 2) + '-' +
+          RightStr(pDateDone, 2);
+end;
+
+procedure TImportRecord.SetDateToDo(pDateToDo: String);
+begin
+  FDateToDo := LeftStr(pDateToDo, 4) + '-' + Copy(pDateToDo, 3, 2) + '-' +
+          RightStr(pDateToDo, 2);
+end;
+
+end.

@@ -1,0 +1,56 @@
+inherited dmAcdntDrFilter: TdmAcdntDrFilter
+  OldCreateOrder = True
+  inherited qrFilter: TEDBQuery
+    ReadOnly = True
+    SQL.Strings = (
+      
+        'SELECT Id, AcdntD, WithInjr, Quilty, Tipul, ShemD, Zeut, Number,' +
+        ' Shem'
+      'FROM KDrAcdnt Da'
+      '  LEFT JOIN KDriver Dr ON Da.DriverId = Dr.Id '
+      '  LEFT JOIN KCar Cr ON Da.CarId = Cr.Id'
+      '    LEFT JOIN KClient Cl ON Dr.ClientId = Cl.Id')
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterAcdntD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1514#1488#1493#1504#1492
+      FieldName = 'AcdntD'
+    end
+    object qrFilterWithInjr: TStringField
+      DisplayLabel = #1506#1501' '#1504#1508#1490#1506#1497#1501
+      FieldName = 'WithInjr'
+      Size = 2
+    end
+    object qrFilterQuilty: TStringField
+      DisplayLabel = #1488#1513#1501
+      FieldName = 'Quilty'
+      Size = 2
+    end
+    object qrFilterTipul: TStringField
+      DisplayLabel = #1488#1493#1508#1503' '#1496#1497#1508#1493#1500
+      FieldName = 'Tipul'
+      Size = 50
+    end
+    object qrFilterShemD: TStringField
+      DisplayLabel = #1513#1501' '#1492#1504#1492#1490
+      FieldName = 'ShemD'
+      Size = 25
+    end
+    object qrFilterZeut: TStringField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514
+      FieldName = 'Zeut'
+      Size = 11
+    end
+    object qrFilterNumber: TStringField
+      DisplayLabel = #1502#1505#1508#1512' '#1512#1513#1497#1493#1503
+      FieldName = 'Number'
+      Size = 9
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Size = 30
+    end
+  end
+end

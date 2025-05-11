@@ -1,0 +1,312 @@
+inherited frmHeiterFilter: TfrmHeiterFilter
+  Left = 169
+  Top = 236
+  Width = 466
+  Height = 191
+  Caption = #1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1492#1497#1514#1512#1497#1501' '#1493#1488#1497#1513#1493#1512#1497#1501
+  OldCreateOrder = True
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 133
+    Width = 458
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    Width = 458
+    Height = 133
+    inherited grbMain: TGroupBox
+      Width = 456
+      Height = 131
+      object lbADateDone: TLabel
+        Left = 331
+        Top = 32
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZDateDone: TLabel
+        Left = 152
+        Top = 32
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEShemD: TLabel
+        Tag = 1
+        Left = 301
+        Top = 52
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEHeiter: TLabel
+        Tag = 3
+        Left = 301
+        Top = 71
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEShem: TLabel
+        Tag = 2
+        Left = 301
+        Top = 91
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edADateDone: TMaskEdit
+        Left = 184
+        Top = 32
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 1
+        Text = '  /  /    '
+        OnExit = edADateDoneExit
+      end
+      object edZDateDone: TMaskEdit
+        Left = 31
+        Top = 32
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 2
+        Text = '  /  /    '
+        OnExit = edADateDoneExit
+      end
+      object cxDDateDone: TCheckBox
+        Left = 352
+        Top = 32
+        Width = 94
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1495#1497#1491#1493#1513':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cxDDateDoneClick
+      end
+      object cxEShemD: TCheckBox
+        Tag = 1
+        Left = 367
+        Top = 52
+        Width = 79
+        Height = 14
+        Caption = #1513#1501' '#1504#1492#1490':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = cxDDateDoneClick
+      end
+      object cbEShemD: TComboBox
+        Tag = 1
+        Left = 136
+        Top = 52
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 4
+        OnEnter = cbEShemDEnter
+      end
+      object cxEHeiter: TCheckBox
+        Tag = 3
+        Left = 367
+        Top = 71
+        Width = 79
+        Height = 14
+        Caption = #1513#1501' '#1492#1492#1497#1514#1512':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
+        OnClick = cxDDateDoneClick
+      end
+      object cbEHeiter: TComboBox
+        Tag = 3
+        Left = 136
+        Top = 71
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 6
+        OnEnter = cbEHeiterEnter
+      end
+      object cxEShem: TCheckBox
+        Tag = 2
+        Left = 352
+        Top = 91
+        Width = 94
+        Height = 14
+        Caption = #1513#1501' '#1495#1489#1512#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 7
+        OnClick = cxDDateDoneClick
+      end
+      object cbEShem: TComboBox
+        Tag = 2
+        Left = 136
+        Top = 91
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 8
+        OnEnter = cbEShemEnter
+      end
+    end
+  end
+  inherited tbl: TTable
+    Left = 96
+    Top = 136
+  end
+  inherited qrFilter: TQuery
+    SQL.Strings = (
+      'SELECT Ht.*, Dr.ShemD, Cl.Shem, Th.Heiter'
+      'FROM KDrHeiterHis Ht'
+      'LEFT JOIN KDriver Dr ON Dr.Id = Ht.IdDriver'
+      'LEFT JOIN KClient Cl ON Cl.Id = Dr.ClientId'
+      'LEFT JOIN KTblHeiter Th ON Th.Id = Ht.IdHeiter'
+      'WHERE 0=0'
+      'ORDER BY Ht.DateDone')
+    Left = 32
+    Top = 80
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrFilterIdDriver: TIntegerField
+      FieldName = 'IdDriver'
+    end
+    object qrFilterIdHeiter: TIntegerField
+      FieldName = 'IdHeiter'
+    end
+    object qrFilterDateDone: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1495#1497#1491#1493#1513
+      FieldName = 'DateDone'
+    end
+    object qrFilterShemD: TStringField
+      DisplayLabel = #1513#1501' '#1492#1504#1492#1490
+      FieldName = 'ShemD'
+      Size = 25
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Size = 30
+    end
+    object qrFilterHeiter: TStringField
+      DisplayLabel = #1513#1501' '#1492#1492#1497#1514#1512
+      FieldName = 'Heiter'
+      Size = 30
+    end
+  end
+  inherited qrGnrl: TQuery
+    Left = 80
+    Top = 80
+  end
+end

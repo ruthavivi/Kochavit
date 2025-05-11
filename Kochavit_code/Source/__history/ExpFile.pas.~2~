@@ -1,0 +1,82 @@
+unit ExpFile;
+
+interface
+  uses
+    SysUtils, Forms, Controls, Dialogs, edbcomps;
+
+  procedure ExpClients;
+  procedure ExpTipul(pClientId, pNumber, pDateDone, pShum: String);
+
+implementation
+
+
+procedure ExpClients;
+var
+  FileName, OneRecord: String;
+  txtFile: System.Text;
+  Qr: TEDBQuery;
+begin
+  FileName := ExtractFilePath(Application.ExeName) +
+      'TextFiles\Clients.Txt';
+  Qr := TEDBQuery.Create(Application);
+  with Qr do
+  begin
+    Screen.Cursor := crHourGlass;
+    Qr.SessionName := 'Main';
+    Qr.DatabaseName := 'dbnMain';
+    Qr.SQL.Text := 'SELECT IdClient, Shem, Ktovet, Isuv, Mikud, Contact, TelC ' +
+                  'FROM KClient';
+    Qr.Open;
+    AssignFile(txtFile, FileName);
+    Rewrite(txtFile);
+    try
+      while not Eof do
+      begin
+        OneRecord := FieldByName('IdClient').AsString + ';' +
+              FieldByName('Shem').AsString + ';' +
+              FieldByName('Ktovet').AsString + ';' +
+              FieldByName('Isuv').AsString + ';' +
+              FieldByName('Mikud').AsString + ';' +
+              FieldByName('Contact').AsString + ';' +
+              FieldByName('TelC').AsString;
+
+        Writeln(txtFile, OneRecord);
+        Next;
+      end;
+      MessageDlg('המערכת יצרה קובץ' + #13#10 + FileName, mtInformation,
+            [mbOK], 0);
+    finally
+      System.Close(txtFile);
+      Qr.Close;
+      EnableControls;
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+procedure ExpTipul(pClientId, pNumber, pDateDone, pShum: String);
+var
+  FileName, OneRecord: String;
+  FHandle: Integer;
+  txtFile: System.Text;
+begin
+  FileName := ExtractFilePath(Application.ExeName) + 'TextFiles\Tipul.Txt';
+  try
+    Screen.Cursor := crHourGlass;
+    if not FileExists(FileName) then
+    begin
+      FHandle := FileCreate(FileName);
+      FileClose(FHandle);
+    end;
+    AssignFile(txtFile, FileName);
+    Append(txtFile);
+    OneRecord := pClientId + ';' + pNumber + ';' +
+                'ביקורת חודשית' + ';' + pDateDone + ';' + pShum;
+    Writeln(txtFile, OneRecord);
+  finally
+    System.Close(txtFile);
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+end.

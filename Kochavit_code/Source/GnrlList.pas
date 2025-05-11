@@ -1,0 +1,183 @@
+unit GnrlList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, StdCtrls, DBCtrls, ImgList, ActnList, Menus, Grids,
+  DBGrids, ExtCtrls, ToolWin, Registry, Mask, DB, IniFiles,
+  Buttons, edbcomps, DBActns, StdActns, System.Actions, System.ImageList;
+
+type
+  TfrmGnrlList = class(TForm)
+    ToolBar1: TToolBar;
+    Panel1: TPanel;
+    DBGrid: TDBGrid;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    StatusBar: TStatusBar;
+    edSearch: TMaskEdit;
+    ActionList1: TActionList;
+    acAppend: TAction;
+    acEdit: TAction;
+    acArchive: TAction;
+    acDelete: TAction;
+    ImageList1: TImageList;
+    MainMenu1: TMainMenu;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    N6: TMenuItem;
+    ToolButton4: TToolButton;
+    N7: TMenuItem;
+    acFreze: TAction;
+    N8: TMenuItem;
+    SaveDialog1: TSaveDialog;
+    N9: TMenuItem;
+    btnClose: TBitBtn;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    DataSetFirst: TDataSetFirst;
+    DataSetLast: TDataSetLast;
+    dsList: TDataSource;
+    WindowClose: TWindowClose;
+    pmRightClick: TPopupMenu;
+    acPrintList: TAction;
+    btnPrintList: TToolButton;
+    Panel2: TPanel;
+    Label1: TLabel;
+    Image1: TImage;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCloseClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
+  private
+  public
+    typField: TClass;
+    procedure MarkIndexColumn(fldName: String);
+    procedure SetSearchMode(Column: TColumn);
+    function  ConfirmAction(pMsg: String): Boolean;
+    procedure LoadColOrder(pDBGrid: TDBGrid; pFile: String);
+    procedure SaveColOrder(pDBGrid: TDBGrid; pFile: String);
+    procedure PrintList(pReportName: String);
+  end;
+
+var
+  frmGnrlList: TfrmGnrlList;
+
+implementation
+uses
+   DataDM, MainDM, DialogsHeb;
+{$R *.dfm}
+
+procedure TfrmGnrlList.FormCreate(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmGnrlList.FormActivate(Sender: TObject);
+begin
+  edSearch.SetFocus;
+end;
+
+procedure TfrmGnrlList.LoadColOrder(pDBGrid: TDBGrid; pFile: String);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Txt\';
+  if FileExists(Path + pFile) then
+    pDBGrid.Columns.LoadFromFile(Path + pFile);
+end;
+
+procedure TfrmGnrlList.MarkIndexColumn(fldName: String);
+var
+   i: Integer;
+begin
+  with dbGrid do
+  begin
+    for i := 0 to Columns.Count -1 do
+    begin
+      if Columns[i].FieldName = fldName then
+      begin
+        Columns[i].Title.Font.Color := clRed;
+        SetSearchMode(Columns[i]);
+      end
+      else
+        Columns[i].Title.Font.Color := clBlack;
+    end;
+  end;
+end;
+
+procedure TfrmGnrlList.SetSearchMode(Column: TColumn);
+begin
+  typField := Column.Field.ClassType;
+  edSearch.Clear;
+  if Column.FieldName = 'Number' then
+  begin
+    edSearch.BiDiMode := bdLeftToRight;
+    edSearch.EditMask := '99999999;0; ';
+  end
+  else if (Column.FieldName = 'Zeut') then
+  begin
+    edSearch.BiDiMode := bdLeftToRight;
+    edSearch.EditMask := 'a\-aaaaaaa\-a;1; ';
+  end
+  else if typField = TIntegerField then
+  begin
+    edSearch.BiDiMode := bdLeftToRight;
+    edSearch.EditMask := '999999999999;0; ';
+  end
+  else if typField = TDateField then
+  begin
+    edSearch.BiDiMode := bdLeftToRight;
+    edSearch.EditMask := '!99/99/9999;1; ';
+  end
+  else
+  begin
+    edSearch.BiDiMode := bdRightToLeft;
+    edSearch.EditMask := 'ccccccccccccccc;0; ';
+  end;
+end;
+
+function TfrmGnrlList.ConfirmAction(pMsg: String): Boolean;
+begin
+  Result := False;
+  if MessageDlgH(pMsg, mtConfirmation, mbYesNoCancel, 0,0) = mrYes then
+    Result := True;
+end;
+
+procedure TfrmGnrlList.SaveColOrder(pDBGrid: TDBGrid; pFile: String);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Txt\';
+  pDBGrid.Columns.SaveToFile(Path + pFile);
+end;
+
+
+procedure TfrmGnrlList.PrintList(pReportName: String);
+var
+  Path: String;
+begin
+  inherited;
+  Path := ExtractFilePath(Application.ExeName)+'Report\';
+  dmData.frxReport.LoadFromFile(Path+pReportName);
+  dmData.frxReport.PrepareReport(True);
+  dmData.frxReport.Print;
+end;
+
+procedure TfrmGnrlList.btnCloseClick(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmGnrlList.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+end.

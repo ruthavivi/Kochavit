@@ -1,0 +1,188 @@
+unit CarRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  StrUtils, WordFunc, WordVer, RpCon, RpConDS, RpConBDE, RpBase, RpSystem,
+  RpDefine, RpRave, RpRender, RpRenderRTF, RpRenderHTML, edbcomps;
+
+type
+  TfrmCarRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    qrTipul: TQuery;
+    dsSpss: TDataSource;
+    qrTplDtl: TQuery;
+    qrGnrl: TQuery;
+    rqCarRprt: TRvQueryConnection;
+    qrCrTofes: TQuery;
+    rqCrTofes: TRvQueryConnection;
+    EDBQuery1: TEDBQuery;
+    EDBQuery2: TEDBQuery;
+    EDBQuery3: TEDBQuery;
+    EDBQuery4: TEDBQuery;
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    WorkFile: OleVariant;
+    Ver: Integer;
+    WordObj: TWordObj;
+    procedure ProccessTofes;
+    procedure InsertData;
+    function PadLeft(pStr, pChar: String; pLen: Integer): String;
+    function GetTofesDoc(pType: String): String;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCarRprtSlctDlg: TfrmCarRprtSlctDlg;
+
+implementation
+uses
+   CarFilter, CarReport, KbFunc;
+
+{$R *.dfm}
+
+procedure TfrmCarRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('C');
+end;
+
+procedure TfrmCarRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  if (rgReports.ItemIndex = 0) then
+  begin
+    try
+      qrSpss.Open;
+      qrTipul.Open;
+      qrTplDtl.Open;
+      ProccessTofes;
+    finally
+      qrSpss.Close;
+      qrTipul.Close;
+      qrTplDtl.Close;
+    end;
+  end
+  else
+    PrintRprt('');
+end;
+
+procedure TfrmCarRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+procedure TfrmCarRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+procedure TfrmCarRprtSlctDlg.ProccessTofes;
+begin
+  Ver := GetCurrentWordMajorVersion;
+  try
+    WordObj := TWordObj.Create;
+    WordObj.ConnectWord;
+    frmCarFilter.qrFilter.First;
+    while not frmCarFilter.qrFilter.Eof do
+    begin
+      InsertData;
+      frmCarFilter.qrFilter.Next;
+    end;
+  finally
+    WordObj.Free;
+  end;
+end;
+
+procedure TfrmCarRprtSlctDlg.InsertData;
+var
+  i: Integer;
+  vRemark, vType: String;
+begin
+  vType := frmCarFilter.qrFilter.FieldByName('Type').AsString;
+  WorkFile := ExtractFilePath(Application.ExeName) + 'Docs\Tofes\' +
+      GetTofesDoc(vType);
+  WordObj.OpenDoc(WorkFile);
+  with qrSpss do
+  begin
+    for i := 0 to FieldCount -1 do
+    begin
+      if (Fields[i].FieldName = 'Remark') then
+        vRemark := FieldByName(Fields[i].FieldName).AsString
+      else if (Ver = 9) and (Fields[i].FieldName = 'Number') then
+        WordObj.InsertBookMark('Number',
+              RevStr(FieldByName(Fields[i].FieldName).AsString))
+      else
+        WordObj.InsertBookMark(Fields[i].FieldName,
+                       FieldByName(Fields[i].FieldName).AsString);
+    end;
+  end;
+
+  WordObj.InsertBookMark('sp', '');
+  with qrTplDtl do
+  begin
+    if not Eof then
+    begin
+      while not Eof do
+      begin
+        WordObj.WriteNewLine(FieldByName(Fields[0].FieldName).AsString);
+        Next;
+      end;
+    end;
+  end;
+  if (vRemark <> '') then
+    WordObj.WriteNewLine(vRemark);
+
+  with qrTipul do
+  begin
+    if not Eof then
+    begin
+      WordObj.InsertBookMark('tp', '');
+      while not Eof do
+      begin
+        WordObj.WriteNewLine(
+        PadLeft(FieldByName(Fields[0].FieldName).AsString, ' ', 20)+
+                ': ' + FieldByName(Fields[1].FieldName).AsString);
+        Next;
+      end;
+    end;
+  end;
+
+//  WordObj.EditDoc;
+  WordObj.PrintDoc('1');
+  WordObj.CloseWord;
+end;
+
+function TfrmCarRprtSlctDlg.PadLeft(pStr, pChar: String;
+  pLen: Integer): String;
+var
+   i: Integer;
+begin
+   Result := '';
+   for i := Length(pStr) to pLen -1 do
+       Result := Concat(Result, pChar);
+   Result := Concat(pStr, Result);
+end;
+
+function TfrmCarRprtSlctDlg.GetTofesDoc(pType: String): String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Doc FROM KTblType ' +
+                      'WHERE Type = ' + QuotedStr(pType);
+  try
+    qrGnrl.Open;
+    if not qrGnrl.Eof then
+      Result := qrGnrl.FieldByName('Doc').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+
+end.

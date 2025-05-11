@@ -1,0 +1,56 @@
+unit CrFollowRprtSlctDlg;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlRprtSlctDlg, edbcomps, Data.DB,
+  RpRender, RpRenderHTML, RpBase, RpSystem, RpDefine, RpRave, Vcl.Samples.Spin,
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls, RpCon, RpConDS;
+
+type
+  TfrmCrFollowRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqCrFollowRprt: TRvDataSetConnection;
+    procedure FormCreate(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+    procedure btnRTFClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCrFollowRprtSlctDlg: TfrmCrFollowRprtSlctDlg;
+
+implementation
+uses
+  CrFollowFilterDM;
+{$R *.dfm}
+
+procedure TfrmCrFollowRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('F');
+end;
+
+procedure TfrmCrFollowRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmCrFollowRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+procedure TfrmCrFollowRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+end.

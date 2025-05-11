@@ -1,0 +1,30 @@
+unit MailSendList;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
+  Data.DB, Vcl.Grids, Vcl.DBGrids, MyDBGrid;
+
+type
+  TfrmMailSendList = class(TForm)
+    DBGrid: TMyDBGrid;
+    dsFolder: TDataSource;
+    Panel1: TPanel;
+    btnClose: TBitBtn;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmMailSendList: TfrmMailSendList;
+
+implementation
+uses
+  ClientEditDM;
+{$R *.dfm}
+
+end.

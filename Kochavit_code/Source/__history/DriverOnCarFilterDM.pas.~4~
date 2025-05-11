@@ -1,0 +1,38 @@
+unit DriverOnCarFilterDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, GnrlFilterDM, Data.DB, edbcomps;
+
+type
+  TdmDriverOnCarFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterCodDrv: TIntegerField;
+    qrFilterZeut: TStringField;
+    qrFilterShemD: TStringField;
+    qrFilterLicenceTyp: TStringField;
+    qrFilterCodCar: TIntegerField;
+    qrFilterNumber: TStringField;
+    qrFilterType: TStringField;
+    qrFilterProducer: TStringField;
+    qrFilterCod: TIntegerField;
+    qrFilterShem: TStringField;
+    qrFilterOved: TStringField;
+    dsFilter: TDataSource;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmDriverOnCarFilter: TdmDriverOnCarFilter;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

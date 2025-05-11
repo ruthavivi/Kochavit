@@ -1,0 +1,130 @@
+unit AcdntFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmAcdntFilter = class(TfrmGnrlFilter)
+    lbAAcdntD: TLabel;
+    lbZAcdntZ: TLabel;
+    edAAcdntD: TMaskEdit;
+    edZAcdntD: TMaskEdit;
+    cbAcdntD: TCheckBox;
+    lbEType: TLabel;
+    cbType: TCheckBox;
+    cbEType: TComboBox;
+    lbEShem: TLabel;
+    cbShem: TCheckBox;
+    cbEShem: TComboBox;
+    qrFilterId: TIntegerField;
+    qrFilterAcdntD: TDateField;
+    qrFilterDescrpt: TStringField;
+    qrFilterStatus: TStringField;
+    qrFilterNumber: TStringField;
+    qrFilterType: TStringField;
+    qrFilterShem: TStringField;
+    procedure FormCreate(Sender: TObject);
+    procedure cbAcdntDClick(Sender: TObject);
+    procedure edAAcdntDExit(Sender: TObject);
+    procedure cbETypeEnter(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcdntFilter: TfrmAcdntFilter;
+
+implementation
+uses
+   AcdntFilterDM, AcdntReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmAcdntFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmAcdntFilter := TdmAcdntFilter.Create(Self);
+end;
+
+procedure TfrmAcdntFilter.cbAcdntDClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmAcdntFilter.edAAcdntDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAAcdntD.Text,
+               edZAcdntD.Text) = False) then
+           edAAcdntD.SetFocus;
+end;
+
+procedure TfrmAcdntFilter.LoadItemsInComboBox(Sender: TObject; pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmAcdntFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmAcdntFilter.cbETypeEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmAcdntFilter.cbEShemEnter(Sender: TObject);
+var
+  ListItem: TStringList;
+begin
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmAcdntFilter.LoadItems('KClient', 'Shem', '', ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmAcdntFilter.btnExecuteClick(Sender: TObject);
+begin
+  if not Assigned(frmAcdntReport) then
+  begin
+    with dmAcdntFilter do
+    begin
+      SetTotalRec('KCrAcdnt');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\AcdntFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'AcdntD';
+      if OpenData then
+        frmAcdntReport := TfrmAcdntReport.Create(Self);
+    end;
+  end;
+end;
+
+
+end.

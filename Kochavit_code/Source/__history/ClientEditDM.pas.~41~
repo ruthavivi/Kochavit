@@ -1,0 +1,246 @@
+unit ClientEditDM;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Forms, Dialogs, GnrlEditDM, DB,
+  edbcomps, edbtype;
+
+type
+  TdmClientEdit = class(TdmGnrlEdit)
+    dsClient: TDataSource;
+    tbClFollow: TEDBTable;
+    tbClFollowMoed: TDateField;
+    tbClFollowSha: TTimeField;
+    tbClFollowRemark: TStringField;
+    tbClFollowClientId: TIntegerField;
+    tbClient: TEDBTable;
+    tbTblOved: TEDBTable;
+    tbTblOfenPay: TEDBTable;
+    tbClientCod: TAutoIncField;
+    tbClientHp: TIntegerField;
+    tbClientOpenDate: TDateField;
+    tbClientShem: TStringField;
+    tbClientBahalim1: TStringField;
+    tbClientTelB1: TStringField;
+    tbClientBahalim2: TStringField;
+    tbClientTelB2: TStringField;
+    tbClientKtovet: TStringField;
+    tbClientIsuv: TStringField;
+    tbClientMikud: TIntegerField;
+    tbClientTel1: TStringField;
+    tbClientTel2: TStringField;
+    tbClientFax: TStringField;
+    tbClientEMail: TStringField;
+    tbClientContact: TStringField;
+    tbClientTelC: TStringField;
+    tbClientAcounter: TStringField;
+    tbClientTelA: TStringField;
+    tbClientProfesion: TStringField;
+    tbClientTelP: TStringField;
+    tbClientZeutP: TIntegerField;
+    tbClientKtovetP: TStringField;
+    tbClientSizeP: TIntegerField;
+    tbClientPeriodPay: TSmallintField;
+    tbClientCreditPay: TSmallintField;
+    tbClientOvedId: TSmallintField;
+    tbClientRemark: TMemoField;
+    tbClientDept: TFloatField;
+    tbClientFreze: TBooleanField;
+    tbClientMovil: TStringField;
+    tbClientZeutM: TIntegerField;
+    tbClientOfenPayId: TIntegerField;
+    tbClientPail: TBooleanField;
+    tbClientLkpOved: TStringField;
+    tbClientLkpOfenPay: TStringField;
+    tbClientId: TIntegerField;
+    tbClientStamp: TDateTimeField;
+    tbClFollowId: TAutoIncField;
+    tbClientEMailX: TStringField;
+    qrClientMailSend: TEDBQuery;
+    tbClientMsira: TBooleanField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure tbTofesBeforeInsert(DataSet: TDataSet);
+    procedure tbClientOpenDateSetText(Sender: TField; const Text: string);
+    procedure tbClFollowShaSetText(Sender: TField; const Text: string);
+    procedure tbClientNewRecord(DataSet: TDataSet);
+    procedure tbClientMikudValidate(Sender: TField);
+    procedure tbClientKtovetValidate(Sender: TField);
+    procedure tbClFollowAfterOpen(DataSet: TDataSet);
+    procedure tbClientCodValidate(Sender: TField);
+    procedure tbClientAfterPost(DataSet: TDataSet);
+    procedure tbClFollowNewRecord(DataSet: TDataSet);
+    procedure tbClientEMailValidate(Sender: TField);
+  private
+    { Private declarations }
+  public
+    procedure SetDataState(pState: Boolean; pId: Integer);
+    procedure SaveData;
+    procedure SaveBigData(pDocSource, pDocNewName, pDocType: String;
+          pSaveOnFolder: Boolean);
+  end;
+
+var
+
+implementation
+uses
+  DataDM, MainDM, GnrlBigDM, LogErrorUtil, KbFunc, GraphicUtils, IOUtils, Variants;
+
+{$R *.dfm}
+
+procedure TdmClientEdit.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  try
+    tbClient.Open;
+    tbClFollow.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmClientEdit.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmClientEdit.SetDataState(pState: Boolean; pId: Integer);
+begin
+  if (pState = True) then
+    tbClient.Append
+  else
+  begin
+    tbClient.FindKey([pId]);
+    tbClient.Edit;
+  end;
+end;
+
+procedure TdmClientEdit.tbClientNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbClientId.AsInteger := dmMain.GenerateNewId('IdClient');
+  tbClientCod.AsInteger := GetMaxId('KClient', 'Cod');
+end;
+
+procedure TdmClientEdit.tbClFollowNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbClFollowClientId.AsInteger := tbClientId.AsInteger;
+end;
+
+procedure TdmClientEdit.tbClFollowAfterOpen(DataSet: TDataSet);
+begin
+  inherited;
+  tbClFollow.Last;
+end;
+
+procedure TdmClientEdit.tbClientAfterPost(DataSet: TDataSet);
+begin
+  inherited;
+  dmMain.qrClientList.Refresh;
+  dmMain.qrClientList.Locate('Id', tbClientId.AsInteger, []);
+end;
+
+procedure TdmClientEdit.tbClientCodValidate(Sender: TField);
+var
+   sMsg: String;
+begin
+  inherited;
+  if (Sender.FieldName = 'Shem') then
+    sMsg := 'שם חברה כבר קיים'
+  else if (Sender.FieldName = 'Cod') then
+    sMsg := 'מספר סדורי כבר קיים'
+  else if (Sender.FieldName = 'Hp') then
+    sMsg := 'מספר חברה כבר קיים';
+
+  if CheckDblValue('KClient', Sender.FieldName, Sender.Text,
+        tbClientId.AsString, sMsg, Sender.ClassType) then
+    Abort;
+end;
+
+procedure TdmClientEdit.tbClientEMailValidate(Sender: TField);
+begin
+  inherited;
+  if (Sender.Text <> '') and not (IsValidEmail(Sender.Text)) then
+  begin
+    MessageDlg('!דואר אלקטרוני לא תקין', mtError, [mbOk], 0);
+    Abort;
+  end;
+end;
+
+procedure TdmClientEdit.tbClientKtovetValidate(Sender: TField);
+begin
+  inherited;
+  if (tbClient.State = dsInsert) then
+    tbClientKtovetP.AsString := Sender.Text;
+end;
+
+procedure TdmClientEdit.tbClientMikudValidate(Sender: TField);
+begin
+  inherited;
+  if (Sender.Text <> '') and (Length(Sender.Text) < 5) then
+  begin
+    MessageDlg('מיקוד לא תקין', mtError, [mbOk], 0);
+    Abort;
+  end;
+end;
+
+procedure TdmClientEdit.tbClientOpenDateSetText(Sender: TField;
+  const Text: string);
+begin
+  inherited;
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TdmClientEdit.tbClFollowShaSetText(Sender: TField;
+  const Text: string);
+begin
+  inherited;
+  if not ValidTime(Sender, Text) then
+    Abort;
+end;
+
+procedure TdmClientEdit.tbTofesBeforeInsert(DataSet: TDataSet);
+begin
+  inherited;
+  if (tbClient.State = dsInsert) then
+  begin
+    tbClient.Post;
+    tbClient.Edit;
+   end;
+end;
+
+// called procedure
+procedure TdmClientEdit.SaveData;
+begin
+  try
+    while dmData.dbMain.InTransaction do
+      Sleep(10);
+    dmData.dbMain.StartTransaction(EmptyEDBStringsArray);
+    tbClient.Post;
+    if (tbClFollow.State <> dsBrowse) then
+      tbClFollow.Post;
+    dmData.dbMain.Commit;
+  except
+    on E: EDatabaseError do
+    begin
+      dmData.dbMain.Rollback;
+      HandelError('TdmClientEdit.SaveData', 'כרטיס לא נשמר' + E.Message, E);
+    end;
+  end;
+end;
+
+procedure TdmClientEdit.SaveBigData(pDocSource, pDocNewName, pDocType: String;
+  pSaveOnFolder: Boolean);
+begin
+  dmGnrlBig := TdmGnrlBig.Create(Self);
+  try
+    dmGnrlBig.SetProperties('KClTofes');
+    dmGnrlBig.SaveBigData(tbClientId.AsInteger, 'ClientId', pDocSource, pDocNewName,
+      pDocType, pSaveOnFolder);
+  finally
+    dmGnrlBig.Free;
+  end;
+end;
+
+end.

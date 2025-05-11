@@ -1,0 +1,49 @@
+object dmMobileInterface: TdmMobileInterface
+  OldCreateOrder = False
+  Height = 185
+  Width = 173
+  object myFtp: TIdFTP
+    IPVersion = Id_IPv4
+    ConnectTimeout = 0
+    NATKeepAlive.UseKeepAlive = False
+    NATKeepAlive.IdleTimeMS = 0
+    NATKeepAlive.IntervalMS = 0
+    ProxySettings.ProxyType = fpcmNone
+    ProxySettings.Port = 0
+    Left = 80
+    Top = 46
+  end
+  object qrTests: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsWrnCar
+    SQL.Strings = (
+      'SELECT Id, CarId, TipulId, DateToDo, Remark'
+      'FROM KCrTipul Ct'
+      'LEFT JOIN KCar Cr ON Ct.CarId = Cr.Id'
+      
+        'WHERE Cr.Pail = True AND Cr.Freze = False AND DateToDo >= :prmDa' +
+        'teF AND DateToDo <= :prmDateP')
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'prmDateF'
+        ParamType = ptInput
+      end
+      item
+        DataType = ftUnknown
+        Name = 'prmDateP'
+        ParamType = ptInput
+      end>
+    Left = 32
+    Top = 112
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsWrnCar
+    Params = <>
+    Left = 104
+    Top = 112
+  end
+end

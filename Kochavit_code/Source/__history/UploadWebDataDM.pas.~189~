@@ -1,0 +1,723 @@
+unit UploadWebDataDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
+  FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MySQL,
+  FireDAC.Phys.MySQLDef, FireDAC.VCLUI.Wait, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, edbcomps, Data.DB, FireDAC.Comp.DataSet,
+  FireDAC.Comp.Client;
+
+type
+  TdmUploadWebData = class(TDataModule)
+    fdConnection: TFDConnection;
+    fdQuery: TFDQuery;
+    qrGnrl: TEDBQuery;
+    fdPhysMySQLDriverLink: TFDPhysMySQLDriverLink;
+    qrGnrl1: TEDBQuery;
+  private
+    function ConnectFireDac: Boolean;
+    procedure UploadCompanyData;
+    procedure UploadUsers;
+    procedure UploadTblTipul;
+    procedure CreateTblTipul;
+    procedure UploadTblHeiter;
+    procedure CreateTblHeiter;
+    procedure UploadBkr;
+    procedure UploadBkrDtl;
+    procedure UploadClients;
+    procedure UploadCars;
+    procedure UploadDriver;
+    procedure UploadTests;
+    procedure UploadTpl;
+    procedure UploadCarDrv;
+    function  GetAllProblems(Id: string): String;
+    procedure UploadHtr;
+  public
+    dtFrom, dtTill: TDateTime;
+    procedure ExportDataToWeb;
+  end;
+
+var
+  dmUploadWebData: TdmUploadWebData;
+
+implementation
+uses
+  DataDm, DialogsHeb, LogErrorUtil, BCrypt, Forms, Controls, Dialogs, UITypes;
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+{$R *.dfm}
+{ TdmUploadWebData }
+
+procedure TdmUploadWebData.ExportDataToWeb;
+begin
+  try
+    try
+      if ConnectFireDac then
+      begin
+        UploadCompanyData;
+        UploadUsers;
+        UploadTblTipul;
+        UploadTblHeiter;
+        UploadBkr;
+        UploadBkrDtl;
+        UploadClients;
+        UploadDriver;
+        UploadCars;
+        UploadCarDrv;
+        UploadTests;
+        UploadTpl;
+        UploadHtr;
+      end;
+    except on E: Exception do
+      begin
+        Screen.Cursor := crDefault;
+        MessageDlgH('...העברת נתונים לאתר נכשלה ExportDataToWeb', mtInformation, [mbOk], 0, 0);
+      end;
+    end;
+  finally
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+function TdmUploadWebData.ConnectFireDac: Boolean;
+begin
+  Result := False;
+  qrGnrl.SQL.Text := 'SELECT Database, DataUserName, DataPassword, Server, AppPath FROM KDefault';
+  try
+    qrGnrl.Open;
+    with fdConnection.Params do
+    begin
+      DriverID := 'MySQL';
+      Database := qrGnrl.FieldByName('Database').AsString;
+      UserName := qrGnrl.FieldByName('DataUserName').Asstring;
+      Password := qrGnrl.FieldByName('DataPassword').Asstring;
+//      Add('Server := ' + qrGnrl.FieldByName('Server').Asstring);
+//       DriverID := 'MySQL';
+    //  Database := 'sorinh_kochavit_data';
+    //  UserName := 'sorinh_user';
+    //  Password := '12345';
+        Add('Server=' + qrGnrl.FieldByName('Server').Asstring );
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+
+  fdPhysMySQLDriverLink.VendorLib := ExtractFilePath(Application.ExeName) + 'MySql\libmysql.dll';
+  try
+    fdConnection.Open();
+    Result := True;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בחיבור FireDac...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadCompanyData;
+var
+  Shem, Tel1, Tel2, Email, Host, Port, UserName, UserPass, EmailComp, Signature,
+  AppPath, ReportClient: string;
+begin
+  try
+    qrGnrl.SQL.Text := 'SELECT Shem, Tel1, Tel2, UserEmail, Signature, '+
+        'EmailComp, Host, Port, UserName, UserPass, AppPath, ReportClient FROM KDefault';
+    try
+      qrGnrl.Open;
+      Shem := qrGnrl.FieldByName('Shem').AsString;
+      Tel1 := qrGnrl.FieldByName('Tel1').AsString;
+      Tel2 := qrGnrl.FieldByName('Tel2').AsString;
+      Email := qrGnrl.FieldByName('UserEmail').AsString;
+      Signature := qrGnrl.FieldByName('Signature').AsString;
+      Host := qrGnrl.FieldByName('Host').AsString;
+      Port := qrGnrl.FieldByName('Port').AsString;
+      UserName := qrGnrl.FieldByName('UserName').AsString;
+      UserPass := qrGnrl.FieldByName('UserPass').AsString;
+      EmailComp := qrGnrl.FieldByName('EmailComp').AsString;
+      AppPath := qrGnrl.FieldByName('AppPath').Asstring;
+      ReportClient := qrGnrl.FieldByName('ReportClient').Asstring;
+
+      fdQuery.SQL.Text := 'DELETE FROM company';
+      fdQuery.ExecSQL;
+      fdQuery.SQL.Text := 'INSERT INTO company (name, tel1, tel2, email, signature, comp_email, '+
+              'host, port, username, userpass, app_path, report_client) '+
+              'VALUES ('+ QuotedStr(Shem) + ', '+ QuotedStr(Tel1) + ', '+ QuotedStr(Tel2) +
+              ', '+ QuotedStr(Email) + ', '+ QuotedStr(Signature) +', '+ QuotedStr(EmailComp)+
+              ', '+ QuotedStr(Host) +', '+ QuotedStr(Port) +', '+ QuotedStr(UserName)+
+              ', '+ QuotedStr(UserPass)+', '+ QuotedStr(AppPath)+ ', +'+QuotedStr(ReportClient)+')';
+      fdQuery.ExecSQL;
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת פרטי חברה...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadUsers;
+var
+  Pass_hash, User_Role: string;
+  I, RecNum: Integer;
+begin
+  try
+    fdQuery.SQL.Text := 'DELETE FROM users';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO users (user_id, user_full_name, username, user_password, user_role) '+
+          'VALUES (:user_id, :user_full_name, :username, :user_password, :user_role)';
+
+    qrGnrl.SQL.Text := 'SELECT * FROM KTblOved ORDER BY Id';
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      fdQuery.Params.ArraySize := RecNum;
+      for I := 0 to RecNum -1 do
+      begin
+        Pass_hash := TBCrypt.HashPassword(qrGnrl.FieldByName('User_Password').AsString);
+        User_Role := qrGnrl.FieldByName('User_Role').AsString;
+        if User_Role = 'מנהל' then
+          User_Role := 'Admin'
+        else
+          User_Role := 'user';
+
+        fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+        fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('Oved').AsString;
+        fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('UserName').AsString;
+        fdQuery.Params[3].AsStrings[I] := Pass_hash;
+        fdQuery.Params[4].AsStrings[I] := User_Role;
+
+        qrGnrl.Next;
+      end;
+      fdQuery.Execute(RecNum, 0);
+    finally
+      qrGnrl.Close;
+     end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת נתוני משתמשים...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadTblTipul;
+  var RecNum, I: integer;
+begin
+  CreateTblTipul;
+
+  try
+  fdQuery.SQL.Text := 'DELETE FROM tbl_tipul';
+  fdQuery.ExecSQL;
+
+  fdQuery.SQL.Text := 'INSERT INTO tbl_tipul (tbl_id, tipul) '+
+  'VALUES (:tbl_id, :tipul)';
+
+  qrGnrl.SQL.Text := 'SELECT * FROM KTblTipul WHERE Prime = True ORDER BY Id';
+  try
+    qrGnrl.Open;
+    RecNum := qrGnrl.RecordCount;
+    fdQuery.Params.ArraySize := RecNum;
+    if RecNum > 0 then
+    begin
+      try
+        fdConnection.StartTransaction;
+        for I := 0 to RecNum -1 do
+        begin
+          fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+          fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('Tipul').AsString;
+          qrGnrl.Next;
+        end;
+        fdQuery.Execute(RecNum, 0);
+        fdConnection.Commit;
+      except
+        fdConnection.Rollback;
+      end;
+    end;
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת סעיפי טבלת טיפולים ראשים...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.CreateTblTipul;
+begin
+  fdQuery.SQL.Text := 'CREATE TABLE IF NOT EXISTS tbl_tipul (' +
+                    'id INT AUTO_INCREMENT PRIMARY KEY, ' +
+                    'tbl_id INT NOT NULL, ' +
+                    'tipul VARCHAR(100) COLLATE "utf8mb3_general_ci" NOT NULL)';
+  fdQuery.ExecSQL;
+end;
+
+procedure TdmUploadWebData.UploadTblHeiter;
+    var RecNum, I: integer;
+begin
+  CreateTblHeiter;
+
+  try
+  fdQuery.SQL.Text := 'DELETE FROM tbl_heiter';
+  fdQuery.ExecSQL;
+
+  fdQuery.SQL.Text := 'INSERT INTO tbl_heiter (tbl_id, heiter) '+
+  'VALUES (:tbl_id, :heiter)';
+
+  qrGnrl.SQL.Text := 'SELECT * FROM KTblHeiter WHERE Prime = True ORDER BY Id';
+  try
+    qrGnrl.Open;
+    RecNum := qrGnrl.RecordCount;
+    fdQuery.Params.ArraySize := RecNum;
+    if RecNum > 0 then
+    begin
+      try
+        fdConnection.StartTransaction;
+        for I := 0 to RecNum -1 do
+        begin
+          fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+          fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('Heiter').AsString;
+          qrGnrl.Next;
+        end;
+        fdQuery.Execute(RecNum, 0);
+        fdConnection.Commit;
+      except
+        fdConnection.Rollback;
+      end;
+    end;
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת סעיפי טבלת היתרים...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.CreateTblHeiter;
+begin
+  fdQuery.SQL.Text := 'CREATE TABLE IF NOT EXISTS tbl_heiter (' +
+                    'id INT AUTO_INCREMENT PRIMARY KEY, ' +
+                    'tbl_id INT NOT NULL, ' +
+                    'heiter VARCHAR(100) NOT NULL)';
+  fdQuery.ExecSQL;
+end;
+
+procedure TdmUploadWebData.UploadBkr;
+var
+  I, RecNum: Integer;
+begin
+  try
+    fdQuery.SQL.Text := 'DELETE FROM bikoret_dtl_tbl';
+    fdQuery.ExecSQL;
+    fdQuery.SQL.Text := 'DELETE FROM bikoret_tbl';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO bikoret_tbl (bikoret_id, bikoret, group_id) '+
+        'VALUES   (:bikoret_id, :bikoret, :group_id)';
+    qrGnrl.SQL.Text := 'SELECT * FROM KTblBikoret ' +
+        'ORDER BY Id';
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      fdQuery.Params.ArraySize := RecNum;
+      if RecNum > 0 then
+      begin
+        try
+          fdConnection.StartTransaction;
+          for I := 0 to RecNum -1 do
+          begin
+            fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+            fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('Bikoret').AsString;
+            fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('GroupId').AsString;
+            qrGnrl.Next;
+          end;
+          fdQuery.Execute(RecNum, 0);
+          fdConnection.Commit;
+        except
+          fdConnection.Rollback;
+        end;
+      end;
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת סעיפי ביקורת...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadBkrDtl;
+var
+  I, RecNum: Integer;
+begin
+  try
+    fdQuery.SQL.Text := 'INSERT INTO bikoret_dtl_tbl (bikoret_dtl_id, bikoret_id, bikoret_dtl) '+
+          'VALUES (:bikoret_dtl_id, :bikoret_id, :bikoret_dtl)';
+
+    qrGnrl.SQL.Text := 'SELECT * FROM KTblBikoretDtl ' +
+        'ORDER BY IdBikoret';
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      fdQuery.Params.ArraySize := RecNum;
+      for I := 0 to RecNum -1 do
+      begin
+        fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+        fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('IdBikoret').AsString;
+        fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('BikoretDtl').AsString;
+        qrGnrl.Next;
+      end;
+      fdQuery.Execute(RecNum, 0);
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת פרטי ביקורת...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadClients;
+var
+  I, RecNum: Integer;
+begin
+  try
+    fdQuery.SQL.Text := 'DELETE FROM clients';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO clients (client_id, client_name, phone1, phone2, location, email, emailX, hp) '+
+            'VALUES (:client_id, :client_name, :phone1, :phone2, :location, :email, :emailX, :hp)';
+
+    qrGnrl.SQL.Text := 'SELECT Id, Shem, Tel1, Tel2, Ktovet+' +QuotedStr(' ')+ '+Isuv as Ktovet, Email, EmailX, Hp '+
+            'FROM KClient WHERE Pail = True AND Freze = False';
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      fdQuery.Params.ArraySize := RecNum;
+      for I := 0 to RecNum -1 do
+      begin
+        fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+        fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('Shem').AsString;
+        fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('Tel1').AsString;
+        fdQuery.Params[3].AsStrings[I] := qrGnrl.FieldByName('Tel2').AsString;
+        fdQuery.Params[4].AsStrings[I] := qrGnrl.FieldByName('Ktovet').AsString;
+        fdQuery.Params[5].AsStrings[I] := qrGnrl.FieldByName('Email').AsString;
+        fdQuery.Params[6].AsStrings[I] := qrGnrl.FieldByName('EMailX').AsString;
+        fdQuery.Params[7].AsStrings[I] := qrGnrl.FieldByName('Hp').AsString;
+
+        qrGnrl.Next;
+      end;
+        fdQuery.Execute(RecNum, 0);
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmUploadWebData.UploadClients', 'תקלה בהעלת פרטי לקוחות...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadCars;
+var
+  I, RecNum: Integer;
+begin
+  try
+    fdQuery.SQL.Text := 'DELETE FROM cars';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO cars (car_id, client_id, inspector_id, car_number, ' +
+            'car_type, car_groupid, car_cod, car_weightT, car_weightS, car_weightR, car_contact, '+
+            'phone, car_brand, car_model, car_year, car_spido, car_atar, car_shildaN, cod_secure, remark) '+
+            'VALUES (:car_id, :client_id, :inspector_id, :car_number, ' +
+            ':car_type, :car_groupid, :car_cod, :car_weightT, :car_weightS, :car_weightR, '+
+            ':car_contact, :phone, :car_brand, :car_model, :car_year, :car_spido, :car_atar, :car_shildaN, :cod_secure, :remark)';
+
+    qrGnrl.SQL.Text := 'SELECT Id, ClientId, OvedId, Number, Type, GroupId, CodCar, WeightT, WeightS, WeightR, ' +
+                'Contact, Tel, Producer, Dgam, Model, Spido, Atar, ShildaN, CodSecure, Remark FROM KCar Cr ' +
+                'LEFT JOIN KTblType tT ON Cr.TypeId = tT.Id LEFT JOIN KTblProducer tP ON Cr.ProducerId = tP.Id ' +
+                'LEFT JOIN KTblDgam tD ON Cr.DgamId = tD.Id LEFT JOIN KTblAtar tA ON Cr.AtarId = tA.Id ' +
+                'WHERE Pail = True AND Freze = False';
+
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      fdQuery.Params.ArraySize := RecNum;
+      for I := 0 to RecNum -1 do
+      begin
+        fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+        fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('ClientId').AsString;
+        fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('OvedId').AsString;
+        fdQuery.Params[3].AsStrings[I] := qrGnrl.FieldByName('Number').AsString;
+        fdQuery.Params[4].AsStrings[I] := qrGnrl.FieldByName('Type').AsString;
+        fdQuery.Params[5].AsStrings[I] := qrGnrl.FieldByName('GroupId').AsString;
+        fdQuery.Params[6].AsStrings[I] := qrGnrl.FieldByName('CodCar').AsString;
+        fdQuery.Params[7].AsStrings[I] := qrGnrl.FieldByName('WeightT').AsString;
+        fdQuery.Params[8].AsStrings[I] := qrGnrl.FieldByName('WeightS').AsString;
+        fdQuery.Params[9].AsStrings[I] := qrGnrl.FieldByName('WeightR').AsString;
+        fdQuery.Params[10].AsStrings[I] := qrGnrl.FieldByName('Contact').AsString;
+        fdQuery.Params[11].AsStrings[I] := qrGnrl.FieldByName('Tel').AsString;
+        fdQuery.Params[12].AsStrings[I] := qrGnrl.FieldByName('Producer').AsString;
+        fdQuery.Params[13].AsStrings[I] := qrGnrl.FieldByName('Dgam').AsString;
+        fdQuery.Params[14].AsStrings[I] := qrGnrl.FieldByName('Model').AsString;;
+        fdQuery.Params[15].AsStrings[I] := qrGnrl.FieldByName('Spido').AsString;;
+        fdQuery.Params[16].AsStrings[I] := qrGnrl.FieldByName('Atar').AsString;;
+        fdQuery.Params[17].AsStrings[I] := qrGnrl.FieldByName('ShildaN').AsString;;
+        fdQuery.Params[18].AsStrings[I] := qrGnrl.FieldByName('CodSecure').AsString;
+        fdQuery.Params[19].AsStrings[I] := qrGnrl.FieldByName('Remark').AsString;;
+
+        qrGnrl.Next;
+      end;
+        fdQuery.Execute(RecNum, 0);
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmUploadWebData.UploadCars', 'תקלה בהעלת פרטי רכב...' + #10#13 + E.Message, E);
+  end;
+end;
+
+
+procedure TdmUploadWebData.UploadCarDrv;
+var
+  I, RecNum: Integer;
+begin
+  try
+    fdQuery.SQL.Text := 'DELETE FROM car_drv';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO car_drv (car_id, driver_id ) '+
+          'VALUES (:car_id, :driver_id)';
+     qrGnrl.SQL.Text := 'SELECT CarId, DriverId FROM KCrDrv';
+     try
+        qrGnrl.Open;
+        RecNum := qrGnrl.RecordCount;
+        if (RecNum > 0) then
+        begin
+          fdQuery.Params.ArraySize := RecNum;
+          for I := 0 to RecNum -1 do
+          begin
+            fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('CarId').AsString;
+            fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('DriverId').AsString;
+            qrGnrl.Next;
+          end;
+          fdQuery.Execute(RecNum, 0);
+        end;
+     finally
+       qrGnrl.Close;
+     end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.UploadCarDrv', 'תקלה בהעלאת פרטי שיוך נהגים לרכבים... ' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadDriver;
+var
+  I, RecNum: Integer;
+  HtrId: Integer;
+begin
+  try
+    qrGnrl.SQL.Text := 'SELECT * FROM KTblHeiter WHERE Heiter = ' + QuotedStr('רשיון נהיגה');
+    qrGnrl.Open;
+    HtrId := qrGnrl.FieldByName('ID').AsInteger;
+  finally
+    qrGnrl.Close;
+  end;
+  try
+    fdQuery.SQL.Text := 'DELETE FROM drivers';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO drivers (driver_id, client_id, driver_name, driver_zeut, '+
+          'driver_ktovet, driver_phone, driver_cel, driver_born, driver_lcnnum, driver_lcntyp, driver_lcnprd, '+
+          'driver_strtwrk, driver_email, licence_tokef) '+
+          'VALUES (:driver_id, :client_id, :driver_name, :driver_zeut, '+
+          ':driver_isuv, :driver_phone, :driver_cel, :driver_born, :driver_lcnnum, :driver_lcntyp, :driver_lcnprd, '+
+          ':driver_strtwrk, :driver_email, :licence_tokef)';
+
+    qrGnrl.SQL.Text := 'SELECT Id, ClientId, Zeut, ShemD, KtovetD +'+ QuotedStr(' ')+ ' + IsuvD Ktovet, TelD, CelD, Born, '+
+              'LicenceNum, Licence, LicencePrd, WorkStrt, EMail, DateToDo ' +
+              'FROM KDriver Dr LEFT JOIN KDrHeiter Dh ON (Dr.Id = Dh.DriverId) '+
+              'LEFT JOIN KTblLicence tL ON (Dr.LicenceId = tL.Id) ' +
+              'WHERE Pail = True AND Dh.HeiterId = ' + IntToStr(HtrId);
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      if RecNum > 0 then
+        begin
+        fdQuery.Params.ArraySize := RecNum;
+        for I := 0 to RecNum -1 do
+        begin
+          fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+          fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('ClientId').AsString;
+          fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('ShemD').AsString;
+          fdQuery.Params[3].AsStrings[I] := qrGnrl.FieldByName('Zeut').AsString;
+          fdQuery.Params[4].AsStrings[I] := qrGnrl.FieldByName('Ktovet').AsString;
+          fdQuery.Params[5].AsStrings[I] := qrGnrl.FieldByName('TelD').AsString;
+          fdQuery.Params[6].AsStrings[I] := qrGnrl.FieldByName('CelD').AsString;
+          fdQuery.Params[7].AsStrings[I] := FormatDateTime('yyyy-mm-dd', qrGnrl.FieldByName('Born').AsDateTime);
+          fdQuery.Params[8].AsStrings[I] := qrGnrl.FieldByName('LicenceNum').AsString;
+          fdQuery.Params[9].AsStrings[I] := qrGnrl.FieldByName('Licence').AsString;
+          fdQuery.Params[10].AsStrings[I] := qrGnrl.FieldByName('LicencePrd').AsString;
+          fdQuery.Params[11].AsStrings[I] := FormatDateTime('yyyy-mm-dd', qrGnrl.FieldByName('WorkStrt').AsDateTime);
+          fdQuery.Params[12].AsStrings[I] := qrGnrl.FieldByName('EMail').AsString;
+          fdQuery.Params[13].AsStrings[I] := qrGnrl.FieldByName('DateToDo').AsString;;
+
+          qrGnrl.Next;
+        end;
+        fdQuery.Execute(RecNum, 0);
+      end;
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.UploadDriver', 'תקלה בהעלאת פרטי נהגים...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadTests; // העלטה ביקורות חודשיות
+var
+  Id: string;
+  dtF, dtP: string;
+  I, RecNum: Integer;
+begin
+  try
+    dtF := 'DATE ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtFrom));
+    dtP := 'DATE ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtTill));
+
+    fdQuery.SQL.Text := 'DELETE FROM car_tests';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO car_tests (test_id, car_id, car_number, test_date, remarks) '+
+          'VALUES  (:test_id, :car_id, :car_number, :test_date, :remarks)';
+
+    qrGnrl.SQL.Text := 'SELECT Id, CarId, Number, DateToDo, Remark ' +
+            'FROM KCrTipul Ct LEFT JOIN KCar Cr ON Ct.CarId = Cr.Id ' +
+            'WHERE Cr.Pail = True AND Cr.Freze = False AND Cr.OvedId IS NOT NULL '+
+            'AND TipulId = 5 AND DateToDo >= ' +dtF+ ' AND DateToDo <= ' +dtP;
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      fdQuery.Params.ArraySize := RecNum;
+      for I := 0 to RecNum -1 do
+      begin
+        Id := qrGnrl.FieldByName('Id').AsString;
+        fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+        fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('CarId').AsString;
+        fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('Number').AsString;
+        fdQuery.Params[3].AsStrings[I] := FormatDateTime('yyyy-mm-dd', qrGnrl.FieldByName('DateTodo').AsDateTime);
+        fdQuery.Params[4].AsStrings[I] := qrGnrl.FieldByName('Remark').AsString + GetAllProblems(Id);
+        
+        qrGnrl.Next;
+      end;
+      fdQuery.Execute(RecNum, 0);
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת ביקורות חודשיות...' + #10#13 + E.Message, E);
+  end;
+end;
+
+function TdmUploadWebData.GetAllProblems(Id: string): String;
+begin
+  Result := '';
+  qrGnrl1.SQL.Text := 'SELECT BikoretDtl FROM KCrTipulDtl Kb '+
+            'LEFT JOIN KTblBikoretDtl Kd ON (Kb.BikoretDtlId = Kd.Id) '+
+            'WHERE TipulId = ' + Id;
+  try
+    qrGnrl1.Open;
+    while not qrGnrl1.Eof do
+    begin
+      Result := Result + qrGnrl1.FieldByName('BikoretDtl').AsString + '#13#10';
+      qrGnrl1.Next;
+    end;
+  finally
+    qrGnrl1.Close;
+  end;
+end;
+
+procedure TdmUploadWebData.UploadTpl;
+var
+  dtF, dtP: string;
+  I, RecNum: Integer;
+begin
+  try
+    dtF := 'DATE ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtFrom));
+    dtP := 'DATE ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtTill));
+
+    fdQuery.SQL.Text := 'DELETE FROM car_tpl';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO car_tpl (test_id, car_id, test_name, test_date, tedirut) '+
+               'VALUES (:test_id, :car_id, :test_name, :test_date, :tedirut)';
+
+    qrGnrl.SQL.Text := 'SELECT Id, CarId, DateTodo, Tipul, Tedirut '+
+        'FROM KCrTipul Ct '+
+        'LEFT JOIN KCar Cr ON (Ct.CarId = Cr.Id) '+
+        'LEFT JOIN KTblTipul tT ON (Ct.TipulId = tT.Id) ' +
+        'WHERE Cr.Pail = True AND Cr.Freze = False AND Tipul <> ' + QuotedStr('ביקורת חודשית') +
+        ' AND (DateToDo >= ' +dtF+ ' AND DateToDo <= ' +dtP+ ') OR DateToDo is NULL';
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      fdQuery.Params.ArraySize := RecNum;
+      for I := 0 to RecNum -1 do
+      begin
+        fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+        fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('CarId').AsString;
+        fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('Tipul').AsString;
+        fdQuery.Params[3].AsStrings[I] := FormatDateTime('yyyy-mm-dd',
+                        qrGnrl.FieldByName('DateTodo').AsDateTime);
+        fdQuery.Params[4].AsStrings[I] := qrGnrl.FieldByName('Tedirut').AsString;
+        qrGnrl.Next;
+      end;
+      fdQuery.Execute(RecNum, 0);
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת טיפולי רכב...' + #10#13 + E.Message, E);
+  end;
+end;
+
+procedure TdmUploadWebData.UploadHtr;
+var
+  dtF, dtP: string;
+  I, RecNum: Integer;
+begin
+  try
+    dtF := 'DATE ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtFrom));
+    dtP := 'DATE ' + QuotedStr(FormatDateTime('yyyy-mm-dd', dtTill));
+
+    fdQuery.SQL.Text := 'DELETE FROM drv_htr';
+    fdQuery.ExecSQL;
+
+    fdQuery.SQL.Text := 'INSERT INTO drv_htr (htr_id, client_id, drv_name, htr_name, htr_date, tedirut, drv_id) '+
+               'VALUES (:htr_id, :car_id, :drv_name, :htr_name, :htr_date, :tedirut, :drv_id)';
+
+    qrGnrl.SQL.Text := 'SELECT Id, DriverId, ClientId, ShemD, Heiter, '+
+          'DateTodo, Tedirut FROM KDrHeiter Dh  ' +
+          'LEFT JOIN KTblHeiter tH ON (Dh.HeiterId = tH.Id) ' +
+          'LEFT JOIN KDriver Dr ON (Dh.DriverId = Dr.Id) ' +
+          'WHERE Dr.Pail = True AND Dr.Freze = False AND ClientId IS NOT NULL ' +
+          'AND ((DateToDo >= ' +dtF+ ' AND DateToDo <= ' +dtP+ ') OR DateToDo is NULL)';
+    try
+      qrGnrl.Open;
+      RecNum := qrGnrl.RecordCount;
+      if (RecNum > 0) then
+      begin
+        fdQuery.Params.ArraySize := RecNum;
+        for I := 0 to RecNum -1 do
+        begin
+          fdQuery.Params[0].AsStrings[I] := qrGnrl.FieldByName('Id').AsString;
+          fdQuery.Params[1].AsStrings[I] := qrGnrl.FieldByName('ClientId').AsString;
+          fdQuery.Params[2].AsStrings[I] := qrGnrl.FieldByName('ShemD').AsString;
+          fdQuery.Params[3].AsStrings[I] := qrGnrl.FieldByName('Heiter').AsString;
+          fdQuery.Params[4].AsStrings[I] := FormatDateTime('yyyy-mm-dd',
+                          qrGnrl.FieldByName('DateTodo').AsDateTime);
+          fdQuery.Params[5].AsStrings[I] := qrGnrl.FieldByName('Tedirut').AsString;
+          fdQuery.Params[6].AsStrings[I] := qrGnrl.FieldByName('DriverId').AsString;
+          qrGnrl.Next;
+        end;
+        fdQuery.Execute(RecNum, 0);
+      end;
+    finally
+      qrGnrl.Close;
+    end;
+  except on E: Exception do
+    HandelError('TdmDownloadWebData.ConnectFireDac', 'תקלה בהעלאת היתרי נהג...' + #10#13 + E.Message, E);
+  end;
+end;
+
+end.

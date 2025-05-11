@@ -1,0 +1,9 @@
+SELECT Shem, IdDrv, ShemD, Zeut, Oved
+FROM KDriver Dr
+LEFT JOIN KClient Cl ON (Dr.ClientId = Cl.Id)
+LEFT JOIN KTblOved tOv ON (Dr.OvedId = tOv.Id)
+WHERE Id NOT IN
+(SELECT KDh.IdDriver
+FROM KDrHeiter KDh
+LEFT JOIN KTblHeiter tH ON (KDh.IdHeiter = tH.Id)
+WHERE KDh.DateToDo IS NOT NULL and tH.Heiter = 

@@ -1,0 +1,529 @@
+unit ClientList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Menus, ActnList, ImgList, ExtCtrls, ToolWin, Grids,
+  DBGrids, StdCtrls, DBCtrls, DBTables, DB, Mask, IniFiles, ShellAPI, edbcomps;
+
+type
+  TfrmClientList = class(TForm)
+    ToolBar1: TToolBar;
+    Panel1: TPanel;
+    dbgClient: TDBGrid;
+    DBNavigator1: TDBNavigator;
+    btnAppend: TToolButton;
+    ToolButton2: TToolButton;
+    StatusBar: TStatusBar;
+    ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
+    edSearch: TMaskEdit;
+    ImageListCl: TImageList;
+    ActionListCl: TActionList;
+    acAppend: TAction;
+    acArchive: TAction;
+    acDelete: TAction;
+    acEdit: TAction;
+    acMail: TAction;
+    acFreze: TAction;
+    acPrint: TAction;
+    acExcel: TAction;
+    acLabel3x7: TAction;
+    acLable9x3: TAction;
+    acLabel8x3: TAction;
+    MainMenuCl: TMainMenu;
+    MenuItem1: TMenuItem;
+    MenuItem2: TMenuItem;
+    MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
+    bmClient: TBatchMove;
+    pmLabel: TPopupMenu;
+    MenuItem9: TMenuItem;
+    MenuItem10: TMenuItem;
+    N9X31: TMenuItem;
+    SaveDialog1: TSaveDialog;
+    btnSelectAll: TButton;
+    acSndMessage: TAction;
+    ToolButton9: TToolButton;
+    acLabel3x6: TAction;
+    N6X31: TMenuItem;
+    N1: TMenuItem;
+    qrGnrl: TEDBQuery;
+    procedure acLabel3x6Execute(Sender: TObject);
+    procedure acSndMessageExecute(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure dbgClientEnter(Sender: TObject);
+    procedure btnSelectAllClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure edSearchChange(Sender: TObject);
+    procedure acAppendExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+    procedure acArchiveExecute(Sender: TObject);
+    procedure acDeleteUpdate(Sender: TObject);
+    procedure acMailExecute(Sender: TObject);
+    procedure dbgClientDrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure acFrezeExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure acLabel3x7Execute(Sender: TObject);
+    procedure acLable9x3Execute(Sender: TObject);
+    procedure acLabel8x3Execute(Sender: TObject);
+    procedure dbgClientTitleClick(Column: TColumn);
+    procedure FormActivate(Sender: TObject);
+  private
+    function GetOpenParm: String;
+    procedure LoadPosition(pKey: String; pForm: TForm);
+    function SelectDoc(var WorkFile, nCopy: OleVariant;
+               var vButton, vMemo: String; vPath: String): Boolean;
+//    function NoOpenBill: Boolean;
+    procedure UpdateCarDrv(pFreze: Boolean);
+    procedure SetOpenParm;
+    procedure SavePosition(pKey: String; pForm: TForm);
+    procedure OpenOneRec(pState: String);
+  public
+  end;
+
+var
+  frmClientList: TfrmClientList;
+
+implementation
+
+{$R *.dfm}
+uses
+   Main, MainDM, ClientEditDM, ClientEdit, OpenToPrint, Cause, UtilsDM,
+   ExportToExcel, GnrlFreze, WrnList, SendMsg, DocUtils, RegistryUtils,
+   LogErrorUtil;
+
+procedure TfrmClientList.FormCreate(Sender: TObject);
+var
+  Order: String;
+begin
+   Order := GetOpenParm;
+   dmMain.tbClient.IndexFieldNames := Order;
+   if (Order = 'Shem') then
+      dbgClient.Columns[1].Title.Font.Color := clRed
+   else
+      dbgClient.Columns[0].Title.Font.Color := clRed;
+   dmMain.RvRprt.ProjectFile := ExtractFilePath(Application.ExeName) +
+      'Reports\KvRprt.rav';
+   LoadPosition('ClientList', (Sender as TForm));
+end;
+
+procedure TfrmClientList.FormActivate(Sender: TObject);
+begin
+  StatusBar.Panels[0].Text := 'סה"כ לקוחות/מוקפאים: ' +
+          dmMain.ClnFrzRecNo+'/'+dmMain.ClnRecNo;
+end;
+
+procedure TfrmClientList.LoadPosition(pKey: String; pForm: TForm);
+var
+  Reg: TRegistryGrd;
+begin
+  Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+  Reg.LoadFromRegistry(dbgClient);
+  Reg.Free;
+end;
+
+function TfrmClientList.GetOpenParm: String;
+var
+  FFile: String;
+  FIni: TIniFile;
+begin
+  FFile := ExtractFilePath(Application.ExeName) + 'TextFiles\Kochavit.Ini';
+  FIni := TIniFile.Create(FFile);
+  try
+    Result := FIni.ReadString('Client', 'Order', 'Shem');
+  finally
+    FIni.Free;
+  end;
+end;
+
+procedure TfrmClientList.FormResize(Sender: TObject);
+begin
+   btnSelectAll.Width := Self.Width;
+end;
+
+procedure TfrmClientList.btnSelectAllClick(Sender: TObject);
+begin
+   dmMain.SetSelectState(True);
+   dbgClient.Options := dbgClient.Options -[dgAlwaysShowSelection];
+end;
+
+procedure TfrmClientList.dbgClientEnter(Sender: TObject);
+begin
+   dmMain.SetSelectState(False);
+   dbgClient.Options := dbgClient.Options +[dgAlwaysShowSelection];
+end;
+
+procedure TfrmClientList.dbgClientDrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn;
+  State: TGridDrawState);
+begin
+   with dbgClient do
+   begin
+       if (dmMain.tbClient.FieldByName('IdClient').AsInteger = 0) then
+       begin
+           Canvas.Font.Color := clRed;
+           Canvas.Font.Style := [fsBold];
+           DefaultDrawColumnCell(Rect, DataCol, Column, State);
+       end
+       else if (dmMain.tbClient.FieldByName('Freze').AsBoolean) then
+       begin
+           Canvas.Brush.Color := clSilver;
+           DefaultDrawColumnCell(Rect, DataCol, Column, State);
+       end;
+   end;
+end;
+
+procedure TfrmClientList.dbgClientTitleClick(Column: TColumn);
+var
+  clFld: String;
+begin
+  clFld := Column.FieldName;
+  if (clFld <> 'Dept') then
+  begin
+    Screen.Cursor := crHourGlass;
+    edSearch.Text := '';
+    Column.Title.Font.Color := clRed;
+    dmMain.tbClient.IndexFieldNames := clFld;
+    if (clFld = 'IdClient') then
+    begin
+      dbgClient.Columns[1].Title.Font.Color := clBlack;
+      edSearch.BiDiMode := bdLeftToRight;
+      edSearch.EditMask := '99999;0; ';
+    end
+    else if (clFld = 'Shem') then
+    begin
+      dbgClient.Columns[0].Title.Font.Color := clBlack;
+      edSearch.BiDiMode := bdRightToLeft;
+      edSearch.EditMask := '';
+    end;
+    edSearch.SetFocus;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+procedure TfrmClientList.edSearchChange(Sender: TObject);
+begin
+  dmMain.tbClient.FindNearest([edSearch.Text]);
+end;
+
+procedure TfrmClientList.acAppendExecute(Sender: TObject);
+begin
+  if not Assigned(frmClientEdit) then
+  begin
+    if (Sender is TAction) then
+      if ((Sender as TAction).Name = 'acAppend') then
+        OpenOneRec('Append')
+      else
+        OpenOneRec('Edit')
+    else
+      OpenOneRec('Edit')
+  end;
+end;
+
+procedure TfrmClientList.OpenOneRec(pState: String);
+var
+  Id: Integer;
+begin
+  Id := dmMain.tbClientId.AsInteger;
+  try
+    if not Assigned(frmClientEdit) then
+    begin
+      dmClientEdit := TdmClientEdit.Create(Self);
+      dmClientEdit.SetDataState(pState, Id);
+      frmClientEdit := TfrmClientEdit.Create(Self);
+    end;
+  except
+    on E: EDBEngineError do
+    begin
+      dmClientEdit.Free;
+      MessageDlg('כרטיס פתוח ע"י משתמש אחר', mtError, [mbOK], 0);
+    end;
+    on E: EDatabaseError do
+    begin
+      dmClientEdit.Free;
+      HandelError('קיים קובץ לא תקין!!!'+ #10#13 + E.Message, E);
+    end;
+  end;
+end;
+
+procedure TfrmClientList.acArchiveExecute(Sender: TObject);
+begin
+  if dmMain.AreOpenBill then
+    MessageDlg('פעולה אינה אפשרית...ללקוח חשבונות פתוחים',
+                           mtError, [mbOK], 0)
+  else
+   begin
+       frmCause := TfrmCause.Create(Self);
+       with frmCause, frmCause.tbCause do
+       begin
+           try
+               Panel3.Caption := 'שם הלקוח: ' +
+                       dmMain.tbClient.FieldByName('Shem').AsString;
+               TableName := 'KClSiba';
+               MasterSource := dmMain.dsClient;
+               MasterFields := 'Id';
+               edSibaId.ListField := 'CauseCl';
+               Open;
+               Append;
+               if (ShowModal = mrYes) then
+               begin
+                   Screen.Cursor := crHourGlass;
+                   dmUtils := TdmUtils.Create(Self);
+                   with dmUtils do
+                   begin
+                       ShiftClient(dmMain.tbClient.FieldByName('Id').AsString);
+//                       tbDest.TableName := 'KClientOld';
+                       FieldByName('IdOwn').AsString := GetRelatedId('Id');
+                       Post;
+                       DeleteClient(dmMain.tbClient.FieldByName('Id').AsString);
+                       dmMain.tbClient.Close;
+                       dmMain.tbClient.Open;
+                       Free;
+                   end;
+                   Screen.Cursor := crDefault;
+               end
+               else
+                   Cancel;
+           finally
+               Close;
+               Free;
+           end;
+       end;
+   end;
+end;
+
+procedure TfrmClientList.acDeleteUpdate(Sender: TObject);
+begin
+   (Sender as TAction).Enabled := not dmMain.SelectAll;
+end;
+
+procedure TfrmClientList.acDeleteExecute(Sender: TObject);
+begin
+  if dmMain.AreOpenBill then
+    MessageDlg('פעולה אינה אפשרית...ללקוח חשבונות פתוחים',
+                           mtError, [mbOK], 0)
+  else
+  begin
+    if MessageDlg('לבטל סופית כרטיס של החברה '+
+               dmMain.tbClientShem.AsString,
+               mtConfirmation, [mbYes, mbNo], 0)=mrYes then
+    begin
+      Screen.Cursor := crHourGlass;
+      dmUtils := TdmUtils.Create(Self);
+      dmUtils.DeleteClient(dmMain.tbClientId.AsString);
+      dmUtils.Free;
+      dmMain.tbClient.Close;
+      dmMain.tbClient.Open;
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+procedure TfrmClientList.acFrezeExecute(Sender: TObject);
+begin
+   with dmMain.tbClient do
+   begin
+      if (FieldByName('Freze').AsBoolean = False) then
+      begin
+        frmGnrlFreze := TfrmGnrlFreze.Create(Self);
+        if (frmGnrlFreze.ShowModal = mrOk) then
+        begin
+          Edit;
+          FieldByName('Freze').AsBoolean := True;
+          Post;
+          UpdateCarDrv(True);
+        end;
+      end
+      else if (FieldByName('Freze').AsBoolean = True) then
+      begin
+        Edit;
+        FieldByName('Freze').AsVariant := Null;
+        Post;
+        UpdateCarDrv(False);
+      end;
+   end;
+end;
+
+procedure TfrmClientList.UpdateCarDrv(pFreze: Boolean);
+var
+   Id: String;
+begin
+   with qrGnrl do
+   begin
+       Id := QuotedStr(dmMain.tbClient.FieldValues['Id']);
+       if pFreze then
+       begin
+         SQL.Text := 'UPDATE "KCar" SET Freze = True ' +
+                     ' WHERE ClientId = ' + Id;
+         ExecSQL;
+         SQL.Text := 'UPDATE "KDriver" SET Freze = True '+
+                     ' WHERE ClientId = ' + Id;
+         ExecSQL;
+       end
+       else
+       begin
+         SQL.Text := 'UPDATE "KCar" SET Freze = Null ' +
+                     ' WHERE ClientId = ' + Id;
+         ExecSQL;
+         SQL.Text := 'UPDATE "KDriver" SET Freze = Null '+
+                     ' WHERE ClientId = ' + Id;
+         ExecSQL;
+       end;
+   end;
+  if dmMain.qrCar.Active then
+    dmMain.ReOpenTable(dmMain.qrCar, dmMain.qrCarID.AsInteger);
+  if dmMain.qrDriver.Active then
+    dmMain.ReOpenTable(dmMain.qrDriver, dmMain.qrDriverID.AsInteger);
+end;
+
+procedure TfrmClientList.acPrintExecute(Sender: TObject);
+begin
+  dmMain.RvRprt.ExecuteReport('rpClient');
+end;
+
+procedure TfrmClientList.acExcelExecute(Sender: TObject);
+begin
+  with SaveDialog1 do
+  begin
+    InitialDir := ExtractFilePath(Application.ExeName) + 'Excel\';
+    DefaultExt := '*.xls';
+    FilterIndex := 2;
+    if Execute then
+    begin
+      frmExportToExcel := TfrmExportToExcel.Create(Self);
+      frmExportToExcel.Show;
+      frmExportToExcel.SendToExcelFile(dmMain.tbClient, FileName);
+      MessageDlg('הופק קובץ אקסל בשם ומחיצה' + #10#13 + FileName,
+          mtInformation, [mbOK], 0);
+      ShellExecute(Application.MainForm.Handle, Nil, PChar(FileName),
+                Nil, Nil, SW_SHOW);
+    end;
+  end;
+end;
+
+procedure TfrmClientList.acMailExecute(Sender: TObject);
+var
+   WorkFile, nCopy: OleVariant;
+   vPath, vButton, vMemo: String;
+   vSave: Boolean;
+   OneDoc: TDocUtils;
+begin
+  vPath := ExtractFilePath(Application.ExeName) + 'Docs\';
+  vSave := False;
+  if SelectDoc(WorkFile, nCopy, vButton, vMemo, vPath) then
+  begin
+    try
+      Screen.Cursor := crHourGlass;
+      OneDoc := TDocUtils.Create(vButton, nCopy, vSave, 'הודעה לחברה',
+        dmMain.tbClientFax.AsString, dmMain.tbClientEMail.AsString,
+          WorkFile);
+      while not dmMain.tbClient.Eof do
+      begin
+        OneDoc.SendDoc(dmMain.tbClient, nil);
+        dmMain.tbClient.Next;
+      end;
+    finally
+      OneDoc.Free;
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+procedure TfrmClientList.acSndMessageExecute(Sender: TObject);
+begin
+  dlgSendMsg := TdlgSendMsg.Create(Self);
+  dlgSendMsg.Show;
+end;
+
+function TfrmClientList.SelectDoc(var WorkFile, nCopy: OleVariant;
+  var vButton, vMemo: String; vPath: String): Boolean;
+begin
+   Result := False;
+
+   frmOpenToPrint := TfrmOpenToPrint.Create(self);
+   with frmOpenToPrint do
+   begin
+       cbFilter.Visible := False;
+       DirectoryListBox.Directory := vPath;
+       Edit.Text := '';
+       if ShowModal = mrOK then
+       begin
+           vPath := DirectoryListBox.Directory;
+           WorkFile := vPath + '\' + Edit.Text;
+           vButton := btnPress;
+           nCopy := SpinEdit.Value;
+           vMemo := Memo.Text;
+           Result := True;
+       end;
+       Free;
+   end
+end;
+
+procedure TfrmClientList.acLabel3x6Execute(Sender: TObject);
+begin
+  dmMain.RvRprt.ExecuteReport('rpClientLbl3X6');
+end;
+
+procedure TfrmClientList.acLabel3x7Execute(Sender: TObject);
+begin
+  dmMain.RvRprt.ExecuteReport('rpClientLbl3X7');
+end;
+
+procedure TfrmClientList.acLabel8x3Execute(Sender: TObject);
+begin
+  dmMain.RvRprt.ExecuteReport('rpClientLbl3X8');
+end;
+
+procedure TfrmClientList.acLable9x3Execute(Sender: TObject);
+begin
+  dmMain.RvRprt.ExecuteReport('rpClientLbl3X9');
+end;
+
+procedure TfrmClientList.SavePosition(pKey: String; pForm: TForm);
+var
+  Reg: TRegistryGrd;
+begin
+  Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+  Reg.SaveToRegistry(dbgClient);
+  Reg.Free;
+end;
+
+procedure TfrmClientList.SetOpenParm;
+var
+  FFile: String;
+  FIni: TIniFile;
+begin
+  FFile := ExtractFilePath(Application.ExeName) + 'TextFiles\Kochavit.Ini';
+  FIni := TIniFile.Create(FFile);
+  try
+    FIni.WriteString('Client', 'Order', dmMain.tbClient.IndexFieldNames);
+  finally
+    FIni.Free;
+  end;
+end;
+
+procedure TfrmClientList.FormClose(Sender: TObject;
+   var Action: TCloseAction);
+begin
+   SavePosition('ClientList', (Sender as TForm));
+   SetOpenParm;
+   dmMain.tbClient.Close;
+   Action := caFree;
+end;
+
+
+
+end.

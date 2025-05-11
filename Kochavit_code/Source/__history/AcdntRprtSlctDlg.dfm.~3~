@@ -1,0 +1,27 @@
+inherited frmAcdntRprtSlctDlg: TfrmAcdntRprtSlctDlg
+  OldCreateOrder = True
+  ExplicitWidth = 416
+  ExplicitHeight = 313
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+  end
+  inherited RvRenderHTML: TRvRenderHTML
+    Left = 200
+    Top = 232
+  end
+  object frdbAcdnt: TfrxDBDataset
+    UserName = 'frdbAcdnt'
+    CloseDataSource = False
+    DataSet = dmAcdntFilter.qrFilter
+    BCDToCurrency = False
+    Left = 224
+    Top = 104
+  end
+end

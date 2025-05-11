@@ -1,0 +1,137 @@
+unit CheckEditDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlEditDM, DB, edbcomps, RpBase, RpSystem, RpDefine, RpRave;
+
+type
+  TdmCheckEdit = class(TdmGnrlEdit)
+    tbChecks: TEDBTable;
+    tbChecksId: TAutoIncField;
+    tbChecksClientId: TIntegerField;
+    tbChecksBankId: TSmallintField;
+    tbChecksAcount: TIntegerField;
+    tbChecksCheckNo: TIntegerField;
+    tbChecksCheckSum: TFloatField;
+    tbChecksAfkadaD: TDateField;
+    tbChecksPidyonD: TDateField;
+    tbChecksBill: TIntegerField;
+    tbChecksKabala: TIntegerField;
+    tbChecksReturn: TBooleanField;
+    tbTblBank: TEDBTable;
+    tbChecksLkpBank: TStringField;
+    tbChecksNifda: TBooleanField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure tbChecksNewRecord(DataSet: TDataSet);
+    procedure tbChecksAfterPost(DataSet: TDataSet);
+    procedure tbChecksAfkadaDSetText(Sender: TField; const Text: string);
+    procedure tbChecksBeforePost(DataSet: TDataSet);
+    procedure tbChecksPidyonDSetText(Sender: TField; const Text: string);
+  private
+    BankId, Acount, CheckNo, Bill: Integer;
+    AfkadaD, PidyonD: TDate;
+  public
+    procedure SetDataState(pState: Boolean; pId: Integer);
+    procedure SaveData;
+  end;
+
+var
+  dmCheckEdit: TdmCheckEdit;
+
+implementation
+uses
+  DataDM, MainDM, ChecksListDM, KbFunc, LogErrorUtil, DialogsHeb;
+{$R *.dfm}
+
+procedure TdmCheckEdit.DataModuleCreate(Sender: TObject);
+begin
+  inherited;
+  try
+    tbChecks.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmCheckEdit.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmCheckEdit.SetDataState(pState: Boolean; pId: Integer);
+begin
+  if dmMain.SelectAll then
+    ClientShem := GetClientName(tbChecksClientId.AsString);
+end;
+
+procedure TdmCheckEdit.tbChecksNewRecord(DataSet: TDataSet);
+begin
+  inherited;
+  tbChecksClientId.AsInteger := dmMain.qrClientList.FieldByName('Id').AsInteger;
+
+  if (BankId > 0) then
+  begin
+    tbChecksBankId.AsInteger := BankId;
+    tbChecksAcount.AsInteger := Acount;
+    tbChecksCheckNo.AsInteger := CheckNo+1;
+    tbChecksBill.AsInteger := Bill;
+    tbChecksAfkadaD.AsDateTime := AfkadaD;
+    tbChecksPidyonD.AsDateTime := IncMonth(PidyonD);
+  end;
+end;
+
+procedure TdmCheckEdit.tbChecksBeforePost(DataSet: TDataSet);
+begin
+  inherited;
+  if tbChecksBankId.AsVariant = NULL then
+  begin
+    MessageDlgH('שם הבנק הוא שדה חובה', mtError, [mbOK], 0, 0);
+    Abort;
+  end;
+end;
+
+procedure TdmCheckEdit.tbChecksAfterPost(DataSet: TDataSet);
+begin
+  inherited;
+  BankId := tbChecksBankId.AsInteger;
+  Acount := tbChecksAcount.AsInteger;
+  CheckNo := tbChecksCheckNo.AsInteger;
+  AfkadaD := tbChecksAfkadaD.AsDateTime;
+  PidyonD := tbChecksPidyonD.AsDateTime;
+  Bill := tbChecksBill.AsInteger;
+
+  dmChecksList.qrChecksList.Refresh;
+  dmChecksList.qrChecksList.Locate('Id', tbChecksId.AsInteger, []);
+end;
+
+procedure TdmCheckEdit.tbChecksAfkadaDSetText(Sender: TField;
+  const Text: string);
+begin
+  inherited;
+  if not ValidDate(Sender, Text) then
+    Abort;
+  if tbChecksPidyonD.AsVariant = NULL then
+    tbChecksPidyonD.AsString := Text;
+end;
+
+procedure TdmCheckEdit.tbChecksPidyonDSetText(Sender: TField;
+  const Text: string);
+begin
+  inherited;
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TdmCheckEdit.SaveData;
+begin
+  try
+    if (tbChecks.State <> dsBrowse) then
+      tbChecks.Post;
+  except
+    on E: EDatabaseError do
+      HandelError('TdmCheckEdit.SaveData', 'כרטיס לא נשמר' + E.Message, E);
+  end;
+end;
+
+end.

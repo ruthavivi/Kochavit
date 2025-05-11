@@ -1,0 +1,92 @@
+inherited dlgScanImport: TdlgScanImport
+  Caption = #1492#1493#1505#1508#1514' '#1502#1505#1502#1498' '#1502#1505#1493#1512#1511
+  ClientHeight = 718
+  ClientWidth = 716
+  OnActivate = FormActivate
+  ExplicitWidth = 722
+  ExplicitHeight = 747
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited imDisplay: TImage
+    Width = 716
+    Height = 583
+    ExplicitWidth = 824
+    ExplicitHeight = 649
+  end
+  inherited Panel1: TPanel
+    Top = 583
+    Width = 716
+    Height = 91
+    ExplicitTop = 583
+    ExplicitWidth = 716
+    ExplicitHeight = 91
+    inherited lbFileName: TLabel
+      Left = 339
+      Top = 21
+      Enabled = False
+      ExplicitLeft = 547
+      ExplicitTop = 21
+    end
+    inherited edDocName: TEdit
+      Left = 84
+      Top = 21
+      Enabled = False
+      TabOrder = 2
+      ExplicitLeft = 84
+      ExplicitTop = 21
+    end
+    inherited cbSaveOnFolder: TCheckBox
+      Left = 504
+      Top = 40
+      Checked = True
+      Enabled = False
+      State = cbChecked
+      ExplicitLeft = 504
+      ExplicitTop = 40
+    end
+    object cbMultiPage: TCheckBox
+      Left = 504
+      Top = 17
+      Width = 183
+      Height = 17
+      Anchors = [akTop, akRight]
+      Caption = #1505#1512#1497#1511#1492' '#1502#1512#1493#1489#1492
+      TabOrder = 0
+      OnClick = cbSaveOnFolderClick
+    end
+  end
+  inherited Panel2: TPanel
+    Top = 674
+    Width = 716
+    ExplicitTop = 674
+    ExplicitWidth = 716
+    inherited btnAbort: TBitBtn
+      Left = 220
+      OnClick = btnAbortClick
+      ExplicitLeft = 220
+    end
+    inherited btnOk: TBitBtn
+      Left = 325
+      OnClick = btnOkClick
+      ExplicitLeft = 325
+    end
+    object btnScan: TButton
+      Left = 612
+      Top = 6
+      Width = 75
+      Height = 25
+      Caption = #1505#1512#1493#1511
+      TabOrder = 2
+      OnClick = btnScanClick
+    end
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    SQL.Strings = (
+      'SELECT ScanerId FROM KDefault')
+    Params = <>
+    Left = 224
+    Top = 208
+  end
+end

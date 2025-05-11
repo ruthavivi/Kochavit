@@ -1,0 +1,50 @@
+unit ClientRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  RpCon, RpConDS, RpConBDE, RpBase, RpSystem, RpDefine, RpRave, RpRender,
+  RpRenderRTF, edbcomps, RpRenderHTML;
+
+type
+  TfrmClientRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqClientRprt: TRvDataSetConnection;
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmClientRprtSlctDlg: TfrmClientRprtSlctDlg;
+
+implementation
+
+{$R *.dfm}
+uses
+   ClientFilterDM;
+
+procedure TfrmClientRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('CL');
+end;
+
+procedure TfrmClientRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmClientRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+end.

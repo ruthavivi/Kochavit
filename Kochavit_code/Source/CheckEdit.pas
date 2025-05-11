@@ -1,0 +1,73 @@
+unit CheckEdit;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlEdit, Menus, ImgList, ExtDlgs, StdActns, ActnList, ComCtrls,
+  StdCtrls, Buttons, ToolWin, DB, Grids, DBGrids, System.ImageList,
+  System.Actions, Vcl.ExtCtrls;
+
+type
+  TfrmCheckEdit = class(TfrmGnrlEdit)
+    grdChecks: TDBGrid;
+    dsChecks: TDataSource;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure grdChecksKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure acSaveExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCheckEdit: TfrmCheckEdit;
+
+implementation
+uses
+  MainDM, CheckEditDM;
+{$R *.dfm}
+
+procedure TfrmCheckEdit.FormCreate(Sender: TObject);
+begin
+  inherited;
+  lbHeader.Caption := 'שם החברה: ' + #13#10 + dmCheckEdit.ClientShem;
+end;
+
+procedure TfrmCheckEdit.grdChecksKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if (Key = 113) then
+  begin
+    if ((Sender as TDBGrid).SelectedIndex = 1) then
+    begin
+      dmCheckEdit.tbChecks.Edit;
+      (Sender as TDBGrid).Fields[1].AsDateTime := Now;
+    end;
+    if ((Sender as TDBGrid).SelectedIndex = 2) then
+    begin
+      dmCheckEdit.tbChecks.Edit;
+      (Sender as TDBGrid).Fields[2].AsDateTime := Now;
+    end;
+  end;
+end;
+
+procedure TfrmCheckEdit.acSaveExecute(Sender: TObject);
+begin
+  inherited;
+  dmCheckEdit.SaveData;
+  Close;
+end;
+
+procedure TfrmCheckEdit.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dmCheckEdit.Free;
+  inherited;
+  frmCheckEdit := nil;
+end;
+
+end.

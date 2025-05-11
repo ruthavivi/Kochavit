@@ -1,0 +1,145 @@
+unit DriverFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmDriverFilter = class(TfrmGnrlFilter)
+    lbACodDrv: TLabel;
+    lbZCodDrv: TLabel;
+    cbCodDrv: TCheckBox;
+    edACodDrv: TMaskEdit;
+    edZCodDrv: TMaskEdit;
+    lbLIsuvD: TLabel;
+    cbIsuv: TCheckBox;
+    edLIsuvD: TEdit;
+    lbABorn: TLabel;
+    lbZBorn: TLabel;
+    edABorn: TMaskEdit;
+    edZBorn: TMaskEdit;
+    cbDBorn: TCheckBox;
+    qrFilterId: TIntegerField;
+    qrFilterIdDrv: TIntegerField;
+    qrFilterZeut: TStringField;
+    qrFilterArmyN: TIntegerField;
+    qrFilterShemD: TStringField;
+    qrFilterKtovetD: TStringField;
+    qrFilterIsuvD: TStringField;
+    qrFilterMikudD: TIntegerField;
+    qrFilterTelD: TStringField;
+    qrFilterCelD: TStringField;
+    qrFilterBorn: TDateField;
+    qrFilterStatus: TStringField;
+    qrFilterLicenceTyp: TStringField;
+    qrFilterLicencePrd: TSmallintField;
+    qrFilterLimit: TStringField;
+    qrFilterWorkStrt: TDateField;
+    qrFilterClientId: TIntegerField;
+    qrFilterFreze: TBooleanField;
+    qrFilterMissing: TBooleanField;
+    qrFilterLicenceNum: TStringField;
+    qrFilterRemark: TStringField;
+    qrFilterShem: TStringField;
+    qrFilterHp: TIntegerField;
+    qrFilterIdClient: TIntegerField;
+    qrFilterOvedId: TSmallintField;
+    lbEType: TLabel;
+    cbLicence: TCheckBox;
+    cbELicence: TComboBox;
+    lbEOved: TLabel;
+    cbOved: TCheckBox;
+    cbEOved: TComboBox;
+    procedure cbCodDrvClick(Sender: TObject);
+    procedure edABornExit(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure cbELicenceEnter(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+    procedure LoadPrfx;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverFilter: TfrmDriverFilter;
+
+implementation
+
+uses
+  DriverFilterDM, DriverReport, KbFunc;
+
+{$R *.dfm}
+
+procedure TfrmDriverFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmDriverFilter := TdmDriverFilter.Create(Self);
+end;
+
+procedure TfrmDriverFilter.cbCodDrvClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmDriverFilter.LoadItemsInComboBox(Sender: TObject; pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmDriverFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmDriverFilter.cbELicenceEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmDriverFilter.edABornExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edABorn.Text,
+               edZBorn.Text) = False) then
+           edABorn.SetFocus;
+end;
+
+procedure TfrmDriverFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(frmDriverReport) then
+  begin
+    with dmDriverFilter do
+    begin
+      SetTotalRec('KDriver');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\DriverFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'ShemD';
+      if OpenData then
+        frmDriverReport := TfrmDriverReport.Create(Self);
+    end;
+  end;
+end;
+
+
+end.

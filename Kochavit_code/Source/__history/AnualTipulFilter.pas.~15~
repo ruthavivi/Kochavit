@@ -1,0 +1,111 @@
+unit AnualTipulFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Spin,
+  DateUtils, edbcomps;
+
+type
+  TfrmAnualTipulFilter = class(TfrmGnrlFilter)
+    lbEOved: TLabel;
+    cxOved: TCheckBox;
+    cbEOved: TComboBox;
+    Label1: TLabel;
+    edYear: TSpinEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure cxOvedClick(Sender: TObject);
+    procedure cbEOvedEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+    procedure AlterView;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAnualTipulFilter: TfrmAnualTipulFilter;
+
+implementation
+uses
+  AnualTipulFilterDM, AnualTipulReport;
+{$R *.dfm}
+
+procedure TfrmAnualTipulFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmAnualTipulFilter := TdmAnualTipulFilter.Create(Self);
+  edYear.Value := YearOf(Date) -1;
+end;
+
+procedure TfrmAnualTipulFilter.cxOvedClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmAnualTipulFilter.LoadItemsInComboBox(Sender: TObject;
+  pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmAnualTipulFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmAnualTipulFilter.cbEOvedEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmAnualTipulFilter.AlterView;
+begin
+  dmAnualTipulFilter.qrGnrl.SQL.Text := 'ALTER VIEW TipulYear AS '+
+      'SELECT Cod, Shem, Number, Type, Oved, DateDone, Atar, Contact, Tel, Pail ' +
+      'FROM KCrTipulHis Ct LEFT JOIN KCar Cr ON Ct.CarId = Cr.Id ' +
+      'LEFT JOIN KClient Cl ON Cr.ClientId = Cl.Id ' +
+      'LEFT JOIN KTblTipul tP ON Ct.TipulId = tP.Id ' +
+      'LEFT JOIN KTblOved tV ON Ct.OvedId = tV.Id ' +
+      'LEFT JOIN KTblAtar tA ON Cr.AtarId = tA.Id ' +
+      'LEFT JOIN KTblType tT ON Cr.TypeId = tT.Id ' +
+      'WHERE Tipul = '+QuotedStr('ביקורת חודשית')+
+      ' AND EXTRACT(YEAR FROM DateDone) = ' + edYear.Text +
+      ' ORDER BY Number, DateDone';
+  dmAnualTipulFilter.qrGnrl.ExecSQL;
+end;
+
+procedure TfrmAnualTipulFilter.btnExecuteClick(Sender: TObject);
+begin
+  AlterView;
+  if not Assigned(frmAnualTipulReport) then
+  begin
+    with dmAnualTipulFilter do
+    begin
+      SetTotalRec('KCrTipulHis');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\AnualTipulFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.GroupBy := 'Number';
+      SqlState.Order := 'Shem';
+      if OpenData then
+        frmAnualTipulReport := TfrmAnualTipulReport.Create(Self);
+    end;
+  end;
+end;
+
+
+end.

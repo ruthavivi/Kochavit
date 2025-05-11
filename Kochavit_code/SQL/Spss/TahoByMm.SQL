@@ -1,0 +1,4 @@
+SELECT YY,  MM, COUNT(MM)  Cmt
+FROM "Temp.db"
+GROUP BY YY, MM
+ORDER BY YY, MM

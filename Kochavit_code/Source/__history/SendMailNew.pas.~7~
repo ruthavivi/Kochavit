@@ -1,0 +1,109 @@
+unit SendMailNew;
+
+interface
+uses
+  IdSMTP, IdMessage, IdAttachment, IdAttachmentFile, IdText, Forms, SysUtils, Classes, edbcomps;
+
+type
+  TSendMailNew = class
+    private
+      FSmtp: TIdSMTP;
+      FMessage: TIdMessage;
+      FText: TIdText;
+      FGorem, FUserEmail, FCenterEmail, FDfusEmail: String;
+      procedure GetSmtpVal;
+    public
+      constructor Create;
+      procedure SetUpMailVal(pSubject, pTo, pAttacheFile: String;
+        pBody: TStrings); overload;
+      function   SendEMail: Boolean;
+      destructor Destroy; override;
+  end;
+
+implementation
+uses
+  DbTables, LogErrorUtil;
+{ TSendMail }
+
+constructor TSendMailNew.Create;
+begin
+  FSmtp := TIdSMTP.Create(Nil);
+  FMessage := TIdMessage.Create(Nil);
+  FText := TIdText.Create(Nil);
+  GetSmtpVal;
+end;
+
+procedure TSendMailNew.GetSmtpVal;
+var
+  Qr: TEDBQuery;
+begin
+  Qr := TEDBQuery.Create(Nil);
+  Qr.SessionName := 'Main';
+  Qr.DatabaseName := 'dbnMain';
+  Qr.SQL.Text := 'SELECT Shem, Host, UserName, UserPass FROM KDefault';
+
+  try
+    Qr.Open;
+    FSmtp.Host := Qr.FieldByName('Host').AsString;
+    FSmtp.Password := Qr.FieldByName('UserPass').AsString;
+    FSmtp.Port := 25;
+    FSmtp.AuthType := TIdSMTPAuthenticationType(1);
+    FSmtp.Username := Qr.FieldByName('UserName').AsString;
+    FGorem := Qr.FieldByName('Shem').AsString;
+  finally
+    Qr.Close;
+    Qr.Free;
+  end;
+end;
+
+// send email general
+procedure TSendMailNew.SetUpMailVal(pSubject, pTo, pAttacheFile: String;
+  pBody: TStrings);
+begin
+  FMessage.Subject := pSubject;
+  FMessage.From.Name := FGorem;
+  FMessage.From.Address := FUserEmail;
+  FMessage.Body := pBody;
+  FMessage.Recipients.EMailAddresses := pTo;
+  if ((pAttacheFile <> '') and FileExists(pAttacheFile)) then
+  begin
+    FText.Create(FMessage.MessageParts, pBody);
+    FText.CharSet := 'WINDOWS-1255';
+    FText.ContentType := 'text/plain';
+    TIdAttachmentFile.Create(FMessage.MessageParts, pAttacheFile);
+    FMessage.ContentType := 'multipart/mixed';
+  end else
+  begin
+    FMessage.CharSet := 'WINDOWS-1255';
+    FMessage.ContentType := 'text/plain';
+  end;
+end;
+
+function TSendMailNew.SendEMail: Boolean;
+begin
+  Result := True;
+  try
+    try
+      FSmtp.Connect;
+      FSmtp.Send(FMessage);
+    except on E:Exception do
+      begin
+        HandelError('TSendMailNew.SendEMail', 'תקלה בשליחת דוא"ל: ' + #10#13 + E.Message, E);
+        Result := False;
+      end;
+    end;
+  finally
+    if FSmtp.Connected then
+      FSmtp.Disconnect;
+  end;
+end;
+
+destructor TSendMailNew.Destroy;
+begin
+  FText.Free;
+  FMessage.Free;
+  FSmtp.Free;
+  inherited;
+end;
+
+end.

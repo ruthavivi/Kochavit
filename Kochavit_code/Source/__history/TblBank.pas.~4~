@@ -1,0 +1,26 @@
+unit TblBank;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, DB, edbcomps, RpRave, RpDefine, RpBase, RpSystem, StdActns,
+  ActnList, ImgList, Grids, DBGrids, MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls,
+  DBCtrls, ToolWin;
+
+type
+  TfrmBankTbl = class(TfrmGnrlTbl)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBankTbl: TfrmBankTbl;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,60 @@
+unit RemarkDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, DBCtrls, DB, DBTables, Buttons, ExtCtrls;
+
+type
+  TfrmRemarkDlg = class(TForm)
+    edRemark: TDBMemo;
+    tbRem: TTable;
+    dsRem: TDataSource;
+    Panel3: TPanel;
+    btnSave: TBitBtn;
+    btnCancel: TBitBtn;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCancelClick(Sender: TObject);
+    procedure btnSaveClick(Sender: TObject);
+    procedure dsRemStateChange(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmRemarkDlg: TfrmRemarkDlg;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmRemarkDlg.dsRemStateChange(Sender: TObject);
+begin
+   if tbRem.State = dsEdit then
+       btnSave.Enabled := True;
+end;
+
+procedure TfrmRemarkDlg.btnSaveClick(Sender: TObject);
+begin
+   tbRem.Post;
+   Close;
+end;
+
+procedure TfrmRemarkDlg.btnCancelClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmRemarkDlg.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   tbRem.Close;
+   Action := caFree;
+end;
+
+
+
+end.

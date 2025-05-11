@@ -1,0 +1,177 @@
+unit DriverReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, StdActns, DBActns, ActnList,
+  StdCtrls, Buttons, ComCtrls, ToolWin, Grids, DBGrids, System.Actions,
+  System.ImageList, OpenToSendEmail;
+
+type
+  TfrmDriverReport = class(TfrmGnrlReport)
+    acSendEmail: TAction;
+    acMail: TAction;
+    procedure FormCreate(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acSendEmailExecute(Sender: TObject);
+    procedure acMailExecute(Sender: TObject);
+    function SelectDoc(var WorkFile, nCopy: OleVariant;
+        var vButton, vMemo: String; vPath: String): Boolean;
+    procedure GnrlPrints(pDocName, pFunc: String; pNCopy: Integer);
+
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverReport: TfrmDriverReport;
+
+implementation
+uses
+   DriverFilterDM, OpenToPrint, DriverRprtSlctDlg, DocUtils;
+{$R *.dfm}
+
+procedure TfrmDriverReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('ShemD');
+  SetStatusBar;
+end;
+
+procedure TfrmDriverReport.SetStatusBar;
+var
+  Procent: String;
+begin
+  if (StrToInt(dmDriverFilter.TotalRec) = 0) then
+    Procent := '0'
+  else
+    Procent := FormatFloat('#.##', StrToInt(dmDriverFilter.TotalSelectRec) /
+          StrToInt(dmDriverFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ נהגים בדו"ח: ' + dmDriverFilter.TotalSelectRec +
+      ' מתוך ' + dmDriverFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmDriverReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmDriverFilter.SqlState.Order := GetOrders(Column);
+  dmDriverFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmDriverReport.acMailExecute(Sender: TObject);
+var
+  DocName, nCopy: OleVariant;
+  Func, vMemo: String;
+begin
+  inherited;
+  if SelectDoc(DocName, nCopy, Func, vMemo,
+       ExtractFilePath(Application.ExeName) + 'Docs\Driver') then
+    GnrlPrints(DocName, Func, nCopy);
+end;
+
+procedure TfrmDriverReport.GnrlPrints(pDocName, pFunc: String; pNCopy: Integer);
+var
+  Subject: String;
+  OneDoc: TDocUtils;
+  ToEmails: TStringList;
+begin
+  Subject := 'מצורפת הודעה מקצין הרכב שלך';
+  Screen.Cursor := crHourGlass;
+  with dmDriverFilter.qrFilter do
+  begin
+    try
+      DisableControls;
+      First;
+      ToEmails := TStringList.Create;
+      if (pFunc = 'btnEmail') and HaveEMails(dmDriverFilter.qrFilterClientId.AsString, ToEmails) then
+      begin
+        OneDoc := TDocUtils.Create('btnEmail', dmDriverFilter.qrFilterShem.AsString + ' - '+
+              dmDriverFilter.qrFilterShemD.AsString, Subject, pNCopy, False, ToEmails, pDocName);
+        OneDoc.SendDoc(dmDriverFilter.qrFilter, nil, nil);
+        if OneDoc.EmailSend then
+            SaveEmailSend(dmDriverFilter.qrFilterClientId.AsString, 'NULL',
+            dmDriverFilter.qrFilterId.AsString, Subject, ExtractFileName(ChangeFileExt(pDocName, '.pdf')));
+      end
+      else if (pFunc = 'btnPrint') or (pFunc = 'btnPreview') then
+      begin
+        OneDoc := TDocUtils.Create(pFunc, pNCopy, False, Subject, '', '', '', pDocName);
+        OneDoc.SendDoc(dmDriverFilter.qrFilter, nil, nil);
+      end;
+      Next;
+    finally
+      EnableControls;
+      OneDoc.Free;
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+function TfrmDriverReport.SelectDoc(var WorkFile, nCopy: OleVariant;
+  var vButton, vMemo: String; vPath: String): Boolean;
+begin
+  Result := False;
+
+  frmOpenToPrint := TfrmOpenToPrint.Create(self);
+  with frmOpenToPrint do
+  begin
+    DirectoryListBox.Directory := vPath;
+    Edit.Text := '';
+    if ShowModal = mrOK then
+    begin
+       vPath := DirectoryListBox.Directory;
+       WorkFile := vPath + '\' + Edit.Text;
+       vButton := btnPress;
+       nCopy := SpinEdit.Value;
+       Result := True;
+    end;
+    Free;
+  end;
+end;
+
+procedure TfrmDriverReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmDriverRprtSlctDlg := TfrmDriverRprtSlctDlg.Create(Self);
+  frmDriverRprtSlctDlg.Show;
+end;
+
+procedure TfrmDriverReport.acExcelExecute(Sender: TObject);
+var
+  FileName: String;
+begin
+  inherited;
+  if SelectFields('Dr', dmDriverFilter.qrFilter) then
+    if GetExprtFile(FileName, 'Excel', 2) then
+      SaveToExcel(dmDriverFilter.qrFilter, FileName);
+end;
+
+procedure TfrmDriverReport.acSendEmailExecute(Sender: TObject);
+begin
+  inherited;
+  frmOpenToSendEmail := TfrmOpenToSendEmail.Create(Self);
+  try
+    frmOpenToSendEmail.SetData('Driver', dmDriverFilter.qrFilter);
+    if (frmOpenToSendEmail.ShowModal = mrOk) then
+    begin
+
+    end;
+  finally
+    frmOpenToSendEmail.Free;
+  end;
+end;
+
+procedure TfrmDriverReport.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  dmDriverFilter.qrFilter.Close;
+  inherited;
+  frmDriverReport := nil;
+end;
+
+end.

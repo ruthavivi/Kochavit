@@ -1,0 +1,26 @@
+inherited frmClientRprtSlctDlg: TfrmClientRprtSlctDlg
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited rgReports: TRadioGroup
+      Columns = 2
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPreviewClick
+    end
+  end
+  object frdbClient: TfrxDBDataset
+    UserName = 'frdbClient'
+    CloseDataSource = False
+    DataSet = dmClientFilter.qrFilter
+    BCDToCurrency = False
+    Left = 296
+    Top = 104
+  end
+end

@@ -1,0 +1,87 @@
+inherited frmLicenceTbl: TfrmLicenceTbl
+  Caption = #1496#1489#1500#1514' '#1505#1493#1490#1497' '#1512#1513#1497#1493#1504#1493#1514
+  ClientHeight = 413
+  ClientWidth = 255
+  ExplicitWidth = 263
+  ExplicitHeight = 440
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 255
+    ExplicitWidth = 255
+  end
+  inherited StatusBar: TStatusBar
+    Top = 394
+    Width = 255
+    ExplicitTop = 394
+    ExplicitWidth = 255
+  end
+  inherited Panel1: TPanel
+    Width = 255
+    Height = 358
+    ExplicitWidth = 255
+    ExplicitHeight = 358
+    inherited dbGrid: TCheckDBGrid
+      Width = 253
+      Height = 356
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Licence'
+          Width = 73
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'Incl1'
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'Incl2'
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end
+        item
+          Expanded = False
+          FieldName = 'Incl3'
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited tbTbl: TEDBTable
+    IndexFieldNames = 'Licence'
+    TableName = 'KTblLicence'
+    object tbTblId: TAutoIncField
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbTblLicence: TStringField
+      DisplayLabel = #1505#1493#1490' '#1512#1513#1497#1493#1503
+      FieldName = 'Licence'
+      Size = 3
+    end
+    object tbTblIncl1: TStringField
+      DisplayLabel = #1499#1493#1500#1500
+      FieldName = 'Incl1'
+      Size = 2
+    end
+    object tbTblIncl2: TStringField
+      DisplayLabel = #1499#1493#1500#1500
+      FieldName = 'Incl2'
+      Size = 2
+    end
+    object tbTblIncl3: TStringField
+      DisplayLabel = #1499#1493#1500#1500
+      FieldName = 'Incl3'
+      Size = 2
+    end
+  end
+end

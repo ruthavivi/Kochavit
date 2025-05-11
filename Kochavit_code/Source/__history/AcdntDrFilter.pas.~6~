@@ -1,0 +1,110 @@
+unit AcdntDrFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmAcdntDrFilter = class(TfrmGnrlFilter)
+    lbAAcdntD: TLabel;
+    lbZAcdntZ: TLabel;
+    lbEWithInjr: TLabel;
+    lbEShem: TLabel;
+    edAAcdntD: TMaskEdit;
+    edZAcdntD: TMaskEdit;
+    cxDAcdntD: TCheckBox;
+    cxEWithInjr: TCheckBox;
+    cbEWithInjr: TComboBox;
+    cxEShem: TCheckBox;
+    cbEShem: TComboBox;
+    lbEQuilty: TLabel;
+    cxEQuilty: TCheckBox;
+    cbEQuilty: TComboBox;
+    procedure FormCreate(Sender: TObject);
+    procedure cxDAcdntDClick(Sender: TObject);
+    procedure edAAcdntDExit(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcdntDrFilter: TfrmAcdntDrFilter;
+
+implementation
+uses
+  AcdntDrFilterDM, DrAcdntReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmAcdntDrFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmAcdntDrFilter := TdmAcdntDrFilter.Create(Self);
+end;
+
+procedure TfrmAcdntDrFilter.cxDAcdntDClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmAcdntDrFilter.edAAcdntDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAAcdntD.Text,
+               edZAcdntD.Text) = False) then
+           edAAcdntD.SetFocus;
+end;
+
+procedure TfrmAcdntDrFilter.cbEShemEnter(Sender: TObject);
+var
+  ListItem: TStringList;
+begin
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmAcdntDrFilter.LoadItems('KClient', 'Shem', '', ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmAcdntDrFilter.btnExecuteClick(Sender: TObject);
+var
+   Path, WhereLn: String;
+begin
+  inherited;
+   Screen.Cursor := crHourGlass;
+   Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+   prfxList := TStringList.Create;
+   try
+       LoadPrfx;
+       with qrFilter do
+       begin
+           SQL.LoadFromFile(Path+'DrAcdntSQL.TXT');
+           WhereLn := GetWhereLn;
+           if (WhereLn = '') then
+               SQL[SQL.Count -2] := ''
+           else
+               SQL[SQL.Count -2] := 'WHERE ' + WhereLn;
+           Open;
+           selectRec := RecordCount;
+       end;
+       frmDrAcdntReport := TfrmDrAcdntReport.Create(Self);
+   finally
+       prfxList.Free;
+       Screen.Cursor := crDefault;
+   end;
+end;
+
+end.

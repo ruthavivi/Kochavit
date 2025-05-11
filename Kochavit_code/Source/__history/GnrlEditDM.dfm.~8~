@@ -1,0 +1,39 @@
+object dmGnrlEdit: TdmGnrlEdit
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 174
+  Width = 215
+  object RvKartis: TRvProject
+    Engine = RvSystem
+    ProjectFile = 
+      'C:\Documents and Settings\Sorin\My Documents\RAD Studio\Projects' +
+      '\Kochavit\Reports\KvKartis.rav'
+    Left = 104
+    Top = 88
+  end
+  object RvSystem: TRvSystem
+    TitleSetup = 'Output Options'
+    TitleStatus = 'Report Status'
+    TitlePreview = 'Report Preview'
+    SystemSetups = [ssAllowCopies, ssAllowCollate, ssAllowDuplex, ssAllowDestPreview, ssAllowDestPrinter, ssAllowDestFile, ssAllowPrinterSetup, ssAllowPreviewSetup]
+    DefaultDest = rdPrinter
+    SystemFiler.AccuracyMethod = amAppearance
+    SystemFiler.StatusFormat = 'Generating page %p'
+    SystemPreview.ZoomFactor = 100.000000000000000000
+    SystemPrinter.ScaleX = 100.000000000000000000
+    SystemPrinter.ScaleY = 100.000000000000000000
+    SystemPrinter.StatusFormat = 'Printing page %p'
+    SystemPrinter.Title = 'ReportPrinter Report'
+    SystemPrinter.UnitsFactor = 1.000000000000000000
+    Left = 40
+    Top = 88
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 40
+    Top = 24
+  end
+end

@@ -1,0 +1,422 @@
+object frmMailSendList: TfrmMailSendList
+  Left = 0
+  Top = 0
+  ActiveControl = btnClose
+  Anchors = [akTop, akRight]
+  BorderStyle = bsDialog
+  Caption = #1512#1513#1497#1502#1514' '#1491#1493#1488#1512' '#1497#1493#1510#1488
+  ClientHeight = 705
+  ClientWidth = 508
+  Color = clBtnFace
+  ParentFont = True
+  OldCreateOrder = False
+  Position = poMainFormCenter
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 664
+    Width = 508
+    Height = 41
+    Align = alBottom
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 0
+    ExplicitWidth = 697
+    DesignSize = (
+      508
+      41)
+    object btnClose: TBitBtn
+      Left = 336
+      Top = 8
+      Width = 0
+      Height = 25
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      Caption = #1505#1490#1493#1512
+      Kind = bkClose
+      NumGlyphs = 2
+      TabOrder = 0
+      ExplicitWidth = 90
+    end
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 0
+    Width = 508
+    Height = 664
+    Align = alClient
+    TabOrder = 1
+    ExplicitWidth = 697
+    object Splitter1: TSplitter
+      Left = 1
+      Top = 237
+      Width = 506
+      Height = 5
+      Cursor = crVSplit
+      Align = alBottom
+      ExplicitTop = 227
+      ExplicitWidth = 825
+    end
+    object Splitter2: TSplitter
+      Left = 1
+      Top = 450
+      Width = 506
+      Height = 5
+      Cursor = crVSplit
+      Align = alBottom
+      ExplicitTop = 445
+      ExplicitWidth = 825
+    end
+    object Panel4: TPanel
+      Left = 1
+      Top = 455
+      Width = 506
+      Height = 208
+      Align = alBottom
+      Caption = 'Panel3'
+      TabOrder = 0
+      ExplicitWidth = 695
+      object Label1: TLabel
+        Left = 1
+        Top = 1
+        Width = 504
+        Height = 17
+        Align = alTop
+        BiDiMode = bdRightToLeft
+        Caption = #1492#1493#1491#1506#1493#1514' '#1502#1499#1512#1496#1497#1505' '#1504#1492#1490
+        Color = clActiveCaption
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clHighlightText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        ExplicitLeft = 575
+        ExplicitWidth = 119
+      end
+      object DBGrid2: TDBGrid
+        Left = 1
+        Top = 18
+        Width = 504
+        Height = 189
+        Align = alClient
+        BiDiMode = bdRightToLeft
+        DataSource = dsEMailsSendDr
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 0
+        TitleFont.Charset = HEBREW_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = [fsBold]
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'Moed'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ShemD'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Subject'
+            Visible = True
+          end>
+      end
+    end
+    object Panel3: TPanel
+      Left = 1
+      Top = 1
+      Width = 506
+      Height = 236
+      Align = alClient
+      Caption = 'Panel3'
+      TabOrder = 1
+      ExplicitWidth = 695
+      object Label2: TLabel
+        Left = 1
+        Top = 1
+        Width = 504
+        Height = 17
+        Align = alTop
+        BiDiMode = bdRightToLeft
+        Caption = #1492#1493#1491#1506#1493#1514' '#1500#1495#1489#1512#1492
+        Color = clActiveCaption
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clHighlightText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        ExplicitLeft = 606
+        ExplicitWidth = 88
+      end
+      object DBGrid1: TDBGrid
+        Left = 1
+        Top = 18
+        Width = 504
+        Height = 217
+        Align = alClient
+        BiDiMode = bdRightToLeft
+        DataSource = dsEMailsSendCl
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 0
+        TitleFont.Charset = HEBREW_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Segoe UI'
+        TitleFont.Style = [fsBold]
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'Moed'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Subject'
+            Visible = True
+          end>
+      end
+    end
+    object Panel5: TPanel
+      Left = 1
+      Top = 242
+      Width = 506
+      Height = 208
+      Align = alBottom
+      Caption = 'Panel3'
+      TabOrder = 2
+      ExplicitWidth = 695
+      object Label3: TLabel
+        Left = 1
+        Top = 1
+        Width = 504
+        Height = 17
+        Align = alTop
+        BiDiMode = bdRightToLeft
+        Caption = #1492#1493#1491#1506#1493#1514' '#1502#1499#1512#1496#1497#1505' '#1512#1499#1489
+        Color = clActiveCaption
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clHighlightText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentBiDiMode = False
+        ParentColor = False
+        ParentFont = False
+        Transparent = False
+        ExplicitLeft = 573
+        ExplicitWidth = 121
+      end
+      object DBGrid3: TDBGrid
+        Left = 1
+        Top = 18
+        Width = 504
+        Height = 189
+        Align = alClient
+        BiDiMode = bdRightToLeft
+        DataSource = dsEMailsSendCr
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 0
+        TitleFont.Charset = HEBREW_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'Tahoma'
+        TitleFont.Style = [fsBold]
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'Moed'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Number'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Subject'
+            Visible = True
+          end>
+      end
+    end
+  end
+  object dsEMailsSendCl: TDataSource
+    DataSet = qrEMailsSendCl
+    Left = 208
+    Top = 96
+  end
+  object qrEMailsSendCl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmClientEdit.dsClient
+    SQL.Strings = (
+      'SELECT *'
+      'FROM KEmailsSend Es'
+      'WHERE ClientId = :Id  and CarId IS NULL and DriverId IS NULL'
+      'ORDER BY Moed DESC')
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'Id'
+        ParamType = ptInput
+        Size = 4
+      end>
+    Left = 104
+    Top = 152
+    object qrEMailsSendClId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrEMailsSendClClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object qrEMailsSendClCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object qrEMailsSendClDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object qrEMailsSendClMoed: TDateField
+      DisplayLabel = #1504#1513#1500#1495' '#1489#1514#1488#1512#1497#1498
+      FieldName = 'Moed'
+    end
+    object qrEMailsSendClSubject: TStringField
+      DisplayLabel = #1504#1493#1513#1488
+      FieldName = 'Subject'
+      Size = 35
+    end
+  end
+  object qrEMailsSendCr: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmClientEdit.dsClient
+    SQL.Strings = (
+      'SELECT Es.*, Number'
+      'FROM KEmailsSend Es'
+      'LEFT JOIN KCar Cr ON (Es.CarId = Cr.Id)'
+      'WHERE ClientId = 813 and CarId IS NOT NULL'
+      'ORDER BY Moed DESC')
+    Params = <>
+    Left = 96
+    Top = 360
+    object qrEMailsSendCrId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrEMailsSendCrClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object qrEMailsSendCrCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object qrEMailsSendCrDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object qrEMailsSendCrMoed: TDateField
+      DisplayLabel = #1504#1513#1500#1495' '#1489#1514#1488#1512#1497#1498
+      FieldName = 'Moed'
+    end
+    object qrEMailsSendCrNumber: TStringField
+      DisplayLabel = #1502#1505#39' '#1512#1497#1513#1493#1497
+      FieldName = 'Number'
+      Size = 9
+    end
+    object qrEMailsSendCrSubject: TStringField
+      DisplayLabel = #1504#1493#1513#1488
+      FieldName = 'Subject'
+      Size = 35
+    end
+    object qrEMailsSendCrAttached: TMemoField
+      DisplayLabel = #1502#1505#1502#1499#1497#1501' '#1502#1510#1493#1512#1508#1497#1501
+      FieldName = 'Attached'
+      OnGetText = qrEMailsSendDrAttachedGetText
+      BlobType = ftMemo
+    end
+  end
+  object dsEMailsSendCr: TDataSource
+    DataSet = qrEMailsSendCr
+    Left = 200
+    Top = 296
+  end
+  object qrEMailsSendDr: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmClientEdit.dsClient
+    SQL.Strings = (
+      'SELECT Es.*, ShemD'
+      'FROM KEmailsSend Es'
+      'LEFT JOIN KDriver Dr ON (Es.DriverId = Dr.Id)'
+      'WHERE ClientId = 813 and DriverId IS NOT NULL'
+      'ORDER BY Moed DESC')
+    Params = <>
+    Left = 104
+    Top = 576
+    object qrEMailsSendDrId: TIntegerField
+      FieldName = 'Id'
+    end
+    object qrEMailsSendDrClientId: TIntegerField
+      FieldName = 'ClientId'
+    end
+    object qrEMailsSendDrCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object qrEMailsSendDrDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object qrEMailsSendDrMoed: TDateField
+      DisplayLabel = #1504#1513#1500#1495' '#1489#1514#1488#1512#1497#1498
+      FieldName = 'Moed'
+    end
+    object qrEMailsSendDrShemD: TStringField
+      DisplayLabel = #1513#1501' '#1504#1492#1490
+      FieldName = 'ShemD'
+      Size = 25
+    end
+    object qrEMailsSendDrSubject: TStringField
+      DisplayLabel = #1504#1493#1513#1488
+      FieldName = 'Subject'
+      Size = 35
+    end
+    object qrEMailsSendDrAttached: TMemoField
+      DisplayLabel = #1502#1505#1502#1499#1497#1501' '#1502#1510#1493#1512#1508#1497#1501
+      FieldName = 'Attached'
+      OnGetText = qrEMailsSendDrAttachedGetText
+      BlobType = ftMemo
+    end
+  end
+  object dsEMailsSendDr: TDataSource
+    DataSet = qrEMailsSendDr
+    Left = 208
+    Top = 520
+  end
+end

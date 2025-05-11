@@ -1,0 +1,26 @@
+unit DriverOnCarReport;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, GnrlReport, Data.DB, Vcl.Menus,
+  Vcl.ImgList, Vcl.StdActns, Vcl.DBActns, System.Actions, Vcl.ActnList,
+  Vcl.StdCtrls, Vcl.Buttons, Vcl.ComCtrls, Vcl.ToolWin, Vcl.Grids, Vcl.DBGrids;
+
+type
+  TfrmDriverOnCarReport = class(TfrmGnrlReport)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverOnCarReport: TfrmDriverOnCarReport;
+
+implementation
+
+{$R *.dfm}
+
+end.

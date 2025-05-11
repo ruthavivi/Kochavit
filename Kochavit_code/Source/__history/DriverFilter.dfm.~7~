@@ -1,0 +1,493 @@
+inherited frmDriverFilter: TfrmDriverFilter
+  Top = 257
+  Caption = #1513#1488#1497#1500#1514#1514' '#1504#1492#1490#1497#1501
+  ClientHeight = 195
+  OldCreateOrder = True
+  ExplicitWidth = 451
+  ExplicitHeight = 222
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 164
+    ExplicitTop = 112
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    Height = 164
+    ExplicitHeight = 112
+    inherited grbMain: TGroupBox
+      Height = 162
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1504#1492#1490#1497#1501
+      ExplicitHeight = 110
+      object lbACodDrv: TLabel
+        Tag = 1
+        Left = 315
+        Top = 27
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZCodDrv: TLabel
+        Tag = 1
+        Left = 136
+        Top = 27
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbLIsuvD: TLabel
+        Tag = 1
+        Left = 285
+        Top = 48
+        Width = 39
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbABorn: TLabel
+        Tag = 3
+        Left = 315
+        Top = 69
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZBorn: TLabel
+        Tag = 3
+        Left = 136
+        Top = 69
+        Width = 17
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEType: TLabel
+        Tag = 5
+        Left = 285
+        Top = 90
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEOved: TLabel
+        Tag = 5
+        Left = 285
+        Top = 111
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object cbCodDrv: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 27
+        Width = 94
+        Height = 14
+        Caption = #1502#1505#39' '#1505#1497#1491#1493#1512#1497':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cbCodDrvClick
+      end
+      object edACodDrv: TMaskEdit
+        Tag = 1
+        Left = 168
+        Top = 27
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 9
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 1
+        Text = '         '
+      end
+      object edZCodDrv: TMaskEdit
+        Tag = 1
+        Left = 15
+        Top = 27
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 9
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 2
+        Text = '         '
+      end
+      object cbIsuv: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 48
+        Width = 94
+        Height = 14
+        Caption = #1513#1501' '#1492#1497#1513#1493#1489':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = cbCodDrvClick
+      end
+      object edLIsuvD: TEdit
+        Tag = 1
+        Left = 168
+        Top = 48
+        Width = 113
+        Height = 21
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 4
+      end
+      object edABorn: TMaskEdit
+        Tag = 3
+        Left = 168
+        Top = 69
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 6
+        Text = '  /  /    '
+        OnExit = edABornExit
+      end
+      object edZBorn: TMaskEdit
+        Tag = 3
+        Left = 15
+        Top = 69
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 7
+        Text = '  /  /    '
+      end
+      object cbDBorn: TCheckBox
+        Tag = 3
+        Left = 328
+        Top = 69
+        Width = 105
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1500#1497#1491#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 5
+        OnClick = cbCodDrvClick
+      end
+      object cbLicence: TCheckBox
+        Tag = 5
+        Left = 354
+        Top = 90
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1505#1493#1490' '#1512#1513#1497#1493#1503':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 8
+        OnClick = cbCodDrvClick
+      end
+      object cbELicence: TComboBox
+        Tag = 5
+        Left = 168
+        Top = 90
+        Width = 113
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 9
+        OnEnter = cbELicenceEnter
+      end
+      object cbOved: TCheckBox
+        Tag = 5
+        Left = 336
+        Top = 111
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 10
+        OnClick = cbCodDrvClick
+      end
+      object cbEOved: TComboBox
+        Tag = 5
+        Left = 112
+        Top = 111
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 11
+        OnEnter = cbELicenceEnter
+      end
+    end
+  end
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      'SELECT Dr.*, Cl.Shem, Cl.Hp, Cl.IdClient'
+      'FROM KDriver Dr'
+      'LEFT JOIN KClient Cl ON (Dr.ClientId = Cl.Id)'
+      'WHERE 0=0'
+      'ORDER BY Dr.ShemD')
+    Top = 112
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+      Origin = 'KB."KDriver".Id'
+    end
+    object qrFilterIdDrv: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1497#1491#1493#1512#1497
+      FieldName = 'IdDrv'
+      Origin = 'KB."KDriver".IdDrv'
+    end
+    object qrFilterZeut: TStringField
+      DisplayLabel = #1514'. '#1494#1492#1493#1514
+      FieldName = 'Zeut'
+      Origin = 'KB."KDriver".Zeut'
+      Size = 11
+    end
+    object qrFilterArmyN: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1488#1497#1513#1497
+      FieldName = 'ArmyN'
+      Origin = 'KB."KDriver".ArmyN'
+    end
+    object qrFilterShemD: TStringField
+      DisplayLabel = #1513#1501' '#1492#1504#1492#1490
+      FieldName = 'ShemD'
+      Origin = 'KB."KDriver".ShemD'
+      Size = 25
+    end
+    object qrFilterKtovetD: TStringField
+      DisplayLabel = #1499#1514#1493#1489#1514
+      FieldName = 'KtovetD'
+      Origin = 'KB."KDriver".KtovetD'
+      Size = 25
+    end
+    object qrFilterIsuvD: TStringField
+      DisplayLabel = #1497#1513#1493#1489
+      FieldName = 'IsuvD'
+      Origin = 'KB."KDriver".IsuvD'
+      Size = 15
+    end
+    object qrFilterMikudD: TIntegerField
+      DisplayLabel = #1502#1497#1511#1493#1491
+      FieldName = 'MikudD'
+      Origin = 'KB."KDriver".MikudD'
+    end
+    object qrFilterTelD: TStringField
+      DisplayLabel = #1496#1500#1508#1493#1503
+      FieldName = 'TelD'
+      Origin = 'KB."KDriver".TelD'
+      Size = 10
+    end
+    object qrFilterCelD: TStringField
+      DisplayLabel = #1504#1497#1497#1491
+      FieldName = 'CelD'
+      Origin = 'KB."KDriver".CelD'
+      Size = 10
+    end
+    object qrFilterBorn: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1500#1497#1491#1492
+      FieldName = 'Born'
+      Origin = 'KB."KDriver".Born'
+    end
+    object qrFilterStatus: TStringField
+      DisplayLabel = #1502#1510#1489
+      FieldName = 'Status'
+      Origin = 'KB."KDriver".Status'
+      Size = 1
+    end
+    object qrFilterLicenceNum: TStringField
+      FieldName = 'LicenceNum'
+      Origin = 'KB."KDriver".LicenceNum'
+      Size = 7
+    end
+    object qrFilterLicenceTyp: TStringField
+      DisplayLabel = #1505#1493#1490' '#1512#1513#1497#1493#1503
+      FieldName = 'LicenceTyp'
+      Origin = 'KB."KDriver".LicenceTyp'
+      Size = 10
+    end
+    object qrFilterLicencePrd: TSmallintField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1492#1504#1508#1511#1492
+      FieldName = 'LicencePrd'
+      Origin = 'KB."KDriver".LicencePrd'
+    end
+    object qrFilterLimit: TStringField
+      DisplayLabel = #1502#1497#1490#1489#1500#1493#1514
+      FieldName = 'Limit'
+      Origin = 'KB."KDriver".Limit'
+    end
+    object qrFilterRemark: TStringField
+      FieldName = 'Remark'
+      Origin = 'KB."KDriver".Remark'
+      Size = 120
+    end
+    object qrFilterWorkStrt: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1514#1495#1497#1500#1514' '#1506#1489#1493#1491#1492
+      FieldName = 'WorkStrt'
+      Origin = 'KB."KDriver".WorkStrt'
+    end
+    object qrFilterClientId: TIntegerField
+      FieldName = 'ClientId'
+      Origin = 'KB."KDriver".ClientId'
+    end
+    object qrFilterFreze: TBooleanField
+      FieldName = 'Freze'
+      Origin = 'KB."KDriver".Freze'
+    end
+    object qrFilterMissing: TBooleanField
+      FieldName = 'Missing'
+      Origin = 'KB."KDriver".Missing'
+    end
+    object qrFilterShem: TStringField
+      FieldName = 'Shem'
+      Origin = 'KB."KClient".Shem'
+      Size = 30
+    end
+    object qrFilterHp: TIntegerField
+      FieldName = 'Hp'
+      Origin = 'KB."KClient".Hp'
+    end
+    object qrFilterIdClient: TIntegerField
+      FieldName = 'IdClient'
+      Origin = 'KB."KClient".IdClient'
+    end
+    object qrFilterOvedId: TSmallintField
+      FieldName = 'OvedId'
+      Origin = 'KB."KDriver".OvedId'
+    end
+  end
+end

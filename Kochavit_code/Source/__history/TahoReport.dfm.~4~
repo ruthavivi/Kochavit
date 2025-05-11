@@ -1,0 +1,89 @@
+inherited frmTahoReport: TfrmTahoReport
+  Left = 309
+  Top = 326
+  Caption = #1514#1493#1510#1488#1493#1514' '#1513#1488#1497#1500#1514#1492' '#1489#1491#1497#1511#1493#1514' '#1496#1499#1493#1490#1512#1507
+  ClientHeight = 416
+  ClientWidth = 664
+  Position = poDesigned
+  OnCreate = FormCreate
+  ExplicitWidth = 672
+  ExplicitHeight = 462
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited DBGrid: TDBGrid
+    Width = 664
+    Height = 345
+    OnTitleClick = DBGridTitleClick
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'Moed'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Number'
+        Title.Caption = #1502#1505#1508#1512' '#1512#1499#1489
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ShemD'
+        Width = 118
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Shem'
+        Width = 139
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'SpeedTrg'
+        Title.Caption = #1495#1512#1490' '#1489#1502#1492#1497#1512#1493#1514
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'ZmanTrg'
+        Title.Caption = #1495#1512#1490' '#1489#1494#1502#1503
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'HarigTrg'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Remark'
+        Visible = True
+      end>
+  end
+  inherited StatusBar1: TStatusBar
+    Top = 393
+    Width = 664
+    ExplicitTop = 393
+    ExplicitWidth = 664
+  end
+  inherited ToolBar1: TToolBar
+    Width = 664
+    ExplicitWidth = 664
+    inherited btnLabel: TToolButton
+      ExplicitWidth = 50
+    end
+  end
+  inherited ActionList: TActionList
+    Top = 96
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    inherited acExcel: TAction
+      OnExecute = acExcelExecute
+    end
+  end
+  inherited dsReport: TDataSource
+    DataSet = dmTahoFilter.qrFilter
+  end
+end

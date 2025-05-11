@@ -1,0 +1,63 @@
+unit GnrlFreze;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, StdCtrls, Mask, DBCtrls, Buttons, ExtCtrls, edbcomps,
+  ComCtrls;
+
+type
+  TfrmGnrlFreze = class(TForm)
+    StaticText1: TStaticText;
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    BitBtn2: TBitBtn;
+    dsFreze: TDataSource;
+    rgSlct: TRadioGroup;
+    tbFreze: TEDBTable;
+    tbFrezeId: TAutoIncField;
+    tbFrezeClientId: TIntegerField;
+    tbFrezeCarId: TIntegerField;
+    tbFrezeDriverId: TIntegerField;
+    tbFrezeMoed: TDateField;
+    edMoed: TDateTimePicker;
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure BitBtn1Click(Sender: TObject);
+    procedure rgSlctClick(Sender: TObject);
+  private
+  public
+    { Public declarations }
+  end;
+
+var
+  frmGnrlFreze: TfrmGnrlFreze;
+
+implementation
+uses
+  CarList, DriverList, MainDM, KbFunc;
+{$R *.dfm}
+
+procedure TfrmGnrlFreze.rgSlctClick(Sender: TObject);
+begin
+  if (rgSlct.ItemIndex = 1) then
+  begin
+    edMoed.Enabled := True;
+    edMoed.SetFocus;
+  end
+  else
+    edMoed.Enabled := False;
+end;
+
+procedure TfrmGnrlFreze.BitBtn1Click(Sender: TObject);
+begin
+  Close;
+end;
+
+procedure TfrmGnrlFreze.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  Action := caFree;
+end;
+
+end.

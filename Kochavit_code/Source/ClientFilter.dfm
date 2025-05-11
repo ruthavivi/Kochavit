@@ -1,0 +1,437 @@
+inherited frmClientFilter: TfrmClientFilter
+  Top = 247
+  Caption = #1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1500#1511#1493#1495#1493#1514
+  ClientHeight = 263
+  OldCreateOrder = True
+  ExplicitHeight = 302
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 232
+    ExplicitTop = 225
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    Height = 232
+    ExplicitHeight = 225
+    inherited grbMain: TGroupBox
+      Height = 230
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1500#1511#1493#1495#1493#1514
+      ParentFont = True
+      ExplicitHeight = 223
+      object lbACod: TLabel
+        Tag = 1
+        Left = 315
+        Top = 27
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+      end
+      object lbZCod: TLabel
+        Tag = 1
+        Left = 138
+        Top = 27
+        Width = 15
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+      end
+      object lbAHp: TLabel
+        Tag = 1
+        Left = 315
+        Top = 48
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+      end
+      object lbZHp: TLabel
+        Tag = 1
+        Left = 138
+        Top = 48
+        Width = 15
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+      end
+      object lbAOpenDate: TLabel
+        Tag = 3
+        Left = 315
+        Top = 69
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+      end
+      object lbZOpenDate: TLabel
+        Tag = 3
+        Left = 138
+        Top = 69
+        Width = 15
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+      end
+      object lbEIsuv: TLabel
+        Tag = 5
+        Left = 290
+        Top = 91
+        Width = 34
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+      end
+      object lbEOved: TLabel
+        Tag = 5
+        Left = 290
+        Top = 133
+        Width = 34
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+      end
+      object lbADept: TLabel
+        Tag = 1
+        Left = 315
+        Top = 156
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+      end
+      object lbZDept: TLabel
+        Tag = 1
+        Left = 138
+        Top = 156
+        Width = 15
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+      end
+      object Label1: TLabel
+        Tag = 5
+        Left = 290
+        Top = 178
+        Width = 34
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+      end
+      object lbEFreze: TLabel
+        Tag = 7
+        Left = 290
+        Top = 111
+        Width = 34
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object cbCod: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 27
+        Width = 94
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1505#39' '#1505#1497#1491#1493#1512#1497':'
+        TabOrder = 0
+        OnClick = cbCodClick
+      end
+      object edACod: TMaskEdit
+        Tag = 1
+        Left = 168
+        Top = 27
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        MaxLength = 9
+        ParentBiDiMode = False
+        TabOrder = 1
+        Text = '         '
+      end
+      object edZCod: TMaskEdit
+        Tag = 1
+        Left = 15
+        Top = 27
+        Width = 106
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        MaxLength = 9
+        ParentBiDiMode = False
+        TabOrder = 2
+        Text = '         '
+      end
+      object cbHp: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 48
+        Width = 94
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1505#39' '#1495#1489#1512#1492':'
+        TabOrder = 3
+        OnClick = cbCodClick
+      end
+      object edAHp: TMaskEdit
+        Tag = 1
+        Left = 168
+        Top = 48
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        MaxLength = 9
+        ParentBiDiMode = False
+        TabOrder = 4
+        Text = '         '
+      end
+      object edZHp: TMaskEdit
+        Tag = 1
+        Left = 15
+        Top = 48
+        Width = 106
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        MaxLength = 9
+        ParentBiDiMode = False
+        TabOrder = 5
+        Text = '         '
+      end
+      object edAOpenDate: TMaskEdit
+        Tag = 3
+        Left = 168
+        Top = 69
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        MaxLength = 10
+        ParentBiDiMode = False
+        TabOrder = 7
+        Text = '  /  /    '
+        OnExit = edAOpenDateExit
+      end
+      object edZOpenDate: TMaskEdit
+        Tag = 3
+        Left = 15
+        Top = 69
+        Width = 106
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        MaxLength = 10
+        ParentBiDiMode = False
+        TabOrder = 8
+        Text = '  /  /    '
+        OnExit = edAOpenDateExit
+      end
+      object cbOpenDate: TCheckBox
+        Tag = 3
+        Left = 328
+        Top = 69
+        Width = 105
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1493#1506#1491' '#1512#1497#1513#1493#1501':'
+        TabOrder = 6
+        OnClick = cbCodClick
+      end
+      object cbIsuv: TCheckBox
+        Tag = 5
+        Left = 339
+        Top = 91
+        Width = 94
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1513#1501' '#1492#1497#1513#1493#1489':'
+        TabOrder = 9
+        OnClick = cbCodClick
+      end
+      object cbEIsuv: TEdit
+        Tag = 5
+        Left = 168
+        Top = 91
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        TabOrder = 10
+      end
+      object cbOved: TCheckBox
+        Tag = 5
+        Left = 336
+        Top = 133
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1488#1495#1512#1488#1497' '#1490#1489#1497#1492':'
+        TabOrder = 13
+        OnClick = cbCodClick
+      end
+      object cbEOved: TComboBox
+        Tag = 5
+        Left = 112
+        Top = 133
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Sorted = True
+        TabOrder = 14
+        OnEnter = cbEOvedEnter
+      end
+      object cbDept: TCheckBox
+        Tag = 1
+        Left = 339
+        Top = 156
+        Width = 94
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1495#1497#1497#1489' '#1505#1499#1493#1501':'
+        TabOrder = 15
+        OnClick = cbCodClick
+      end
+      object edADept: TMaskEdit
+        Tag = 1
+        Left = 168
+        Top = 156
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        MaxLength = 9
+        ParentBiDiMode = False
+        TabOrder = 16
+        Text = '         '
+      end
+      object edZDept: TMaskEdit
+        Tag = 1
+        Left = 15
+        Top = 156
+        Width = 106
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        MaxLength = 9
+        ParentBiDiMode = False
+        TabOrder = 17
+        Text = '         '
+      end
+      object cbOfenPay: TCheckBox
+        Tag = 5
+        Left = 336
+        Top = 178
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1488#1493#1508#1503' '#1514#1513#1500#1493#1501':'
+        TabOrder = 18
+        OnClick = cbCodClick
+      end
+      object cbEOfenPay: TComboBox
+        Tag = 5
+        Left = 112
+        Top = 178
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Sorted = True
+        TabOrder = 19
+        OnEnter = cbEOvedEnter
+      end
+      object cbEFreze: TComboBox
+        Tag = 7
+        Left = 168
+        Top = 111
+        Width = 113
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        Sorted = True
+        TabOrder = 12
+        Items.Strings = (
+          #1499#1503
+          #1500#1488)
+      end
+      object cbFreze: TCheckBox
+        Tag = 7
+        Left = 354
+        Top = 111
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1493#1511#1508#1488
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 11
+        OnClick = cbCodClick
+      end
+    end
+  end
+end

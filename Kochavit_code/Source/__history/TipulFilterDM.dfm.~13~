@@ -1,0 +1,111 @@
+inherited dmTipulFilter: TdmTipulFilter
+  OldCreateOrder = True
+  Width = 215
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      
+        'SELECT Id, Tipul, DateDone, Km, Oved, NoBkr, Remark, CodCar, Num' +
+        'ber, Type, Producer, Cod, Shem'
+      'FROM KCrTipulHis Tp'
+      '  LEFT JOIN KCar Cr ON Cr.Id = Tp.CarId'
+      '    LEFT JOIN KTblType tY ON tY.Id = Cr.TypeId'
+      '    LEFT JOIN KTblProducer tR ON tR.Id = Cr.ProducerId'
+      '    LEFT JOIN KClient Cl ON Cl.Id = Cr.ClientId'
+      '  LEFT JOIN KTblTipul Tt ON Tt.Id = Tp.TipulId'
+      '  LEFT JOIN KTblOved Tm ON Tm.Id = Tp.OvedId')
+    ReadOnly = True
+    object qrFilterId: TIntegerField
+      FieldName = 'Id'
+      Origin = 'KCrTipulHis.Id'
+    end
+    object qrFilterTipul: TStringField
+      DisplayLabel = #1513#1501' '#1492#1496#1497#1508#1493#1500
+      FieldName = 'Tipul'
+      Origin = 'KTblTipul.Tipul'
+      Size = 40
+    end
+    object qrFilterDateDone: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1489#1497#1510#1493#1506
+      FieldName = 'DateDone'
+      Origin = 'KCrTipulHis.DateDone'
+    end
+    object qrFilterKm: TIntegerField
+      DisplayLabel = #1502#1491' '#1488#1493#1509
+      FieldName = 'Km'
+      Origin = 'KCrTipulHis.Km'
+    end
+    object qrFilterOved: TStringField
+      DisplayLabel = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497
+      FieldName = 'Oved'
+      Origin = 'KTblOved.Oved'
+      Size = 25
+    end
+    object qrFilterNoBkr: TIntegerField
+      DisplayLabel = #1496#1493#1508#1505' '#1502#1505#1508#1512
+      FieldName = 'NoBkr'
+      Origin = 'KCrTipulHis.NoBkr'
+    end
+    object qrFilterCodCar: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1497#1491#1493#1512#1497' '#1512#1499#1489
+      FieldName = 'CodCar'
+      Origin = 'KCar.CodCar'
+    end
+    object qrFilterNumber: TStringField
+      DisplayLabel = #1502#1505#1508#1512' '#1512#1513#1497#1493#1503
+      FieldName = 'Number'
+      Origin = 'KCar.Number'
+      Size = 9
+    end
+    object qrFilterType: TStringField
+      DisplayLabel = #1505#1493#1490' '#1512#1499#1489
+      FieldName = 'Type'
+      Origin = 'KTblType.Type'
+    end
+    object qrFilterProducer: TStringField
+      DisplayLabel = #1497#1510#1512#1503
+      FieldName = 'Producer'
+      Origin = 'KTblProducer.Producer'
+    end
+    object qrFilterCod: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1491#1493#1512#1497' '#1495#1489#1512#1492
+      FieldName = 'Cod'
+      Origin = 'KClient.Cod'
+    end
+    object qrFilterShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      FieldName = 'Shem'
+      Origin = 'KClient.Shem'
+      Size = 30
+    end
+    object qrFilterRemark: TStringField
+      FieldName = 'Remark'
+      Origin = 'KCrTipulHis.Remark'
+      Size = 160
+    end
+  end
+  object dsFilter: TDataSource
+    DataSet = qrFilter
+    Left = 144
+    Top = 32
+  end
+  object qrDtl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsFilter
+    SQL.Strings = (
+      'SELECT BikoretDtl, TipulId'
+      'FROM KCrTipulDtlHis Td'
+      'LEFT JOIN KTblBikoretDtl tB ON Td.BikoretDtlId = tB.Id'
+      'WHERE Td.TipulId = :Id')
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'Id'
+        ParamType = ptInput
+        Size = 4
+      end>
+    ReadOnly = True
+    Left = 144
+    Top = 120
+  end
+end

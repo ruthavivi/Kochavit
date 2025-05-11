@@ -1,0 +1,135 @@
+unit ChecksFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, StdCtrls, Buttons, ExtCtrls, Mask;
+
+type
+  TfrmChecksFilter = class(TfrmGnrlFilter)
+    lbAProduceD: TLabel;
+    lbZProduceD: TLabel;
+    lbEShem: TLabel;
+    lbAToPayD: TLabel;
+    lbZToPayD: TLabel;
+    lbASumA: TLabel;
+    lbZSumA: TLabel;
+    lbEPayd: TLabel;
+    edAAfkadaD: TMaskEdit;
+    edZAfkadaD: TMaskEdit;
+    cbAfkadaD: TCheckBox;
+    cbShem: TCheckBox;
+    cbEShem: TComboBox;
+    edAPidyon: TMaskEdit;
+    edZPidyon: TMaskEdit;
+    cbPidyonD: TCheckBox;
+    cbBill: TCheckBox;
+    edABill: TMaskEdit;
+    edZBill: TMaskEdit;
+    cbNifda: TCheckBox;
+    cbENifda: TComboBox;
+    edEBank: TComboBox;
+    Label3: TLabel;
+    cbBank: TCheckBox;
+    Label1: TLabel;
+    cbReturn: TCheckBox;
+    cbEReturn: TComboBox;
+    procedure FormCreate(Sender: TObject);
+    procedure cbBankClick(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure edEBankEnter(Sender: TObject);
+    procedure edAAfkadaDExit(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChecksFilter: TfrmChecksFilter;
+
+implementation
+uses
+  ChecksFilterDM, KbFunc;
+{$R *.dfm}
+
+procedure TfrmChecksFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmChecksFilter := TdmChecksFilter.Create(Self);
+end;
+
+procedure TfrmChecksFilter.cbBankClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmChecksFilter.cbEShemEnter(Sender: TObject);
+var
+  ListItem: TStringList;
+begin
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmChecksFilter.LoadItems('KClient', 'Shem', '', ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmChecksFilter.LoadItemsInComboBox(Sender: TObject; pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmChecksFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmChecksFilter.edEBankEnter(Sender: TObject);
+begin
+  inherited;
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmChecksFilter.edAAfkadaDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus;
+end;
+
+procedure TfrmChecksFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+//  if not Assigned(frmChecksReport) then
+  begin
+    with dmChecksFilter do
+    begin
+      SetTotalRec('KChecks');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\ChecksFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'ReciptNo';
+      if OpenData then
+//        frmChecksReport := TfrmChecksReport.Create(Self);
+    end;
+  end;
+end;
+
+end.

@@ -1,0 +1,785 @@
+unit MobileInterfaceDM;
+
+interface
+
+uses
+  Winapi.Windows, System.Variants, Forms, Controls, System.SysUtils, System.Classes,
+  System.Json, System.Json.Writers,
+  StdCtrls, System.Json.Builders, System.Json.Types, System.Json.Readers,
+  Data.DB, MainDM, edbcomps, Dialogs, DialogsHeb, LogErrorUtil, System.IOUtils,
+  System.UITypes, IdBaseComponent, IdComponent, IdTCPConnection,
+  IdTCPClient, IdExplicitTLSClientServerBase, IdFTP, IdFTPCommon;
+
+
+type
+  TCarInspect = record
+    TestId: string;
+    CarId: string;
+    InspectDone: string;
+    InspectTodo: string;
+    CarKm: string;
+    InspectRemark: string;
+  end;
+
+type
+  TCarTpl = record
+    CarTplId: string;
+    TplDateDone: string;
+    TplDateTodo: string;
+  end;
+
+type
+  TDrvHtr = record
+    DrvHtrId: string;
+    DrvDateDone: string;
+    DrvDateTodo: string;
+  end;
+
+type
+  TdmMobileInterface = class(TDataModule)
+    myFtp: TIdFTP;
+    qrTests: TEDBQuery;
+    qrGnrl: TEDBQuery;
+  private
+    { Private declarations }
+    StrW: TStringWriter;
+    Counter: Integer;
+    PathAndFileName: string;
+    MainPath: string;
+    TestId, CarTplId, DrvHtrId, Oved: String;
+    function ExportBkr2Json: Boolean;
+    function Export2Json(dtF, dtP: TDate): Boolean;
+    function ExportTpl2Json(dtF, dtP: TDate): Boolean;
+    function ExportHtr2Json(dtF, dtP: TDate): Boolean;
+    procedure SaveJson(FileName: string);
+
+    function DownloadFile(SourceFile, DestFile: string): Boolean;
+    procedure ReadFromJson;
+    procedure ReadTplsFromJson;
+    procedure ReadHtrsFromJson;
+    procedure MoveToRecord(pJtr: TJsonTextReader);
+    procedure MoveRecord2File;
+    procedure MoveToRecordTpl(pJtr: TJsonTextReader);
+    procedure MoveRecord2FileTpl;
+    procedure MoveToRecordHtr(pJtr: TJsonTextReader);
+    procedure MoveRecord2FileHtr;
+    function FtpConnect: Boolean;
+    function UploadFile(WebFile: string): Boolean;
+    procedure DownloadPhotoFiles;
+    procedure MovePhoto2File;
+  public
+    { Public declarations }
+    procedure SendTests2Mob(dtF, dtP: TDate);
+    procedure GetFileFromMob;
+  end;
+
+var
+  dmMobileInterface: TdmMobileInterface;
+  CarIns: TCarInspect;
+  CarTpl: TCarTpl;
+  DrvHtr: TDrvHtr;
+
+implementation
+uses
+  ShellApi, WinInet, GnrlBigDM, StrUtils;
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+{ TdmSendFile2Mob }
+
+procedure TdmMobileInterface.SendTests2Mob(dtF, dtP: TDate);
+begin
+  Screen.Cursor := crHourGlass;
+  if ExportBkr2Json then
+  begin
+    SaveJson('tbl_bkr.json');
+    if Export2Json(dtF, dtP) then
+    begin
+      SaveJson('car_inspects.json');
+      if ExportTpl2Json(dtF, dtP) then
+      begin
+        SaveJson('car_tpl.json');
+        if ExportHtr2Json(dtF, dtP) then
+        begin
+          SaveJson('drv_htr.json');
+          MessageDlg('הופק קובץ התראות לעדכון האתר', mtInformation, [mbOK], 0);
+        end;
+      end;
+    end;
+  end;
+  Screen.Cursor := crDefault;
+end;
+
+function TdmMobileInterface.ExportBkr2Json: Boolean;
+var
+  Writer: TJsonTextWriter;
+begin
+   Result := False;
+
+  StrW := TStringWriter.Create();
+  Writer := TJsonTextWriter.Create(StrW);
+  Writer.Formatting := TJsonFormatting.Indented;
+  qrGnrl.SQL.Text := 'SELECT Kb.Id, Bikoret, Kd.Id as DtlId, BikoretDtl '+
+      'FROM KTblBikoretDtl Kd ' +
+      'LEFT JOIN KTblBikoret Kb ON (Kd.IdBikoret = Kb.Id) ' +
+      'ORDER BY Kb.Id';
+  try
+    try
+      qrGnrl.Open;
+      Writer.WriteStartArray;
+      while not qrGnrl.Eof do
+      begin
+        Writer.WriteStartObject;
+        Writer.WritePropertyName('Id');
+        Writer.WriteValue(qrGnrl.FieldByName('Id').AsString);
+        Writer.WritePropertyName('Bikoret');
+        Writer.WriteValue(qrGnrl.FieldByName('Bikoret').AsString);
+        Writer.WritePropertyName('DtlId');
+        Writer.WriteValue(qrGnrl.FieldByName('DtlId').AsString);
+        Writer.WritePropertyName('BikoretDtl');
+        Writer.WriteValue(qrGnrl.FieldByName('BikoretDtl').AsString);
+        Writer.WriteEndObject;
+        qrGnrl.Next;
+      end;
+    except on E: Exception do
+      HandelError('TdmSendFile2Mob.ExportTpl2Json', 'תקלה בהפקת קובץ טיפולי רכב נוספים' + #10#13 + E.Message, E);
+    end;
+  finally
+    Writer.WriteEndArray;
+    qrGnrl.EnableControls;
+    Writer.Free;
+    qrGnrl.Close;
+    Result := True;
+  end;
+end;
+
+function TdmMobileInterface.Export2Json(dtF, dtP: TDate): Boolean;
+var
+  Writer: TJsonTextWriter;
+begin
+  Result := False;
+  StrW := TStringWriter.Create();
+  Writer := TJsonTextWriter.Create(StrW);
+  Writer.Formatting := TJsonFormatting.Indented;
+  qrTests.ParamByName('prmDateF').AsDate := dtF;
+  qrTests.ParamByName('prmDateP').AsDate := dtP;
+  try
+    try
+      qrTests.Open;
+      Writer.WriteStartArray;
+      Oved := qrTests.FieldByName('Oved').AsString;
+      while not qrTests.Eof do
+      begin
+        Writer.WriteStartObject;
+        Writer.WritePropertyName('test_id');
+        Writer.WriteValue(qrTests.FieldByName('Id').AsString);
+        Writer.WritePropertyName('inspector_id');
+        Writer.WriteValue(qrTests.FieldByName('OvedId').AsString);
+        Writer.WritePropertyName('test_tpl_id');
+        Writer.WriteValue(qrTests.FieldByName('TipulId').AsString);
+        Writer.WritePropertyName('car_id');
+        Writer.WriteValue(qrTests.FieldByName('CarId').AsString);
+        Writer.WritePropertyName('client_id');
+        Writer.WriteValue(qrTests.FieldByName('ClientId').AsString);
+        Writer.WritePropertyName('test_inspector');
+        Writer.WriteValue(qrTests.FieldByName('Oved').AsString);
+        Writer.WritePropertyName('car_number');
+        Writer.WriteValue(qrTests.FieldByName('Number').AsString);
+        Writer.WritePropertyName('car_type');
+        Writer.WriteValue(qrTests.FieldByName('Type').AsString);
+        Writer.WritePropertyName('test_date');
+        Writer.WriteValue(qrTests.FieldByName('DateToDo').AsString);
+        Writer.WritePropertyName('car_contact');
+        Writer.WriteValue(qrTests.FieldByName('Contact').AsString);
+        Writer.WritePropertyName('phone');
+        Writer.WriteValue(qrTests.FieldByName('Tel').AsString);
+        Writer.WritePropertyName('client_name');
+        Writer.WriteValue(qrTests.FieldByName('Shem').AsString);
+        Writer.WritePropertyName('phone1');
+        Writer.WriteValue(qrTests.FieldByName('Tel').AsString);
+        Writer.WritePropertyName('phone2');
+        Writer.WriteValue(qrTests.FieldByName('Tel2').AsString);
+        Writer.WritePropertyName('location');
+        Writer.WriteValue(qrTests.FieldByName('Atar').AsString);
+        Writer.WritePropertyName('remarks');
+        Writer.WriteValue(qrTests.FieldByName('Remark').AsString);
+        Writer.WriteEndObject;
+        qrTests.Next;
+      end;
+    except on E: Exception do
+      HandelError('TdmSendFile2Mob.Export2Json', 'תקלה בהפקת קובץ התראות לאתר' + #10#13 + E.Message, E);
+    end;
+  finally
+    Writer.WriteEndArray;
+    qrTests.EnableControls;
+    Writer.Free;
+    qrTests.Close;
+    Result := True;
+  end;
+end;
+
+
+function TdmMobileInterface.ExportTpl2Json(dtF, dtP: TDate): Boolean;
+var
+  Writer: TJsonTextWriter;
+begin
+  Result := False;
+
+  StrW := TStringWriter.Create();
+  Writer := TJsonTextWriter.Create(StrW);
+  Writer.Formatting := TJsonFormatting.Indented;
+  qrGnrl.SQL.Text := 'SELECT Id, TipulId, CarId, Tipul, DateToDo, Tedirut ' +
+      'FROM KCrTipul Ct LEFT JOIN KCar Cr ON (Ct.CarId = Cr.Id) ' +
+      'LEFT JOIN KTblTipul tT ON (Ct.TipulId = tT.Id) ' +
+      'LEFT JOIN KTblOved tO ON (Ct.OvedId = tO.Id) ' +
+      'WHERE Cr.Pail = True AND Cr.Freze = False AND DateToDo <= '+
+      '(CURRENT_DATE + INTERVAL ' + QuotedStr('30') + ' DAY) AND Tipul <> ' + QuotedStr('ביקורת חודשית') +
+      ' AND DateToDo >= :prmDateF AND DateToDo <= :prmDateP ' +
+      'ORDER BY DateToDo ';
+  qrGnrl.ParamByName('prmDateF').AsDate := dtF;
+  qrGnrl.ParamByName('prmDateP').AsDate := dtP;
+
+  try
+    try
+      qrGnrl.Open;
+      Writer.WriteStartArray;
+      while not qrGnrl.Eof do
+      begin
+        Writer.WriteStartObject;
+        Writer.WritePropertyName('test_id');
+        Writer.WriteValue(qrGnrl.FieldByName('Id').AsString);
+        Writer.WritePropertyName('car_tpl_id');
+        Writer.WriteValue(qrGnrl.FieldByName('TipulId').AsString);
+        Writer.WritePropertyName('car_id');
+        Writer.WriteValue(qrGnrl.FieldByName('CarID').AsString);
+        Writer.WritePropertyName('test_name');
+        Writer.WriteValue(qrGnrl.FieldByName('Tipul').AsString);
+        Writer.WritePropertyName('test_date');
+        Writer.WriteValue(qrGnrl.FieldByName('DateToDo').AsString);
+        Writer.WritePropertyName('tedirut');
+        Writer.WriteValue(qrGnrl.FieldByName('Tedirut').AsString);
+        Writer.WriteEndObject;
+        qrGnrl.Next;
+      end;
+    except on E: Exception do
+      HandelError('TdmSendFile2Mob.ExportTpl2Json', 'תקלה בהפקת קובץ טיפולי רכב נוספים' + #10#13 + E.Message, E);
+    end;
+  finally
+    Writer.WriteEndArray;
+    qrGnrl.EnableControls;
+    Writer.Free;
+    qrGnrl.Close;
+    Result := True;
+  end;
+end;
+
+function TdmMobileInterface.ExportHtr2Json(dtF, dtP: TDate): Boolean;
+var
+  Writer: TJsonTextWriter;
+begin
+  Result := False;
+
+  StrW := TStringWriter.Create();
+  Writer := TJsonTextWriter.Create(StrW);
+  Writer.Formatting := TJsonFormatting.Indented;
+  qrGnrl.SQL.Text := 'SELECT Id, HeiterId, DriverId, CarId, ShemD, Heiter, DateToDo, Tedirut ' +
+      'FROM KDrHeiter Dh LEFT JOIN KDriver Dr ON (Dh.DriverId = Dr.Id) ' +
+      'LEFT JOIN KTblHeiter tH ON (Dh.HeiterId = tH.Id) ' +
+      'LEFT JOIN KCrDrv CD ON (Dh.DriverId = CD.DriverId) ' +
+      'WHERE Dr.Pail = True AND Dr.Freze = False AND CarId IS NOT NULL '+
+      'AND DateToDo <= ' + '(CURRENT_DATE + INTERVAL '+ QuotedStr('30')+ ' DAY) '+
+      'AND DateToDo >= :prmDateF AND DateToDo <= :prmDateP ' +
+      ' ORDER BY DateToDo';
+  qrGnrl.ParamByName('prmDateF').AsDate := dtF;
+  qrGnrl.ParamByName('prmDateP').AsDate := dtP;
+
+  try
+    try
+      qrGnrl.Open;
+      Writer.WriteStartArray;
+      while not qrGnrl.Eof do
+      begin
+        Writer.WriteStartObject;
+        Writer.WritePropertyName('htr_id');
+        Writer.WriteValue(qrGnrl.FieldByName('Id').AsString);
+        Writer.WritePropertyName('drv_htr_id');
+        Writer.WriteValue(qrGnrl.FieldByName('HeiterId').AsString);
+        Writer.WritePropertyName('car_id');
+        Writer.WriteValue(qrGnrl.FieldByName('CarId').AsString);
+        Writer.WritePropertyName('drv_id');
+        Writer.WriteValue(qrGnrl.FieldByName('DriverId').AsString);
+        Writer.WritePropertyName('htr_name');
+        Writer.WriteValue(qrGnrl.FieldByName('Heiter').AsString);
+        Writer.WritePropertyName('htr_date');
+        Writer.WriteValue(qrGnrl.FieldByName('DateToDo').AsString);
+        Writer.WritePropertyName('drv_name');
+        Writer.WriteValue(qrGnrl.FieldByName('ShemD').AsString);
+        Writer.WritePropertyName('tedirut');
+        Writer.WriteValue(qrGnrl.FieldByName('Tedirut').AsString);
+        Writer.WriteEndObject;
+        qrGnrl.Next;
+      end;
+    except on E: Exception do
+      HandelError('TdmSendFile2Mob.ExportHtr2Json', 'תקלה בהפקת קובץ היתרי נהגים נלווים' + #10#13 + E.Message, E);
+    end;
+  finally
+    Writer.WriteEndArray;
+    qrGnrl.EnableControls;
+    Writer.Free;
+    qrGnrl.Close;
+    Result := True;
+  end;
+end;
+
+procedure TdmMobileInterface.SaveJson(FileName: string);
+var
+  Texts: TStringList;
+begin
+  PathAndFileName := ExtractFilePath(Application.ExeName)+'FilesToWeb\' + FileName;
+   try
+    Texts := TStringList.Create;
+    try
+      Texts.Add(StrW.ToString);
+      Texts.WriteBOM := False;
+      Texts.SaveToFile(PathAndFileName, TEncoding.UTF8);
+      if FtpConnect then
+        UploadFile(FileName);
+    except on E: Exception do
+      HandelError('TdmMobileInterface.SaveJson', 'תקלה בשמירת קובץ JSON ' + #10#13 + E.Message, E);
+    end;
+  finally
+    Texts.Free;
+  end;
+end;
+
+
+
+procedure TdmMobileInterface.GetFileFromMob;
+var
+  SourceFile: string;
+  CountI, CountT, CountH: Integer;
+begin
+  Screen.Cursor := crHourGlass;
+  MainPath := ExtractFilePath(Application.ExeName);
+
+  try
+    if FtpConnect then
+    begin
+        DownloadPhotoFiles;
+        Counter := 0;
+        PathAndFileName := ExtractFilePath(Application.ExeName)+'FilesFromWeb\car_inspects.json';
+        SourceFile := '/kochavitmob/files_from_web/car_inspects.json';
+        if DownloadFile(SourceFile, PathAndFileName) then
+        begin
+          ReadFromJson;
+          DeleteFile(PathAndFileName);
+          CountI := Counter;
+          Counter := 0;
+          PathAndFileName := ExtractFilePath(Application.ExeName)+'FilesFromWeb\car_tpls.json';
+          SourceFile := '/kochavitmob/files_from_web/car_tpls.json';
+          if DownloadFile(SourceFile, PathAndFileName) then
+          begin
+            ReadTplsFromJson;
+            DeleteFile(PathAndFileName);
+            CountT := Counter;
+            Counter := 0;
+            PathAndFileName := ExtractFilePath(Application.ExeName)+'FilesFromWeb\drv_htrs.json';
+            SourceFile := '/kochavitmob/files_from_web/drv_htrs.json';
+            if DownloadFile(SourceFile, PathAndFileName) then
+            begin
+              ReadHtrsFromJson;
+              DeleteFile(PathAndFileName);
+              CountH := Counter;
+            end;
+          end;
+        end;
+    end;
+  except on E: Exception do
+    HandelError('TdmSendFile2Mob.GetFileFromMob', 'תקלה בהורדת קבצים ' + #10#13 + E.Message, E);
+  end;
+
+  MessageDlg('עודכנו ' + IntToStr(CountI) + ' ביקורות חודשיות'  + #10#13 +
+        IntToStr(CountT) + ' טיפולי רכב ' + #10#13 + IntToStr(CountH) + ' היתרי נהג ',
+        mtInformation, [mbOK], 0);
+  Screen.Cursor := crDefault;
+end;
+
+function TdmMobileInterface.DownloadFile(SourceFile, DestFile: string): Boolean;
+begin
+  Result := False;
+  try
+    myFtp.Get(PChar(SourceFile), PChar(DestFile), False);
+    myFtp.Delete(SourceFile);
+    Result := True;
+  except on E: Exception do
+    Result := False;
+  end;
+//  DeleteUrlCacheEntry(PChar(SourceFile));
+//  begin
+//    try
+//      Result := UrlDownloadToFileW(nil, PChar(SourceFile), PChar(DestFile), 0, nil) = 0;
+//    except
+//      Result := False;
+//    end;
+//  end;
+end;
+
+procedure TdmMobileInterface.ReadFromJson;
+var
+  TempStr: String;
+  sr: TStringReader;
+  Jtr: TJsonTextReader;
+begin
+  TempStr := TFile.ReadAllText('D:\My Programs\Kochavit4\FilesFromWeb\car_inspects.json');
+  try
+    sr := TStringReader.Create(TempStr);
+    Jtr := TJsonTextReader.Create(sr);
+    while Jtr.Read do
+    begin
+      if Jtr.TokenType = TJsonToken.StartObject then
+      begin
+        MoveToRecord(Jtr);
+        MoveRecord2File;
+        MovePhoto2File;
+      end;
+    end;
+  finally
+    Jtr.Free;
+    sr.Free;
+  end;
+end;
+
+procedure TdmMobileInterface.ReadTplsFromJson;
+var
+  TempStr: String;
+  sr: TStringReader;
+  Jtr: TJsonTextReader;
+begin
+  TempStr := TFile.ReadAllText('D:\My Programs\Kochavit4\FilesFromWeb\car_tpls.json');
+  try
+    sr := TStringReader.Create(TempStr);
+    Jtr := TJsonTextReader.Create(sr);
+    while Jtr.Read do
+    begin
+      if Jtr.TokenType = TJsonToken.StartObject then
+      begin
+        MoveToRecordTpl(Jtr);
+        MoveRecord2FileTpl;
+      end;
+    end;
+  finally
+    Jtr.Free;
+    sr.Free;
+  end;
+end;
+
+procedure TdmMobileInterface.ReadHtrsFromJson;
+var
+  TempStr: String;
+  sr: TStringReader;
+  Jtr: TJsonTextReader;
+begin
+  TempStr := TFile.ReadAllText('D:\My Programs\Kochavit4\FilesFromWeb\drv_htrs.json');
+  try
+    sr := TStringReader.Create(TempStr);
+    Jtr := TJsonTextReader.Create(sr);
+    while Jtr.Read do
+    begin
+      if Jtr.TokenType = TJsonToken.StartObject then
+      begin
+        MoveToRecordHtr(Jtr);
+        MoveRecord2FileHtr;
+      end;
+    end;
+  finally
+    Jtr.Free;
+    sr.Free;
+  end;
+end;
+
+procedure TdmMobileInterface.MoveToRecord(pJtr: TJsonTextReader);
+begin
+  while pJtr.Read do
+  begin
+    if pJtr.TokenType = TJsonToken.PropertyName then
+    begin
+      if pJtr.Value.ToString = 'test_id' then
+      begin
+        pJtr.Read;
+        CarIns.TestId := pJtr.Value.AsString;
+        TestId := CarIns.TestId;
+      end
+      else if pJtr.Value.ToString = 'inspect_done' then
+      begin
+        pJtr.Read;
+        CarIns.InspectDone := pJtr.Value.AsString;
+      end
+      else if pJtr.Value.ToString = 'inspect_todo' then
+      begin
+        pJtr.Read;
+        CarIns.InspectTodo := pJtr.Value.AsString;
+      end
+      else if pJtr.Value.ToString = 'car_km' then
+      begin
+        pJtr.Read;
+        CarIns.CarKm := pJtr.Value.AsString;
+      end
+      else if pJtr.Value.ToString = 'inspect_remark' then
+      begin
+        pJtr.Read;
+        CarIns.InspectRemark := StringReplace(pJtr.Value.AsString, '\r\n', #10, [rfReplaceAll]);
+      end
+      else if pJtr.Value.ToString = 'car_id' then
+      begin
+        pJtr.Read;
+        CarIns.CarId := pJtr.Value.AsString;
+      end
+    end
+    else if pJtr.TokenType = TJsonToken.EndObject then
+      Exit;
+  end;
+end;
+
+procedure TdmMobileInterface.MoveRecord2File;
+var
+  TipulId, OvedId: string;
+begin
+  dmMain.qrGnrl.SQL.Text := 'SELECT TipulId, OvedId FROM KCrTipul '+
+              'WHERE Id = ' + CarIns.TestId;
+  dmMain.qrGnrl.Open;
+  try
+    TipulId := dmMain.qrGnrl.FieldByName('TipulId').AsString;
+    if (TipulId = '') then
+      TipulId := 'null';
+    OvedId := dmMain.qrGnrl.FieldByName('OvedId').AsString;
+    if (OvedId = '') then
+      OvedId := 'null';
+  finally
+    dmMain.qrGnrl.Close;
+  end;
+
+  dmMain.qrGnrl.SQL.Text := 'UPDATE KCrTipul SET Km = ' + CarIns.CarKm +
+          ', DateDone = DATE ' + QuotedStr(CarIns.InspectDone) +
+          ', DateToDo = DATE ' + QuotedStr(CarIns.InspectToDo) +
+          ', OvedId = ' + OvedId +
+          ', Remark  = ' + QuotedStr(CarIns.InspectRemark) +
+          ' WHERE Id = ' + CarIns.TestId;
+  dmMain.qrGnrl.ExecSQL;
+
+  dmMain.qrGnrl.SQL.Text := 'UPDATE KCar SET Spido = ' + CarIns.CarKm +
+          ' WHERE Id = ' + CarIns.CarId;
+  dmMain.qrGnrl.ExecSQL;
+
+  dmMain.qrGnrl.SQL.Text := 'INSERT INTO KCrTipulHis '+
+          '(CarId, TipulId, OvedId, Km, DateDone, Remark) '+
+          'VALUES (' + CarIns.CarId + ', ' + TipulId + ', ' +  OvedId+ ', ' +
+          CarIns.CarKm + ', DATE '+ QuotedStr(CarIns.InspectDone) +
+          ', ' +  QuotedStr(CarIns.InspectRemark) + ')';
+  dmMain.qrGnrl.ExecSQL;
+  Counter := Counter+1;
+end;
+
+procedure TdmMobileInterface.MoveToRecordTpl(pJtr: TJsonTextReader);
+begin
+  while pJtr.Read do
+  begin
+    if pJtr.TokenType = TJsonToken.PropertyName then
+    begin
+      if pJtr.Value.ToString = 'car_tpl_id' then
+      begin
+        pJtr.Read;
+        CarTpl.CarTplId := pJtr.Value.AsString;
+        CarTplId := CarTpl.CarTplId;
+      end
+      else if pJtr.Value.ToString = 'tpl_datedone' then
+      begin
+        pJtr.Read;
+        CarTpl.TplDateDone := pJtr.Value.AsString;
+      end
+      else if pJtr.Value.ToString = 'tpl_datetodo' then
+      begin
+        pJtr.Read;
+        CarTpl.TplDateTodo := pJtr.Value.AsString;
+      end
+    end
+    else if pJtr.TokenType = TJsonToken.EndObject then
+      Exit;
+  end;
+end;
+
+procedure TdmMobileInterface.MoveToRecordHtr(pJtr: TJsonTextReader);
+begin
+  while pJtr.Read do
+  begin
+    if pJtr.TokenType = TJsonToken.PropertyName then
+    begin
+      if pJtr.Value.ToString = 'drv_htr_id' then
+      begin
+        pJtr.Read;
+        DrvHtr.DrvHtrId := pJtr.Value.AsString;
+        DrvHtrId := DrvHtr.DrvHtrId;
+      end
+      else if pJtr.Value.ToString = 'htr_datedone' then
+      begin
+        pJtr.Read;
+        DrvHtr.DrvDateDone := pJtr.Value.AsString;
+      end
+      else if pJtr.Value.ToString = 'htr_datetodo' then
+      begin
+        pJtr.Read;
+        DrvHtr.DrvDateTodo := pJtr.Value.AsString;
+      end
+    end
+    else if pJtr.TokenType = TJsonToken.EndObject then
+      Exit;
+  end;
+end;
+
+procedure TdmMobileInterface.MoveRecord2FileTpl;
+var
+  TipulId, OvedId, CarId: string;
+begin
+  dmMain.qrGnrl.SQL.Text := 'SELECT TipulId, OvedId, CarId FROM KCrTipul '+
+              'WHERE Id = ' + CarTpl.CarTplId;
+  dmMain.qrGnrl.Open;
+  try
+    TipulId := dmMain.qrGnrl.FieldByName('TipulId').AsString;
+    if (TipulId = '') then
+      TipulId := 'null';
+    OvedId := dmMain.qrGnrl.FieldByName('OvedId').AsString;
+    if (OvedId = '') then
+      OvedId := 'null';
+    CarId := dmMain.qrGnrl.FieldByName('CarId').AsString;
+    if (CarId = '') then
+      CarId := 'null';
+  finally
+    dmMain.qrGnrl.Close;
+  end;
+
+  dmMain.qrGnrl.SQL.Text := 'UPDATE KCrTipul SET '+
+          'DateDone = DATE ' + QuotedStr(CarTpl.TplDateDone) +
+          ', DateToDo = DATE ' + QuotedStr(CarTpl.TplDateTodo) +
+          ', OvedId = ' + OvedId +
+          ' WHERE Id = ' + CarTpl.CarTplId;
+  dmMain.qrGnrl.ExecSQL;
+
+  dmMain.qrGnrl.SQL.Text := 'INSERT INTO KCrTipulHis '+
+          '(CarId, TipulId, OvedId, DateDone) '+
+          'VALUES (' + CarId + ', ' + TipulId + ', ' +  OvedId +
+          ', DATE '+ QuotedStr(CarTpl.TplDateDone) + ')';
+  dmMain.qrGnrl.ExecSQL;
+  Counter := Counter+1;
+end;
+
+procedure TdmMobileInterface.MoveRecord2FileHtr;
+var
+  HeiterId, DriverId: string;
+begin
+  dmMain.qrGnrl.SQL.Text := 'SELECT HeiterId, DriverId FROM KDrHeiter '+
+              'WHERE Id = ' + DrvHtr.DrvHtrId;
+  dmMain.qrGnrl.Open;
+  try
+    HeiterId := dmMain.qrGnrl.FieldByName('HeiterId').AsString;
+    if (HeiterId = '') then
+      HeiterId := 'null';
+    DriverId := dmMain.qrGnrl.FieldByName('DriverId').AsString;
+    if (DriverId = '') then
+      DriverId := 'null';
+  finally
+    dmMain.qrGnrl.Close;
+  end;
+
+  dmMain.qrGnrl.SQL.Text := 'UPDATE KDrHeiter SET '+
+          'DateDone = DATE ' + QuotedStr(DrvHtr.DrvDateDone) +
+          ', DateToDo = DATE ' + QuotedStr(DrvHtr.DrvDateTodo) +
+          ' WHERE Id = ' + DrvHtr.DrvHtrId;
+  dmMain.qrGnrl.ExecSQL;
+
+  dmMain.qrGnrl.SQL.Text := 'INSERT INTO KDrHeiterHis '+
+          '(DriverId, HeiterId, DateDone) '+
+          'VALUES (' + DriverId + ', ' +  HeiterId +
+          ', DATE '+ QuotedStr(DrvHtr.DrvDateDone) + ')';
+  dmMain.qrGnrl.ExecSQL;
+  Counter := Counter+1;
+end;
+
+function TdmMobileInterface.FtpConnect: Boolean;
+begin
+  Result := False;
+  try
+//    myFtp.Host := '198.38.82.73';
+//    myFtp.Username := 'sorinh';
+//    myFtp.Password := '9QFnd^a0G&Kw';
+    myFtp.Host := 'ftp.nemo4web.net';
+    myFtp.Username := 'sorin@nemo4web.net';
+    myFtp.Password := '71my01don';
+    myFtp.Connect;
+    Result := True;
+  except on E: Exception do
+    HandelError('TdmMobileInterface.FtpConnect', 'המערכת לא הצליחה להתחבר ב FTP  ' + #10#13 + E.Message, E);
+  end;
+end;
+
+function TdmMobileInterface.UploadFile(WebFile: string): Boolean;
+var
+  Target: string;
+begin
+  Result := False;
+  try
+    Target := '/kochavitmob/files_to_web/' + WebFile;
+    myFtp.Put(PathAndFileName, Target, False);
+    Result := True;
+   // myFtp.Delete(WebFile);
+  finally
+    myFtp.Disconnect;
+  end;
+end;
+
+procedure TdmMobileInterface.DownloadPhotoFiles;
+var
+  WebDir, LocalDir: string;
+  I: Integer;
+  FileName: string;
+begin
+  LocalDir := ExtractFilePath(Application.ExeName) + '\FilesFromWeb\Documents\';
+  WebDir := '/kochavitmob/files_from_web/documents';
+  myFtp.ChangeDir(WebDir);
+  myFtp.List('*.*', True);
+  myFtp.TransferType := ftBinary;
+  for I := 0 to myFtp.DirectoryListing.Count-1 do
+  begin
+    FileName := myFtp.DirectoryListing.Items[I].FileName;
+    myFtp.get(FileName, LocalDir+FileName, True);
+    myFtp.Delete(FileName);
+  end;
+end;
+
+procedure TdmMobileInterface.MovePhoto2File;
+var
+  sr: TSearchRec;
+  FileName: string;
+begin
+  if FindFirst(MainPath+'\FilesFromWeb\Documents\*.*', faArchive, sr) = 0 then
+  begin
+    repeat
+      if Pos(TestId, sr.Name) > 0 then
+      begin
+        FileName := ReplaceStr(sr.Name, '_'+TestId, '');
+        dmGnrlBig := TdmGnrlBig.Create(Self);
+        try
+          dmGnrlBig.SetProperties('KCrTofes');
+          dmGnrlBig.SaveBigData(StrToInt(CarIns.CarId), 'CarId',
+              MainPath+'\FilesFromWeb\Documents\'+sr.Name,
+              TPath.GetFileNameWithoutExtension(FileName), ExtractFileExt(FileName), True);
+          DeleteFile(MainPath+'\FilesFromWeb\Documents\'+sr.Name);
+        finally
+          dmGnrlBig.Free;
+        end;
+      end;
+    until FindNext(sr) <> 0;
+    FindClose(sr);
+  end;
+end;
+
+end.

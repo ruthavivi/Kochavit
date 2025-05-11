@@ -1,0 +1,17 @@
+inherited dmCarListArhiv: TdmCarListArhiv
+  OldCreateOrder = True
+  OnCreate = DataModuleCreate
+  inherited qrList: TEDBQuery
+    BeforeOpen = qrListBeforeOpen
+    AfterOpen = qrListAfterRefresh
+    AfterRefresh = qrListAfterRefresh
+    SQL.Strings = (
+      'SELECT Id, CodCar, Number, Type, Producer, Shem'
+      'FROM KCar Cr'
+      'LEFT JOIN KTblType tT ON Cr.TypeId = tT.Id      '
+      'LEFT JOIN KTblProducer tP ON Cr.ProducerId = tP.Id'
+      'LEFT JOIN KClient Cl ON Cr.ClientId = Cl.Id'
+      'WHERE Cr.Pail = False'
+      'ORDER BY Number')
+  end
+end

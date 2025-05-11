@@ -1,0 +1,24 @@
+unit CheckEditDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlEditDM, DB, edbcomps, RpBase, RpSystem, RpDefine, RpRave;
+
+type
+  TdmGnrlEdit1 = class(TdmGnrlEdit)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmGnrlEdit1: TdmGnrlEdit1;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,263 @@
+unit carDetail_gov;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Net.URLClient, StrUtils,
+  System.Net.HttpClient, System.Net.HttpClientComponent, Vcl.StdCtrls,
+  System.Json.Readers, System.JSON.Types, System.Generics.Collections,
+  Vcl.ExtCtrls, Vcl.Buttons, System.ImageList, Vcl.ImgList, Data.DB, edbcomps;
+
+type
+  TfrmCarDetail_gov = class(TForm)
+    Label1: TLabel;
+    NetHTTPClient1: TNetHTTPClient;
+    NetHTTPRequest1: TNetHTTPRequest;
+    Panel2: TPanel;
+    ScrollBox1: TScrollBox;
+    mispar_rechev: TLabeledEdit;
+    mispar_shilda: TLabeledEdit;
+    tkina_EU: TLabeledEdit;
+    shnat_yitzur: TLabeledEdit;
+    tozeret_nm: TLabeledEdit;
+    tozeret_eretz_nm: TLabeledEdit;
+    sug_delek_nm: TLabeledEdit;
+    mishkal_kolel: TLabeledEdit;
+    mishkal_azmi: TLabeledEdit;
+    mishkal_mitan_harama: TLabeledEdit;
+    degem_nm: TLabeledEdit;
+    hanaa_nm: TLabeledEdit;
+    moed_aliya_lakvish: TLabeledEdit;
+    horaat_rishum: TLabeledEdit;
+    mispar_mekomot_leyd_nahag: TLabeledEdit;
+    mispar_mekomot: TLabeledEdit;
+    kvutzat_sug_rechev: TLabeledEdit;
+    grira_nm: TLabeledEdit;
+    degem_manoa: TLabeledEdit;
+    _id: TLabeledEdit;
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    nefach_manoa: TLabeledEdit;
+    sug_rechev_nm: TLabeledEdit;
+    bitul_dt: TLabeledEdit;
+    ImageList1: TImageList;
+    Button1: TButton;
+    qrGnrl: TEDBQuery;
+    procedure BitBtn1Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+    DataSource: Integer;
+    Dictionary: TDictionary<string, string>;
+    function GetJsonText(URL, CarNumber: string): string;
+    function ApiHasValue(jsonText: string; I: integer): Boolean;
+    procedure ProcessAray(JsonReader: TJsonTextReader);
+    procedure FillData();
+    function IsValueExist(column, value, table: string; var indx: integer): Boolean;
+  public
+    { Public declarations }
+    procedure GetCar_data(CarNumber: string);
+  end;
+
+var
+  frmCarDetail_gov: TfrmCarDetail_gov;
+
+const
+    URL_SearchCar1 = 'https://data.gov.il/api/3/action/datastore_search?resource_id=cd3acc5c-03c3-4c89-9c54-d40f93c0d790&q=';
+    URL_SearchCar2 = 'https://data.gov.il/api/3/action/datastore_search?resource_id=6f6acd03-f351-4a8f-8ecf-df792f4f573a&q=';
+    URL_SearchCar3 = 'https://data.gov.il/api/3/action/datastore_search?resource_id=851ecab1-0622-4dbe-a6c7-f950cf82abf9&q=';
+
+implementation
+{$R *.dfm}
+uses
+  CarEditDM, DataDM;
+
+procedure TfrmCarDetail_gov.GetCar_data(CarNumber: string);
+var
+  jsonText: string;
+begin
+  jsonText := GetJsonText(URL_SearchCar1, CarNumber);
+  if (ApiHasValue(jsonText, 1) = False) then
+  begin
+    jsonText := GetJsonText(URL_SearchCar2, CarNumber);
+    if (ApiHasValue(jsonText, 2) = False) then
+    begin
+      jsonText := GetJsonText(URL_SearchCar3, CarNumber);
+      if (ApiHasValue(jsonText, 3) = False) then
+        Label1.Caption := 'לרכב זה אין פרטים במשרד התחבורה'
+    end
+  end
+end;
+
+function TfrmCarDetail_gov.ApiHasValue(jsonText: string; i: Integer): Boolean;
+var
+  Reader: TStringReader;
+  JsonReader: TJsonTextReader;
+begin
+  Result := True;
+  Reader := TStringReader.Create(JsonText);
+  try
+    JsonReader := TJsonTextReader.Create(Reader);
+    try
+      while JsonReader.Read do
+      begin
+        if (JsonReader.TokenType = TJsonToken.StartArray) then
+        begin
+          JsonReader.Read;
+          if (JsonReader.TokenType = TJsonToken.EndArray) then
+          begin
+            Result := False;
+            Break;
+          end
+          else
+          begin
+            ProcessAray(JsonReader);
+            DataSource := i;
+            FillData();
+            Break;
+          end;
+        end;
+      end;
+    finally
+      JsonReader.Free;
+    end;
+  finally
+    Reader.Free;
+  end;
+end;
+
+function TfrmCarDetail_gov.GetJsonText(URL, CarNumber: string): string;
+begin
+  NetHTTPRequest1.URL := URL + CarNumber;
+  Result := NetHTTPRequest1.Execute().ContentAsString();
+end;
+
+procedure TfrmCarDetail_gov.ProcessAray(JsonReader: TJsonTextReader);
+var
+  name, value: string;
+begin
+  Dictionary := TDictionary<string, string>.Create;
+  while JsonReader.Read do
+  begin
+    case JsonReader.TokenType of
+      TJsonToken.PropertyName:
+          name := JsonReader.Value.ToString;
+      TJsonToken.String:
+          value := JsonReader.Value.ToString;
+      TJsonToken.Integer:
+          value := JsonReader.Value.ToString;
+      TJsonToken.Null:
+          value := '-';
+      TJsonToken.EndArray:
+          Break;
+    end;
+    if (value <> '') then
+    begin
+      Dictionary.Add(name, value);
+      name := ''; value := '';
+    end;
+  end;
+end;
+
+procedure TfrmCarDetail_gov.FillData;
+begin
+  if (DataSource = 3) then
+  begin
+    mispar_rechev.Text := Dictionary['mispar_rechev'];
+    shnat_yitzur.Text := Dictionary['moed_aliya_lakvish'];
+    moed_aliya_lakvish.Text := Dictionary['moed_aliya_lakvish'];
+    tozeret_nm.Text := Dictionary['tozeret_nm'];
+    sug_delek_nm.Text := Dictionary['sug_delek_nm'];
+    sug_rechev_nm.Text := Dictionary['sug_rechev_nm'];
+    mishkal_kolel.Text := Dictionary['mishkal_kolel'];
+    bitul_dt.Text := Dictionary['bitul_dt'];
+    _id.Text := Dictionary['_id'];
+  end
+  else if (DataSource = 2) then
+  begin
+    mispar_rechev.Text := Dictionary['mispar_rechev'];
+    mispar_shilda.Text := Dictionary['mispar_shilda'];
+    tkina_EU.Text := Dictionary['tkina_EU'];
+    shnat_yitzur.Text := Dictionary['shnat_yitzur'];
+    tozeret_nm.Text := Dictionary['tozeret_nm'];
+    tozeret_eretz_nm.Text := Dictionary['tozeret_eretz_nm'];
+    sug_delek_nm.Text := Dictionary['sug_delek_nm'];
+    mishkal_kolel.Text := Dictionary['mishkal_kolel'];
+    mishkal_azmi.Text := Dictionary['mishkal_azmi'];
+    mishkal_mitan_harama.Text := Dictionary['mishkal_mitan_harama'];
+    degem_nm.Text := Dictionary['degem_nm'];
+    hanaa_nm.Text := Dictionary['hanaa_nm'];
+    horaat_rishum.Text := Dictionary['horaat_rishum'];
+    mispar_mekomot.Text := Dictionary['mispar_mekomot'];
+    mispar_mekomot_leyd_nahag.Text := Dictionary['mispar_mekomot_leyd_nahag'];
+    kvutzat_sug_rechev.Text := Dictionary['kvutzat_sug_rechev'];
+    grira_nm.Text := Dictionary['grira_nm'];
+    degem_manoa.Text := Dictionary['degem_manoa'];
+    _id.Text := Dictionary['_id'];
+  end
+  else if (DataSource = 1) then
+  begin
+    mispar_rechev.Text := Dictionary['mispar_rechev'];
+    mispar_shilda.Text := Dictionary['mispar_shilda'];
+    tkina_EU.Text := Dictionary['tkina_EU'];
+    shnat_yitzur.Text := Dictionary['shnat_yitzur'];
+    tozeret_nm.Text := Dictionary['tozeret_nm'];
+    tozeret_eretz_nm.Text := Dictionary['tozeret_eretz_nm'];
+    sug_delek_nm.Text := Dictionary['sug_delek_nm'];
+    mishkal_kolel.Text := Dictionary['mishkal_kolel'];
+    mishkal_azmi.Text := Dictionary['mishkal_azmi'];
+    mishkal_mitan_harama.Text := Dictionary['mishkal_mitan_harama'];
+    degem_nm.Text := Dictionary['degem_nm'];
+    hanaa_nm.Text := Dictionary['hanaa_nm'];
+    horaat_rishum.Text := Dictionary['horaat_rishum'];
+    mispar_mekomot.Text := Dictionary['mispar_mekomot'];
+    mispar_mekomot_leyd_nahag.Text := Dictionary['mispar_mekomot_leyd_nahag'];
+    kvutzat_sug_rechev.Text := Dictionary['kvutzat_sug_rechev'];
+    grira_nm.Text := Dictionary['grira_nm'];
+    degem_manoa.Text := Dictionary['degem_manoa'];
+    _id.Text := Dictionary['_id'];
+  end;
+
+  ScrollBox1.VertScrollBar.Position := 0;
+end;
+
+procedure TfrmCarDetail_gov.Button1Click(Sender: TObject);
+var
+  indx: integer;
+begin
+  dmCarEdit.tbCarModel.AsString := shnat_yitzur.Text;
+  if IsValueExist('Producer', tozeret_nm.Text, 'KTblProducer', indx) then
+    dmCarEdit.tbCarProducerId.AsInteger := indx;
+  dmCarEdit.tbCarWeightT.AsString := mishkal_kolel.Text;
+  dmCarEdit.tbCarWeightS.AsString := mishkal_azmi.Text;
+  dmCarEdit.tbCarWeightR.AsString := mishkal_mitan_harama.Text;
+
+
+end;
+
+function TfrmCarDetail_gov.IsValueExist(column, value, table: string;
+  var indx: integer): Boolean;
+begin
+  Result := false;
+  qrGnrl.SQL.Text := 'SELECT Id FROM '+table +
+    ' WHERE ' + column + ' = ' + QuotedStr(value);
+  try
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+    begin
+      indx := qrGnrl.FieldByName('Id').AsInteger;
+      Result := True;
+    end;
+  finally
+    qrGnrl.Free;
+  end;
+end;
+
+procedure TfrmCarDetail_gov.BitBtn1Click(Sender: TObject);
+begin
+  Self.Free;
+  frmCarDetail_gov := nil;
+end;
+
+end.

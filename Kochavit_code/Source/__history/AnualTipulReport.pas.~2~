@@ -1,0 +1,82 @@
+unit AnualTipulReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin, StdActns, DBActns;
+
+type
+  TfrmAnualTipulReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBGridTitleClick(Column: TColumn);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAnualTipulReport: TfrmAnualTipulReport;
+
+implementation
+uses
+   AnualFilter, AnualRprtSlctDlg;
+{$R *.dfm}
+
+procedure TfrmAnualTipulReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  SetStatusBar;
+  LoadPosition('AnualRpt', (Sender as TForm));
+end;
+
+procedure TfrmAnualTipulReport.SetStatusBar;
+var
+   procent: Real;
+begin
+  try
+    procent := frmAnualFilter.selectRec /
+        frmAnualFilter.totalRec * 100;
+  except
+    on EInvalidOp do procent := 0;
+  end;
+
+  StatusBar1.Panels[0].Text := 'סה"כ ' + IntToStr(frmAnualFilter.selectRec) +
+       ' רכבים מתוך ' + IntToStr(frmAnualFilter.totalRec) +
+       ' שהם ' + FloatToStrF(procent, ffFixed, 3, 2) + '%';
+end;
+
+procedure TfrmAnualTipulReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmAnualFilter.qrFilter, Column);
+end;
+
+procedure TfrmAnualTipulReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmAnualRprtSlctDlg := TfrmAnualRprtSlctDlg.Create(Self);
+  frmAnualRprtSlctDlg.ShowModal;
+end;
+
+procedure TfrmAnualTipulReport.acExcelExecute(Sender: TObject);
+begin
+  inherited;
+  SaveExcel(frmAnualFilter.qrFilter);
+end;
+
+procedure TfrmAnualTipulReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SavePosition('AnualRpt', (Sender as TForm));
+  frmAnualFilter.qrFilter.Close;
+  inherited;
+end;
+
+
+end.

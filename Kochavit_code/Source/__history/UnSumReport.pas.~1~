@@ -1,0 +1,48 @@
+unit UnSumReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, ComCtrls, StdCtrls,
+  Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin;
+
+type
+  TfrmUnSumReport = class(TfrmGnrlReport)
+    procedure acPrintExecute(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmUnSumReport: TfrmUnSumReport;
+
+implementation
+uses
+  UnSumFilter, UnSumRprtSlctDlg;
+
+{$R *.dfm}
+
+procedure TfrmUnSumReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Shem');
+end;
+
+procedure TfrmUnSumReportGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  ChangeOrder(frmUnSumFilter.qrFilter, Column);
+end;
+
+procedure TfrmUnSumReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmUnSumRprtSlctDlg := TfrmUnSumRprtSlctDlg.Create(Self);
+end;
+
+end.

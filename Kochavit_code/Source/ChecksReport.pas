@@ -1,0 +1,90 @@
+unit ChecksReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, StdActns, DBActns, ActnList,
+  StdCtrls, Buttons, ComCtrls, ToolWin, Grids, DBGrids, System.Actions;
+
+type
+  TfrmChecksReport = class(TfrmGnrlReport)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure SetStatusBar;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChecksReport: TfrmChecksReport;
+
+implementation
+uses
+   ChecksFilterDM, LogErrorUtil, ChecksRprtSlctDlg, ChecksSpssSlctDlg;
+
+{$R *.dfm}
+
+procedure TfrmChecksReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('AfkadaD');
+  SetStatusBar;
+end;
+
+procedure TfrmChecksReport.SetStatusBar;
+var
+   procent: String;
+begin
+  Procent := FormatFloat('#.##', StrToInt(dmChecksFilter.TotalSelectRec) /
+          StrToInt(dmChecksFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ המחאות בדו"ח: ' + dmChecksFilter.TotalSelectRec +
+      ' מתוך ' + dmChecksFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmChecksReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmChecksFilter.SqlState.Order := GetOrders(Column);
+  dmChecksFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmChecksReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmChecksRprtSlctDlg := TfrmChecksRprtSlctDlg.Create(Self);
+  frmChecksRprtSlctDlg.Show;
+end;
+
+procedure TfrmChecksReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmChecksSpssSlctDlg := TfrmChecksSpssSlctDlg.Create(Self);
+  frmChecksSpssSlctDlg.Show;
+end;
+
+procedure TfrmChecksReport.acExcelExecute(Sender: TObject);
+var
+  FileName: String;
+begin
+  inherited;
+  if SelectFields('Ch', dmCHecksFilter.qrFilter) then
+    if GetExprtFile(FileName, 'Excel', 2) then
+      SaveToExcel(dmChecksFilter.qrFilter, FileName);
+end;
+
+procedure TfrmChecksReport.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  dmChecksFilter.qrFilter.Close;
+  inherited;
+  frmChecksReport := nil;
+end;
+
+end.

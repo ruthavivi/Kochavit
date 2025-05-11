@@ -1,0 +1,24 @@
+unit ChecksFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmGnrlFilter1 = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmGnrlFilter1: TdmGnrlFilter1;
+
+implementation
+
+{$R *.dfm}
+
+end.

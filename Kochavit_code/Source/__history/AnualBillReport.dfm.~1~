@@ -1,0 +1,163 @@
+inherited frmAnualBillReport: TfrmAnualBillReport
+  Left = 40
+  Caption = ''
+  ClientWidth = 688
+  OnCreate = FormCreate
+  ExplicitWidth = 696
+  ExplicitHeight = 394
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ControlBar1: TControlBar
+    Width = 688
+    Height = 38
+    ExplicitWidth = 688
+    ExplicitHeight = 38
+    inherited ToolBar1: TToolBar
+      Height = 30
+      ExplicitHeight = 30
+      inherited DBNavigator: TDBNavigator
+        Hints.Strings = ()
+      end
+    end
+  end
+  inherited DBGrid: TDBGrid
+    Top = 38
+    Width = 688
+    Height = 255
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'IdClient'
+        Title.Caption = #1502#1505#39
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Shem'
+        Title.Caption = #1513#1501' '#1492#1495#1489#1512#1492
+        Width = 90
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Oved'
+        Title.Caption = #1506#1493#1489#1491' '#1488#1495#1512#1488#1497
+        Width = 76
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CarCmt'
+        Title.Caption = #1499#1502#1493#1514
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'CarShm'
+        Title.Caption = #1505#1499#1493#1501
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '1'
+        Title.Caption = #1497#1504#1493#1488#1512
+        Width = 37
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '2'
+        Title.Caption = #1508#1489#1512#1493#1488#1512
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '3'
+        Title.Caption = #1502#1512#1505
+        Width = 36
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '4'
+        Title.Caption = #1488#1508#1512#1497#1500
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '5'
+        Title.Caption = #1502#1488#1497
+        Width = 38
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '6'
+        Title.Caption = #1497#1493#1504#1497
+        Width = 36
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '7'
+        Title.Caption = #1497#1493#1500#1497
+        Width = 35
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '8'
+        Title.Caption = #1488#1493#1490#1493#1505#1496
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '9'
+        Title.Caption = #1505#1508#1496#1502#1489#1512
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '10'
+        Title.Caption = #1488#1493#1511#1496#1493#1489#1512
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '11'
+        Title.Caption = #1504#1493#1489#1502#1489#1512
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = '12'
+        Title.Caption = #1491#1510#1502#1489#1512
+        Visible = True
+      end>
+  end
+  inherited Panel1: TPanel
+    Width = 688
+    ExplicitTop = 293
+    ExplicitWidth = 688
+  end
+  inherited StatusBar1: TStatusBar
+    Width = 688
+    ExplicitTop = 325
+    ExplicitWidth = 688
+  end
+  inherited ActionList: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+    inherited acStatistic: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acExcel: TAction
+      OnExecute = acExcelExecute
+    end
+  end
+  inherited dsReport: TDataSource
+    DataSet = frmAnualBillFilter.qrFilter
+  end
+end

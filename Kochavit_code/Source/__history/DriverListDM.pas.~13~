@@ -1,0 +1,121 @@
+unit DriverListDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps;
+
+type
+  TdmDriverList = class(TDataModule)
+    qrDriverList: TEDBQuery;
+    qrGnrl: TEDBQuery;
+    qrDriverListId: TIntegerField;
+    qrDriverListCodDrv: TIntegerField;
+    qrDriverListShemD: TStringField;
+    qrDriverListZeut: TStringField;
+    qrDriverListShem: TStringField;
+    qrDriverListFreze: TBooleanField;
+    qrDriverListMissing: TBooleanField;
+    qrDriverListClientId: TIntegerField;
+    dsDriverList: TDataSource;
+    qrDriverListLicenceNum: TStringField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrDriverListBeforeOpen(DataSet: TDataSet);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure dsDriverListDataChange(Sender: TObject; Field: TField);
+  private
+    whrAdd: String;
+  public
+    DriverOrder, DriverFrzRecNo: String;
+    procedure ReOpenTable(pId: Integer);
+    procedure ShiftToArchive;
+    procedure DeleteDriver;
+  end;
+
+var
+  dmDriverList: TdmDriverList;
+
+const
+   // when one client selected
+   whrSlctC = 'WHERE Pail = True AND ClientId = :Id ';
+  // when "כל החברות" selected
+   whrAll = 'WHERE Pail = True ';
+
+implementation
+uses
+  MainDM, LogErrorUtil, KbFunc;
+{$R *.dfm}
+
+procedure TdmDriverList.DataModuleCreate(Sender: TObject);
+begin
+  DriverOrder := GetIniValue('Driver', 'Order', 'ShemD');
+
+  try
+    qrDriverList.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmDriverList.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmDriverList.qrDriverListBeforeOpen(DataSet: TDataSet);
+begin
+  if dmMain.SelectAll then
+    qrDriverList.SQL[qrDriverList.SQL.Count-2] :=  whrAll + whrAdd
+  else
+    qrDriverList.SQL[qrDriverList.SQL.Count-2] :=  whrSlctC + whrAdd;
+
+  qrDriverList.SQL[qrDriverList.SQL.Count-1] := 'ORDER BY '+ DriverOrder;
+end;
+
+procedure TdmDriverList.dsDriverListDataChange(Sender: TObject; Field: TField);
+begin
+  try
+    qrGnrl.SQL.Text :=  'SELECT COUNT(Id) AS Num FROM KDriver ' +
+                    'WHERE Pail = True AND Freze = True';
+    qrGnrl.Open;
+    DriverFrzRecNo := qrGnrl.FieldByName('Num').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmDriverList.ShiftToArchive;
+begin
+  qrGnrl.SQL.Text := 'UPDATE KDriver SET Pail = False ' +
+                'WHERE Id = ' + qrDriverListId.AsString;
+  qrGnrl.ExecSQL;
+  qrDriverList.Refresh;
+end;
+
+procedure TdmDriverList.DeleteDriver;
+begin
+  qrGnrl.SQL.Text := 'DELETE FROM KDriver ' +
+                'WHERE Id = ' + qrDriverListId.AsString;
+  qrGnrl.ExecSQL;
+  ReOpenTable(0);
+end;
+
+procedure TdmDriverList.ReOpenTable(pId: Integer);
+begin
+  try
+    qrDriverList.DisableControls;
+    qrDriverList.Close;
+    qrDriverList.Open;
+    qrDriverList.Locate('Id', pId, []);
+  finally
+    qrDriverList.EnableControls;
+  end;
+end;
+
+procedure TdmDriverList.DataModuleDestroy(Sender: TObject);
+begin
+  KbFunc.SetIniValue('Driver', 'Order', DriverOrder);
+  qrDriverList.Close;
+  dmDriverList := nil;
+end;
+
+end.

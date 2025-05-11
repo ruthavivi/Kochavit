@@ -1,0 +1,59 @@
+unit DriverRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  RpCon, RpConDS, RpConBDE, RpBase, RpSystem, RpDefine, RpRave, RpRender,
+  RpRenderRTF, edbcomps, RpRenderHTML;
+
+type
+  TfrmDriverRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqDriverRprt: TRvQueryConnection;
+    rqDrTofes: TRvQueryConnection;
+    EDBQuery1: TEDBQuery;
+    qrDrTofes: TEDBQuery;
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmDriverRprtSlctDlg: TfrmDriverRprtSlctDlg;
+
+implementation
+uses
+   DriverFilter;
+{$R *.dfm}
+
+procedure TfrmDriverRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('D');
+end;
+
+procedure TfrmDriverRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmDriverRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+procedure TfrmDriverRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+end.

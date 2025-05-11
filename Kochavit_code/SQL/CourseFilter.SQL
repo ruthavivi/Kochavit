@@ -1,0 +1,7 @@
+SELECT StartD, EndD, Organize, Course, ShemD, Zeut, Shem
+FROM KDrCourse Dc
+   LEFT JOIN KDriver Dr ON Dc.DriverId = Dr.Id
+         LEFT JOIN KClient Cl ON Dr.ClientId = Cl.Id
+   LEFT JOIN KTblCourse tC ON Dc.CourseId = tC.Id
+
+

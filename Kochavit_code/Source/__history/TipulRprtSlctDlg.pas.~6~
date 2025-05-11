@@ -1,0 +1,58 @@
+unit TipulRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, Spin, StdCtrls, Buttons, ExtCtrls, DB, DBTables,
+  RpBase, RpSystem, RpDefine, RpRave, RpCon, RpConDS, RpConBDE, RpRender,
+  RpRenderRTF, edbcomps, RpRenderHTML;
+
+type
+  TfrmTipulRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqTipulRprt: TRvDataSetConnection;
+    rqTipulDtl: TRvDataSetConnection;
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmTipulRprtSlctDlg: TfrmTipulRprtSlctDlg;
+
+implementation
+
+{$R *.dfm}
+uses
+  TipulFilterDM;
+
+procedure TfrmTipulRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('T');
+end;
+
+procedure TfrmTipulRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+procedure TfrmTipulRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+procedure TfrmTipulRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+end.

@@ -1,0 +1,96 @@
+unit ProblemDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, DBCtrls, Grids, DBGrids, DB, DBTables,
+  Buttons, edbcomps, frxClass, frxDBSet;
+
+type
+  TfrmProblem = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    dbgTipulDtl: TDBGrid;
+    Splitter1: TSplitter;
+    edRemark: TDBMemo;
+    StaticText1: TStaticText;
+    stHead2: TStaticText;
+    dsCrTipulDtl: TDataSource;
+    stHead3: TStaticText;
+    btnPrint: TBitBtn;
+    btnClose: TBitBtn;
+    dsCrTipul: TDataSource;
+    qrCrTipul: TEDBQuery;
+    qrCrTipulDtl: TEDBQuery;
+    frdbCrTipulPrbm: TfrxDBDataset;
+    frdbCrTipulDtlPrbm: TfrxDBDataset;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btnCloseClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+  private
+    { Private declarations }
+    procedure SetData;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmProblem: TfrmProblem;
+
+implementation
+
+{$R *.dfm}
+uses
+   MainDM, DataDM, LogErrorUtil;
+
+procedure TfrmProblem.FormCreate(Sender: TObject);
+begin
+  try
+    qrCrTipul.Open;
+    qrCrTipulDtl.Open;
+   except
+     on E: EDatabaseError do
+     begin
+         HandelError('TfrmProblem.FormCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+         Self.Destroy;
+     end;
+   end;
+   SetData;
+end;
+
+procedure TfrmProblem.SetData;
+begin
+   with dmMain.qrWrnCar do
+   begin
+       stHead2.Caption := 'חברה ' + FieldByName('Shem').AsString +
+                           ' רכב ' + FieldByName('Number').AsString;
+       stHead3.Caption := 'טיפול ' + FieldByName('Tipul').AsString;
+   end;
+end;
+
+procedure TfrmProblem.btnPrintClick(Sender: TObject);
+var
+  ReportFile: String;
+begin
+  ReportFile := ExtractFilePath(Application.ExeName) + 'Report\rpCrTipulPrbm.fr3';
+  dmData.frxReport.LoadFromFile(ReportFile);
+  dmData.frxReport.PrepareReport;
+  dmData.frxReport.ShowReport;
+end;
+
+procedure TfrmProblem.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  qrCrTipulDtl.Close;
+  qrCrTipul.Close;
+  Action := caFree;
+end;
+
+procedure TfrmProblem.btnCloseClick(Sender: TObject);
+begin
+   Close;
+end;
+
+end.

@@ -1,0 +1,62 @@
+unit ImportMasofon;
+
+interface
+uses
+  Windows, SysUtils, Classes, Forms, StrUtils;
+
+type
+  TImportMasofon = class
+    private
+      SourceFile, WorkFile: String;
+      procedure ConvertToChar;
+
+
+
+
+  end;
+
+implementation
+
+{ TImportMasofon }
+
+{
+//Create Table name ImportFile on Kb
+
+
+CREATE STORE "ImportFiles" AS
+LOCAL PATH 'C:\Documents and Settings\Sorin\My Documents\RAD Studio\Projects\Kochavit4\ImportFiles'
+
+Convert FeedBackNew5 To Ansii name ImportFile.Txt on path ImportFiles
+
+Delete Data from ImportFile
+
+IMPORT TABLE ImportFile
+FROM "FeedBackNew5.txt"
+IN STORE "ImportFile"
+DELIMITER CHAR #124
+}
+
+
+
+
+
+{ TImportMasofon }
+
+procedure TImportMasofon.ConvertToChar;
+var
+  MS: TMemorystream;
+begin
+  SourceFile := ExtractFilePath(Application.ExeName) + 'ImportFiles\FeedBackNew5.txt';
+  WorkFile := ExtractFilePath(Application.ExeName) + 'ImportFiles\ImportFile.TXT';
+
+  MS:= TMemoryStream.Create;
+  try
+    MS.LoadFromFile(SourceFile);
+    OemToCharBuffA(PAnsichar(MS.Memory), PAnsichar(MS.Memory), MS.Size);
+    MS.SaveToFile(WorkFile);
+  finally
+    MS.Free;
+  end;
+end;
+
+end.

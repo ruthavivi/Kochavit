@@ -1,0 +1,135 @@
+unit CarListDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps, frxClass, frxDBSet;
+
+type
+  TdmCarList = class(TDataModule)
+    qrCarList: TEDBQuery;
+    qrCarListID: TIntegerField;
+    qrCarListNumber: TStringField;
+    qrCarListType: TStringField;
+    qrCarListProducer: TStringField;
+    qrCarListShem: TStringField;
+    qrCarListContact: TStringField;
+    qrCarListFreze: TBooleanField;
+    qrCarListMissing: TBooleanField;
+    qrGnrl: TEDBQuery;
+    qrCarListCodCar: TIntegerField;
+    qrCarListClientId: TIntegerField;
+    dsCarList: TDataSource;
+    frdbCarList: TfrxDBDataset;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrCarListBeforeOpen(DataSet: TDataSet);
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure dsCarListDataChange(Sender: TObject; Field: TField);
+  private
+    whrAdd: String;
+  public
+    CarOrder, CarFrzRecNo: String;
+    procedure ReOpenTable(pId: Integer);
+    procedure ShiftToArchive;
+    procedure DeleteCar;
+    procedure PrintList(Path: string);
+  end;
+
+var
+  dmCarList: TdmCarList;
+
+const
+   // when one client selected
+   whrSlctC = 'WHERE Pail = True AND ClientId = :Id ';
+  // when "כל החברות" selected
+   whrAll = 'WHERE Pail = True ';
+
+implementation
+uses
+  MainDM, DataDm, LogErrorUtil, KbFunc;
+{$R *.dfm}
+
+procedure TdmCarList.DataModuleCreate(Sender: TObject);
+begin
+  CarOrder := GetIniValue('Car', 'Order', 'Number');
+
+  try
+    qrCarList.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmCarList.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmCarList.qrCarListBeforeOpen(DataSet: TDataSet);
+begin
+  if dmMain.SelectAll then
+    qrCarList.SQL[qrCarList.SQL.Count-2] :=  whrAll + whrAdd
+  else
+    qrCarList.SQL[qrCarList.SQL.Count-2] :=  whrSlctC + whrAdd;
+
+  qrCarList.SQL[qrCarList.SQL.Count-1] := 'ORDER BY '+ CarOrder;
+end;
+
+procedure TdmCarList.dsCarListDataChange(Sender: TObject; Field: TField);
+begin
+  try
+    if dmMain.SelectAll then
+      qrGnrl.SQL.Text :=  'SELECT COUNT(Id) AS Num FROM KCar ' +
+                    'WHERE Pail = True AND Freze = True'
+    else
+      qrGnrl.SQL.Text :=  'SELECT COUNT(Id) AS Num FROM KCar ' +
+                    'WHERE Pail = True AND Freze = True AND ClientId = '+
+                    dmMain.qrClientListId.AsString;
+    qrGnrl.Open;
+    CarFrzRecNo := qrGnrl.FieldByName('Num').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmCarList.PrintList(Path: string);
+begin
+  dmData.frxReport.LoadFromFile(Path+'rpCarsList.fr3');
+  //dmData.frxReport.PrepareReport(True);
+  dmData.frxReport.ShowReport();
+end;
+
+procedure TdmCarList.ShiftToArchive;
+begin
+  qrGnrl.SQL.Text := 'UPDATE KCar SET Pail = False ' +
+                'WHERE Id = ' + qrCarListId.AsString;
+  qrGnrl.ExecSQL;
+  qrCarList.Refresh;
+end;
+
+procedure TdmCarList.DeleteCar;
+begin
+  qrGnrl.SQL.Text := 'DELETE FROM KCar WHERE Id = ' + qrCarListId.AsString;
+  qrGnrl.ExecSQL;
+  qrCarList.Refresh;
+end;
+
+procedure TdmCarList.ReOpenTable(pId: Integer);
+begin
+  try
+    qrCarList.DisableControls;
+    qrCarList.Close;
+    qrCarList.Open;
+    qrCarList.Locate('Id', pId, []);
+  finally
+    qrCarList.EnableControls;
+  end;
+end;
+
+procedure TdmCarList.DataModuleDestroy(Sender: TObject);
+begin
+  SetIniValue('Car', 'Order', CarOrder);
+  qrCarList.Close;
+  dmCarList := nil;
+end;
+
+end.

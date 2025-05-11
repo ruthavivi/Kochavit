@@ -1,0 +1,44 @@
+unit ChecksFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmChecksFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterClientId: TIntegerField;
+    qrFilterBankId: TSmallintField;
+    qrFilterAcount: TIntegerField;
+    qrFilterCheckNo: TIntegerField;
+    qrFilterCheckSum: TFloatField;
+    qrFilterAfkadaD: TDateField;
+    qrFilterPidyonD: TDateField;
+    qrFilterBill: TIntegerField;
+    qrFilterKabala: TIntegerField;
+    qrFilterReturn: TBooleanField;
+    qrFilterNifda: TBooleanField;
+    qrFilterNifdaTrg: TStringField;
+    qrFilterReturnTrg: TStringField;
+    qrFilterShem: TStringField;
+    qrFilterTel1: TStringField;
+    qrFilterTel2: TStringField;
+    qrFilterACounter: TStringField;
+    qrFilterTelA: TStringField;
+    qrFilterBank: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmChecksFilter: TdmChecksFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

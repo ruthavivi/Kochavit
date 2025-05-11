@@ -1,0 +1,26 @@
+inherited frmClientSpssSlctDlg: TfrmClientSpssSlctDlg
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited rgReports: TRadioGroup
+      OnClick = nil
+    end
+  end
+  inherited Panel1: TPanel
+    inherited btnClose: TBitBtn
+      OnClick = nil
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  object ccChartsClient: TRvCustomConnection [6]
+    RuntimeVisibility = rtDeveloper
+    Left = 249
+    Top = 48
+  end
+end

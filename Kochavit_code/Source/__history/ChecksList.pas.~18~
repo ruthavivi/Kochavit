@@ -1,0 +1,139 @@
+unit ChecksList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlList, DB, Menus, ImgList, StdActns, DBActns, ActnList, ComCtrls,
+  Grids, DBGrids, ExtCtrls, StdCtrls, Mask, Buttons, ToolWin, edbcomps, edberror;
+
+type
+  TfrmChecksList = class(TfrmGnrlList)
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure edSearchChange(Sender: TObject);
+    procedure acAppendUpdate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acAppendExecute(Sender: TObject);
+    procedure acEditExecute(Sender: TObject);
+  private
+    procedure UpdateStatusBar;
+    function GetSearchVal(var pSearchTxt: Variant): Boolean;
+    procedure OpenOneRec(pState: Boolean);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmChecksList: TfrmChecksList;
+
+implementation
+uses
+  MainDM, ChecksListDM, CheckEditDM, CheckEdit, LogErrorUtil, DialogsHeb;
+{$R *.dfm}
+
+procedure TfrmChecksList.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmChecksList := TdmChecksList.Create(Self);
+  LoadColOrder(DBGrid, 'ChecksList');
+  MarkIndexColumn(dmChecksList.ChecksOrder);
+  UpdateStatusBar;
+end;
+
+procedure TfrmChecksList.UpdateStatusBar;
+begin
+  StatusBar.Panels[0].Text := 'סה"כ המחאות: ' + dmChecksList.ChecksRecNo;
+end;
+
+procedure TfrmChecksList.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmChecksList.ChecksOrder := Column.FieldName;
+  dmChecksList.ReOpenTable(dmChecksList.qrChecksListId.AsInteger);
+  MarkIndexColumn(Column.FieldName);
+  edSearch.SetFocus;
+end;
+
+function TfrmChecksList.GetSearchVal(var pSearchTxt: Variant): Boolean;
+var
+  OutVal: TDateTime;
+begin
+  Result := True;
+  if (typField = TIntegerField) or (typField = TSmallIntField) then
+    pSearchTxt := StrToIntDef(pSearchTxt, 0)
+  else if (typField = TDateField) then
+  begin
+    if TryStrToDate(pSearchTxt, OutVal) then
+      pSearchTxt := DateToStr(OutVal)
+    else
+      Result := False;
+  end;
+end;
+
+procedure TfrmChecksList.edSearchChange(Sender: TObject);
+var
+  SearchVal: Variant;
+  SearchValDate: TDateTime;
+begin
+  inherited;
+  SearchVal := edSearch.Text;
+  if GetSearchVal(SearchVal) then
+    if (typField = TDateField) then
+    begin
+      SearchValDate := StrToDate(SearchVal);
+      dmChecksList.qrChecksList.Locate(dmChecksList.ChecksOrder, SearchValDate, [loPartialKey]);
+    end
+    else
+      dmChecksList.qrChecksList.Locate(dmChecksList.ChecksOrder, SearchVal, [loPartialKey]);
+end;
+
+procedure TfrmChecksList.acAppendUpdate(Sender: TObject);
+begin
+  inherited;
+  acAppend.Enabled := not dmMain.SelectAll;
+end;
+
+procedure TfrmChecksList.acAppendExecute(Sender: TObject);
+begin
+  inherited;
+  OpenOneRec(True);
+end;
+
+procedure TfrmChecksList.acEditExecute(Sender: TObject);
+begin
+  inherited;
+  OpenOneRec(False);
+end;
+
+procedure TfrmChecksList.OpenOneRec(pState: Boolean);
+begin
+  if not Assigned(frmCheckEdit) then
+  begin
+    try
+      dmCheckEdit := TdmCheckEdit.Create(Self);
+      dmCheckEdit.SetDataState(pState, dmChecksList.qrChecksListId.AsInteger);
+      frmCheckEdit := TfrmCheckEdit.Create(Self);
+    except on E: Exception do
+      begin
+        if (E is EEDBError) then
+        begin
+          if (EEDBError(E).ErrorCode = EDB_ERROR_LOCKROW) then
+            MessageDlgH('כרטיס פתוח ע"י משתמש אחר', mtError, [mbOK], 0, 0)
+          else
+            HandelError('TfrmChecksList.OpenOneRec', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmChecksList.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  SaveColOrder(DBGrid, 'ChecksList');
+  dmChecksList.Free;
+  inherited;
+  frmChecksList := nil;
+end;
+
+end.

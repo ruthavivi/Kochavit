@@ -1,0 +1,308 @@
+unit ImportFromMasafon;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps;
+
+type
+  TdmImportFromMasafon = class(TDataModule)
+    qrGnrl: TEDBQuery;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure DataModuleDestroy(Sender: TObject);
+  private
+    { Private declarations }
+    Path: String;
+    ImportDataList, LikuyIdList: TStringList;
+    Number, OvedId: String;
+    DateDone, DateToDo, Km, Remark: String;
+    BikoretTipulId: Integer;
+    function GetDateDone(pListId: Integer): String;
+    function GetDateToDo(pListId: Integer): String;
+    function GetCarNumber(pListId: Integer): String;
+    function GetRemark(pListId: Integer): String;
+    function GetIdOved(pListId: Integer): string;
+    function GetKm(pListId: Integer): String;
+    procedure LoadId(pString: String);
+    procedure LoadLikuyIdList(pFoundNum: Integer; pOneRec: String);
+
+    procedure UpdateData;
+    function  GetBikoretTipulId: Integer;
+    function  GetCarId: String;
+    function  GetTipulId(pCarId: String): String;
+    procedure UpdateTipulMain(pTipulId: String);
+    procedure UpdateTipulMainHis(pCarId: String);
+    procedure UpdateTipulDtl(pTipulId: String);
+    procedure UpdateTipulDtlHis;
+    procedure UpdateCarKm(pCarId: String);
+  public
+     procedure ImportData;
+  end;
+
+var
+  dmImportFromMasafon: TdmImportFromMasafon;
+
+implementation
+uses
+  MainDM, StrUtils;
+{$R *.dfm}
+
+procedure TdmImportFromMasafon.DataModuleCreate(Sender: TObject);
+begin
+  Path := ExtractFilePath(ParamStr(0)) + 'ImportFiles';
+  ImportDataList := TStringList.Create;
+  ImportDataList.LoadFromFile(Path+'FeedBackNew5.Txt');
+  BikoretTipulId := GetBikoretTipulId;
+end;
+
+procedure TdmImportFromMasafon.ImportData;
+var
+  I: Integer;
+begin
+  LikuyIdList := TStringList.Create;
+  for I := 0 to ImportDataList.Count - 1 do
+  begin
+    DateDone := GetDateDone(I);
+    DateToDo := GetDateToDo(I);
+    Number := GetCarNumber(I);
+    Remark := GetRemark(I);
+    OvedId := GetIdOved(I);
+    Km := GetKm(I);
+    LoadLikuyIdList(0, ImportDataList[I]);
+    UpdateData;
+  end;
+  LikuyIdList.Free;
+end;
+
+procedure TdmImportFromMasafon.LoadLikuyIdList(pFoundNum: Integer; pOneRec: String);
+var
+  FoundPos: Integer;
+begin
+  FoundPos := Pos('|', pOneRec);
+  if (FoundPos > 0) and (Pos('לא תקין', pOneRec) > 0) then
+  begin
+    if (pFoundNum > 1) then
+      LoadId(Copy(pOneRec, 30, FoundPos-30));
+    Inc(pFoundNum);
+    LoadLikuyIdList(pFoundNum, Copy(pOneRec, FoundPos+1, Length(pOneRec)));
+  end;
+end;
+
+procedure TdmImportFromMasafon.LoadId(pString: String);
+var
+  FoundPos: Integer;
+begin
+  FoundPos := Pos(';', pString);
+  if (FoundPos > 0) then
+  begin
+    if (Copy(pString, 0, FoundPos-1) <> '1') then
+      LikuyIdList.Add(Copy(pString, 0, FoundPos-1));
+    LoadId(Copy(pString, FoundPos+1, Length(pString)-FoundPos));
+  end;
+end;
+
+function TdmImportFromMasafon.GetCarNumber(pListId: Integer): String;
+var
+  FoundPos, I: Integer;
+begin
+  FoundPos := Pos('|', ImportDataList[pListId]);
+  for I := 0 to 1 do
+    FoundPos := PosEx('|', ImportDataList[pListId], FoundPos+1);
+
+  Result := Copy(ImportDataList[pListId], FoundPos+1, 9);
+end;
+
+function TdmImportFromMasafon.GetDateDone(pListId: Integer): String;
+var
+  FoundPos: Integer;
+begin
+  FoundPos := PosEx('|', ImportDataList[pListId]);
+  Result := Copy(ImportDataList[pListId], FoundPos+9, 2) + '/' +
+            Copy(ImportDataList[pListId], FoundPos+6, 2) + '/' +
+            Copy(ImportDataList[pListId], FoundPos+1, 4);
+end;
+
+function TdmImportFromMasafon.GetDateToDo(pListId: Integer): String;
+var
+  FoundPos, I: Integer;
+begin
+  FoundPos := Pos('|', ImportDataList[pListId]);
+  for I := 0 to 6 do
+    FoundPos := PosEx('|', ImportDataList[pListId], FoundPos+1);
+
+  Result := Copy(ImportDataList[pListId], FoundPos+9, 2) + '/' +
+            Copy(ImportDataList[pListId], FoundPos+6, 2) + '/' +
+            Copy(ImportDataList[pListId], FoundPos+1, 4);
+end;
+
+function TdmImportFromMasafon.GetRemark(pListId: Integer): String;
+var
+  FoundPos, FoundEnd, I: Integer;
+begin
+  FoundPos := Pos('|', ImportDataList[pListId]);
+  for I := 0 to 5 do
+    FoundPos := PosEx('|', ImportDataList[pListId], FoundPos+1);
+
+  FoundEnd := PosEx('|', ImportDataList[pListId], FoundPos+1);
+  Result := Copy(ImportDataList[pListId], FoundPos+1, FoundEnd-FoundPos-1);
+end;
+
+function TdmImportFromMasafon.GetKm(pListId: Integer): String;
+var
+  FoundPos, FoundEnd, I: Integer;
+begin
+  FoundPos := Pos('|', ImportDataList[pListId]);
+  for I := 0 to 3 do
+    FoundPos := PosEx('|', ImportDataList[pListId], FoundPos+1);
+
+  FoundEnd := PosEx('|', ImportDataList[pListId], FoundPos+1);
+  Result := Copy(ImportDataList[pListId], FoundPos+1, FoundEnd-FoundPos-1);
+end;
+
+function TdmImportFromMasafon.GetIdOved(pListId: Integer): string;
+var
+  Oved: String;
+  FoundPos, FoundEnd, I: Integer;
+begin
+  FoundPos := Pos('|', ImportDataList[pListId]);
+  for I := 0 to 2 do
+    FoundPos := PosEx('|', ImportDataList[pListId], FoundPos+1);
+
+  FoundEnd := PosEx('|', ImportDataList[pListId], FoundPos+1);
+  Oved := Copy(ImportDataList[pListId], FoundPos+1, FoundEnd-FoundPos-1);
+
+  qrGnrl.SQL.Text := 'SELECT Id FROM KTblOved WHERE Oved = ' + QuotedStr(Oved);
+  try
+    qrGnrl.Open;
+    if not qrGnrl.Eof then
+      Result := qrGnrl.FieldByName('Id').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmImportFromMasafon.GetBikoretTipulId: Integer;
+begin
+  qrGnrl.SQL.Text := 'SELECT Id FROM KTblTipul WHERE Tipul = ' +
+      QuotedStr('ביקורת חודשית');
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('Id').AsInteger;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmImportFromMasafon.UpdateData;
+var
+  CarId, TipulId: String;
+begin
+  CarId := GetCarId;
+  TipulId := GetTipulId(CarId);
+  UpdateTipulMain(TipulId);
+  UpdateTipulMainHis(CarId);
+  UpdateTipulDtl(TipulId);
+  UpdateTipulDtlHis;
+  UpdateCarKm(CarId);
+end;
+
+function TdmImportFromMasafon.GetCarId: String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Id FROM KCar WHERE Number = ' + QuotedStr(Number);
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('Id').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmImportFromMasafon.GetTipulId(pCarId: String): String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Id FROM KCrTipul WHERE CarId = ' + pCarId +
+            ' AND TipulId = ' + IntToStr(BikoretTipulId);
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('Id').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmImportFromMasafon.UpdateTipulMain(pTipulId: String);
+var
+  Problem: String;
+begin
+  Problem := 'False';
+  if (LikuyIdList.Count > 0) or (Remark <> '') then
+    Problem := 'True';
+  qrGnrl.SQL.Text := 'UPDATE KCrTipul SET DateDone = ' +
+          QuotedStr(FormatDateTime('yyyy-mm-dd', StrToDate(DateDone))) +
+          ', DateToDo = ' +
+          QuotedStr(FormatDateTime('yyyy-mm-dd', StrToDate(DateToDo))) +
+          ', OvedId = ' + OvedId + ', Km = ' + Km +
+          ', Remark = ' + QuotedStr(Remark) + ', Problem = ' + Problem +
+          ' WHERE Id = ' + pTipulId;
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmImportFromMasafon.UpdateTipulMainHis(pCarId: String);
+begin
+  qrGnrl.SQL.Text := 'INSERT Into KCrTipulHis ' +
+      '(CarId, TipulId, OvedId, Km, DateDone, Remark) ' +
+      'VALUES (' + QuotedStr(pCarId) + ', ' + IntToStr(BikoretTipulId) + ', ' +
+      QuotedStr(OvedId) + ', ' + Km + ', ' +
+      QuotedStr(FormatDateTime('yyyy-mm-dd', StrToDate(DateDone))) +
+      ', ' + QuotedStr(Remark) + ')';
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmImportFromMasafon.UpdateTipulDtl(pTipulId: String);
+var
+  I: Integer;
+begin
+  qrGnrl.SQL.Text := 'DELETE FROM KCrTipulDtl ' +
+           'WHERE TipulId = ' + pTipulId;
+  qrGnrl.ExecSQL;
+
+  for I := 0 to LikuyIdList.Count -1 do
+  begin
+    qrGnrl.SQL.Text := 'INSERT INTO KCrTipulDtl (TipulId, BikoretDtlId) ' +
+           'VALUES (' + pTipulId + ', ' + LikuyIdList[I] + ')';
+    qrGnrl.ExecSQL;
+  end;
+end;
+
+procedure TdmImportFromMasafon.UpdateTipulDtlHis;
+var
+  I: Integer;
+  TipulId: String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Max(Id) AS Id FROM KCrTipulHis ';
+  qrGnrl.Open;
+  TipulId := qrGnrl.FieldByName('Id').AsString;
+  qrGnrl.Close;
+
+  for I := 0 to LikuyIdList.Count -1 do
+  begin
+    qrGnrl.SQL.Text := 'INSERT INTO KCrTipulDtlHis (TipulId, BikoretDtlId) ' +
+           'VALUES (' + TipulId + ', ' + LikuyIdList[I] + ')';
+    qrGnrl.ExecSQL;
+  end;
+end;
+
+procedure TdmImportFromMasafon.UpdateCarKm(pCarId: String);
+begin
+  qrGnrl.SQL.Text := 'UPDATE KCar SET Spido = ' + Km + ' WHERE Id = ' + pCarId;
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmImportFromMasafon.DataModuleDestroy(Sender: TObject);
+begin
+  ImportDataList.Free;
+end;
+
+end.
+
+
+

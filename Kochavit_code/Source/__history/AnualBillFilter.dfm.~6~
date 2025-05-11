@@ -1,0 +1,119 @@
+inherited frmAnualBillFilter: TfrmAnualBillFilter
+  Caption = #1502#1510#1489' '#1495#1513#1489#1493#1504#1493#1514' '#1500#1511#1493#1495#1493#1514
+  ClientHeight = 142
+  ClientWidth = 399
+  ExplicitWidth = 407
+  ExplicitHeight = 169
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 111
+    Width = 399
+    ExplicitTop = 111
+    ExplicitWidth = 399
+    inherited btnExecute: TBitBtn
+      Left = 184
+      OnClick = btnExecuteClick
+      ExplicitLeft = 184
+    end
+    inherited btnClose: TBitBtn
+      Left = 97
+      ExplicitLeft = 97
+    end
+  end
+  inherited Panel2: TPanel
+    Width = 399
+    Height = 111
+    ExplicitWidth = 399
+    ExplicitHeight = 111
+    inherited grbMain: TGroupBox
+      Width = 397
+      Height = 109
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1495#1513#1489#1493#1504#1493#1514
+      ExplicitWidth = 397
+      ExplicitHeight = 109
+      DesignSize = (
+        397
+        109)
+      object edTYear: TSpinEdit
+        Left = 68
+        Top = 32
+        Width = 169
+        Height = 22
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxValue = 0
+        MinValue = 0
+        ParentFont = False
+        TabOrder = 1
+        Value = 0
+      end
+      object cxEOved: TCheckBox
+        Left = 292
+        Top = 60
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1488#1495#1512#1488#1497' '#1490#1489#1497#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 2
+        OnClick = cxEOvedClick
+      end
+      object cbEOved: TComboBox
+        Left = 68
+        Top = 60
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 3
+        OnEnter = cbEOvedEnter
+      end
+      object cxTYear: TCheckBox
+        Left = 292
+        Top = 32
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1506#1489#1493#1512' '#1513#1504#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cxEOvedClick
+      end
+    end
+  end
+  inherited tbl: TEDBTable
+    Left = 16
+    Top = 24
+  end
+  inherited qrGnrl: TEDBQuery
+    Left = 32
+    Top = 80
+  end
+end

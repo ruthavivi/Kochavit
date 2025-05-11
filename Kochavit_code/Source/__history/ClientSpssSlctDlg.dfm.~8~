@@ -1,0 +1,19 @@
+inherited frmClientSpssSlctDlg: TfrmClientSpssSlctDlg
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  object ccChartsClient: TRvCustomConnection [6]
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsClientGetCols
+    OnGetRow = ccChartsClientGetRow
+    Left = 249
+    Top = 48
+  end
+end

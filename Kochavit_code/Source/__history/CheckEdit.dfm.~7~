@@ -1,0 +1,148 @@
+inherited frmCheckEdit: TfrmCheckEdit
+  Align = alTop
+  Caption = #1499#1512#1496#1497#1505' '#1492#1502#1495#1488#1493#1514
+  ClientHeight = 456
+  ClientWidth = 696
+  OnCreate = FormCreate
+  ExplicitWidth = 704
+  ExplicitHeight = 502
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 696
+    ExplicitWidth = 104
+    ExplicitHeight = 188
+    inherited ToolButton8: TToolButton
+      Enabled = False
+      Visible = False
+    end
+    inherited btnShowScan: TToolButton
+      ExplicitWidth = 50
+    end
+    inherited stClientName: TStaticText
+      Height = 36
+      ExplicitHeight = 36
+    end
+  end
+  inherited PageControl1: TPageControl
+    Width = 696
+    Height = 412
+    ExplicitTop = 188
+    ExplicitWidth = 104
+    inherited TabSheet1: TTabSheet
+      Caption = #1508#1512#1496#1497' '#1492#1502#1495#1488#1493#1514
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 96
+      ExplicitHeight = 377
+      object grdChecks: TDBGrid
+        Left = 0
+        Top = 0
+        Width = 688
+        Height = 384
+        Align = alClient
+        DataSource = dsChecks
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'MS Sans Serif'
+        TitleFont.Style = []
+        OnKeyDown = grdChecksKeyDown
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'Bill'
+            Title.Caption = #1506#1489#1493#1512' '#1495#1513#1489#1493#1503
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'AfkadaD'
+            Title.Caption = #1514#1488#1512#1497#1498' '#1511#1489#1500#1492
+            Width = 64
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PidyonD'
+            Title.Caption = #1514#1488#1512#1497#1498' '#1508#1497#1491#1497#1493#1503
+            Width = 64
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'LkpBank'
+            Title.Caption = #1513#1501' '#1492#1489#1504#1511
+            Width = 64
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Acount'
+            Title.Caption = #1502#1505#39' '#1495#1513#1489#1493#1503
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'CheckNo'
+            Title.Caption = #1502#1505#39' '#1492#1502#1495#1488#1492
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'CheckSum'
+            Title.Caption = #1505#1499#1493#1501' '#1492#1492#1502#1495#1488#1492
+            Width = 64
+            Visible = True
+          end>
+      end
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acSave: TAction
+      OnExecute = acSaveExecute
+    end
+    inherited acMail: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acPrint: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acScan: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acPhoto: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acDocument: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acShowScan: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acPrintLabel: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acShowFolder: TAction
+      Enabled = False
+      Visible = False
+    end
+  end
+  inherited OpenDialog: TOpenDialog
+    Left = 136
+    Top = 168
+  end
+  object dsChecks: TDataSource
+    DataSet = dmCheckEdit.tbChecks
+    Left = 280
+    Top = 216
+  end
+end

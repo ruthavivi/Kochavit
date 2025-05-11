@@ -1,0 +1,805 @@
+inherited frmCarFilter: TfrmCarFilter
+  Left = 213
+  Top = 138
+  Caption = #1513#1488#1497#1500#1514#1514' '#1512#1499#1489#1497#1501
+  ClientHeight = 316
+  ClientWidth = 450
+  OldCreateOrder = True
+  ScreenSnap = True
+  SnapBuffer = 50
+  ExplicitWidth = 458
+  ExplicitHeight = 343
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    Top = 285
+    Width = 450
+    ExplicitTop = 285
+    ExplicitWidth = 450
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    Width = 450
+    Height = 285
+    ExplicitWidth = 450
+    ExplicitHeight = 285
+    inherited grbMain: TGroupBox
+      Width = 448
+      Height = 283
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1512#1499#1489#1497#1501
+      ExplicitWidth = 448
+      ExplicitHeight = 283
+      DesignSize = (
+        448
+        283)
+      object lbAIdCar: TLabel
+        Tag = 1
+        Left = 322
+        Top = 27
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        ExplicitLeft = 315
+      end
+      object lbZIdCar: TLabel
+        Tag = 1
+        Left = 143
+        Top = 27
+        Width = 17
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        ExplicitLeft = 136
+      end
+      object lbEType: TLabel
+        Tag = 5
+        Left = 292
+        Top = 71
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEProducer: TLabel
+        Tag = 5
+        Left = 292
+        Top = 92
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEDgam: TLabel
+        Tag = 5
+        Left = 292
+        Top = 114
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAModel: TLabel
+        Tag = 1
+        Left = 322
+        Top = 157
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZModel: TLabel
+        Tag = 1
+        Left = 143
+        Top = 157
+        Width = 17
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbECargo: TLabel
+        Tag = 5
+        Left = 292
+        Top = 179
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAWeightT: TLabel
+        Tag = 1
+        Left = 322
+        Top = 201
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZWeightT: TLabel
+        Tag = 1
+        Left = 143
+        Top = 201
+        Width = 17
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEOved: TLabel
+        Tag = 5
+        Left = 292
+        Top = 223
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEEngine: TLabel
+        Tag = 5
+        Left = 292
+        Top = 135
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAOpenDate: TLabel
+        Tag = 3
+        Left = 322
+        Top = 49
+        Width = 10
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZOpenDate: TLabel
+        Tag = 3
+        Left = 143
+        Top = 49
+        Width = 17
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEShem: TLabel
+        Tag = 5
+        Left = 292
+        Top = 245
+        Width = 39
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+      end
+      object cbCodCar: TCheckBox
+        Tag = 1
+        Left = 346
+        Top = 27
+        Width = 94
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1505#39' '#1505#1497#1491#1493#1512#1497':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cbCodCarClick
+      end
+      object edACodCar: TMaskEdit
+        Tag = 1
+        Left = 175
+        Top = 27
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 9
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 1
+        Text = '         '
+      end
+      object edZCodCar: TMaskEdit
+        Tag = 1
+        Left = 22
+        Top = 27
+        Width = 106
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '999999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 9
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 2
+        Text = '         '
+      end
+      object cbType: TCheckBox
+        Tag = 5
+        Left = 361
+        Top = 71
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1505#1493#1490' '#1512#1499#1489':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 6
+        OnClick = cbCodCarClick
+      end
+      object cbEType: TComboBox
+        Tag = 5
+        Left = 175
+        Top = 71
+        Width = 113
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 7
+        OnEnter = cbETypeEnter
+      end
+      object cbProducer: TCheckBox
+        Tag = 5
+        Left = 361
+        Top = 92
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1497#1510#1512#1503':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 8
+        OnClick = cbCodCarClick
+      end
+      object cbEProducer: TComboBox
+        Tag = 5
+        Left = 175
+        Top = 92
+        Width = 113
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 9
+        OnEnter = cbETypeEnter
+      end
+      object cbDgam: TCheckBox
+        Tag = 5
+        Left = 361
+        Top = 114
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1491#1490#1501':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 10
+        OnClick = cbCodCarClick
+      end
+      object cbEDgam: TComboBox
+        Tag = 5
+        Left = 175
+        Top = 114
+        Width = 113
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 11
+        OnEnter = cbEDgamEnter
+      end
+      object cbModel: TCheckBox
+        Tag = 1
+        Left = 346
+        Top = 157
+        Width = 94
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1513#1504#1514' '#1502#1493#1491#1500':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 14
+        OnClick = cbCodCarClick
+      end
+      object edAModel: TMaskEdit
+        Tag = 1
+        Left = 175
+        Top = 157
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 4
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 15
+        Text = '    '
+      end
+      object edZModel: TMaskEdit
+        Tag = 1
+        Left = 22
+        Top = 157
+        Width = 102
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 4
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 16
+        Text = '    '
+      end
+      object cbCargo: TCheckBox
+        Tag = 5
+        Left = 361
+        Top = 179
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1505#1493#1490' '#1502#1496#1506#1503':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 17
+        OnClick = cbCodCarClick
+      end
+      object cbECargo: TComboBox
+        Tag = 5
+        Left = 175
+        Top = 179
+        Width = 113
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 18
+        OnEnter = cbETypeEnter
+      end
+      object cbWeightT: TCheckBox
+        Tag = 1
+        Left = 346
+        Top = 201
+        Width = 94
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1513#1511#1500' '#1499#1493#1500#1500':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 19
+        OnClick = cbCodCarClick
+      end
+      object edAWeightT: TMaskEdit
+        Tag = 1
+        Left = 175
+        Top = 201
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '99999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 8
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 20
+        Text = '        '
+      end
+      object edZWeightT: TMaskEdit
+        Tag = 1
+        Left = 22
+        Top = 201
+        Width = 102
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '99999999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 8
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 21
+        Text = '        '
+      end
+      object cbOved: TCheckBox
+        Tag = 5
+        Left = 343
+        Top = 223
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1496#1508#1500' '#1488#1495#1512#1488#1497':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 22
+        OnClick = cbCodCarClick
+      end
+      object cbEOved: TComboBox
+        Tag = 5
+        Left = 119
+        Top = 223
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 23
+        OnEnter = cbETypeEnter
+      end
+      object cbEngine: TCheckBox
+        Tag = 5
+        Left = 361
+        Top = 135
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1502#1493#1504#1506':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 12
+        OnClick = cbCodCarClick
+      end
+      object cbEEngine: TComboBox
+        Tag = 5
+        Left = 175
+        Top = 135
+        Width = 113
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 13
+        Items.Strings = (
+          #1499#1503
+          #1500#1488)
+      end
+      object edADateReg: TMaskEdit
+        Tag = 3
+        Left = 175
+        Top = 49
+        Width = 113
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 4
+        Text = '  /  /    '
+      end
+      object edZDateReg: TMaskEdit
+        Tag = 3
+        Left = 22
+        Top = 49
+        Width = 106
+        Height = 21
+        Anchors = [akTop, akRight]
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 5
+        Text = '  /  /    '
+      end
+      object cbDateReg: TCheckBox
+        Tag = 3
+        Left = 335
+        Top = 49
+        Width = 105
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1502#1493#1506#1491' '#1512#1497#1513#1493#1501':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = cbCodCarClick
+      end
+      object cbEShem: TComboBox
+        Tag = 5
+        Left = 119
+        Top = 245
+        Width = 169
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ItemHeight = 13
+        ParentFont = False
+        Sorted = True
+        TabOrder = 24
+        OnEnter = cbEShemEnter
+      end
+      object cbShem: TCheckBox
+        Tag = 5
+        Left = 343
+        Top = 245
+        Width = 97
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1513#1501' '#1492#1495#1489#1512#1492':'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 25
+        OnClick = cbCodCarClick
+      end
+    end
+  end
+  inherited tbl: TEDBTable
+    Left = 112
+    Top = 240
+  end
+  inherited qrFilter: TEDBQuery
+    Left = 32
+    Top = 240
+  end
+  inherited qrGnrl: TEDBQuery
+    Left = 72
+    Top = 240
+  end
+end

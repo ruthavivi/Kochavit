@@ -1,0 +1,58 @@
+unit AnualBillRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DBTables, Spin, StdCtrls, Buttons, ExtCtrls,
+  RpCon, RpConDS, RpConBDE, RpBase, RpSystem, RpDefine, RpRave, RpRender,
+  RpRenderRTF, Classes, DB, edbcomps, RpRenderHTML, frxClass, frxDBSet;
+
+type
+  TfrmAnualBillRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    rqAnualBillRprt: TRvDataSetConnection;
+    frdbAnualBill: TfrxDBDataset;
+    procedure btnRTFClick(Sender: TObject);
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAnualBillRprtSlctDlg: TfrmAnualBillRprtSlctDlg;
+
+implementation
+uses
+   AnualBillFilterDM;
+{$R *.dfm}
+
+procedure TfrmAnualBillRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('AB');
+end;
+
+procedure TfrmAnualBillRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintRprt('');
+end;
+
+
+procedure TfrmAnualBillRprtSlctDlg.btnRTFClick(Sender: TObject);
+begin
+  inherited;
+  SendToRtfRprt('');
+end;
+
+procedure TfrmAnualBillRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewRprt('');
+end;
+
+end.

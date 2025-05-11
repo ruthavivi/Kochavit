@@ -1,0 +1,56 @@
+inherited frmAcdntSpssSlctDlg: TfrmAcdntSpssSlctDlg
+  ExplicitWidth = 442
+  ExplicitHeight = 379
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    ExplicitHeight = 266
+    inherited edTitle: TMemo
+      ExplicitTop = 221
+    end
+    inherited rgReports: TRadioGroup
+      ExplicitHeight = 220
+    end
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 266
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited qrSpss: TEDBQuery
+    SQL.Strings = (
+      'SELECT Type, COUNT(Id) Num'
+      'FROM ( SELECT Ac.*, CodCar, Number, Type, Producer, Cod, Shem'
+      'FROM KCrAcdnt Ac   '
+      'LEFT JOIN KCar Cr ON Ac.CarId = Cr.Id     '
+      'LEFT JOIN KTblType tY ON Cr.TypeId = tY.Id     '
+      'LEFT JOIN KTblProducer tR ON Cr.ProducerId = tR.Id     '
+      'LEFT JOIN KClient Cl ON Cr.ClientId = Cl.Id'
+      'WHERE Pail = True'
+      'ORDER BY AcdntD ) AS BaseSql'
+      'GROUP BY Type'
+      'ORDER BY Type')
+  end
+  object ccChartsAcdnt: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsAcdntGetCols
+    OnGetRow = ccChartsAcdntGetRow
+    Left = 257
+    Top = 48
+  end
+  object frdbAcdntCr: TfrxDBDataset
+    UserName = 'frdbAcdntCr'
+    CloseDataSource = False
+    DataSet = qrSpss
+    BCDToCurrency = False
+    Left = 216
+    Top = 176
+  end
+end

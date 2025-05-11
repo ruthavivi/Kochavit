@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nodeSet version="1.0">
+  <view uin="x25cvy2gexqnl09fp_v">
+    <property name="$defaultDiagram" value="true" />
+    <property name="$metaclass" value="Package Diagram" />
+    <property name="$name" value="default" />
+    <reference referencedUin="delphi:e_class:src:Kochavit:GnrlBigDM.TdmGnrlBig">
+      <property name="$shortcutReference" value="true" />
+      <property name="bounds" value="10,10,157,250" />
+      <reference referencedUin="delphi:e_field:src:Kochavit:GnrlBigDM.TdmGnrlBig.tbBigFolder" />
+      <reference referencedUin="delphi:e_field:src:Kochavit:GnrlBigDM.TdmGnrlBig.qrBigFolder" />
+      <reference referencedUin="delphi:e_field:src:Kochavit:GnrlBigDM.TdmGnrlBig.qrGnrl" />
+      <reference referencedUin="delphi:e_field:src:Kochavit:GnrlBigDM.TdmGnrlBig.pRelativePath" />
+      <reference referencedUin="delphi:e_method:src:Kochavit:GnrlBigDM.TdmGnrlBig.CreateDirectory(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:Kochavit:GnrlBigDM.TdmGnrlBig.SaveInDirectory(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:Kochavit:GnrlBigDM.TdmGnrlBig.SetProperties(System.string)" />
+      <reference referencedUin="delphi:e_method:src:Kochavit:GnrlBigDM.TdmGnrlBig.SaveDataBig(System.Integer,System.string,System.string,System.string,System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:Kochavit:GnrlBigDM.TdmGnrlBig.OpenDataBig(System.string,System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:Kochavit:GnrlBigDM.TdmGnrlBig.DeleteDoc(System.string,System.string)" />
+      <reference referencedUin="delphi:e_method:src:Kochavit:GnrlBigDM.TdmGnrlBig.CloseDataBig()" />
+    </reference>
+    <reference referencedUin="delphi:e_class:src:Kochavit:GnrlBigDM.@unitclass">
+      <property name="$shortcutReference" value="true" />
+      <reference referencedUin="delphi:e_field:src:Kochavit:GnrlBigDM.@unitclass.dmGnrlBig" />
+      <reference referencedUin="delphi:l_ast:src:Kochavit:GnrlBigDM.@unitclass.dmGnrlBig" />
+    </reference>
+  </view>
+</nodeSet>

@@ -1,0 +1,2 @@
+inherited dmCrFollowFilter: TdmCrFollowFilter
+end

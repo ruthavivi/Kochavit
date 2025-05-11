@@ -1,0 +1,84 @@
+inherited frmTipulSpssSlctDlg: TfrmTipulSpssSlctDlg
+  Left = 190
+  Caption = #1489#1489#1495#1497#1512#1514' '#1491#1493'"'#1495' '#1505#1496#1496#1497#1505#1496#1497
+  ClientWidth = 345
+  OldCreateOrder = True
+  ExplicitWidth = 353
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    Width = 345
+    ExplicitWidth = 345
+    inherited edTitle: TMemo
+      Width = 343
+      ExplicitWidth = 343
+    end
+    inherited rgReports: TRadioGroup
+      Width = 343
+      Columns = 2
+      ExplicitWidth = 343
+    end
+  end
+  inherited Panel1: TPanel
+    Width = 345
+    ExplicitWidth = 345
+    inherited btnPrint: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnFax: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited qrSpss: TEDBQuery
+    SQL.Strings = (
+      'SELECT Tm.Oved, COUNT(Tm.Id) Num '
+      'FROM KCrTipulHis Tp'
+      'LEFT JOIN KCar Cr ON Cr.Id = Tp.CarId '
+      'LEFT JOIN KTblOved Tm ON Tm.Id = Tp.OvedId '
+      'LEFT JOIN KClient Cl ON Cl.Id = Cr.ClientId '
+      'LEFT JOIN KTblTipul Tt ON Tt.Id = Tp.TipulId '
+      'GROUP BY Tm.Oved'
+      'ORDER BY Tm.Oved')
+    Top = 72
+  end
+  object ccChartsTpl: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsTplGetCols
+    OnGetRow = ccChartsTplGetRow
+    Left = 9
+    Top = 112
+  end
+  object qcTipulByTpl: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 49
+    Top = 112
+  end
+  object qcTipulByCln: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 89
+    Top = 112
+  end
+  object qcTipulByClTp: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 129
+    Top = 112
+  end
+  object qcTipulByTyp: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 169
+    Top = 112
+  end
+  object qcTipulByOvd: TRvQueryConnection
+    RuntimeVisibility = rtDeveloper
+    Query = qrSpss
+    Left = 209
+    Top = 112
+  end
+end

@@ -1,0 +1,66 @@
+object dmDownloadWebData: TdmDownloadWebData
+  OldCreateOrder = False
+  Height = 186
+  Width = 412
+  object myFtp: TIdFTP
+    IPVersion = Id_IPv4
+    Passive = True
+    ConnectTimeout = 0
+    TransferType = ftBinary
+    NATKeepAlive.UseKeepAlive = False
+    NATKeepAlive.IdleTimeMS = 0
+    NATKeepAlive.IntervalMS = 0
+    ProxySettings.ProxyType = fpcmNone
+    ProxySettings.Port = 0
+    OnAfterClientLogin = myFtpAfterClientLogin
+    Left = 16
+    Top = 22
+  end
+  object fdQuery: TFDQuery
+    Connection = fdConnection
+    Left = 178
+    Top = 24
+  end
+  object fdConnection: TFDConnection
+    Params.Strings = (
+      'Server=s1103.usc1.mysecurecloudhost.com'
+      'CharacterSet=utf8'
+      'Database=sorinh_kochavit_data'
+      'User_Name=sorinh_user'
+      'Password=12345'
+      'DriverID=MySQL')
+    LoginPrompt = False
+    Left = 90
+    Top = 24
+  end
+  object fdPhysMySQLDriverLink: TFDPhysMySQLDriverLink
+    VendorLib = 'D:\My Programs\Kochavit4\libmysql.dll'
+    Left = 90
+    Top = 76
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    SQL.Strings = (
+      
+        'SELECT Database, DataUserName, DataPassword, Server, AppPath FRO' +
+        'M KDefault')
+    Params = <>
+    Left = 240
+    Top = 24
+  end
+  object qrGnrl2: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 240
+    Top = 80
+  end
+  object qrGnrl3: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    Params = <>
+    Left = 240
+    Top = 136
+  end
+end

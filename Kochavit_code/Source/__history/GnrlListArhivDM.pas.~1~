@@ -1,0 +1,23 @@
+unit GnrlListArhivDM;
+
+interface
+
+uses
+  SysUtils, Classes;
+
+type
+  TdmGnrlListArhiv = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmGnrlListArhiv: TdmGnrlListArhiv;
+
+implementation
+
+{$R *.dfm}
+
+end.

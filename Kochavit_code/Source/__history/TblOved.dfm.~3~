@@ -1,0 +1,43 @@
+inherited frmOvedTbl: TfrmOvedTbl
+  Caption = #1512#1513#1497#1502#1514' '#1506#1493#1489#1491#1497' '#1502#1513#1512#1491
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited dbGrid: TCheckDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Oved'
+          Width = 176
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+  end
+  inherited tbTbl: TEDBTable
+    IndexFieldNames = 'Oved'
+    TableName = 'KTblOved'
+    object tbTblID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object tbTblOved: TStringField
+      DisplayLabel = #1513#1501' '#1492#1506#1493#1489#1491
+      FieldName = 'Oved'
+      Size = 25
+    end
+  end
+  object rtOved: TRvDataSetConnection
+    RuntimeVisibility = rtDeveloper
+    DataSet = tbTbl
+    Left = 128
+    Top = 64
+  end
+end

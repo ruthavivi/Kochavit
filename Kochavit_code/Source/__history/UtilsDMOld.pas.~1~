@@ -1,0 +1,791 @@
+unit UtilsDMOld;
+
+interface
+
+uses
+  SysUtils, Classes, DBTables, DB;
+
+type
+  TdmUtilsOld = class(TDataModule)
+    qrSrcLvl1: TQuery;
+    bmGnrl: TBatchMove;
+    tbDest: TTable;
+    qrSrcLvl2: TQuery;
+    qrSrcLvl3: TQuery;
+    qrSrcLvl4: TQuery;
+    qrSrcTofes: TQuery;
+    bmGnrlTofes: TBatchMove;
+    tbDestTofes: TTable;
+  private
+    { Private declarations }
+    procedure ShiftClnDtl(IdCln, IdNewCl: String);
+    procedure SetRelatedId(FName, IdVal: String);
+    procedure ShiftAllCar(Id, IdNewCl: String);
+    procedure ShiftCarDtl(IdCar, IdNewCr: String);
+    procedure ShiftOneDtl(FName, FOldName, FldName, IdDtl, IdNewCr: String);
+    procedure ShiftAllDrv(Id, IdNewCl: String);
+    procedure ShiftDrvDtl(IdDrv, IdNewDr: String);
+    procedure ShiftAllBill(Id, IdNewCl: String);
+    procedure ShiftBillDtl(IdBill, IdNewBl: String);
+    procedure ShiftTipSubDtl(TipulId, IdNewTp: String);
+    procedure ShiftTipHisSubDtl(TipulId, IdNewTp: String);
+    procedure ShiftAllDocs(Id, IdNewCl: String);
+    procedure ShiftRec(sSql, dstName: String);
+    procedure DeleteAllCar(Id: String);
+    procedure DeleteAllDrv(Id: String);
+    procedure DeleteAllBill(Id: String);
+    procedure DeleteAllDocs(Id: String);
+    procedure DeleteRecs(stSql: String);
+    procedure DeleteRecsTofes(stSql: String);
+  public
+    { Public declarations }
+    procedure ShiftClient(Id: String);
+    procedure ShiftOneCar(IdCar, IdNewCl: String);
+    procedure ShiftOneDrv(IdDrv, IdNewCl: String);
+    procedure ShiftOneBill(IdBill, IdNewCl: String);
+    function GetRelatedId(FName: String): String;
+    procedure DeleteClient(Id: String);
+    procedure DeleteOneCar(IdCar: String);
+    procedure DeleteOneTip(TipulId, fName: String);
+    procedure DeleteOneDrv(IdDrv: String);
+    procedure DeleteOneBill(IdBill: String);
+  end;
+
+var
+  dmUtilsOld: TdmUtilsOld;
+
+implementation
+
+{$R *.dfm}
+
+{ TdmUtilsOld }
+
+procedure TdmUtilsOld.ShiftClient(Id: String);
+var
+   sSql, IdNewCl: String;
+begin
+   sSql := 'SELECT * FROM KClientOld.db ' +
+           'WHERE Id = ' + Id;
+   ShiftRec(sSql, 'KClient.Db');
+   IdNewCl := GetRelatedId('Id');
+
+   ShiftClnDtl(Id, IdNewCl);
+
+   ShiftAllCar(Id, IdNewCl);
+   ShiftAllDrv(Id, IdNewCl);
+   ShiftAllBill(Id, IdNewCl);
+   ShiftAllDocs(Id, IdNewCl);
+end;
+
+procedure TdmUtilsOld.ShiftAllCar(Id, IdNewCl: String);
+var
+   IdCar: String;
+begin
+   with qrSrcLvl2 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCarOld.db ' +
+           'WHERE ClientId = ' + Id;
+       Open;
+       while not Eof do
+       begin
+           IdCar := FieldByName('Id').AsString;
+           ShiftOneCar(IdCar, IdNewCl);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.ShiftAllDrv(Id, IdNewCl: String);
+var
+   IdDrv: String;
+begin
+   with qrSrcLvl2 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDriverOld.db ' +
+           'WHERE ClientId = ' + Id;
+       Open;
+       while not Eof do
+       begin
+           IdDrv := FieldByName('Id').AsString;
+           ShiftOneDrv(IdDrv, IdNewCl);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.ShiftAllBill(Id, IdNewCl: String);
+var
+   IdBill: String;
+begin
+   with qrSrcLvl2 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KBillHisOld.db ' +
+           'WHERE ClientId = ' + Id;
+       Open;
+       while not Eof do
+       begin
+           IdBill := FieldByName('Id').AsString;
+           ShiftOneBill(IdBill, IdNewCl);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.ShiftAllDocs(Id, IdNewCl: String);
+var
+  i: Integer;
+begin
+  with qrSrcTofes do
+   begin
+     Close;
+     SQL.Text := 'SELECT * FROM KClTofesOld.DB ' +
+           'WHERE ClientId = ' + Id;
+     Open;
+     tbDestTofes.TableName := 'KClTofes.DB';
+      tbDestTofes.Open;
+      while not qrSrcTofes.Eof do
+      begin
+        tbDestTofes.Append;
+        for i := 2 to qrSrcTofes.FieldCount -1 do
+           tbDestTofes.Fields[i].Assign(qrSrcTofes.Fields[i]);
+        tbDestTofes.FieldByName('ClientId').AsString := IdNewCl;
+        tbDestTofes.Post;
+        qrSrcTofes.Next;
+      end;
+      tbDestTofes.Close;
+     Close;
+  end;
+end;
+
+procedure TdmUtilsOld.ShiftOneCar(IdCar, IdNewCl: String);
+var
+   sSql, IdNewCr: String;
+begin
+   sSql := 'SELECT * FROM KCarOld.db ' +
+           'WHERE Id = ' + IdCar;
+   ShiftRec(sSql, 'KCar');
+   SetRelatedId('ClientId', IdNewCl);
+   IdNewCr := GetRelatedId('Id');
+   ShiftCarDtl(IdCar, IdNewCr);
+end;
+
+procedure TdmUtilsOld.ShiftOneDrv(IdDrv, IdNewCl: String);
+var
+   sSql, IdNewDr: String;
+begin
+   sSql := 'SELECT * FROM KDriverOld.db ' +
+           'WHERE Id = ' + IdDrv;
+   ShiftRec(sSql, 'KDriver');
+   SetRelatedId('ClientId', IdNewCl);
+   IdNewDr := GetRelatedId('Id');
+   ShiftDrvDtl(IdDrv, IdNewDr);
+end;
+
+procedure TdmUtilsOld.ShiftOneBill(IdBill, IdNewCl: String);
+var
+   sSql, IdNewBl: String;
+begin
+   sSql := 'SELECT * FROM KBillHisOld.db ' +
+           'WHERE Id = ' + IdBill;
+   ShiftRec(sSql, 'KBillHis');
+   SetRelatedId('ClientId', IdNewCl);
+   IdNewBl := GetRelatedId('Id');
+   ShiftBillDtl(IdBill, IdNewBl);
+end;
+
+procedure TdmUtilsOld.ShiftClnDtl(IdCln, IdNewCl: String);
+var
+  IdDtl: String;
+begin
+  with qrSrcLvl3 do
+  begin
+    Close;
+    SQL.Text := 'SELECT * FROM KClFollowOld.DB ' +
+         'WHERE ClientId = ' + IdCln;
+    Open;
+    while not Eof do
+    begin
+      IdDtl := FieldByName('Id').AsString;
+      ShiftOneDtl('KClFollowOld.DB', 'KClFollow.DB', 'ClientId',
+                     IdDtl, IdNewCl);
+      Next;
+    end;
+  end;
+end;
+
+procedure TdmUtilsOld.ShiftCarDtl(IdCar, IdNewCr: String);
+var
+  IdDtl, IdNewTp: String;
+  I: Integer;
+begin
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrTipulOld.DB ' +
+           'WHERE CarId = ' + IdCar;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KCrTipulOld.DB', 'KCrTipul.DB', 'CarId',
+                       IdDtl, IdNewCr);
+           IdNewTp := GetRelatedId('Id');
+           ShiftTipSubDtl(IdDtl, IdNewTp);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrTipulHisOld.DB ' +
+           'WHERE CarId = ' + IdCar;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KCrTipulHisOld.DB', 'KCrTipulHis.DB', 'CarId',
+                       IdDtl, IdNewCr);
+           IdNewTp := GetRelatedId('Id');
+           ShiftTipHisSubDtl(IdDtl, IdNewTp);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrAcdntOld.DB ' +
+           'WHERE CarId = ' + IdCar;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KCrAcdntOld.DB', 'KCrAcdnt.DB', 'CarId',
+                       IdDtl, IdNewCr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrFollowOld.DB ' +
+           'WHERE CarId = ' + IdCar;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KCrFollowOld.DB', 'KCrFollow.DB', 'CarId',
+                       IdDtl, IdNewCr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrTipulOutOld.DB ' +
+           'WHERE CarId = ' + IdCar;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KCrTipulOutOld.DB', 'KCrTipulOut.DB', 'CarId',
+                       IdDtl, IdNewCr);
+           Next;
+       end;
+   end;
+
+   with qrSrcTofes do
+   begin
+      Close;
+      SQL.Text := 'SELECT * FROM KCrTofesOld.DB ' +
+           'WHERE CarId = ' + IdCar;
+      Open;
+      tbDestTofes.TableName := 'KCrTofes.DB';
+      tbDestTofes.Open;
+      while not qrSrcTofes.Eof do
+      begin
+        tbDestTofes.Append;
+        for i := 2 to qrSrcTofes.FieldCount -1 do
+           tbDestTofes.Fields[i].Assign(qrSrcTofes.Fields[i]);
+        tbDestTofes.FieldByName('CarId').AsString := IdNewCr;
+        tbDestTofes.Post;
+        qrSrcTofes.Next;
+      end;
+      tbDestTofes.Close;
+      Close;
+//      SQL.Text := 'UPDATE KCrTofes.db ' +
+//                'SET CarId = ' + IdNewCr + ' ' +
+//                'WHERE CarId = ' + IdCar;
+//      ExecSql;
+  end;
+end;
+
+procedure TdmUtilsOld.ShiftTipSubDtl(TipulId, IdNewTp: String);
+var
+   IdDtl: String;
+begin
+   with qrSrcLvl4 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrTipulDtlOld.DB ' +
+           'WHERE TipulId = ' + TipulId;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KCrTipulDtlOld.DB', 'KCrTipulDtl.DB', 'TipulId',
+                       IdDtl, IdNewTp);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.ShiftTipHisSubDtl(TipulId, IdNewTp: String);
+var
+   IdDtl: String;
+begin
+   with qrSrcLvl4 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrTipulDtlHisOld.DB ' +
+           'WHERE TipulId = ' + TipulId;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KCrTipulDtlHisOld.DB', 'KCrTipulDtlHis.DB', 'TipulId',
+                       IdDtl, IdNewTp);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.ShiftDrvDtl(IdDrv, IdNewDr: String);
+var
+   IdDtl: String;
+   I: Integer;
+begin
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrHeiterOld.DB ' +
+           'WHERE IdDriver = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrHeiterOld.DB', 'KDrHeiter.DB', 'IdDriver',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrHeiterHisOld.DB ' +
+           'WHERE IdDriver = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrHeiterHisOld.DB', 'KDrHeiterHis.DB', 'IdDriver',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrTahoOld.DB ' +
+           'WHERE DrvId = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrTahoOld.DB', 'KDrTaho.DB', 'DrvId',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrAcdntOld.DB ' +
+           'WHERE IdDriver = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrAcdntOld.DB', 'KDrAcdnt.DB', 'IdDriver',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrAviraOld.DB ' +
+           'WHERE IdDriver = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrAviraOld.DB', 'KDrAvira.DB', 'IdDriver',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrCourseOld.DB ' +
+           'WHERE IdDriver = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrCourseOld.DB', 'KDrCourse.DB', 'IdDriver',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrBdikaOld.DB ' +
+           'WHERE IdDriver = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrBdikaOld.DB', 'KDrBdika.DB', 'IdDriver',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDrFollowOld.DB ' +
+           'WHERE DriverId = ' + IdDrv;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KDrFollowOld.DB', 'KDrFollow.DB', 'DriverId',
+                       IdDtl, IdNewDr);
+           Next;
+       end;
+   end;
+
+   with qrSrcTofes do
+   begin
+      Close;
+      SQL.Text := 'SELECT * FROM KDrTofesOld.DB ' +
+           'WHERE DriverId = ' + IdDrv;
+      Open;
+      tbDestTofes.TableName := 'KDrTofes.DB';
+      tbDestTofes.Open;
+      while not qrSrcTofes.Eof do
+      begin
+        tbDestTofes.Append;
+        for i := 2 to qrSrcTofes.FieldCount -1 do
+           tbDestTofes.Fields[i].Assign(qrSrcTofes.Fields[i]);
+        tbDestTofes.FieldByName('DriverId').AsString := IdNewDr;
+        tbDestTofes.Post;
+        qrSrcTofes.Next;
+      end;
+      tbDestTofes.Close;
+      Close;
+//      SQL.Text := 'UPDATE KDrTofes.db ' +
+//                'SET DriverId = ' + IdNewDr + ' ' +
+//                'WHERE DriverId = ' + IdDrv;
+//      ExecSql;
+  end;
+end;
+
+procedure TdmUtilsOld.ShiftBillDtl(IdBill, IdNewBl: String);
+var
+   IdDtl: String;
+begin
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KBlDetailHisOld.DB ' +
+           'WHERE BillId = ' + IdBill;
+       Open;
+       while not Eof do
+       begin
+           IdDtl := FieldByName('Id').AsString;
+           ShiftOneDtl('KBlDetailHisOld.DB', 'KBlDetailHis.DB', 'BillId',
+                       IdDtl, IdNewBl);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.ShiftOneDtl(FName, FOldName, FldName, IdDtl,
+  IdNewCr: String);
+var
+   sSql: String;
+begin
+   sSql := 'SELECT * FROM ' + FName +
+           ' WHERE Id = ' + IdDtl;
+   ShiftRec(sSql, FOldName);
+   SetRelatedId(FldName, IdNewCr);
+end;
+
+function TdmUtilsOld.GetRelatedId(FName: String): String;
+begin
+   with tbDest do
+   begin
+       Open;
+       Last;
+       Result := FieldByName(FName).AsString;
+       Close;
+   end;
+end;
+
+procedure TdmUtilsOld.SetRelatedId(FName, IdVal: String);
+begin
+   with tbDest do
+   begin
+       Open;
+       Last;
+       Edit;
+       FieldByName(FName).AsString := IdVal;
+       Post;
+       Close;
+   end;
+end;
+
+procedure TdmUtilsOld.ShiftRec(sSql, dstName: String);
+begin
+   with qrSrcLvl1 do
+   begin
+       Close;
+       SQL.Text := sSql;
+       Open;
+   end;
+   tbDest.TableName := dstName;
+   bmGnrl.Execute;
+end;
+
+procedure TdmUtilsOld.DeleteClient(Id: String);
+var
+   stSql: String;
+begin
+   DeleteAllCar(Id);
+   DeleteAllDrv(Id);
+   DeleteAllBill(Id);
+   DeleteAllDocs(Id);
+   stSql := 'DELETE FROM KClientOld.DB '+
+           'WHERE Id = ' + Id;
+   DeleteRecs(stSql);
+end;
+
+procedure TdmUtilsOld.DeleteAllCar(Id: String);
+var
+   IdCar: String;
+begin
+   with qrSrcLvl2 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCarOld.db ' +
+           'WHERE ClientId = ' + Id;
+       Open;
+       while not Eof do
+       begin
+           IdCar := FieldByName('Id').AsString;
+           DeleteOneCar(IdCar);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.DeleteAllDrv(Id: String);
+var
+   IdDrv: String;
+begin
+   with qrSrcLvl2 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KDriverOld.db ' +
+           'WHERE ClientId = ' + Id;
+       Open;
+       while not Eof do
+       begin
+           IdDrv := FieldByName('Id').AsString;
+           DeleteOneCar(IdDrv);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.DeleteAllBill(Id: String);
+var
+   IdBill: String;
+begin
+   with qrSrcLvl2 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KBillHisOld.db ' +
+           'WHERE ClientId = ' + Id;
+       Open;
+       while not Eof do
+       begin
+           IdBill := FieldByName('Id').AsString;
+           DeleteOneBill(IdBill);
+           Next;
+       end;
+   end;
+end;
+
+procedure TdmUtilsOld.DeleteAllDocs(Id: String);
+var
+  stSql: String;
+begin
+   stSql := 'DELETE FROM KClTofesOld.DB '+
+           'WHERE ClientId = ' + Id;
+   DeleteRecsTofes(stSql);
+end;
+
+procedure TdmUtilsOld.DeleteOneCar(IdCar: String);
+var
+   stSql, TipulId: String;
+begin
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrTipulOld.db ' +
+           'WHERE CarId = ' + IdCar;
+       Open;
+       while not Eof do
+       begin
+           TipulId := FieldByName('Id').AsString;
+           DeleteOneTip(TipulId, 'KCrTipulDtlOld.db');
+           Next;
+       end;
+   end;
+   stSql := 'SELECT * FROM KCrTipulOld.db ' +
+           'WHERE CarId = ' + IdCar;
+   DeleteRecs(stSql);
+
+   with qrSrcLvl3 do
+   begin
+       Close;
+       SQL.Text := 'SELECT * FROM KCrTipulHisOld.db ' +
+           'WHERE CarId = ' + IdCar;
+       Open;
+       while not Eof do
+       begin
+           TipulId := FieldByName('Id').AsString;
+           DeleteOneTip(TipulId, 'KCrTipulDtlHisOld.db');
+           Next;
+       end;
+   end;
+   stSql := 'SELECT * FROM KCrTipulHisOld.db ' +
+           'WHERE CarId = ' + IdCar;
+   DeleteRecs(stSql);
+
+   stSql := 'DELETE FROM KCrDrvOld.DB '+
+           'WHERE CarId = ' + IdCar;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KCrAcdntOld.DB '+
+           'WHERE CarId = ' + IdCar;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KCrFollowOld.DB '+
+           'WHERE CarId = ' + IdCar;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KCrTipulOutOld.DB '+
+           'WHERE CarId = ' + IdCar;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KCrTofesOld.DB '+
+           'WHERE CarId = ' + IdCar;
+   DeleteRecsTofes(stSql);
+   stSql := 'DELETE FROM KCarOld.DB '+
+           'WHERE Id = ' + IdCar;
+   DeleteRecs(stSql);
+end;
+
+procedure TdmUtilsOld.DeleteOneTip(TipulId, fName: String);
+var
+   stSql: String;
+begin
+   stSql := 'DELETE FROM '+ fName +
+           ' WHERE TipulId = ' + TipulId;
+   DeleteRecs(stSql);
+end;
+
+procedure TdmUtilsOld.DeleteOneDrv(IdDrv: String);
+var
+   stSql: String;
+begin
+   stSql := 'DELETE FROM KDrHeiterOld.DB '+
+           'WHERE IdDriver = ' + IdDrv;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KDrTahoOld.DB '+
+           'WHERE DrvId = ' + IdDrv;
+   stSql := 'DELETE FROM KDrAcdntOld.DB '+
+           'WHERE IdDriver = ' + IdDrv;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KDrAviraOld.DB '+
+           'WHERE IdDriver = ' + IdDrv;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KDrBdikaOld.DB '+
+           'WHERE IdDriver = ' + IdDrv;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KDrCourseOld.DB '+
+           'WHERE IdDriver = ' + IdDrv;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KDrFollowOld.DB '+
+           'WHERE DriverId = ' + IdDrv;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KDrTofesOld.DB '+
+           'WHERE DriverId = ' + IdDrv;
+   DeleteRecsTofes(stSql);
+   stSql := 'DELETE FROM KDriverOld.DB '+
+           'WHERE Id = ' + IdDrv;
+   DeleteRecs(stSql);
+end;
+
+procedure TdmUtilsOld.DeleteOneBill(IdBill: String);
+var
+   stSql: String;
+begin
+   stSql := 'DELETE FROM KBlDetailHisOld.DB '+
+           'WHERE BillId = ' + IdBill;
+   DeleteRecs(stSql);
+   stSql := 'DELETE FROM KBillHisOld.DB '+
+           'WHERE Id = ' + IdBill;
+   DeleteRecs(stSql);
+end;
+
+procedure TdmUtilsOld.DeleteRecs(stSql: String);
+begin
+   qrSrcLvl1.SQL.Text := stSql;
+   qrSrcLvl1.ExecSQL;
+end;
+
+procedure TdmUtilsOld.DeleteRecsTofes(stSql: String);
+begin
+   qrSrcTofes.SQL.Text := stSql;
+   qrSrcTofes.ExecSQL;
+end;
+
+
+
+end.

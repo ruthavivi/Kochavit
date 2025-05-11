@@ -1,0 +1,149 @@
+unit CheckFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask;
+
+type
+  TfrmCheckFilter = class(TfrmGnrlFilter)
+    lbAAfkadaD: TLabel;
+    lbZAfkadaD: TLabel;
+    lbAPidyonD: TLabel;
+    lbZPidyonD: TLabel;
+    lbANifdaD: TLabel;
+    lbZNifdaD: TLabel;
+    edZAfkadaD: TMaskEdit;
+    cxDAfkadaD: TCheckBox;
+    edAPidyonD: TMaskEdit;
+    edZPidyonD: TMaskEdit;
+    cxDPidyonD: TCheckBox;
+    edAAfkadaD: TMaskEdit;
+    edZNifdaD: TMaskEdit;
+    cxDNifdaD: TCheckBox;
+    lbACheckSum: TLabel;
+    lbZCheckSum: TLabel;
+    Label1: TLabel;
+    cxNCheckSum: TCheckBox;
+    edACheckSum: TMaskEdit;
+    edZCheckSum: TMaskEdit;
+    Label2: TLabel;
+    lbAKabala: TLabel;
+    lbZKabala: TLabel;
+    cxNKabala: TCheckBox;
+    edAKabala: TMaskEdit;
+    edZKabala: TMaskEdit;
+    lbABill: TLabel;
+    lbZBill: TLabel;
+    cxNBill: TCheckBox;
+    edABill: TMaskEdit;
+    edZBill: TMaskEdit;
+    lbEShem: TLabel;
+    cxEShem: TCheckBox;
+    cbEShem: TComboBox;
+    edANifdaD: TMaskEdit;
+    qrFilterId: TIntegerField;
+    qrFilterClientId: TIntegerField;
+    qrFilterBankId: TSmallintField;
+    qrFilterAcount: TIntegerField;
+    qrFilterCheckNo: TIntegerField;
+    qrFilterCheckSum: TCurrencyField;
+    qrFilterAfkadaD: TDateField;
+    qrFilterPidyonD: TDateField;
+    qrFilterBill: TIntegerField;
+    qrFilterKabala: TIntegerField;
+    qrFilterReturn: TBooleanField;
+    qrFilterNifdaD: TDateField;
+    qrFilterBank: TStringField;
+    qrFilterShem: TStringField;
+    qrFilterTel1: TStringField;
+    qrFilterBahalim1: TStringField;
+    qrFilterTelB1: TStringField;
+    qrFilterAcounter: TStringField;
+    qrFilterTelA: TStringField;
+    qrFilterId_1: TIntegerField;
+    qrFilterReturn_1: TBooleanField;
+    procedure FormCreate(Sender: TObject);
+    procedure cxDAfkadaDClick(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure edAAfkadaDExit(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    procedure LoadPrfx;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCheckFilter: TfrmCheckFilter;
+
+implementation
+uses
+  CheckReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmCheckFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  totalRec := GetRecNum('KChecksHis');
+end;
+
+procedure TfrmCheckFilter.cxDAfkadaDClick(Sender: TObject);
+begin
+  inherited;
+  ChkBoxClick(Sender as TCheckBox);
+end;
+
+procedure TfrmCheckFilter.cbEShemEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KClient';
+  ItemsInCmbBox(cbEShem, 'Shem');
+end;
+
+procedure TfrmCheckFilter.edAAfkadaDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus;
+end;
+
+procedure TfrmCheckFilter.LoadPrfx;
+begin
+  prfxList.Add('C.');
+  prfxList.Add('Cl.');
+  prfxList.Add('tB.');
+end;
+
+procedure TfrmCheckFilter.btnExecuteClick(Sender: TObject);
+var
+   Path, whereLn: String;
+begin
+  inherited;
+  Screen.Cursor := crHourGlass;
+  Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+  prfxList := TStringList.Create;
+  try
+    LoadPrfx;
+    with qrFilter do
+    begin
+      SQL.LoadFromFile(Path+'CheckSQL.TXT');
+      WhereLn := GetWhereLn;
+      if (WhereLn = '') then
+        SQL[4] := ''
+      else
+        SQL[4] := 'WHERE ' + WhereLn;
+
+      Open;
+      selectRec := RecordCount;
+    end;
+    frmCheckReport := TfrmCheckReport.Create(Self);
+  finally
+    prfxList.Free;
+    Screen.Cursor := crDefault;
+  end;
+end;
+
+end.

@@ -1,0 +1,122 @@
+unit AcdntFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DBTables, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmAcdntFilter = class(TfrmGnrlFilter)
+    lbAAcdntD: TLabel;
+    lbZAcdntZ: TLabel;
+    edAAcdntD: TMaskEdit;
+    edZAcdntD: TMaskEdit;
+    cxDAcdntD: TCheckBox;
+    lbEType: TLabel;
+    cxEType: TCheckBox;
+    cbEType: TComboBox;
+    lbEShem: TLabel;
+    cxEShem: TCheckBox;
+    cbEShem: TComboBox;
+    qrFilterId: TIntegerField;
+    qrFilterAcdntD: TDateField;
+    qrFilterDescrpt: TStringField;
+    qrFilterStatus: TStringField;
+    qrFilterNumber: TStringField;
+    qrFilterType: TStringField;
+    qrFilterShem: TStringField;
+    procedure FormCreate(Sender: TObject);
+    procedure cxDAcdntDClick(Sender: TObject);
+    procedure edAAcdntDExit(Sender: TObject);
+    procedure cbETypeEnter(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+  private
+    procedure LoadPrfx;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcdntFilter: TfrmAcdntFilter;
+
+implementation
+uses
+   CrAcdntReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmAcdntFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  totalRec := GetRecNum('KCrAcdnt');
+end;
+
+procedure TfrmAcdntFilter.cxDAcdntDClick(Sender: TObject);
+begin
+  inherited;
+  ChkBoxClick(Sender as TCheckBox);
+end;
+
+procedure TfrmAcdntFilter.edAAcdntDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAAcdntD.Text,
+               edZAcdntD.Text) = False) then
+           edAAcdntD.SetFocus;
+end;
+
+procedure TfrmAcdntFilter.cbETypeEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KTblType';
+  ItemsInCmbBox(cbEType, 'Type');
+end;
+
+procedure TfrmAcdntFilter.cbEShemEnter(Sender: TObject);
+begin
+  inherited;
+  tbl.TableName := 'KClient';
+  ItemsInCmbBox(cbEShem, 'Shem');
+end;
+
+procedure TfrmAcdntFilter.btnExecuteClick(Sender: TObject);
+var
+   Path, WhereLn: String;
+begin
+  inherited;
+   Screen.Cursor := crHourGlass;
+   Path :=  ExtractFilePath(Application.ExeName) + 'SQL\';
+   prfxList := TStringList.Create;
+   try
+       LoadPrfx;
+       with qrFilter do
+       begin
+           SQL.LoadFromFile(Path+'CrAcdntSQL.TXT');
+           WhereLn := GetWhereLn;
+           if (WhereLn = '') then
+               SQL[SQL.Count -2] := ''
+           else
+               SQL[SQL.Count -2] := 'WHERE ' + WhereLn;
+           Open;
+           selectRec := RecordCount;
+       end;
+       frmCrAcdntReport := TfrmCrAcdntReport.Create(Self);
+   finally
+       prfxList.Free;
+       Screen.Cursor := crDefault;
+   end;
+end;
+
+procedure TfrmAcdntFilter.LoadPrfx;
+begin
+  prfxList.Add('Ca.');
+  prfxList.Add('tT.');
+  prfxList.Add('Cl.');
+end;
+
+end.

@@ -1,0 +1,11 @@
+inherited frmDriverOnCarFilter: TfrmDriverOnCarFilter
+  Caption = #1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1504#1492#1490#1497#1501' '#1510#1502#1493#1491#1497#1501
+  ExplicitWidth = 459
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    inherited grbMain: TGroupBox
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1504#1492#1490#1497#1501' '#1510#1502#1493#1491#1497#1501
+    end
+  end
+end

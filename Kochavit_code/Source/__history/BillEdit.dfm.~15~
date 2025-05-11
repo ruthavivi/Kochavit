@@ -1,0 +1,282 @@
+inherited frmBillEdit: TfrmBillEdit
+  Left = 165
+  Top = 106
+  ActiveControl = edReciptNo
+  Caption = #1499#1512#1496#1497#1505' '#1495#1513#1489#1493#1503
+  ClientHeight = 353
+  ClientWidth = 507
+  OldCreateOrder = True
+  OnCloseQuery = FormCloseQuery
+  OnCreate = FormCreate
+  ExplicitWidth = 515
+  ExplicitHeight = 399
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited ToolBar1: TToolBar
+    Width = 507
+    TabOrder = 1
+    ExplicitWidth = 507
+    inherited ToolButton8: TToolButton
+      Hint = #1489#1495#1497#1512#1514' '#1502#1497#1499#1514#1489' '#1502#1493#1499#1503
+      Caption = #1514#1508#1493#1510#1514' &'#1491#1493#1488#1512
+      Enabled = False
+      ImageIndex = 1
+      Visible = False
+      OnClick = acMailExecute
+    end
+    inherited btnScan: TToolButton
+      Action = nil
+      Enabled = False
+      Visible = False
+    end
+    inherited btnPhoto: TToolButton
+      Action = nil
+      Enabled = False
+      Visible = False
+    end
+    inherited ToolButton2: TToolButton
+      Action = nil
+      Enabled = False
+      Visible = False
+    end
+    inherited btnShowScan: TToolButton
+      Action = nil
+      Enabled = False
+      Visible = False
+      ExplicitWidth = 50
+    end
+    inherited stClientName: TStaticText
+      Height = 36
+    end
+  end
+  inherited PageControl1: TPageControl
+    Width = 507
+    Height = 309
+    TabOrder = 0
+    ExplicitWidth = 507
+    ExplicitHeight = 309
+    inherited TabSheet1: TTabSheet
+      Caption = #1508#1512#1496#1497' '#1495#1513#1489#1493#1503
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 499
+      ExplicitHeight = 281
+      object GroupBox1: TGroupBox
+        Left = 0
+        Top = 0
+        Width = 499
+        Height = 281
+        Align = alClient
+        Caption = #1508#1512#1496#1497' '#1495#1513#1489#1493#1504#1497#1514
+        TabOrder = 0
+        DesignSize = (
+          499
+          281)
+        object Label1: TLabel
+          Left = 414
+          Top = 32
+          Width = 67
+          Height = 13
+          Anchors = [akTop, akRight]
+          Caption = #1502#1505#39' '#1495#1513#1489#1493#1504#1497#1514':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ExplicitLeft = 238
+        end
+        object Label2: TLabel
+          Left = 414
+          Top = 56
+          Width = 67
+          Height = 13
+          Anchors = [akTop, akRight]
+          Caption = #1514#1488#1512#1497#1498' '#1492#1508#1511#1492':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ExplicitLeft = 238
+        end
+        object Label3: TLabel
+          Left = 407
+          Top = 80
+          Width = 74
+          Height = 13
+          Anchors = [akTop, akRight]
+          Caption = #1505#1499#1493#1501' '#1500#1514#1513#1500#1493#1501':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clRed
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ExplicitLeft = 231
+        end
+        object Label4: TLabel
+          Left = 400
+          Top = 104
+          Width = 81
+          Height = 13
+          Anchors = [akTop, akRight]
+          Caption = #1514#1488#1512#1497#1498' '#1500#1514#1513#1500#1493#1501':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBtnText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ExplicitLeft = 224
+        end
+        object Label5: TLabel
+          Left = 446
+          Top = 128
+          Width = 35
+          Height = 13
+          Anchors = [akTop, akRight]
+          Caption = #1492#1506#1512#1493#1514':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBtnText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          ExplicitLeft = 270
+        end
+        object edReciptNo: TDBEdit
+          Left = 221
+          Top = 29
+          Width = 174
+          Height = 21
+          Anchors = [akTop, akRight]
+          BiDiMode = bdLeftToRight
+          DataField = 'ReciptNo'
+          DataSource = dsBill
+          ParentBiDiMode = False
+          TabOrder = 0
+          OnExit = edReciptNoExit
+        end
+        object edProduceD: TDBEdit
+          Left = 221
+          Top = 53
+          Width = 174
+          Height = 21
+          Anchors = [akTop, akRight]
+          BiDiMode = bdLeftToRight
+          DataField = 'ProduceD'
+          DataSource = dsBill
+          ParentBiDiMode = False
+          TabOrder = 1
+          OnExit = edReciptNoExit
+          OnKeyDown = edProduceDKeyDown
+        end
+        object edSumA: TDBEdit
+          Left = 221
+          Top = 77
+          Width = 174
+          Height = 21
+          Anchors = [akTop, akRight]
+          BiDiMode = bdLeftToRight
+          DataField = 'SumA'
+          DataSource = dsBill
+          ParentBiDiMode = False
+          TabOrder = 2
+          OnExit = edReciptNoExit
+        end
+        object edToPayD: TDBEdit
+          Left = 221
+          Top = 101
+          Width = 174
+          Height = 21
+          Anchors = [akTop, akRight]
+          BiDiMode = bdLeftToRight
+          DataField = 'ToPayD'
+          DataSource = dsBill
+          ParentBiDiMode = False
+          TabOrder = 3
+          OnKeyDown = edProduceDKeyDown
+        end
+        object edRemark: TDBMemo
+          Left = 220
+          Top = 128
+          Width = 175
+          Height = 89
+          Anchors = [akTop, akRight]
+          DataField = 'Remark'
+          DataSource = dsBill
+          TabOrder = 4
+        end
+      end
+    end
+  end
+  inherited ActionList1: TActionList
+    Left = 144
+    Top = 16
+    inherited acSave: TAction
+      OnExecute = acSaveExecute
+    end
+    inherited acMail: TAction
+      OnExecute = acMailExecute
+    end
+    inherited acPrint: TAction
+      Caption = #1495#1513#1489#1493#1503' '#1489#1497#1511#1493#1512#1493#1514
+      Enabled = False
+      Hint = #1495#1513#1489#1493#1504#1493#1514' '#1506#1489#1493#1512' '#1489#1497#1511#1493#1512#1493#1514' '#1513#1489#1493#1510#1506#1493
+      ImageIndex = 4
+      ShortCut = 0
+      Visible = False
+    end
+    inherited acScan: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acPhoto: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acDocument: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acShowScan: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acPrintLabel: TAction
+      Enabled = False
+      Visible = False
+    end
+    inherited acShowFolder: TAction
+      Enabled = False
+      Visible = False
+    end
+    object acDeleteCar: TDataSetDelete
+      Category = 'Dataset'
+      Caption = #1489#1497#1496#1493#1500' '#1512#1499#1489
+      Enabled = False
+      Hint = #1489#1497#1496#1493#1500' '#1512#1499#1489
+      ImageIndex = 3
+    end
+  end
+  inherited MainMenu1: TMainMenu
+    Left = 176
+    Top = 16
+  end
+  inherited dlgOpenPhoto: TOpenPictureDialog
+    Left = 268
+    Top = 65533
+  end
+  inherited pmShowScan: TPopupMenu
+    Left = 272
+    Top = 32
+  end
+  object dsBill: TDataSource
+    DataSet = dmBillEdit.tbBill
+    Left = 248
+    Top = 288
+  end
+end

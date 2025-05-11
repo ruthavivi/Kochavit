@@ -1,0 +1,25 @@
+unit ExportFilesDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes;
+
+type
+  TdmExportFiles = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmExportFiles: TdmExportFiles;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,25 @@
+unit CrFollowFilterDM;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, GnrlFilterDM, Data.DB, edbcomps;
+
+type
+  TdmCrFollowFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmCrFollowFilter: TdmCrFollowFilter;
+
+implementation
+
+{%CLASSGROUP 'System.Classes.TPersistent'}
+
+{$R *.dfm}
+
+end.

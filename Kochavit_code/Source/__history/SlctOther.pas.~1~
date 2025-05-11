@@ -1,0 +1,39 @@
+unit SlctOther;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, DBTables, StdCtrls, DBCtrls, Buttons, ExtCtrls, Grids,
+  DBGrids;
+
+type
+  TfrmSlctOther = class(TForm)
+    Panel1: TPanel;
+    BitBtn1: TBitBtn;
+    btnClose: TBitBtn;
+    Panel3: TPanel;
+    dsSlctOther: TDataSource;
+    tbSlctOther: TTable;
+    dbGrid: TDBGrid;
+    procedure BitBtn1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    Id: Integer;
+    { Public declarations }
+  end;
+
+var
+  frmSlctOther: TfrmSlctOther;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmSlctOther.BitBtn1Click(Sender: TObject);
+begin
+  Id := tbSlctOther.FieldByName('Id').AsInteger;
+end;
+
+end.

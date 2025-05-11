@@ -1,0 +1,222 @@
+unit ClientListOld;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ComCtrls, Grids, DBGrids, ExtCtrls, StdCtrls, DBCtrls, ToolWin,
+  ImgList, ActnList, Menus, DB;
+
+type
+  TfrmClientListOld = class(TForm)
+    ToolBar1: TToolBar;
+    DBNavigator1: TDBNavigator;
+    edSearch: TEdit;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ToolButton3: TToolButton;
+    Panel1: TPanel;
+    DBGrid1: TDBGrid;
+    StatusBar: TStatusBar;
+    MainMenu1: TMainMenu;
+    ActionList1: TActionList;
+    ImageList1: TImageList;
+    acCause: TAction;
+    acReturn: TAction;
+    acPrint: TAction;
+    N1: TMenuItem;
+    N2: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    acEdit: TAction;
+    acBitulOld: TAction;
+    ToolButton4: TToolButton;
+    N5: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acCauseExecute(Sender: TObject);
+    procedure acReturnExecute(Sender: TObject);
+    procedure edSearchChange(Sender: TObject);
+    procedure acCauseUpdate(Sender: TObject);
+    procedure acEditExecute(Sender: TObject);
+    procedure acBitulOldExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+  private
+    { Private declarations }
+    procedure LoadPosition(pKey: String; pForm: TForm);
+    procedure SavePosition(pKey: String; pForm: TForm);
+    procedure UpdateStatusBar;
+    procedure CloseClientOld;
+    procedure FreeDM;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmClientListOld: TfrmClientListOld;
+
+implementation
+
+{$R *.dfm}
+uses
+   MainDMOld, ClientEditOld, CauseMsg, UtilsDMOld, MainDM, LogErrorUtil,
+   RegistryUtils;
+
+procedure TfrmClientListOld.FormCreate(Sender: TObject);
+begin
+   try
+       dmMainOld.tbClientOld.Open;
+   except
+       on E: EDatabaseError do
+       begin
+           CloseClientOld;
+           HandelError('!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+           Self.Destroy;
+       end;
+   end;
+   LoadPosition('ClientOld', (Sender as TForm));
+   UpdateStatusBar;
+end;
+
+procedure TfrmClientListOld.LoadPosition(pKey: String; pForm: TForm);
+var
+   Reg: TRegistryUtils;
+begin
+   Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+   Reg.LoadFromRegistry;
+   Reg.Free;
+end;
+
+procedure TfrmClientListOld.UpdateStatusBar;
+begin
+   StatusBar.Panels[0].Text := 'סה"כ חברות בארכיון: ' +
+           IntToStr(dmMainOld.tbClientOld.RecordCount -1);
+end;
+
+procedure TfrmClientListOld.acEditExecute(Sender: TObject);
+begin
+   if not Assigned(frmClientEditOld) then
+   begin
+       dmMainOld.tbClientOld.Edit;
+       frmClientEditOld := TfrmClientEditOld.Create(Self);
+   end;
+end;
+
+procedure TfrmClientListOld.acCauseUpdate(Sender: TObject);
+begin
+   (Sender as TAction).Enabled :=
+       dmMainOld.tbClientOld.FieldByName('IdClient').AsInteger >= 1;
+end;
+
+procedure TfrmClientListOld.edSearchChange(Sender: TObject);
+begin
+   dmMainOld.tbClientOld.FindNearest([edSearch.Text]);
+end;
+
+procedure TfrmClientListOld.acCauseExecute(Sender: TObject);
+begin
+  frmCauseMsg := TfrmCauseMsg.Create(Self);
+  with dmMainOld.qrGnrl do
+  begin
+    SQL.Text := 'SELECT Sb.Moed, Tc.CauseCl FROM KClSiba Sb ' +
+                'LEFT JOIN KTblCause Tc ON Tc.Id = Sb.IdSiba ' +
+                'WHERE Sb.IdOwn = :Id';
+    DataSource := dmMainOld.dsClientOld;
+    try
+      Open;
+      if not IsEmpty then
+      begin
+        frmCauseMsg.lbMoed.Caption := 'תאריך העברה: ' +
+            FieldByName('Moed').AsString;
+        frmCauseMsg.lbSiba.Caption := 'סיבת העברה: ' +
+            FieldByName('CauseCl').AsString;
+        frmCauseMsg.ShowModal;
+    end;
+    finally
+      Close;
+      frmCauseMsg.Free;
+    end;
+  end;
+end;
+
+procedure TfrmClientListOld.acReturnExecute(Sender: TObject);
+begin
+   if (MessageDlg('להחזיר את החברה ' +
+           dmMainOld.tbClientOld.FieldByName('Shem').AsString +
+           ' לרשימה הפעילה',
+           mtConfirmation, mbYesNoCancel, 0) = mrYes) then
+   begin
+       Screen.Cursor := crHourGlass;
+       dmUtilsOld := TdmUtilsOld.Create(Self);
+       with dmUtilsOld do
+       begin
+           ShiftClient(dmMainOld.tbClientOld.FieldByName('Id').AsString);
+           tbDest.TableName := 'KClient';
+           DeleteClient(dmMainOld.tbClientOld.FieldByName('Id').AsString);
+           dmMainOld.tbClientOld.Close;
+           dmMainOld.tbClientOld.Open;
+           dmMain.tbClient.Close;
+           dmMain.tbClient.Open;
+           Free;
+       end;
+       Screen.Cursor := crDefault;
+   end;
+end;
+
+procedure TfrmClientListOld.acBitulOldExecute(Sender: TObject);
+begin
+  if (MessageDlg('לבטל סופית כרטיס חברה ' +
+           dmMainOld.tbClientOld.FieldByName('Shem').AsString,
+           mtConfirmation, mbYesNoCancel, 0) = mrYes) then
+   begin
+       Screen.Cursor := crHourGlass;
+       dmUtilsOld := TdmUtilsOld.Create(Self);
+       with dmUtilsOld do
+       begin
+           DeleteClient(dmMainOld.tbClientOld.FieldByName('Id').AsString);
+           dmMainOld.tbClientOld.Close;
+           dmMainOld.tbClientOld.Open;
+           dmMain.tbClient.Close;
+           dmMain.tbClient.Open;
+           Free;
+       end;
+       Screen.Cursor := crDefault;
+   end;
+end;
+
+procedure TfrmClientListOld.acPrintExecute(Sender: TObject);
+begin
+  dmMainOld.RvRprt.ExecuteReport('rpClientOld');
+end;
+
+procedure TfrmClientListOld.SavePosition(pKey: String; pForm: TForm);
+var
+  Reg: TRegistryUtils;
+begin
+  Reg := TRegistryGrd.Create('Kochavit', pKey, pForm);
+  Reg.SaveToRegistry;
+  Reg.Free;
+end;
+
+procedure TfrmClientListOld.CloseClientOld;
+begin
+   dmMainOld.tbClientOld.Close;
+end;
+
+procedure TfrmClientListOld.FreeDM;
+begin
+   if not dmMainOld.qrCarOld.Active and
+           not dmMainOld.qrDriverOld.Active then
+       FreeAndNil(dmMainOld);
+end;
+
+procedure TfrmClientListOld.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+   SavePosition('ClientOld', (Sender as TForm));
+   FreeDM;
+   Action := caFree;
+   frmClientListOld := nil;
+end;
+
+end.

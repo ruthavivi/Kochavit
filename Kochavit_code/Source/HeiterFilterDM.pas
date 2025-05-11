@@ -1,0 +1,33 @@
+unit HeiterFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmHeiterFilter = class(TdmGnrlFilter)
+    qrFilterId: TIntegerField;
+    qrFilterHeiter: TStringField;
+    qrFilterDateDone: TDateField;
+    qrFilterCodDrv: TIntegerField;
+    qrFilterShemD: TStringField;
+    qrFilterZeut: TStringField;
+    qrFilterCod: TIntegerField;
+    qrFilterShem: TStringField;
+    qrFilterOved: TStringField;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmHeiterFilter: TdmHeiterFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,207 @@
+unit CarReport;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlReport, DB, Menus, ImgList, ActnList, WordFunc, ComCtrls,
+  StdCtrls, Buttons, ExtCtrls, Grids, DBGrids, DBCtrls, ToolWin,
+  StdActns, DBActns, frxClass, frxDBSet, System.Actions, System.ImageList,
+  OpenToSendEmail;
+
+type
+  TfrmCarReport = class(TfrmGnrlReport)
+    pmLabel: TPopupMenu;
+    acCarLbl3X8: TAction;
+    N3X81: TMenuItem;
+    acMail: TAction;
+    frdbCar: TfrxDBDataset;
+    acSendEmail: TAction;
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acExcelExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acStatisticExecute(Sender: TObject);
+    procedure acMailExecute(Sender: TObject);
+    procedure acCarLbl3X8Execute(Sender: TObject);
+    procedure acSendEmailExecute(Sender: TObject);
+  private
+    procedure SetStatusBar;
+    function SelectDoc(var WorkFile, nCopy: OleVariant;
+               var vButton, vMemo: String; vPath: String): Boolean;
+    procedure GnrlPrints(pDocName, pFunc: String; pNCopy: Integer);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCarReport: TfrmCarReport;
+
+implementation
+uses
+  DataDM, CarFilterDM, CarRprtSlctDlg, CarSpssSlctDlg, OpenToPrint, DocUtils;
+{$R *.dfm}
+
+procedure TfrmCarReport.FormCreate(Sender: TObject);
+begin
+  inherited;
+  MarkIndexColumn('Number');
+  SetStatusBar;
+end;
+
+procedure TfrmCarReport.SetStatusBar;
+var
+  Procent: String;
+begin
+  if (StrToInt(dmCarFilter.TotalRec) = 0) then
+    Procent := '0'
+  else
+    Procent := FormatFloat('#.##', StrToInt(dmCarFilter.TotalSelectRec) /
+          StrToInt(dmCarFilter.TotalRec) * 100);
+  StatusBar1.Panels[0].Text := ' סה"כ רכבים בדו"ח: ' + dmCarFilter.TotalSelectRec +
+      ' מתוך ' + dmCarFilter.TotalRec + ' שהם: ' + Procent + '%';
+end;
+
+procedure TfrmCarReport.DBGridTitleClick(Column: TColumn);
+begin
+  inherited;
+  dmCarFilter.SqlState.Order := GetOrders(Column);
+  dmCarFilter.ReOpen;
+  MarkIndexColumn(Column.FieldName);
+end;
+
+procedure TfrmCarReport.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  frmCarRprtSlctDlg := TfrmCarRprtSlctDlg.Create(Self);
+  frmCarRprtSlctDlg.Show;
+end;
+
+procedure TfrmCarReport.acStatisticExecute(Sender: TObject);
+begin
+  inherited;
+  frmCarSpssSlctDlg := TfrmCarSpssSlctDlg.Create(Self);
+  frmCarSpssSlctDlg.Show;
+end;
+
+procedure TfrmCarReport.acExcelExecute(Sender: TObject);
+var
+  FileName: String;
+begin
+  inherited;
+  if SelectFields('Cr', dmCarFilter.qrFilter) then
+    if GetExprtFile(FileName, 'Excel', 2) then
+      SaveToExcel(dmCarFilter.qrFilter, FileName);
+end;
+
+procedure TfrmCarReport.acMailExecute(Sender: TObject);
+var
+  DocName, nCopy: OleVariant;
+  Func, vMemo: String;
+  Filter, SaveCopy: Boolean;
+begin
+  inherited;
+  Filter := False;
+  SaveCopy := False;
+
+  if SelectDoc(DocName, nCopy, Func, vMemo,
+       ExtractFilePath(Application.ExeName) + 'Docs\Car') then
+    GnrlPrints(DocName, Func, nCopy);
+end;
+
+procedure TfrmCarReport.GnrlPrints(pDocName, pFunc: String; pNCopy: Integer);
+var
+  Subject: String;
+  OneDoc: TDocUtils;
+  ToEmails: TStringList;
+begin
+  Subject := 'מצורפת הודעה מקצין הרכב שלך';
+
+  Screen.Cursor := crHourGlass;
+  with dmCarFilter.qrFilter do
+  begin
+    try
+      DisableControls;
+      First;
+      ToEmails := TStringList.Create;
+      if (pFunc = 'btnEmail') and HaveEMails(dmCarFilter.qrFilterClientId.AsString, ToEmails) then
+      begin
+        OneDoc := TDocUtils.Create('btnEmail', dmCarFilter.qrFilterShem.AsString + ' - '+
+              dmCarFilter.qrFilterNumber.AsString, Subject, pNCopy, False, ToEmails, pDocName);
+        OneDoc.SendDoc(dmCarFilter.qrFilter, nil, nil);
+        if OneDoc.EmailSend then
+            SaveEmailSend(dmCarFilter.qrFilterClientId.AsString, dmCarFilter.qrFilterId.AsString,
+              'NULL', Subject, ExtractFileName(ChangeFileExt(pDocName, '.pdf')));
+      end
+      else if (pFunc = 'btnPrint') or (pFunc = 'btnPreview') then
+      begin
+        OneDoc := TDocUtils.Create(pFunc, pNCopy, False, Subject, '', '', '', pDocName);
+        OneDoc.SendDoc(dmCarFilter.qrFilter, nil, nil);
+      end;
+      Next;
+  finally
+    EnableControls;
+    OneDoc.Free;
+    Screen.Cursor := crDefault;
+  end;
+  end;
+end;
+
+function TfrmCarReport.SelectDoc(var WorkFile, nCopy: OleVariant;
+  var vButton, vMemo: String; vPath: String): Boolean;
+begin
+  Result := False;
+
+  frmOpenToPrint := TfrmOpenToPrint.Create(self);
+  with frmOpenToPrint do
+  begin
+    DirectoryListBox.Directory := vPath;
+    Edit.Text := '';
+    if ShowModal = mrOK then
+    begin
+       vPath := DirectoryListBox.Directory;
+       WorkFile := vPath + '\' + Edit.Text;
+       vButton := btnPress;
+       nCopy := SpinEdit.Value;
+       Result := True;
+    end;
+    Free;
+  end;
+end;
+
+procedure TfrmCarReport.acCarLbl3X8Execute(Sender: TObject);
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'Report\';
+  dmData.frxReport.LoadFromFile(Path+'rpCarLblRprt3X8.fr3');
+  dmData.frxReport.PrepareReport;
+  dmData.frxReport.Print;
+end;
+
+
+procedure TfrmCarReport.acSendEmailExecute(Sender: TObject);
+begin
+  inherited;
+  frmOpenToSendEmail := TfrmOpenToSendEmail.Create(Self);
+  try
+    frmOpenToSendEmail.SetData('Car', dmCarFilter.qrFilter);
+    if (frmOpenToSendEmail.ShowModal = mrOk) then
+    begin
+
+    end;
+  finally
+    frmOpenToSendEmail.Free;
+  end;
+end;
+
+procedure TfrmCarReport.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmCarFilter.qrFilter.Close;
+  inherited;
+  frmCarReport := nil;
+end;
+
+end.

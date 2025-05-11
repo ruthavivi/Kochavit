@@ -1,0 +1,67 @@
+unit ChecksListDM;
+
+interface
+
+uses
+  SysUtils, Classes, DB, edbcomps;
+
+type
+  TdmChecksList = class(TDataModule)
+    qrGnrl: TEDBQuery;
+    qrChecksList: TEDBQuery;
+    qrChecksListId: TIntegerField;
+    qrChecksListBill: TIntegerField;
+    qrChecksListCheckNo: TIntegerField;
+    qrChecksListAfkadaD: TDateField;
+    qrChecksListPidyonD: TDateField;
+    qrChecksListReturn: TBooleanField;
+    qrChecksListShem: TStringField;
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrChecksListBeforeOpen(DataSet: TDataSet);
+  private
+    whrAdd: String;
+  public
+    ChecksOrder, ChecksRecNo: String;
+  end;
+
+var
+  dmChecksList: TdmChecksList;
+
+const
+  // when one client selected
+  whrSlctCh = 'WHERE WHERE NifdaD IS NULL AND ClientId = :Id ';
+  // when "כל החברות" selected
+  whrAll = 'WHERE NifdaD IS NULL AND Cl.Pail = TRUE ';
+
+implementation
+uses
+  MainDM, LogErrorUtil, KbFunc;
+
+{$R *.dfm}
+
+procedure TdmChecksList.DataModuleCreate(Sender: TObject);
+begin
+  ChecksOrder := GetIniValue('Checks', 'Order', 'PidyonD');
+
+  try
+    qrChecksList.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TdmChecksList.DataModuleCreate', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+end;
+
+procedure TdmChecksList.qrChecksListBeforeOpen(DataSet: TDataSet);
+begin
+  if dmMain.SelectAll then
+    qrChecksList.SQL[qrChecksList.SQL.Count-2] :=  whrAll + whrAdd
+  else
+    qrChecksList.SQL[qrChecksList.SQL.Count-2] :=  whrSlctCh + whrAdd;
+
+  qrChecksList.SQL[qrChecksList.SQL.Count-1] := 'ORDER BY '+ ChecksOrder;
+end;
+
+end.

@@ -1,0 +1,690 @@
+inherited dmDriverEdit: TdmDriverEdit
+  OldCreateOrder = True
+  Height = 438
+  Width = 666
+  inherited qrGnrl: TEDBQuery
+    DataSource = dsDriver
+    Top = 80
+  end
+  object dsDriver: TDataSource
+    DataSet = tbDriver
+    OnDataChange = dsDriverDataChange
+    Left = 96
+    Top = 16
+  end
+  object dsDrHeiter: TDataSource
+    DataSet = tbDrHeiter
+    Left = 112
+    Top = 128
+  end
+  object dsDrAcdnt: TDataSource
+    DataSet = tbDrAcdnt
+    Left = 176
+    Top = 136
+  end
+  object dsDrAvira: TDataSource
+    DataSet = tbDrAvira
+    Left = 240
+    Top = 136
+  end
+  object dsDrCourse: TDataSource
+    DataSet = tbDrCourse
+    Left = 304
+    Top = 136
+  end
+  object dsDrBdika: TDataSource
+    DataSet = tbDrBdika
+    Left = 368
+    Top = 136
+  end
+  object dsDrTaho: TDataSource
+    DataSet = tbDrTaho
+    Left = 429
+    Top = 138
+  end
+  object dsDrFollow: TDataSource
+    DataSet = tbDrFollow
+    Left = 493
+    Top = 138
+  end
+  object dsCrDrv: TDataSource
+    DataSet = tbCrDrv
+    Left = 552
+    Top = 136
+  end
+  object tbDriver: TEDBTable
+    BeforePost = tbDriverBeforePost
+    AfterPost = tbDriverAfterPost
+    OnNewRecord = tbDriverNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KDriver'
+    Left = 24
+    Top = 16
+    object tbDriverId: TIntegerField
+      FieldName = 'Id'
+    end
+    object tbDriverCodDrv: TAutoIncField
+      FieldName = 'CodDrv'
+      OnValidate = tbDriverCodDrvValidate
+    end
+    object tbDriverZeut: TStringField
+      DisplayWidth = 11
+      FieldName = 'Zeut'
+      OnValidate = tbDriverZeutValidate
+      EditMask = 'a\-aaaaaaa\-a;1; '
+      Size = 11
+    end
+    object tbDriverShemD: TStringField
+      Alignment = taRightJustify
+      DisplayWidth = 25
+      FieldName = 'ShemD'
+      OnValidate = tbDriverShemDValidate
+      Size = 25
+    end
+    object tbDriverKtovetD: TStringField
+      Alignment = taRightJustify
+      DisplayWidth = 25
+      FieldName = 'KtovetD'
+      Size = 25
+    end
+    object tbDriverIsuvD: TStringField
+      Alignment = taRightJustify
+      DisplayWidth = 15
+      FieldName = 'IsuvD'
+      Size = 15
+    end
+    object tbDriverMikudD: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'MikudD'
+    end
+    object tbDriverTelD: TStringField
+      DisplayWidth = 11
+      FieldName = 'TelD'
+      Size = 11
+    end
+    object tbDriverCelD: TStringField
+      DisplayWidth = 11
+      FieldName = 'CelD'
+      Size = 11
+    end
+    object tbDriverEMail: TStringField
+      FieldName = 'EMail'
+      Size = 30
+    end
+    object tbDriverBorn: TDateField
+      DisplayWidth = 10
+      FieldName = 'Born'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDriverLicenceNum: TStringField
+      DisplayWidth = 7
+      FieldName = 'LicenceNum'
+      OnSetText = tbDriverLicenceNumSetText
+      OnValidate = tbDriverCodDrvValidate
+      EditMask = '9999999;0; '
+      Size = 7
+    end
+    object tbDriverLicenceTyp: TStringField
+      Alignment = taRightJustify
+      DisplayWidth = 10
+      FieldName = 'LicenceTyp'
+      Size = 10
+    end
+    object tbDriverLicencePrd: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'LicencePrd'
+    end
+    object tbDriverLimit: TStringField
+      Alignment = taRightJustify
+      DisplayWidth = 30
+      FieldName = 'Limit'
+      Size = 30
+    end
+    object tbDriverWorkStrt: TDateField
+      DisplayWidth = 10
+      FieldName = 'WorkStrt'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDriverOvedId: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'OvedId'
+    end
+    object tbDriverRemark: TStringField
+      DisplayWidth = 120
+      FieldName = 'Remark'
+      Size = 120
+    end
+    object tbDriverClientId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ClientId'
+    end
+    object tbDriverMissing: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Missing'
+    end
+    object tbDriverFreze: TBooleanField
+      FieldName = 'Freze'
+    end
+    object tbDriverPail: TBooleanField
+      FieldName = 'Pail'
+    end
+    object tbDriverLicenceId: TIntegerField
+      FieldName = 'LicenceId'
+    end
+    object tbDriverStamp: TDateTimeField
+      FieldName = 'Stamp'
+    end
+    object tbDriverLkpOved: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpOved'
+      LookupDataSet = tbTblOved
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Oved'
+      KeyFields = 'OvedId'
+      Lookup = True
+    end
+    object tbDriverLkpLicence: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpLicence'
+      LookupDataSet = tbTblLicence
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Licence'
+      KeyFields = 'LicenceId'
+      Lookup = True
+    end
+  end
+  object tbTblOved: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xOved'
+    TableName = 'KTblOved'
+    Left = 312
+    Top = 16
+  end
+  object tbDrHeiter: TEDBTable
+    OnNewRecord = tbDrHeiterNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xDriverId'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KDrHeiter'
+    Left = 112
+    Top = 72
+    object tbDrHeiterId: TAutoIncField
+      FieldName = 'Id'
+    end
+    object tbDrHeiterDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbDrHeiterHeiterId: TIntegerField
+      FieldName = 'HeiterId'
+    end
+    object tbDrHeiterDateDone: TDateField
+      DisplayLabel = #1495#1493#1491#1513' '#1489#1514#1488#1512#1497#1498
+      DisplayWidth = 10
+      FieldName = 'DateDone'
+      OnSetText = tbDriverBornSetText
+      OnValidate = tbDrHeiterDateDoneValidate
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrHeiterDateToDo: TDateField
+      DisplayLabel = #1500#1495#1491#1513' '#1489#1514#1488#1512#1497#1498
+      DisplayWidth = 10
+      FieldName = 'DateToDo'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrHeiterRemark: TStringField
+      FieldName = 'Remark'
+      Size = 120
+    end
+    object tbDrHeiterProblem: TBooleanField
+      FieldName = 'Problem'
+    end
+    object tbDrHeiterLHeiter: TStringField
+      DisplayLabel = #1488#1497#1513#1493#1512#1497#1501' '#1493#1492#1497#1514#1512#1497#1501
+      DisplayWidth = 30
+      FieldKind = fkLookup
+      FieldName = 'LHeiter'
+      LookupDataSet = tbTblHeiter
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Heiter'
+      KeyFields = 'HeiterId'
+      Size = 30
+      Lookup = True
+    end
+  end
+  object tbTblHeiter: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xHeiter'
+    TableName = 'KTblHeiter'
+    Left = 176
+    Top = 16
+  end
+  object tbDrAcdnt: TEDBTable
+    OnNewRecord = tbDrHeiterNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xDriverId'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KDrAcdnt'
+    Left = 176
+    Top = 72
+    object tbDrAcdntId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbDrAcdntDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbDrAcdntCarId: TIntegerField
+      FieldName = 'CarId'
+    end
+    object tbDrAcdntAcdntD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1492#1514#1488#1493#1504#1492
+      DisplayWidth = 10
+      FieldName = 'AcdntD'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrAcdntWithInjr: TStringField
+      DisplayLabel = #1506#1501' '#1504#1508#1490#1506#1497#1501
+      DisplayWidth = 2
+      FieldName = 'WithInjr'
+      Size = 2
+    end
+    object tbDrAcdntQuilty: TStringField
+      DisplayLabel = #1488#1513#1501
+      DisplayWidth = 2
+      FieldName = 'Quilty'
+      Size = 2
+    end
+    object tbDrAcdntTipul: TStringField
+      DisplayLabel = #1488#1493#1508#1503' '#1496#1497#1508#1493#1500
+      DisplayWidth = 20
+      FieldName = 'Tipul'
+    end
+    object tbDrAcdntLCar: TStringField
+      DisplayLabel = #1506#1501' '#1512#1499#1489
+      DisplayWidth = 9
+      FieldKind = fkLookup
+      FieldName = 'LCar'
+      LookupDataSet = tbCar
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Number'
+      KeyFields = 'CarId'
+      Size = 9
+      Lookup = True
+    end
+  end
+  object tbDrAvira: TEDBTable
+    OnNewRecord = tbDrHeiterNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xDriverId'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KDrAvira'
+    Left = 240
+    Top = 72
+    object tbDrAviraId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbDrAviraDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbDrAviraAviraD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498
+      DisplayWidth = 10
+      FieldName = 'AviraD'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrAviraDescrpt: TStringField
+      DisplayLabel = #1502#1492#1493#1514' '#1492#1506#1489#1497#1512#1492' '#1488#1493' '#1492#1495#1512#1497#1490#1492
+      DisplayWidth = 30
+      FieldName = 'Descrpt'
+      Size = 30
+    end
+    object tbDrAviraDohNum: TStringField
+      DisplayWidth = 15
+      FieldName = 'DohNum'
+      Size = 15
+    end
+    object tbDrAviraTipul: TStringField
+      DisplayLabel = #1488#1493#1508#1503' '#1496#1497#1508#1493#1500
+      DisplayWidth = 30
+      FieldName = 'Tipul'
+      Size = 30
+    end
+  end
+  object tbDrCourse: TEDBTable
+    OnNewRecord = tbDrHeiterNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xDriverId'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KDrCourse'
+    Left = 304
+    Top = 72
+    object tbDrCourseId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbDrCourseDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbDrCourseCourseId: TIntegerField
+      FieldName = 'CourseId'
+    end
+    object tbDrCourseOrganize: TStringField
+      DisplayLabel = #1490#1493#1507' '#1502#1488#1512#1490#1503
+      DisplayWidth = 20
+      FieldName = 'Organize'
+    end
+    object tbDrCourseStartD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1492#1514#1495#1500#1492
+      DisplayWidth = 10
+      FieldName = 'StartD'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrCourseEndD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498' '#1505#1497#1493#1501
+      DisplayWidth = 10
+      FieldName = 'EndD'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object b: TStringField
+      DisplayLabel = #1513#1501' '#1492#1511#1493#1512#1505
+      DisplayWidth = 25
+      FieldKind = fkLookup
+      FieldName = 'LCourse'
+      LookupDataSet = tbTblCourse
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Course'
+      KeyFields = 'CourseId'
+      Size = 25
+      Lookup = True
+    end
+  end
+  object tbTblCourse: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KTblCourse'
+    Left = 248
+    Top = 16
+  end
+  object tbDrBdika: TEDBTable
+    OnNewRecord = tbDrHeiterNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'DriverId'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KDrBdika'
+    Left = 368
+    Top = 72
+    object tbDrBdikaId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbDrBdikaDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbDrBdikaBdikaD: TDateField
+      DisplayLabel = #1514#1488#1512#1497#1498
+      DisplayWidth = 10
+      FieldName = 'BdikaD'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrBdikaBdika: TStringField
+      DisplayLabel = #1502#1492#1493#1514' '#1492#1489#1491#1497#1511#1492
+      DisplayWidth = 25
+      FieldName = 'Bdika'
+      Size = 25
+    end
+    object tbDrBdikaMakom: TStringField
+      DisplayLabel = #1502#1511#1493#1501' '#1492#1489#1491#1497#1511#1492
+      DisplayWidth = 25
+      FieldName = 'Makom'
+      Size = 25
+    end
+    object tbDrBdikaTipul: TStringField
+      DisplayLabel = #1492#1506#1512#1493#1514' '#1511#1510#1497#1503' '#1489#1496#1497#1495#1493#1514
+      DisplayWidth = 25
+      FieldName = 'Tipul'
+      Size = 25
+    end
+  end
+  object tbDrTaho: TEDBTable
+    OnNewRecord = tbDrTahoNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'DriverId;Moed'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KDrTaho'
+    Left = 429
+    Top = 74
+    object tbDrTahoId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbDrTahoDriverId: TIntegerField
+      FieldName = 'DriverId'
+    end
+    object tbDrTahoCarId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CarId'
+    end
+    object tbDrTahoSpeed: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Speed'
+    end
+    object tbDrTahoMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrTahoZman: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Zman'
+    end
+    object tbDrTahoHarig: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Harig'
+    end
+    object tbDrTahoRemark: TStringField
+      DisplayWidth = 20
+      FieldName = 'Remark'
+    end
+    object tbDrTahoLkpCar: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpCar'
+      LookupDataSet = tbCar
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Number'
+      KeyFields = 'CarId'
+      Lookup = True
+    end
+  end
+  object tbDrFollow: TEDBTable
+    OnNewRecord = tbDrHeiterNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xDriverId'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KDrFollow'
+    Left = 493
+    Top = 74
+    object tbDrFollowId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbDrFollowDriverId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'DriverId'
+    end
+    object tbDrFollowMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+      OnSetText = tbDriverBornSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbDrFollowSha: TTimeField
+      DisplayWidth = 10
+      FieldName = 'Sha'
+      OnSetText = tbDrFollowShaSetText
+      EditMask = '!90:00;1; '
+    end
+    object tbDrFollowRemark: TStringField
+      DisplayWidth = 120
+      FieldName = 'Remark'
+      Size = 60
+    end
+  end
+  object tbCrDrv: TEDBTable
+    BeforeOpen = tbCrDrvBeforeOpen
+    OnNewRecord = tbDrHeiterNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xDriverId'
+    MasterFields = 'Id'
+    MasterSource = dsDriver
+    TableName = 'KCrDrv'
+    Left = 550
+    Top = 77
+    object tbCrDrvId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbCrDrvCarId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CarId'
+    end
+    object tbCrDrvDriverId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'DriverId'
+    end
+    object tbCrDrvLkpCar: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'LkpCar'
+      LookupDataSet = tbCar
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Number'
+      KeyFields = 'CarId'
+      Lookup = True
+    end
+  end
+  object tbCar: TEDBTable
+    Filtered = True
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Number'
+    TableName = 'KCar'
+    Left = 608
+    Top = 72
+  end
+  object tbTblLicence: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KTblLicence'
+    Left = 376
+    Top = 16
+  end
+  object frdbDriver: TfrxDBDataset
+    UserName = 'frdbDriver'
+    CloseDataSource = False
+    DataSet = tbDriver
+    BCDToCurrency = False
+    Left = 32
+    Top = 200
+  end
+  object frdbClient: TfrxDBDataset
+    UserName = 'frdbClient'
+    CloseDataSource = False
+    DataSet = dmMain.qrClientList
+    BCDToCurrency = False
+    Left = 96
+    Top = 192
+  end
+  object frdbHeiter: TfrxDBDataset
+    UserName = 'frdbHeiter'
+    CloseDataSource = False
+    DataSet = tbDrHeiter
+    BCDToCurrency = False
+    Left = 160
+    Top = 200
+  end
+  object frdbAvira: TfrxDBDataset
+    UserName = 'frdbAvira'
+    CloseDataSource = False
+    DataSet = tbDrAvira
+    BCDToCurrency = False
+    Left = 224
+    Top = 192
+  end
+  object frdbAcdnt: TfrxDBDataset
+    UserName = 'frdbAcdnt'
+    CloseDataSource = False
+    DataSet = tbDrAcdnt
+    BCDToCurrency = False
+    Left = 288
+    Top = 200
+  end
+  object frdbCourse: TfrxDBDataset
+    UserName = 'frdbCourse'
+    CloseDataSource = False
+    DataSet = tbDrCourse
+    BCDToCurrency = False
+    Left = 352
+    Top = 192
+  end
+  object frdbFollow: TfrxDBDataset
+    UserName = 'frdbFollow'
+    CloseDataSource = False
+    DataSet = tbDrFollow
+    BCDToCurrency = False
+    Left = 424
+    Top = 200
+  end
+  object frdbBdika: TfrxDBDataset
+    UserName = 'frdbBdika'
+    CloseDataSource = False
+    DataSet = tbDrBdika
+    BCDToCurrency = False
+    Left = 488
+    Top = 192
+  end
+  object frdbTaho: TfrxDBDataset
+    UserName = 'frdbTaho'
+    CloseDataSource = False
+    DataSet = tbDrTaho
+    BCDToCurrency = False
+    Left = 560
+    Top = 200
+  end
+end

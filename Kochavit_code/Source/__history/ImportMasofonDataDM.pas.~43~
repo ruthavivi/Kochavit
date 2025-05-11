@@ -1,0 +1,284 @@
+unit ImportMasofonDataDM;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Forms, Controls, DB, edbcomps, edbtype, Dialogs,
+  StrUtils, ImportMasofonRec;
+
+type
+  TdmImportMasofonData = class(TDataModule)
+    qrGnrl: TEDBQuery;
+    OpenDialog: TOpenDialog;
+    tbTempImport: TEDBTable;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    WorkName: String;
+    ImportRec: TImportRecord;
+    Id, CarId, Problem: String;
+    BikoretDtlId: TStringList;
+    function  GetFileName: String;
+    procedure ConvertToChr(pFileName: String);
+    procedure MoveFileToTable;
+    procedure MoveToData;
+    procedure SetProperties;
+    procedure UpdateTipul;
+    procedure UpdateTipulMainNew;
+    procedure InsertTipulMainHis;
+    procedure DeleteTipulDtl;
+    procedure InsertTipulDtlNew;
+    procedure InsertTipulDtlHis;
+    procedure SetCarSpido;
+    procedure AddBigFiles;
+
+    function GetMainId: String;
+    function GetId(pTable, pFldName, pFldValue: String): String;
+  public
+  end;
+
+var
+  dmImportMasofonData: TdmImportMasofonData;
+
+implementation
+uses
+  DataDM, LogErrorUtil, DialogsHeb, GnrlBigDM;
+
+{$R *.dfm}
+
+{ TdmImportMasofonData }
+
+procedure TdmImportMasofonData.DataModuleCreate(Sender: TObject);
+var
+  FileName: String;
+begin
+  FileName := GetFileName;
+  Screen.Cursor := crHourGlass;
+  try
+    ConvertToChr(FileName);
+    MoveFileToTable;
+    MoveToData;
+  finally
+    Screen.Cursor := crDefault;
+  end;
+  MessageDlgH('הנתונים עודכנו בהצלחה', mtInformation, [mbOK], 0, 0);
+end;
+
+function TdmImportMasofonData.GetFileName: String;
+begin
+  Result := '';
+  OpenDialog.InitialDir := ExtractFilePath(Application.ExeName) + 'ImportFiles';
+  if OpenDialog.Execute then
+    Result := OpenDialog.FileName;
+end;
+
+procedure TdmImportMasofonData.ConvertToChr(pFileName: String);
+var
+  MS: TMemorystream;
+begin
+  WorkName := ExtractFilePath(Application.ExeName) + 'ImportFiles\WorkFile.TXT';
+
+  MS:= TMemoryStream.Create;
+  try
+    MS.LoadFromFile(pFileName);
+    OemToCharBuffA(PAnsichar(MS.Memory), PAnsichar(MS.Memory), MS.Size);
+    MS.Position := 0;
+    MS.SaveToFile(WorkName);
+  finally
+    MS.Free;
+  end;
+end;
+
+procedure TdmImportMasofonData.MoveFileToTable;
+begin
+  qrGnrl.SQL.Text := 'DELETE FROM KTempImport';
+  qrGnrl.ExecSQL;
+
+  qrGnrl.SQL.Text := 'IMPORT TABLE KTempImport FROM "WorkFile.txt" ' +
+              'IN STORE ImportFiles DELIMITER CHAR #124';
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmImportMasofonData.MoveToData;
+begin
+  ImportRec := TImportRecord.Create;
+  BikoretDtlId := TStringList.Create;
+  dmGnrlBig := TdmGnrlBig.Create(Self);
+  try
+    tbTempImport.Open;
+    while not tbTempImport.Eof do
+    begin
+      BikoretDtlId.Clear;
+      SetProperties;
+      UpdateTipul;
+      AddBigFiles;
+      tbTempImport.Next;
+    end;
+  finally
+    tbTempImport.Close;
+    dmGnrlBig.Free;
+    BikoretDtlId.Free;
+    ImportRec.Free;
+  end;
+end;
+
+procedure TdmImportMasofonData.SetProperties;
+var
+  I: Integer;
+begin
+  with tbTempImport do
+  begin
+    ImportRec.Tipul := FieldByName('Tipul').AsString;
+    ImportRec.TipulId := GetId('KTblTipul', 'Tipul', QuotedStr(ImportRec.Tipul));
+    ImportRec.NoBkr := FieldByName('NoBkr').AsString;
+    ImportRec.Oved := FieldByName('Oved').AsString;
+    ImportRec.OvedId := GetId('KTblOved', 'Oved', QuotedStr(ImportRec.Oved));
+    ImportRec.Km := FieldByName('Km').AsString;
+    ImportRec.DateToDo := FieldByName('DateToDo').AsString;
+    ImportRec.DateDone := FieldByName('DateDone').AsString;
+    ImportRec.Number := FieldByName('Number').AsString;
+    ImportRec.Remark := FieldByName('Remark').AsString;
+
+    for I := 1 to 15 do
+    begin
+      if (FieldByName('Likuy'+IntToStr(I)).AsString <> '') then
+        BikoretDtlId.Add(LeftStr(FieldByName('Likuy'+IntToStr(I)).AsString,
+          Pos(';', FieldByName('Likuy'+IntToStr(I)).AsString)-1))
+      else
+        Break;
+    end;
+  end;
+end;
+
+procedure TdmImportMasofonData.UpdateTipul;
+begin
+  CarId := GetId('KCar', 'Number', QuotedStr(ImportRec.Number));
+  Id := GetMainId;
+  Problem := 'False';
+  if (tbTempImport.FieldByName('Likuy1').AsString <> '') OR
+        (tbTempImport.FieldByName('Remark').AsString <> '') then
+    Problem := 'True';
+  try
+    dmData.dbMain.StartTransaction(EmptyEDBStringsArray);
+    UpdateTipulMainNew;
+    InsertTipulMainHis;
+    DeleteTipulDtl;
+    InsertTipulDtlNew;
+    InsertTipulDtlHis;
+    SetCarSpido;
+    dmData.dbMain.Commit;
+  except
+    on E: EDatabaseError do
+    begin
+      dmData.dbMain.Rollback;
+      HandelError('TdmImportMasofonData.UpdateTipul', 'כרטיס לא נרשם' + E.Message, E);
+    end;
+  end;
+end;
+
+function TdmImportMasofonData.GetMainId: String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Id FROM KCrTipul WHERE '+
+            'CarId = ' + CarId + ' AND TipulId = ' + ImportRec.TipulId;
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('Id').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmImportMasofonData.GetId(pTable, pFldName,
+  pFldValue: String): String;
+begin
+  Result := 'NULL';
+  qrGnrl.SQL.Text := 'SELECT Id FROM ' + pTable + ' WHERE ' + pFldName +
+            ' = ' + pFldValue;
+  try
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+      Result := qrGnrl.FieldByName('Id').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+procedure TdmImportMasofonData.UpdateTipulMainNew;
+begin
+  with ImportRec do
+  begin
+    qrGnrl.SQL.Text := 'UPDATE KCrTipul SET OvedId = ' + OvedId + ', Km = ' + Km +
+          ', DateDone = DATE ' + QuotedStr(DateDone) +
+          ', DateToDo = DATE ' + QuotedStr(DateToDo) + ', Remark  = ' + QuotedStr(Remark) +
+          ', NoBkr = ' + NoBkr + ', Problem = ' + Problem +
+          ' WHERE Id = ' + Id;
+    qrGnrl.ExecSQL;
+  end;
+end;
+
+procedure TdmImportMasofonData.InsertTipulMainHis;
+begin
+  qrGnrl.SQL.Text := 'INSERT Into KCrTipulHis ' +
+          '(CarId, TipulId, OvedId, Km, DateDone, Remark, NoBkr) ' +
+          'SELECT CarId, TipulId, OvedId, Km, DateDone, Remark, NoBkr '+
+          'FROM KCrTipul WHERE Id = ' + Id;
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmImportMasofonData.DeleteTipulDtl;
+begin
+  qrGnrl.SQL.Text := 'DELETE FROM KCrTipulDtl WHERE TipulId = ' + Id;
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmImportMasofonData.InsertTipulDtlNew;
+var
+  I: Integer;
+begin
+  for i := 0 to BikoretDtlId.Count -1 do
+  begin
+    qrGnrl.SQL.Text := 'INSERT INTO KCrTipulDtl (TipulId, BikoretDtlId) ' +
+           'VALUES (' + Id + ', ' + BikoretDtlId[I] + ')';
+    qrGnrl.ExecSQL;
+  end;
+end;
+
+procedure TdmImportMasofonData.InsertTipulDtlHis;
+var
+  I: Integer;
+  HisId: String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Max(Id) AS Id FROM KCrTipulHis ';
+  qrGnrl.Open;
+  HisId := qrGnrl.FieldByName('Id').AsString;
+  qrGnrl.Close;
+
+  for i := 0 to BikoretDtlId.Count -1 do
+  begin
+    qrGnrl.SQL.Text := 'INSERT INTO KCrTipulDtlHis (TipulId, BikoretDtlId) ' +
+           'VALUES (' + HisId + ', ' + BikoretDtlId[i] + ')';
+    qrGnrl.ExecSQL;
+  end;
+end;
+
+procedure TdmImportMasofonData.SetCarSpido;
+begin
+  qrGnrl.SQL.Text := 'UPDATE KCar SET Spido = ' + ImportRec.Km +
+          ' WHERE Number = ' + QuotedStr(ImportRec.Number);
+  qrGnrl.ExecSQL;
+end;
+
+procedure TdmImportMasofonData.AddBigFiles;
+var
+  Path: String;
+begin
+  Path := ExtractFilePath(Application.ExeName) + 'ImportFiles\';
+  dmGnrlBig.SetProperties('KCrTofes');
+  if (FileExists(Path + ImportRec.NoBkr + '.Jpg')) then
+    dmGnrlBig.SaveDataBig(StrToInt(CarId), 'CarId', Path+ImportRec.NoBkr + '.Jpg',
+        ImportRec.NoBkr, 'FromMasofon', 'NULL', True)
+  else if (FileExists(Path + ImportRec.NoBkr + '.Pdf')) then
+    dmGnrlBig.SaveDataBig(StrToInt(CarId), 'CarId', Path+ImportRec.NoBkr + '.Pdf',
+        ImportRec.NoBkr, 'FromMasofon', 'NULL', True);
+end;
+
+end.

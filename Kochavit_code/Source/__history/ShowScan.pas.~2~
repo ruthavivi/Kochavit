@@ -1,0 +1,153 @@
+unit ShowScan;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, Buttons, DB, DBTables, Grids, DBGrids, ExtCtrls,
+  ShellAPI, ImgList, ActnList, DBActns, ComCtrls, ToolWin;
+
+type
+  TfrmShowScan = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    DBGrid: TDBGrid;
+    btnShow: TBitBtn;
+    btnClose: TBitBtn;
+    dsTofes: TDataSource;
+    ToolBar1: TToolBar;
+    ToolButton1: TToolButton;
+    ToolButton2: TToolButton;
+    ActionList1: TActionList;
+    acDelete: TDataSetDelete;
+    ImageList1: TImageList;
+    acShift: TAction;
+    procedure acShiftExecute(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure DBGridKeyPress(Sender: TObject; var Key: Char);
+  private
+    Caller: String;
+    procedure ClientShift;
+    procedure CarShift;
+    procedure DriverShift;
+  public
+    procedure ShowFile(pTmpFile: String);
+  end;
+
+var
+  frmShowScan: TfrmShowScan;
+
+implementation
+uses
+  ClientEditDM, CarEditDM, DriverEditDM, SlctOther;
+{$R *.dfm}
+
+procedure TfrmShowScan.FormCreate(Sender: TObject);
+begin
+  Caller := Owner.Name;
+end;
+
+procedure TfrmShowScan.DBGridKeyPress(Sender: TObject; var Key: Char);
+begin
+  if (Key = Char(VK_Return)) then
+  begin
+    with (Sender as TDBGrid).DataSource do
+      if  (State in dsEditModes) then
+        DataSet.Post;
+  end;
+end;
+
+procedure TfrmShowScan.ShowFile(pTmpFile: String);
+begin
+  ShellExecute(Application.MainForm.Handle, nil, PChar(pTmpFile),
+        nil, nil, SW_SHOW);
+end;
+
+procedure TfrmShowScan.acShiftExecute(Sender: TObject);
+begin
+  frmSlctOther := TfrmSlctOther.Create(Self);
+  try
+    if (Caller = 'frmClientEdit') then
+      ClientShift
+    else if (Caller = 'frmCarEdit') then
+      CarShift
+    else if (Caller = 'frmDriverEdit') then
+      DriverShift;
+  finally
+    frmSlctOther.tbSlctOther.Close;
+    frmSlctOther.Free;
+  end;
+end;
+
+procedure TfrmShowScan.ClientShift;
+begin
+  with frmSlctOther do
+  begin
+    tbSlctOther.TableName := 'KClient';
+    tbSlctOther.IndexFieldNames := 'Shem';
+    tbSlctOther.Filter := 'IdClient > 0';
+    tbSlctOther.Filtered := True;
+    dbGrid.Columns[0].FieldName := 'Shem';
+    dbGrid.Columns[0].Title.Caption := 'שם לקוח';
+    tbSlctOther.Open;
+    if (ShowModal = mrOk) then
+    begin
+      with dmClientEdit.tbTofes do
+      begin
+        Edit;
+        FieldByName('ClientId').AsInteger := Id;
+        Post;
+        Close;
+        Open;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmShowScan.CarShift;
+begin
+  with frmSlctOther do
+  begin
+    tbSlctOther.TableName := 'KCar';
+    tbSlctOther.IndexFieldNames := 'Number';
+    dbGrid.Columns[0].FieldName := 'Number';
+    dbGrid.Columns[0].Title.Caption := 'מספר רכב';
+    tbSlctOther.Open;
+    if (ShowModal = mrOk) then
+    begin
+      with dmCarEdit.tbTofes do
+      begin
+        Edit;
+        FieldByName('CarId').AsInteger := Id;
+        Post;
+        Close;
+        Open;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmShowScan.DriverShift;
+begin
+  with frmSlctOther do
+  begin
+    tbSlctOther.TableName := 'KDriver';
+    tbSlctOther.IndexFieldNames := 'ShemD';
+    dbGrid.Columns[0].FieldName := 'ShemD';
+    dbGrid.Columns[0].Title.Caption := 'שם הנהג';
+    tbSlctOther.Open;
+    if (ShowModal = mrOk) then
+    begin
+      with dmDriverEdit.tbTofes do
+      begin
+        Edit;
+        FieldByName('DriverId').AsInteger := Id;
+        Post;
+        Close;
+        Open;
+      end;
+    end;
+  end;
+end;
+
+end.

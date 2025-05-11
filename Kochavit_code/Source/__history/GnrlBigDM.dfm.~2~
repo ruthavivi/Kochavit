@@ -1,0 +1,5 @@
+object dmGnrlBig: TdmGnrlBig
+  OldCreateOrder = False
+  Height = 241
+  Width = 252
+end

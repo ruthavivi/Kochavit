@@ -1,0 +1,150 @@
+unit MainDMOld;
+
+interface
+
+uses
+  SysUtils, Forms, Classes, DB, DBTables, RpConBDE, RpCon, RpConDS, RpRave,
+  RpDefine, RpBase, RpSystem, edbcomps;
+
+type
+  TdmMainOld = class(TDataModule)
+    dsClientOld: TDataSource;
+    dsCarOld: TDataSource;
+    dsDriverOld: TDataSource;
+    RvSystem: TRvSystem;
+    RvRprt: TRvProject;
+    rtClientOld: TRvTableConnection;
+    rqCarOld: TRvQueryConnection;
+    rqDriverOld: TRvQueryConnection;
+    tbClientOld: TEDBTable;
+    tbClientOldId: TAutoIncField;
+    tbClientOldIdClient: TIntegerField;
+    tbClientOldShem: TStringField;
+    tbClientOldHp: TIntegerField;
+    tbClientOldOpenDate: TDateField;
+    tbClientOldBahalim1: TStringField;
+    tbClientOldTelB1: TStringField;
+    tbClientOldBahalim2: TStringField;
+    tbClientOldTelB2: TStringField;
+    tbClientOldKtovet: TStringField;
+    tbClientOldIsuv: TStringField;
+    tbClientOldMikud: TIntegerField;
+    tbClientOldTel1: TStringField;
+    tbClientOldTel2: TStringField;
+    tbClientOldFax: TStringField;
+    tbClientOldEMail: TStringField;
+    tbClientOldContact: TStringField;
+    tbClientOldTelC: TStringField;
+    tbClientOldAcounter: TStringField;
+    tbClientOldTelA: TStringField;
+    tbClientOldProfesion: TStringField;
+    tbClientOldTelP: TStringField;
+    tbClientOldZeutP: TIntegerField;
+    tbClientOldKtovetP: TStringField;
+    tbClientOldSizeP: TIntegerField;
+    tbClientOldPeriodPay: TSmallintField;
+    tbClientOldCreditPay: TSmallintField;
+    tbClientOldRemark: TMemoField;
+    tbClientOldDept: TCurrencyField;
+    tbClientOldFreze: TBooleanField;
+    tbClientOldOvedId: TSmallintField;
+    tbClientOldMovil: TStringField;
+    tbClientOldZeutM: TIntegerField;
+    qrCarOld: TEDBQuery;
+    qrCarOldID: TIntegerField;
+    qrCarOldIdCar: TIntegerField;
+    qrCarOldNumber: TStringField;
+    qrCarOldType: TStringField;
+    qrCarOldProducer: TStringField;
+    qrCarOldDgam: TStringField;
+    qrCarOldModel: TIntegerField;
+    qrCarOldShem: TStringField;
+    qrCarOldContact: TStringField;
+    qrCarOldTel: TStringField;
+    qrDriverOld: TEDBQuery;
+    qrDriverOldID: TIntegerField;
+    qrDriverOldIdDrv: TIntegerField;
+    qrDriverOldZeut: TStringField;
+    qrDriverOldShemD: TStringField;
+    qrDriverOldKtovetD: TStringField;
+    qrDriverOldIsuvD: TStringField;
+    qrDriverOldMikudD: TIntegerField;
+    qrDriverOldLicenceNum: TStringField;
+    qrDriverOldTelD: TStringField;
+    qrDriverOldCelD: TStringField;
+    qrDriverOldShem: TStringField;
+    qrGnrl: TEDBQuery;
+    procedure tbClientOldAfterScroll(DataSet: TDataSet);
+    procedure DataModuleCreate(Sender: TObject);
+    procedure qrCarOldAfterOpen(DataSet: TDataSet);
+    procedure qrDriverOldAfterOpen(DataSet: TDataSet);
+  private
+    { Private declarations }
+    procedure UpdateTables(qr: TEDBQuery; pWhrAll, pWhrSlct: String);
+  public
+    CarRecNo, DrvRecNo: String;
+  end;
+
+var
+  dmMainOld: TdmMainOld;
+  
+const
+   whrSlctC = 'WHERE Cr.ClientId = :Id';
+   whrSlctD = 'WHERE D.ClientId = :Id';
+   whrAll = 'WHERE 0=0';
+
+implementation
+
+{$R *.dfm}
+uses
+   KbFunc, CarListOld, DriverListOld;
+
+procedure TdmMainOld.DataModuleCreate(Sender: TObject);
+begin
+  RvRprt.ProjectFile := ExtractFilePath(Application.ExeName) +
+                          'Reports\KvRprt.rav';
+end;
+
+procedure TdmMainOld.tbClientOldAfterScroll(DataSet: TDataSet);
+begin
+   UpdateTables(qrCarOld, whrAll, whrSlctC);
+   UpdateTables(qrDriverOld, whrAll, whrSlctD);
+end;
+
+procedure TdmMainOld.UpdateTables(qr: TEDBQuery; pWhrAll, pWhrSlct: String);
+begin
+   with qr do
+   begin
+       if Active then
+       begin
+           if tbClientOld.FieldByName('IdClient').AsInteger = 1 then
+           begin
+               Close;
+               SQL[SQL.Count-2] := pWhrAll;
+               Open;
+           end
+           else
+           begin
+               Close;
+               SQL[SQL.Count-2] := pWhrSlct;
+               Open;
+           end;
+       end;
+   end;
+end;
+
+procedure TdmMainOld.qrCarOldAfterOpen(DataSet: TDataSet);
+begin
+  if Assigned(frmCarListOld) then
+    frmCarListOld.UpdateStatusBar('סה"כ רכבים: ' +
+      IntToStr(dmMainOld.qrCarOld.RecordCount)) ;
+end;
+
+procedure TdmMainOld.qrDriverOldAfterOpen(DataSet: TDataSet);
+begin
+  if Assigned(frmDriverListOld) then
+    frmDriverListOld.UpdateStatusBar('סה"כ נהגים: ' +
+      IntToStr(dmMainOld.qrDriverOld.RecordCount)) ;
+end;
+
+end.

@@ -1,0 +1,196 @@
+unit GnrlEditDM;
+
+interface
+
+uses
+  SysUtils, Classes, DBTables, DB, Dialogs, RpBase, RpSystem, RpDefine, RpRave,
+  Forms, edbcomps;
+
+type
+  TdmGnrlEdit = class(TDataModule)
+    RvKartis: TRvProject;
+    RvSystem: TRvSystem;
+    qrGnrl: TEDBQuery;
+    procedure DataModuleDestroy(Sender: TObject);
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    ClientShem: String;
+    function GetClientName(pClientId: String): String;
+    function GetScanerSource: Integer;
+    function CheckDblValue(pFileName, pFldName, pFldValue,
+        pMsg: String): Boolean; overload;
+    function CheckDblValue(pFileName, pFldName, pFldValue, pIdValue,
+        pMsg: String): Boolean; overload;
+    function CheckDblValue(pFileName, pFldName, pFldValue, pIdValue,
+        pIdClientValue, pMsg: String): Boolean; overload;
+    function CheckDblSub(pFileName, pMainFldName, pMainFldValue,
+        pScndFldName, pScndFldValue, pMsg: String): Boolean;
+    procedure CompressJpg(pDocument, pTempDoc: String);
+    procedure ConvertBmpToJpg(pBmpFile, pJpgFile: String);
+  end;
+
+var
+  dmGnrlEdit: TdmGnrlEdit;
+
+implementation
+uses
+  MainDM, JPeg, Graphics, DialogsHeb;
+{$R *.dfm}
+
+{ TdmGnrlEdit }
+procedure TdmGnrlEdit.DataModuleCreate(Sender: TObject);
+begin
+  RvKartis.ProjectFile := ExtractFilePath(Application.ExeName) +
+    'Reports\KvKartis.rav';
+end;
+
+function TdmGnrlEdit.CheckDblValue(pFileName, pFldName, pFldValue,
+  pMsg: String): Boolean;
+begin
+  Result := False;
+  try
+    qrGnrl.SQL.Text := 'SELECT Id FROM ' + pFileName +
+                  ' WHERE ' + pFldName + ' = ' + pFldValue;
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+    begin
+      MessageDlg(pMsg, mtError, [mbOK], 0);
+      Result := True
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmGnrlEdit.CheckDblValue(pFileName, pFldName, pFldValue, pIdValue,
+    pMsg: String): Boolean;
+begin
+  Result := False;
+  try
+    qrGnrl.SQL.Text := 'SELECT Id FROM ' + pFileName +
+                  ' WHERE ' + pFldName + ' = ' + pFldValue +
+                  ' AND Id <> ' + pIdValue;
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+    begin
+      MessageDlg(pMsg, mtError, [mbOK], 0);
+      Result := True
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmGnrlEdit.CheckDblValue(pFileName, pFldName, pFldValue, pIdValue,
+    pIdClientValue, pMsg: String): Boolean;
+begin
+  Result := False;
+  try
+    qrGnrl.SQL.Text := 'SELECT Id FROM ' + pFileName +
+                  ' WHERE ' + pFldName + ' = ' + QuotedStr(pFldValue) +
+                  ' and Id <> ' + QuotedStr(pIdValue) +
+                  ' and ClientId = ' + QuotedStr(pIdClientValue);
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+    begin
+      MessageDlg(pMsg, mtError, [mbOK], 0);
+      Result := True
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmGnrlEdit.CheckDblSub(pFileName, pMainFldName, pMainFldValue,
+  pScndFldName, pScndFldValue, pMsg: String): Boolean;
+begin
+  Result := False;
+  qrGnrl.SQL.Text := 'SELECT Id FROM ' + pFileName +
+        ' WHERE ' + pMainFldName + ' = ' + pMainFldValue + ' and ' +
+        pScndFldName + ' = ' + pScndFldValue;
+  try
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+    begin
+      Result := True;
+      MessageDlg(pMsg, mtError, [mbOK], 0);
+    end;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmGnrlEdit.GetClientName(pClientId: String): String;
+begin
+  qrGnrl.SQL.Text := 'SELECT Shem FROM KClient WHERE Id = ' + pClientId;
+  try
+    qrGnrl.Open;
+    Result := qrGnrl.FieldByName('Shem').AsString;
+  finally
+    qrGnrl.Close;
+  end;
+end;
+
+function TdmGnrlEdit.GetScanerSource: Integer;
+begin
+  Result := -1;
+  qrGnrl.SQL.Text := 'SELECT ScanerId FROM KDefault';
+  try
+    qrGnrl.Open;
+    if not qrGnrl.IsEmpty then
+      Result := qrGnrl.FieldByName('ScanerId').AsInteger;
+  finally
+    qrGnrl.Close;
+  end;
+  if (Result = -1) then
+      MessageDlgH('לא נבחר סורק לסריקות...', mtError, [mbOK], 0, 0);
+end;
+
+procedure TdmGnrlEdit.CompressJpg(pDocument, pTempDoc: String);
+var
+  Photo: TJPegImage;
+begin
+  Photo := TJPegImage.Create;
+  try
+    Photo.LoadFromFile(pDocument);
+    Photo.CompressionQuality := 33;
+    Photo.DIBNeeded;
+    Photo.Compress;
+    Photo.SaveToFile(pTempDoc);
+  finally
+    Photo.Free;
+  end;
+end;
+
+procedure TdmGnrlEdit.ConvertBmpToJpg(pBmpFile, pJpgFile: String);
+var
+  vJPEG : TJPEGImage;
+  vBMP  : TBitmap;
+begin
+  vBMP := TBitmap.Create;
+  vJPEG := TJPEGImage.Create;
+  try
+    vBMP.LoadFromFile(pBmpFile);
+    vJPEG.Assign(vBMP);
+    vJPEG.SaveToFile(pJpgFile);
+  finally
+    vBMP.Free;
+    vJPEG.Free;
+  end;
+end;
+
+procedure TdmGnrlEdit.DataModuleDestroy(Sender: TObject);
+var
+  Comp: TComponent;
+begin
+  for Comp in Self do
+    if (Comp is TDataSet) and TDataSet(Comp).Active then
+    begin
+      TDataSet(Comp).Cancel;
+      TDataSet(Comp).Close;
+    end;
+end;
+
+end.

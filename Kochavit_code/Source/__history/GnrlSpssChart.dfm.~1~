@@ -1,0 +1,52 @@
+object frmChart: TfrmChart
+  Left = 35
+  Top = 165
+  BorderStyle = bsDialog
+  Caption = 'frmChart'
+  ClientHeight = 344
+  ClientWidth = 765
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object dcChart: TDBChart
+    Left = 0
+    Top = 0
+    Width = 765
+    Height = 344
+    BackWall.Brush.Color = clWhite
+    Title.Text.Strings = (
+      '')
+    Title.Visible = False
+    Legend.Visible = False
+    Align = alClient
+    Color = clWhite
+    TabOrder = 0
+    object Series1: TBarSeries
+      ColorEachPoint = True
+      Marks.ArrowLength = 20
+      Marks.Font.Charset = HEBREW_CHARSET
+      Marks.Font.Color = clBlack
+      Marks.Font.Height = -11
+      Marks.Font.Name = 'Arial'
+      Marks.Font.Style = []
+      Marks.Frame.Visible = False
+      Marks.Visible = True
+      SeriesColor = clRed
+      BarStyle = bsCilinder
+      XValues.DateTime = False
+      XValues.Name = 'X'
+      XValues.Multiplier = 1.000000000000000000
+      XValues.Order = loAscending
+      YValues.DateTime = False
+      YValues.Name = 'Bar'
+      YValues.Multiplier = 1.000000000000000000
+      YValues.Order = loNone
+    end
+  end
+end

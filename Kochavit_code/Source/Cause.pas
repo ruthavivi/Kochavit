@@ -1,0 +1,157 @@
+unit Cause;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DBCtrls, DB, StdCtrls, Mask, Buttons, ExtCtrls, edbcomps;
+
+type
+  TfrmCause = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    btnYes: TBitBtn;
+    btnCancel: TBitBtn;
+    Label1: TLabel;
+    Label2: TLabel;
+    edMoed: TDBEdit;
+    dsCause: TDataSource;
+    Panel3: TPanel;
+    tbClSiba: TEDBTable;
+    tbTblCause: TEDBTable;
+    tbClSibaId: TAutoIncField;
+    tbClSibaOwnerId: TIntegerField;
+    tbClSibaMoed: TDateField;
+    tbClSibaSibaId: TIntegerField;
+    tbTblCauseId: TAutoIncField;
+    tbTblCauseCauseCl: TStringField;
+    tbTblCauseCauseCr: TStringField;
+    tbTblCauseCauseDr: TStringField;
+    edSibaId: TDBLookupComboBox;
+    tbCrSiba: TEDBTable;
+    tbCrSibaId: TAutoIncField;
+    tbCrSibaOwnerId: TIntegerField;
+    tbCrSibaMoed: TDateField;
+    tbCrSibaSibaId: TIntegerField;
+    tbCrSibaClientId: TIntegerField;
+    tbCrSibaLkpSiba: TStringField;
+    tbClSibaLkpSiba: TStringField;
+    tbDrSiba: TEDBTable;
+    tbDrSibaId: TAutoIncField;
+    tbDrSibaOwnerId: TIntegerField;
+    tbDrSibaMoed: TDateField;
+    tbDrSibaSibaId: TIntegerField;
+    tbDrSibaClientId: TIntegerField;
+    tbDrSibaLkpSiba: TStringField;
+    procedure edMoedKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure tbCauseMoedSetText(Sender: TField; const Text: String);
+    procedure edMoedExit(Sender: TObject);
+    procedure edSibaIdExit(Sender: TObject);
+    procedure btnYesClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure tbCrSibaMoedSetText(Sender: TField; const Text: string);
+  private
+    WorkTable: TEDBTable;
+    function CtrlHasValue(edCtrl: TWinControl; pVal, pDeny, pMsg: String): Boolean;
+  public
+    procedure OpenRecord(pTable: TEDBTable);
+  end;
+
+var
+  frmCause: TfrmCause;
+
+implementation
+
+{$R *.dfm}
+uses
+   MainDM, CarListDM, DriverListDM, KbFunc, DialogsHeb, LogErrorUtil;
+
+procedure TfrmCause.OpenRecord(pTable: TEDBTable);
+begin
+  WorkTable := pTable;
+  dsCause.DataSet := WorkTable;
+
+  try
+    WorkTable.Open;
+  except
+    on E: EDatabaseError do
+    begin
+      HandelError('TfrmCause.OpenRecord', 'קיים קובץ לא תקין!!!'+ #10#13 + E.Message, E);
+      Self.Destroy;
+    end;
+  end;
+  WorkTable.Append;
+end;
+
+procedure TfrmCause.edMoedExit(Sender: TObject);
+begin
+  if (ActiveControl = btnCancel) then
+    Exit;
+
+  if ((Sender as TDBEdit).Text = '') or
+      (Trim((Sender as TDBEdit).Text) = '/  /') then
+  begin
+    MessageDlgH('חובה להקליד ערך', mtError, [mbOk], 0, 0);
+    (Sender as TDBEdit).SetFocus;
+  end;
+end;
+
+procedure TfrmCause.edSibaIdExit(Sender: TObject);
+begin
+  if (ActiveControl = btnCancel) then
+    Exit;
+
+  if ((Sender as TDBLookupComboBox).Text = '') then
+  begin
+    MessageDlgH('חובה להקליד ערך', mtError, [mbOk], 0, 0);
+    (Sender as TDBLookupComboBox).SetFocus;
+  end;
+end;
+
+procedure TfrmCause.edMoedKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_F2 then
+    edMoed.Text := DateToStr(Date);
+end;
+
+procedure TfrmCause.tbCauseMoedSetText(Sender: TField; const Text: String);
+begin
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TfrmCause.tbCrSibaMoedSetText(Sender: TField; const Text: string);
+begin
+  if not ValidDate(Sender, Text) then
+    Abort;
+end;
+
+procedure TfrmCause.btnYesClick(Sender: TObject);
+begin
+  if (CtrlHasValue(edMoed, edMoed.Text, '', 'חובה להקליד תאריך העברה') and
+      CtrlHasValue(edSibaId, edSibaId.Text, '', 'חובה להקליד סיבת העברה')) then
+    WorkTable.Post
+  else
+    Self.ModalResult := mrCancel;
+end;
+
+function TfrmCause.CtrlHasValue(edCtrl: TWinControl; pVal, pDeny,
+  pMsg: String): Boolean;
+begin
+  Result := True;
+  if Trim(pVal) = pDeny then
+  begin
+    Result := False;
+    edCtrl.SetFocus;
+    MessageDlgH(pMsg, mtError, [mbOK], 0, 0);
+  end;
+end;
+
+procedure TfrmCause.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  WorkTable.Close;
+end;
+
+end.

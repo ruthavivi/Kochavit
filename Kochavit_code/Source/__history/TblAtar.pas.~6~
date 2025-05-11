@@ -1,0 +1,43 @@
+unit TblAtar;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlTbl, ActnList, DB, DBTables, ImgList, Grids, DBGrids,
+  MyChkDBGrid, ExtCtrls, ComCtrls, StdCtrls, DBCtrls, ToolWin, edbcomps, frxClass,
+  frxDBSet, Vcl.StdActns;
+
+type
+  TfrmAtarTbl = class(TfrmGnrlTbl)
+    tbTblID: TAutoIncField;
+    tbTblAtar: TStringField;
+    frdbAtar: TfrxDBDataset;
+    procedure acPrintExecute(Sender: TObject);
+    procedure acDeleteExecute(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAtarTbl: TfrmAtarTbl;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmAtarTbl.acDeleteExecute(Sender: TObject);
+begin
+  if KeepIntegrity('AtarId', tbTblId.AsString, ['KCar']) then
+    inherited;
+end;
+
+procedure TfrmAtarTbl.acPrintExecute(Sender: TObject);
+begin
+  inherited;
+  PrintReport('rpAtar');
+end;
+
+end.

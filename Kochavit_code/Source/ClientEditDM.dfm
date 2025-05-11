@@ -1,0 +1,254 @@
+inherited dmClientEdit: TdmClientEdit
+  OldCreateOrder = True
+  Height = 318
+  Width = 371
+  inherited qrGnrl: TEDBQuery
+    Top = 152
+  end
+  object dsClient: TDataSource
+    DataSet = tbClient
+    Left = 88
+    Top = 72
+  end
+  object tbClFollow: TEDBTable
+    AfterOpen = tbClFollowAfterOpen
+    BeforeInsert = tbTofesBeforeInsert
+    OnNewRecord = tbClFollowNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dsClient
+    TableName = 'KClFollow'
+    Left = 184
+    Top = 72
+    object tbClFollowId: TAutoIncField
+      FieldName = 'Id'
+    end
+    object tbClFollowClientId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ClientId'
+    end
+    object tbClFollowMoed: TDateField
+      DisplayWidth = 10
+      FieldName = 'Moed'
+      OnSetText = tbClientOpenDateSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbClFollowSha: TTimeField
+      DisplayWidth = 10
+      FieldName = 'Sha'
+      OnSetText = tbClFollowShaSetText
+      EditMask = '!90:00;1; '
+    end
+    object tbClFollowRemark: TStringField
+      DisplayWidth = 120
+      FieldName = 'Remark'
+      Size = 120
+    end
+  end
+  object tbClient: TEDBTable
+    AfterPost = tbClientAfterPost
+    OnNewRecord = tbClientNewRecord
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    TableName = 'KClient'
+    Left = 24
+    Top = 72
+    object tbClientId: TIntegerField
+      FieldName = 'Id'
+    end
+    object tbClientCod: TAutoIncField
+      FieldName = 'Cod'
+      OnValidate = tbClientCodValidate
+    end
+    object tbClientHp: TIntegerField
+      FieldName = 'Hp'
+      OnValidate = tbClientCodValidate
+    end
+    object tbClientOpenDate: TDateField
+      FieldName = 'OpenDate'
+      OnSetText = tbClientOpenDateSetText
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbClientShem: TStringField
+      FieldName = 'Shem'
+      OnValidate = tbClientCodValidate
+      Size = 30
+    end
+    object tbClientBahalim1: TStringField
+      FieldName = 'Bahalim1'
+      Size = 30
+    end
+    object tbClientTelB1: TStringField
+      FieldName = 'TelB1'
+      Size = 11
+    end
+    object tbClientBahalim2: TStringField
+      FieldName = 'Bahalim2'
+      Size = 30
+    end
+    object tbClientTelB2: TStringField
+      FieldName = 'TelB2'
+      Size = 11
+    end
+    object tbClientKtovet: TStringField
+      FieldName = 'Ktovet'
+      OnValidate = tbClientKtovetValidate
+      Size = 30
+    end
+    object tbClientIsuv: TStringField
+      FieldName = 'Isuv'
+      Size = 15
+    end
+    object tbClientMikud: TIntegerField
+      FieldName = 'Mikud'
+    end
+    object tbClientTel1: TStringField
+      FieldName = 'Tel1'
+      Size = 12
+    end
+    object tbClientTel2: TStringField
+      FieldName = 'Tel2'
+      Size = 11
+    end
+    object tbClientFax: TStringField
+      FieldName = 'Fax'
+      Size = 10
+    end
+    object tbClientEMail: TStringField
+      FieldName = 'EMail'
+      OnValidate = tbClientEMailValidate
+      Size = 30
+    end
+    object tbClientEMailX: TStringField
+      FieldName = 'EMailX'
+      OnValidate = tbClientEMailValidate
+      Size = 30
+    end
+    object tbClientContact: TStringField
+      FieldName = 'Contact'
+      Size = 30
+    end
+    object tbClientTelC: TStringField
+      FieldName = 'TelC'
+      Size = 11
+    end
+    object tbClientAcounter: TStringField
+      FieldName = 'Acounter'
+      Size = 30
+    end
+    object tbClientTelA: TStringField
+      FieldName = 'TelA'
+      Size = 11
+    end
+    object tbClientProfesion: TStringField
+      FieldName = 'Profesion'
+      Size = 30
+    end
+    object tbClientTelP: TStringField
+      FieldName = 'TelP'
+      Size = 11
+    end
+    object tbClientZeutP: TIntegerField
+      FieldName = 'ZeutP'
+    end
+    object tbClientKtovetP: TStringField
+      FieldName = 'KtovetP'
+      Size = 30
+    end
+    object tbClientSizeP: TIntegerField
+      FieldName = 'SizeP'
+    end
+    object tbClientPeriodPay: TSmallintField
+      FieldName = 'PeriodPay'
+    end
+    object tbClientCreditPay: TSmallintField
+      FieldName = 'CreditPay'
+    end
+    object tbClientOvedId: TSmallintField
+      FieldName = 'OvedId'
+    end
+    object tbClientRemark: TMemoField
+      FieldName = 'Remark'
+      BlobType = ftMemo
+    end
+    object tbClientDept: TFloatField
+      FieldName = 'Dept'
+    end
+    object tbClientFreze: TBooleanField
+      FieldName = 'Freze'
+    end
+    object tbClientMovil: TStringField
+      FieldName = 'Movil'
+      Size = 30
+    end
+    object tbClientZeutM: TIntegerField
+      FieldName = 'ZeutM'
+    end
+    object tbClientOfenPayId: TIntegerField
+      FieldName = 'OfenPayId'
+    end
+    object tbClientPail: TBooleanField
+      FieldName = 'Pail'
+    end
+    object tbClientLkpOved: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpOved'
+      LookupDataSet = tbTblOved
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Oved'
+      KeyFields = 'OvedId'
+      Lookup = True
+    end
+    object tbClientLkpOfenPay: TStringField
+      FieldKind = fkLookup
+      FieldName = 'LkpOfenPay'
+      LookupDataSet = tbTblOfenPay
+      LookupKeyFields = 'Id'
+      LookupResultField = 'OfenPay'
+      KeyFields = 'OfenPayId'
+      Lookup = True
+    end
+    object tbClientStamp: TDateTimeField
+      FieldName = 'Stamp'
+    end
+    object tbClientMsira: TBooleanField
+      FieldName = 'Msira'
+    end
+  end
+  object tbTblOved: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexFieldNames = 'Oved'
+    TableName = 'KTblOved'
+    Left = 160
+    Top = 16
+  end
+  object tbTblOfenPay: TEDBTable
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    IndexName = 'xOfenPay'
+    TableName = 'KTblOfenPay'
+    Left = 232
+    Top = 16
+  end
+  object qrClientMailSend: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dsClient
+    SQL.Strings = (
+      'SELECT Moed, Subject FROM KClientMailSend'
+      'WHERE ClientId = :Id'
+      'ORDER BY Moed')
+    Params = <
+      item
+        DataType = ftInteger
+        Name = 'Id'
+        ParamType = ptInput
+        Size = 4
+      end>
+    Left = 104
+    Top = 152
+  end
+end

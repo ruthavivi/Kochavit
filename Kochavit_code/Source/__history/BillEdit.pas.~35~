@@ -1,0 +1,163 @@
+unit BillEdit;
+
+interface
+
+uses
+  Windows, SysUtils, Classes, Graphics, Controls, Forms, Dialogs, GnrlEdit,
+  ImgList, Menus, ActnList, ComCtrls, DB, StdCtrls, ToolWin, Buttons, ExtCtrls,
+  Grids, DBGrids, DBCtrls, Mask, ExtDlgs, JvMaskEdit, JvCheckedMaskEdit,
+  JvDatePickerEdit,  JvDBDatePickerEdit, DBActns, JvExMask, JvToolEdit, StdActns,
+  System.Actions;
+
+type
+  TfrmBillEdit = class(TfrmGnrlEdit)
+    acDeleteCar: TDataSetDelete;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    edReciptNo: TDBEdit;
+    edProduceD: TDBEdit;
+    edSumA: TDBEdit;
+    edToPayD: TDBEdit;
+    Label5: TLabel;
+    edRemark: TDBMemo;
+    dsBill: TDataSource;
+    procedure edReciptNoExit(Sender: TObject);
+    procedure acSaveExecute(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acMailExecute(Sender: TObject);
+    procedure edProduceDKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure FormCreate(Sender: TObject);
+  private
+    { Private declarations }
+    function HasAllValue: Boolean;
+  public
+    { Public declarations }
+  end;
+
+var
+  frmBillEdit: TfrmBillEdit;
+
+implementation
+
+{$R *.dfm}
+uses
+  MainDM, BillEditDM, DocUtils;
+
+procedure TfrmBillEdit.FormCreate(Sender: TObject);
+begin
+  inherited;
+  stClientName.Caption := 'שם החברה: ' + #13#10 + dmBillEdit.ClientShem;
+  if (dmBillEdit.tbBill.State = dsInsert) then
+    acMail.Enabled := False;
+end;
+
+// check requiered fields
+procedure TfrmBillEdit.edReciptNoExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TDbEdit).Text = '') then
+  begin
+    MessageDlg('חובה להקליד ערך', mtConfirmation, [mbOk], 0);
+    (Sender as TDbEdit).SetFocus;
+  end;
+end;
+
+function TfrmBillEdit.HasAllValue: Boolean;
+begin
+  Result := True;
+  if (edReciptNo.Text = '') or (edProduceD.Text = '  /  /    ') or
+       (edToPayD.Text = '  /  /    ') or (edSumA.Text = '') then
+   begin
+       MessageDlg('שדות מצוינים באדום הם שדות חובה',
+                   mtConfirmation, [mbOk], 0);
+       if (edReciptNo.Text = '') then
+           edReciptNo.SetFocus
+       else if (edProduceD.Text = '') then
+           edProduceD.SetFocus
+       else if (edSumA.Text = '') then
+           edSumA.SetFocus
+       else
+           edToPayD.SetFocus;
+       Result := False;
+   end
+end;
+//end check requiered fields
+
+
+procedure TfrmBillEdit.edProduceDKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  inherited;
+  if Key = VK_F2 then
+    (Sender as TDBedit).Text := DateToStr(Date);
+end;
+
+procedure TfrmBillEdit.acMailExecute(Sender: TObject);
+var
+  WorkFile, nCopy: OleVariant;
+  vPath, vButton, vMemo: String;
+  vSave: Boolean;
+  OneDoc: TDocUtils;
+begin
+  inherited;
+  vPath := ExtractFilePath(Application.ExeName);
+  if SelectDoc(WorkFile, nCopy, vButton, vMemo, vPath + 'Docs\Bill\', vSave) then
+  begin
+    Screen.Cursor := crHourGlass;
+    dmBillEdit.qrGnrl.SQL.LoadFromFile(vPath+'SQL\BillFields.SQL');
+    dmBillEdit.qrGnrl.SQL.Add('WHERE Id = :Id');
+    dmBillEdit.qrGnrl.Open;
+    OneDoc := TDocUtils.Create(vButton, nCopy, vSave, 'נושא חשבון',
+        dmBillEdit.qrGnrl.FieldByName('Fax').AsString,
+        dmBillEdit.qrGnrl.FieldByName('EMail').AsString,
+        dmBillEdit.qrGnrl.FieldByName('EMailX').AsString, WorkFile);
+    try
+      OneDoc.SendDoc(dmBillEdit.qrGnrl, nil, nil);
+//      if vSave and (vButton <> 'btnPreview') then
+//        dmBillEdit.SaveDataBig(WorkFile, ExtractFileName(WorkFile), 'Doc', '', False);
+    finally
+      OneDoc.Free;
+      dmBillEdit.qrGnrl.Close;
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+procedure TfrmBillEdit.acSaveExecute(Sender: TObject);
+begin
+  inherited;
+  if HasAllValue then
+  begin
+    dmBillEdit.SaveData;
+    Close;
+  end;
+end;
+
+procedure TfrmBillEdit.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+  inherited;
+  with dmBillEdit.tbBill do
+    if Modified or (Tag = 1) then
+      case MessageDlg('קימים נתונים חדשים בכרטיס. האם לשמור?',
+            mtConfirmation, [mbYes, mbNo, mbCancel], 0) of
+        id_Yes: dmBillEdit.SaveData;
+        id_No: Cancel;
+        id_Cancel: CanClose := False;
+      end;
+end;
+
+procedure TfrmBillEdit.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  dmBillEdit.Free;
+  inherited;
+  frmBillEdit := nil;
+end;
+
+end.

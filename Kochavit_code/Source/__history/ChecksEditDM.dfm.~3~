@@ -1,0 +1,95 @@
+inherited dmChecksEdit: TdmChecksEdit
+  OldCreateOrder = True
+  Height = 314
+  Width = 267
+  inherited RvKartis: TRvProject
+    Left = 112
+    Top = 216
+  end
+  inherited RvSystem: TRvSystem
+    Left = 64
+    Top = 216
+  end
+  object dsChecks: TDataSource
+    DataSet = tbChecks
+    Left = 96
+    Top = 72
+  end
+  object RvProject1: TRvProject
+    Engine = RvSystem
+    ProjectFile = 
+      'C:\Documents and Settings\Sorin\My Documents\RAD Studio\Projects' +
+      '\Kochavit\Reports\KvKartis.rav'
+    Left = 184
+    Top = 216
+  end
+  object tbChecks: TEDBTable
+    OnNewRecord = tbChecksNewRecord
+    DatabaseName = 'dnChecksEdit'
+    IndexName = 'xClientId'
+    MasterFields = 'Id'
+    MasterSource = dmMain.dsClient
+    TableName = 'KChecks.db'
+    Left = 24
+    Top = 72
+    object tbChecksId: TAutoIncField
+      DisplayWidth = 10
+      FieldName = 'Id'
+      ReadOnly = True
+    end
+    object tbChecksClientId: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ClientId'
+    end
+    object tbChecksBankId: TSmallintField
+      DisplayWidth = 10
+      FieldName = 'BankId'
+    end
+    object tbChecksAcount: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Acount'
+    end
+    object tbChecksCheckNo: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'CheckNo'
+    end
+    object tbChecksCheckSum: TCurrencyField
+      DisplayWidth = 10
+      FieldName = 'CheckSum'
+    end
+    object tbChecksAfkadaD: TDateField
+      DisplayWidth = 10
+      FieldName = 'AfkadaD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbChecksPidyonD: TDateField
+      DisplayWidth = 10
+      FieldName = 'PidyonD'
+      EditMask = '!99/99/9999;1; '
+    end
+    object tbChecksBill: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Bill'
+    end
+    object tbChecksKabala: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'Kabala'
+    end
+    object tbCheckslkpBank: TStringField
+      DisplayWidth = 20
+      FieldKind = fkLookup
+      FieldName = 'lkpBank'
+      LookupDataSet = tbTblBank
+      LookupKeyFields = 'Id'
+      LookupResultField = 'Bank'
+      KeyFields = 'BankId'
+      Lookup = True
+    end
+  end
+  object tbTblBank: TEDBTable
+    DatabaseName = 'dnChecksEdit'
+    TableName = 'KTblBank.db'
+    Left = 188
+    Top = 27
+  end
+end

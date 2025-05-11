@@ -1,0 +1,11 @@
+inherited dmChecksFilter: TdmChecksFilter
+  inherited qrFilter: TEDBQuery
+    SQL.Strings = (
+      
+        'SELECT Ch.*, IF (Nifda THEN '#39#235#239#39' ELSE '#39#236#224#39') AS NifdaTrg, IF (Ret' +
+        'urn THEN '#39#235#239#39' ELSE '#39#236#224#39') AS ReturnTrg, Shem, Tel1, Tel2, ACounte' +
+        'r, TelA'
+      'FROM KChecks Ch'
+      'LEFT JOIN KClient Cl ON Ch.ClientId = Cl.Id')
+  end
+end

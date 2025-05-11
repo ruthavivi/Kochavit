@@ -1,0 +1,9 @@
+inherited frmBillSpssSlctDlg: TfrmBillSpssSlctDlg
+  PixelsPerInch = 96
+  TextHeight = 13
+  object ccChartsBill: TRvCustomConnection
+    RuntimeVisibility = rtDeveloper
+    Left = 249
+    Top = 56
+  end
+end

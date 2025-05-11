@@ -1,0 +1,5 @@
+object dmGnrlFilter: TdmGnrlFilter
+  OldCreateOrder = False
+  Height = 196
+  Width = 247
+end

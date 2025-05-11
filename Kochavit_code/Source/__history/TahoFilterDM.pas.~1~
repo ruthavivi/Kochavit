@@ -1,0 +1,24 @@
+unit TahoFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmTahoFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmTahoFilter: TdmTahoFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

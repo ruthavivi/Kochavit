@@ -1,0 +1,80 @@
+inherited frmCarListArhiv: TfrmCarListArhiv
+  Caption = #1488#1512#1499#1497#1493#1503' '#1512#1499#1489#1497#1501
+  ClientHeight = 468
+  ClientWidth = 628
+  OnCreate = FormCreate
+  ExplicitWidth = 648
+  ExplicitHeight = 507
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited StatusBar: TStatusBar
+    Top = 449
+    Width = 628
+    ExplicitTop = -19
+    ExplicitWidth = 92
+  end
+  inherited ToolBar1: TToolBar
+    Width = 628
+    ExplicitWidth = 92
+    ExplicitHeight = 156
+  end
+  inherited Panel1: TPanel
+    Width = 628
+    Height = 401
+    ExplicitTop = 156
+    ExplicitWidth = 92
+    inherited DBGrid: TDBGrid
+      Width = 626
+      Height = 399
+      DataSource = dsList
+      OnTitleClick = DBGridTitleClick
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'CodCar'
+          Title.Caption = #1502#1505#39' '#1505#1497#1491#1493#1512#1497
+          Width = 71
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Number'
+          Title.Caption = #1502#1505#39' '#1512#1497#1513#1493#1497
+          Width = 88
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Type'
+          Title.Caption = #1505#1493#1490' '#1512#1499#1489
+          Width = 72
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Producer'
+          Title.Caption = #1497#1510#1512#1503
+          Width = 142
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'Shem'
+          Title.Caption = #1513#1501' '#1492#1495#1489#1512#1492
+          Width = 198
+          Visible = True
+        end>
+    end
+  end
+  inherited dsList: TDataSource
+    DataSet = dmCarListArhiv.qrList
+  end
+  inherited ActionList1: TActionList
+    inherited acReturn: TAction
+      OnExecute = acReturnExecute
+    end
+    inherited acSiba: TAction
+      OnExecute = acSibaExecute
+    end
+  end
+end

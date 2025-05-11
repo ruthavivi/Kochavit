@@ -1,0 +1,147 @@
+unit CourseFilter;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilter, DB, StdCtrls, Buttons, ExtCtrls, Mask, edbcomps;
+
+type
+  TfrmCourseFilter = class(TfrmGnrlFilter)
+    lbAStartD: TLabel;
+    lbZStartD: TLabel;
+    edAStartD: TMaskEdit;
+    edZStartD: TMaskEdit;
+    cbStartD: TCheckBox;
+    lbAEndD: TLabel;
+    lbZEndD: TLabel;
+    edAEndD: TMaskEdit;
+    edZEndD: TMaskEdit;
+    cbEndD: TCheckBox;
+    lbECourse: TLabel;
+    cbCourse: TCheckBox;
+    cbECourse: TComboBox;
+    lbEShem: TLabel;
+    cbShem: TCheckBox;
+    cbEShem: TComboBox;
+    procedure FormCreate(Sender: TObject);
+    procedure cbStartDClick(Sender: TObject);
+    procedure edAStartDExit(Sender: TObject);
+    procedure edAEndDExit(Sender: TObject);
+    procedure cbECourseEnter(Sender: TObject);
+    procedure cbEShemEnter(Sender: TObject);
+    procedure btnExecuteClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    procedure LoadItemsInComboBox(Sender: TObject; pWhere: String);
+  public
+    { Public declarations }
+  end;
+
+var
+  frmCourseFilter: TfrmCourseFilter;
+
+implementation
+uses
+   CourseFilterDM, CourseReport, KbFunc;
+{$R *.dfm}
+
+procedure TfrmCourseFilter.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmCourseFilter := TdmCourseFilter.Create(Self);
+end;
+
+procedure TfrmCourseFilter.cbStartDClick(Sender: TObject);
+begin
+  inherited;
+  SetCtrlState(((Sender as TCheckBox).Parent as TGroupBox),
+    (Sender as TCheckBox).Checked, (Sender as TCheckBox).Top);
+end;
+
+procedure TfrmCourseFilter.edAStartDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAStartD.Text,
+               edZStartD.Text) = False) then
+           edAStartD.SetFocus;
+end;
+
+procedure TfrmCourseFilter.edAEndDExit(Sender: TObject);
+begin
+  inherited;
+  if ((Sender as TMaskEdit).Text <> '  /  /    ') and
+       (ValidDate((Sender as TMaskEdit).Text) = False) then
+       (Sender as TMaskEdit).SetFocus
+   else if (Copy((Sender as TMaskEdit).Name, 0, 3) = 'edZ') then
+       if (CompareDate(edAEndD.Text,
+               edZEndD.Text) = False) then
+           edAEndD.SetFocus;
+end;
+
+procedure TfrmCourseFilter.LoadItemsInComboBox(Sender: TObject; pWhere: String);
+var
+  vName: String;
+  ListItem: TStringList;
+begin
+  vName := Copy(TComboBox(Sender).Name, 4, 15);
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmCourseFilter.LoadItems('KTbl'+vName, vName, pWhere, ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmCourseFilter.cbECourseEnter(Sender: TObject);
+begin
+  LoadItemsInComboBox(Sender, '');
+end;
+
+procedure TfrmCourseFilter.cbEShemEnter(Sender: TObject);
+var
+  ListItem: TStringList;
+begin
+  ListItem := TStringList.Create;
+  try
+    TComboBox(Sender).Clear;
+    dmCourseFilter.LoadItems('KClient', 'Shem', '', ListItem);
+    TComboBox(Sender).Items.AddStrings(ListItem);
+  finally
+    ListItem.Free;
+  end;
+end;
+
+procedure TfrmCourseFilter.btnExecuteClick(Sender: TObject);
+begin
+  inherited;
+  if not Assigned(frmCourseReport) then
+  begin
+    with dmCourseFilter do
+    begin
+      SetTotalRec('KDrCourse');
+      SqlState.EmptyPropertyes;
+      SqlState.SelectAndFrom.LoadFromFile(ExtractFilePath(Application.ExeName)+
+          'SQL\CourseFilter.SQL');
+      SqlState.SplitHeader;
+      SqlState.Where := GetWhereState;
+      SqlState.Order := 'StartD';
+      if OpenData then
+        frmCourseReport := TfrmCourseReport.Create(Self);
+    end;
+  end;
+end;
+
+procedure TfrmCourseFilter.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  inherited;
+  frmCourseFilter := nil;
+end;
+
+end.

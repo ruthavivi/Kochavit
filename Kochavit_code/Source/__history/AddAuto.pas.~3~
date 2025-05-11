@@ -1,0 +1,61 @@
+unit AddAuto;
+
+interface
+
+uses
+  Windows, Forms, DBTables, StdCtrls, Buttons, ExtCtrls, DB, Controls, Classes,
+  edbcomps;
+
+type
+  TfrmAddAuto = class(TForm)
+    Panel1: TPanel;
+    Panel2: TPanel;
+    Label1: TLabel;
+    cbSug: TComboBox;
+    btnOk: TBitBtn;
+    btnCancel: TBitBtn;
+    tbTblType: TEDBTable;
+    procedure FormCreate(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    TypeId: String;
+  end;
+
+var
+  frmAddAuto: TfrmAddAuto;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfrmAddAuto.FormCreate(Sender: TObject);
+begin
+  with tbTblType do
+  begin
+    cbSug.Items.Add('לכל הרכבים');
+    Open;
+    while not Eof do
+    begin
+      cbSug.Items.Add(FieldByName('Type').AsString);
+      Next;
+    end;
+    Close;
+  end;
+end;
+
+procedure TfrmAddAuto.btnOkClick(Sender: TObject);
+begin
+  if (cbSug.ItemIndex = 0) then
+    TypeId := ''
+  else
+  begin
+    tbTblType.Open;
+    tbTblType.FindKey([cbSug.Text]);
+    TypeId := tbTblType.FieldByName('Id').AsString;
+    tbTblType.Close;
+  end;
+end;
+
+end.

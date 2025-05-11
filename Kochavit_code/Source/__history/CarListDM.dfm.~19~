@@ -1,0 +1,109 @@
+object dmCarList: TdmCarList
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  OnDestroy = DataModuleDestroy
+  Height = 178
+  Width = 185
+  object qrCarList: TEDBQuery
+    AutoCalcFields = False
+    ReadOnly = True
+    BeforeOpen = qrCarListBeforeOpen
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    SQL.Strings = (
+      
+        'SELECT Id, CodCar, Number, Type, Producer, Contact, Freze, Missi' +
+        'ng, Shem, ClientId'
+      'FROM KCar Cr'
+      'LEFT JOIN KTblType tT ON tT.Id = Cr.TypeId'
+      'LEFT JOIN KTblProducer tP ON tP.Id = Cr.ProducerId'
+      'LEFT JOIN KTblDgam tD ON tD.Id = Cr.DgamId'
+      'LEFT JOIN KClient Cl ON Cl.Id = Cr.ClientId'
+      'WHERE Pail = True'
+      'ORDER BY Cod')
+    Params = <>
+    Left = 40
+    Top = 32
+    object qrCarListID: TIntegerField
+      DisplayLabel = 'Id'
+      DisplayWidth = 10
+      FieldName = 'ID'
+      Origin = 'KCar.Id'
+    end
+    object qrCarListCodCar: TIntegerField
+      DisplayLabel = #1502#1505#39' '#1505#1497#1491#1493#1512#1497
+      FieldName = 'CodCar'
+      Origin = 'KCar.CodCar'
+    end
+    object qrCarListNumber: TStringField
+      DisplayLabel = #1502#1505#39' '#1492#1512#1499#1489
+      DisplayWidth = 9
+      FieldName = 'Number'
+      Origin = 'KCar.Number'
+      Size = 9
+    end
+    object qrCarListType: TStringField
+      DisplayLabel = #1505#1493#1490
+      DisplayWidth = 20
+      FieldName = 'Type'
+      Origin = 'KTblType.Type'
+    end
+    object qrCarListProducer: TStringField
+      DisplayLabel = #1497#1510#1512#1503
+      DisplayWidth = 20
+      FieldName = 'Producer'
+      Origin = 'KTblProducer.Producer'
+    end
+    object qrCarListShem: TStringField
+      DisplayLabel = #1513#1501' '#1492#1495#1489#1512#1492
+      DisplayWidth = 30
+      FieldName = 'Shem'
+      Origin = 'KClient.Shem'
+      Size = 30
+    end
+    object qrCarListContact: TStringField
+      DisplayLabel = #1488#1497#1513' '#1511#1513#1512
+      DisplayWidth = 25
+      FieldName = 'Contact'
+      Origin = 'KCar.Contact'
+      Size = 25
+    end
+    object qrCarListFreze: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Freze'
+      Origin = 'KCar.Freze'
+    end
+    object qrCarListMissing: TBooleanField
+      DisplayWidth = 5
+      FieldName = 'Missing'
+      Origin = 'KCar.Missing'
+    end
+    object qrCarListClientId: TIntegerField
+      FieldName = 'ClientId'
+      Origin = 'KCar.ClientId'
+    end
+  end
+  object qrGnrl: TEDBQuery
+    DatabaseName = 'dbnMain'
+    SessionName = 'Main'
+    DataSource = dmMain.dsClient
+    Params = <>
+    Left = 40
+    Top = 112
+  end
+  object dsCarList: TDataSource
+    DataSet = qrCarList
+    OnDataChange = dsCarListDataChange
+    Left = 112
+    Top = 32
+  end
+  object frdbCarList: TfrxDBDataset
+    UserName = 'frdbCarList'
+    CloseDataSource = False
+    DataSet = qrCarList
+    BCDToCurrency = False
+    Left = 113
+    Top = 104
+  end
+end

@@ -1,0 +1,24 @@
+unit BdikaFilterDM;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlFilterDM, DB, edbcomps;
+
+type
+  TdmBdikaFilter = class(TdmGnrlFilter)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dmBdikaFilter: TdmBdikaFilter;
+
+implementation
+
+{$R *.dfm}
+
+end.

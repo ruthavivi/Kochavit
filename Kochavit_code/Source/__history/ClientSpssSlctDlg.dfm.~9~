@@ -1,0 +1,52 @@
+inherited frmClientSpssSlctDlg: TfrmClientSpssSlctDlg
+  ExplicitWidth = 442
+  ExplicitHeight = 379
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel2: TPanel
+    ExplicitHeight = 266
+    inherited edTitle: TMemo
+      ExplicitTop = 221
+    end
+    inherited rgReports: TRadioGroup
+      ExplicitHeight = 220
+    end
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 266
+    inherited btnPreview: TBitBtn
+      OnClick = btnPrintClick
+    end
+    inherited btnRTF: TBitBtn
+      OnClick = btnPrintClick
+    end
+  end
+  inherited qrSpss: TEDBQuery
+    SQL.Strings = (
+      'SELECT OfenPay, COUNT(Id) Num'
+      'FROM '
+      
+        '( SELECT Cl.*, Oved, OfenPay, COUNT(Id) AS CarNum, SUM(Shum) AS ' +
+        'CarSum,'
+      'SUM(Shum) / COUNT(Id) AS ShumPerCar'
+      'FROM KClient Cl         '
+      'LEFT JOIN KTblOved tV ON Cl.OvedId = tV.Id '
+      'LEFT JOIN KTblOfenPay tP ON Cl.OfenPayId = tP.Id '
+      
+        'LEFT JOIN KCar Cr ON (Cl.Id = Cr.ClientId AND Cr.Pail = True)   ' +
+        '   '
+      'WHERE Pail = True'
+      'GROUP BY Cl.Id'
+      'ORDER BY Shem ) '
+      'AS BaseSql'
+      'GROUP BY OfenPay'
+      'ORDER BY OfenPay')
+  end
+  object ccChartsClient: TRvCustomConnection [6]
+    RuntimeVisibility = rtDeveloper
+    OnGetCols = ccChartsClientGetCols
+    OnGetRow = ccChartsClientGetRow
+    Left = 249
+    Top = 48
+  end
+end

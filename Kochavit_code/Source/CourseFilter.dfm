@@ -1,0 +1,299 @@
+inherited frmCourseFilter: TfrmCourseFilter
+  Caption = #1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1511#1493#1512#1505#1497#1501
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited Panel1: TPanel
+    inherited btnExecute: TBitBtn
+      OnClick = btnExecuteClick
+    end
+  end
+  inherited Panel2: TPanel
+    inherited grbMain: TGroupBox
+      Caption = #1489#1504#1497#1514' '#1513#1488#1497#1500#1514#1492' '#1500#1502#1488#1490#1512' '#1511#1493#1512#1505#1497#1501
+      object lbAStartD: TLabel
+        Tag = 3
+        Left = 323
+        Top = 32
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZStartD: TLabel
+        Tag = 3
+        Left = 146
+        Top = 32
+        Width = 15
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbAEndD: TLabel
+        Tag = 3
+        Left = 323
+        Top = 54
+        Width = 10
+        Height = 13
+        Caption = #1502':'
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbZEndD: TLabel
+        Tag = 3
+        Left = 146
+        Top = 54
+        Width = 15
+        Height = 13
+        Caption = #1506#1491':'
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbECourse: TLabel
+        Tag = 5
+        Left = 298
+        Top = 76
+        Width = 34
+        Height = 13
+        Anchors = [akTop, akRight]
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object lbEShem: TLabel
+        Tag = 5
+        Left = 298
+        Top = 98
+        Width = 34
+        Height = 13
+        Caption = #1513#1493#1493#1492' '#1500':'
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+      end
+      object edAStartD: TMaskEdit
+        Tag = 3
+        Left = 176
+        Top = 32
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 1
+        Text = '  /  /    '
+        OnExit = edAStartDExit
+      end
+      object edZStartD: TMaskEdit
+        Tag = 3
+        Left = 23
+        Top = 32
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 2
+        Text = '  /  /    '
+        OnExit = edAStartDExit
+      end
+      object cbStartD: TCheckBox
+        Tag = 3
+        Left = 339
+        Top = 32
+        Width = 94
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1492#1514#1495#1500#1492':'
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 0
+        OnClick = cbStartDClick
+      end
+      object edAEndD: TMaskEdit
+        Tag = 3
+        Left = 176
+        Top = 54
+        Width = 113
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 4
+        Text = '  /  /    '
+        OnExit = edAEndDExit
+      end
+      object edZEndD: TMaskEdit
+        Tag = 3
+        Left = 23
+        Top = 54
+        Width = 106
+        Height = 21
+        BiDiMode = bdLeftToRight
+        Color = clBtnFace
+        Enabled = False
+        EditMask = '!99/99/9999;1; '
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        MaxLength = 10
+        ParentBiDiMode = False
+        ParentFont = False
+        TabOrder = 5
+        Text = '  /  /    '
+        OnExit = edAEndDExit
+      end
+      object cbEndD: TCheckBox
+        Tag = 3
+        Left = 339
+        Top = 54
+        Width = 94
+        Height = 14
+        Caption = #1514#1488#1512#1497#1498' '#1505#1497#1493#1501':'
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 3
+        OnClick = cbStartDClick
+      end
+      object cbCourse: TCheckBox
+        Tag = 5
+        Left = 354
+        Top = 76
+        Width = 79
+        Height = 14
+        Anchors = [akTop, akRight]
+        Caption = #1513#1501' '#1492#1511#1493#1512#1505':'
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 6
+        OnClick = cbStartDClick
+      end
+      object cbECourse: TComboBox
+        Tag = 5
+        Left = 128
+        Top = 76
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Anchors = [akTop, akRight]
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        Sorted = True
+        TabOrder = 7
+        OnEnter = cbECourseEnter
+      end
+      object cbShem: TCheckBox
+        Tag = 5
+        Left = 339
+        Top = 98
+        Width = 94
+        Height = 14
+        Caption = #1513#1501' '#1495#1489#1512#1492':'
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        TabOrder = 8
+        OnClick = cbStartDClick
+      end
+      object cbEShem: TComboBox
+        Tag = 5
+        Left = 128
+        Top = 98
+        Width = 161
+        Height = 21
+        Style = csDropDownList
+        Color = clBtnFace
+        Enabled = False
+        Font.Charset = HEBREW_CHARSET
+        Font.Color = clBlack
+        Font.Height = -11
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentFont = False
+        Sorted = True
+        TabOrder = 9
+        OnEnter = cbEShemEnter
+      end
+    end
+  end
+end

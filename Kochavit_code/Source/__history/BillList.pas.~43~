@@ -1,0 +1,203 @@
+unit BillList;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlList, DB, Menus, ImgList, ActnList, ComCtrls,
+  Grids, DBGrids, ExtCtrls, StdCtrls, Mask, DBCtrls, ToolWin, Buttons,
+  edbcomps, edberror,  DBActns, StdActns, System.Actions, System.ImageList;
+
+type
+  TfrmBillList = class(TfrmGnrlList)
+    acPayd_Kabala: TAction;
+    ToolButton7: TToolButton;
+    acPayd: TAction;
+    pmPayd: TPopupMenu;
+    N10: TMenuItem;
+    N11: TMenuItem;
+    N12: TMenuItem;
+    N13: TMenuItem;
+    procedure FormCreate(Sender: TObject);
+    procedure edSearchChange(Sender: TObject);
+    procedure acAppendUpdate(Sender: TObject);
+    procedure acAppendExecute(Sender: TObject);
+    procedure acEditExecute(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBGridTitleClick(Column: TColumn);
+    procedure acPayd_KabalaExecute(Sender: TObject);
+    procedure acPaydExecute(Sender: TObject);
+    procedure dsListDataChange(Sender: TObject; Field: TField);
+    procedure acPrintListExecute(Sender: TObject);
+  private
+    procedure UpdateStatusBar;
+    function GetSearchVal(var pSearchTxt: Variant): Boolean;
+    procedure OpenOneRec(pState: Boolean);
+  public
+
+  end;
+
+var
+  frmBillList: TfrmBillList;
+
+implementation
+
+{$R *.dfm}
+uses
+   DataDM, BillListDM, DialogsHeb, LogErrorUtil, BillEditDM, BillEdit, BillPayd,  MainDM;
+
+procedure TfrmBillList.FormCreate(Sender: TObject);
+begin
+  inherited;
+  dmBillList := TdmBillList.Create(Self);
+  LoadColOrder(DBGrid, 'BillList');
+  MarkIndexColumn(dmBillList.BillOrder);
+  UpdateStatusBar;
+end;
+
+procedure TfrmBillList.dsListDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+  if Assigned(dmBillList) then
+    UpdateStatusBar;
+end;
+
+procedure TfrmBillList.UpdateStatusBar;
+begin
+    if dmMain.SelectAll then
+      dmBillList.qrGnrl.SQL.Text :=  'SELECT SUM(SumA) AS Schum FROM KBill '+
+              'WHERE Payd = False'
+    else
+      dmBillList.qrGnrl.SQL.Text :=  'SELECT SUM(SumA) AS Schum FROM KBill ' +
+              'WHERE Payd = False AND ClientId = ' +
+              dmMain.qrClientListId.AsString;
+    try
+      dmBillList.qrGnrl.Open;
+      dmBillList.BillSum := dmBillList.qrGnrl.FieldByName('Schum').AsString;
+    finally
+      dmBillList.qrGnrl.Close;
+    end;
+  StatusBar.Panels[0].Text := 'סה"כ חשבוניות: ' +
+          IntToStr(dmBillList.qrBillList.RecordCount);
+  StatusBar.Panels[1].Text := 'סה"כ סכום: ' + dmBillList.BillSum;
+end;
+
+procedure TfrmBillList.DBGridTitleClick(Column: TColumn);
+begin
+  dmBillList.BillOrder := Column.FieldName;
+  dmBillList.ReOpenTable(dmBillList.qrBillListId.AsInteger);
+  MarkIndexColumn(Column.FieldName);
+  edSearch.SetFocus;
+end;
+
+function TfrmBillList.GetSearchVal(var pSearchTxt: Variant): Boolean;
+var
+  OutVal: TDateTime;
+begin
+  Result := True;
+  if (typField = TIntegerField) or (typField = TSmallIntField) then
+    pSearchTxt := StrToIntDef(pSearchTxt, 0)
+  else if (typField = TDateField) then
+  begin
+    if TryStrToDate(pSearchTxt, OutVal) then
+      pSearchTxt := DateToStr(OutVal)
+    else
+      Result := False;
+  end;
+end;
+
+procedure TfrmBillList.edSearchChange(Sender: TObject);
+var
+  SearchVal: Variant;
+  SearchValDate: TDateTime;
+begin
+  inherited;
+  SearchVal := edSearch.Text;
+  if GetSearchVal(SearchVal) then
+    if (typField = TDateField) then
+    begin
+      SearchValDate := StrToDate(SearchVal);
+      dmBillList.qrBillList.Locate(dmBillList.BillOrder, SearchValDate, [loPartialKey]);
+    end
+    else
+      dmBillList.qrBillList.Locate(dmBillList.BillOrder, SearchVal, [loPartialKey]);
+end;
+
+procedure TfrmBillList.acAppendUpdate(Sender: TObject);
+begin
+  inherited;
+   acAppend.Enabled := not dmMain.SelectAll;
+end;
+
+procedure TfrmBillList.acAppendExecute(Sender: TObject);
+begin
+  inherited;
+  OpenOneRec(True);
+end;
+
+procedure TfrmBillList.acEditExecute(Sender: TObject);
+begin
+  inherited;
+  OpenOneRec(False);
+end;
+
+procedure TfrmBillList.OpenOneRec(pState: Boolean);
+begin
+  if not Assigned(frmBillEdit) then
+  begin
+    try
+      dmBillEdit := TdmBillEdit.Create(Self);
+      dmBillEdit.SetDataState(pState, dmBillList.qrBillListId.AsInteger);
+      frmBillEdit := TfrmBillEdit.Create(Self);
+    except on E: Exception do
+      begin
+        if (E is EEDBError) then
+        begin
+          if (EEDBError(E).ErrorCode = EDB_ERROR_LOCKROW) then
+            MessageDlgH('כרטיס פתוח ע"י משתמש אחר', mtError, [mbOK], 0, 0)
+          else
+            HandelError('TfrmBillList.OpenOneRec', '!!! קיים קובץ לא תקין' + #10#13 + E.Message, E);
+        end;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmBillList.acPayd_KabalaExecute(Sender: TObject);
+begin
+  inherited;
+  frmBillPayd := TfrmBillPayd.Create(Self);
+  with frmBillPayd do
+  begin
+    try
+      if frmBillPayd.ShowModal = mrYes then
+        dmBillList.UpdatePayd_Kabala(dtPayd.DateTime, edKabala.Text);
+    finally
+      Free;
+    end;
+  end;
+end;
+
+procedure TfrmBillList.acPrintListExecute(Sender: TObject);
+begin
+  inherited;
+  PrintList('rpBillRprtList.fr3');
+end;
+
+procedure TfrmBillList.acPaydExecute(Sender: TObject);
+begin
+  inherited;
+  dmBillList.UpdatePayd;
+end;
+
+procedure TfrmBillList.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  SaveColOrder(DBGrid, 'BillList');
+  dmBillList.Free;
+  inherited;
+  frmBillList := nil;
+end;
+
+end.
+

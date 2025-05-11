@@ -1,0 +1,46 @@
+inherited frmTblInsure: TfrmTblInsure
+  Caption = #1496#1489#1500#1514' '#1505#1493#1490#1497' '#1489#1497#1496#1493#1495
+  OldCreateOrder = True
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited StatusBar: TStatusBar
+    ExplicitTop = 308
+  end
+  inherited Panel1: TPanel
+    ExplicitTop = 36
+    ExplicitHeight = 272
+    inherited dbGrid: TCheckDBGrid
+      Columns = <
+        item
+          Expanded = False
+          FieldName = 'Insure'
+          Width = 191
+          Visible = True
+          ValueChecked = 'T'
+          ValueUnchecked = 'F'
+        end>
+    end
+  end
+  inherited ActionList1: TActionList
+    inherited acPrint: TAction
+      OnExecute = acPrintExecute
+    end
+  end
+  inherited tbTbl: TEDBTable
+    IndexFieldNames = 'Insure'
+    TableName = 'KTblInsure'
+    object tbTblInsure: TStringField
+      DisplayLabel = #1505#1493#1490#1497' '#1489#1497#1496#1493#1495
+      FieldName = 'Insure'
+    end
+    object tbTblID: TAutoIncField
+      FieldName = 'ID'
+    end
+  end
+  object rtInsure: TRvTableConnection
+    RuntimeVisibility = rtDeveloper
+    Table = tbTbl
+    Left = 128
+    Top = 112
+  end
+end

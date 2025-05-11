@@ -1,0 +1,48 @@
+unit AcdntRprtSlctDlg;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlRprtSlctDlg, DB, Spin, StdCtrls, Buttons, ExtCtrls,
+  edbcomps, frxClass, frxDBSet;
+
+type
+  TfrmAcdntRprtSlctDlg = class(TfrmGnrlRprtSlctDlg)
+    frdbAcdnt: TfrxDBDataset;
+    procedure btnPrintClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btnPreviewClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAcdntRprtSlctDlg: TfrmAcdntRprtSlctDlg;
+
+implementation
+uses
+   AcdntFilterDM;
+{$R *.dfm}
+
+procedure TfrmAcdntRprtSlctDlg.FormCreate(Sender: TObject);
+begin
+  inherited;
+  LoadRprtItems('CN');
+end;
+
+procedure TfrmAcdntRprtSlctDlg.btnPrintClick(Sender: TObject);
+begin
+  inherited;
+  PrintReport;
+end;
+
+procedure TfrmAcdntRprtSlctDlg.btnPreviewClick(Sender: TObject);
+begin
+  inherited;
+  PreviewReport;
+end;
+
+end.

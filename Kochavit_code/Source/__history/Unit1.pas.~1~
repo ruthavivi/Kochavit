@@ -1,0 +1,519 @@
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, GnrlEdit, DB, Grids, DBGrids, ExtCtrls, StdCtrls, DBCtrls, Mask,
+  SendMail, RpRave, RpDefine, RpBase, RpSystem, ExtDlgs, DBTables, ImgList,
+  Menus, ActnList, ComCtrls, ToolWin, Buttons, StrUtils;
+
+type
+  TfrmGnrlEdit1 = class(TfrmGnrlEdit)
+    Panel2: TPanel;
+    Panel4: TPanel;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label20: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
+    edIdCar: TDBEdit;
+    edNumber: TDBEdit;
+    edTypeId: TDBLookupComboBox;
+    edProducerId: TDBLookupComboBox;
+    edDgamId: TDBLookupComboBox;
+    edModel: TDBEdit;
+    edZeva: TDBEdit;
+    edShildaN: TDBEdit;
+    edGear: TDBComboBox;
+    edSpido: TDBEdit;
+    edShum: TDBEdit;
+    Panel5: TPanel;
+    GroupBox2: TGroupBox;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label16: TLabel;
+    Label15: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label24: TLabel;
+    Label21: TLabel;
+    Label25: TLabel;
+    edWeightT: TDBEdit;
+    edWeightS: TDBEdit;
+    edCargoId: TDBLookupComboBox;
+    edRemark: TDBMemo;
+    edInsureId: TDBLookupComboBox;
+    edPolisaN: TDBEdit;
+    edContact: TDBEdit;
+    edTel: TDBEdit;
+    edWeightR: TDBEdit;
+    edOvedId: TDBLookupComboBox;
+    edAtarId: TDBLookupComboBox;
+    Splitter1: TSplitter;
+    Panel3: TPanel;
+    PageControl2: TPageControl;
+    TabSheet2: TTabSheet;
+    Panel6: TPanel;
+    dbgTipul: TDBGrid;
+    Panel7: TPanel;
+    DBGrid1: TDBGrid;
+    DBMemo1: TDBMemo;
+    TabSheet3: TTabSheet;
+    dbgDriver: TDBGrid;
+    TabSheet4: TTabSheet;
+    DBGrid2: TDBGrid;
+    TabSheet5: TTabSheet;
+    DBGrid3: TDBGrid;
+    TabSheet6: TTabSheet;
+    DBGrid4: TDBGrid;
+    tbCrTipul: TTable;
+    tbCrTipulId: TAutoIncField;
+    tbCrTipulCarId: TIntegerField;
+    tbCrTipulTipulId: TIntegerField;
+    tbCrTipulDateDone: TDateField;
+    tbCrTipulDateToDo: TDateField;
+    tbCrTipulLTipul: TStringField;
+    tbCrTipulRemark: TStringField;
+    tbTblTipul: TTable;
+    tbTblTipulID: TAutoIncField;
+    tbTblTipulTipul: TStringField;
+    tbTblTipulTedirut: TIntegerField;
+    tbTblTipulKavua: TBooleanField;
+    dsCrTipul: TDataSource;
+    tbCar: TTable;
+    tbCarId: TIntegerField;
+    tbCarIdCar: TIntegerField;
+    tbCarNumber: TStringField;
+    tbCarTypeId: TIntegerField;
+    tbCarProducerId: TIntegerField;
+    tbCarDgamId: TIntegerField;
+    tbCarModel: TIntegerField;
+    tbCarZeva: TStringField;
+    tbCarGear: TStringField;
+    tbCarWeightT: TFloatField;
+    tbCarWeightS: TFloatField;
+    tbCarWeightR: TFloatField;
+    tbCarShildaN: TStringField;
+    tbCarSpido: TIntegerField;
+    tbCarCargoId: TIntegerField;
+    tbCarInsureId: TIntegerField;
+    tbCarPolisaN: TStringField;
+    tbCarContact: TStringField;
+    tbCarTel: TStringField;
+    tbCarShum: TCurrencyField;
+    tbCarOvedId: TSmallintField;
+    tbCarAtarId: TSmallintField;
+    tbCarRemark: TMemoField;
+    tbCarClientId: TIntegerField;
+    tbCarMissing: TBooleanField;
+    tbCarLkpType: TStringField;
+    tbCarLkpProduce: TStringField;
+    tbCarLkpDgam: TStringField;
+    tbCarLkpCargo: TStringField;
+    tbCarLkpInsure: TStringField;
+    tbTblType: TTable;
+    tbTblTypeID: TAutoIncField;
+    tbTblTypeType: TStringField;
+    tbTblProducer: TTable;
+    tbTblProducerID: TAutoIncField;
+    tbTblProducerProducer: TStringField;
+    tbTblDgam: TTable;
+    tbTblDgamID: TAutoIncField;
+    tbTblDgamIdP: TIntegerField;
+    tbTblDgamDgam: TStringField;
+    tbTblCargo: TTable;
+    tbTblCargoID: TAutoIncField;
+    tbTblCargoCargo: TStringField;
+    tbTblInsure: TTable;
+    tbTblInsureID: TAutoIncField;
+    tbTblInsureInsure: TStringField;
+    tbTblOved: TTable;
+    tbTblOvedID: TAutoIncField;
+    tbTblOvedOved: TStringField;
+    dsCar: TDataSource;
+    dsTblType: TDataSource;
+    DataSource1: TDataSource;
+    dsTblProducer: TDataSource;
+    dsTblDgam: TDataSource;
+    dsTblCargo: TDataSource;
+    dsTblInsure: TDataSource;
+    dsTblOved: TDataSource;
+    tbCrDrv: TTable;
+    tbCrDrvId: TAutoIncField;
+    tbCrDrvCarId: TIntegerField;
+    tbCrDrvDriverId: TIntegerField;
+    tbCrDrvLDriver: TStringField;
+    tbDriver: TTable;
+    tbCrTipulDtl: TTable;
+    tbCrTipulDtlsBikoret: TStringField;
+    tbCrTipulDtlId: TAutoIncField;
+    tbCrTipulDtlTipulId: TIntegerField;
+    tbCrTipulDtlBikoretDtlId: TIntegerField;
+    tbCrAcdnt: TTable;
+    tbCrAcdntId: TAutoIncField;
+    tbCrAcdntCarId: TIntegerField;
+    tbCrAcdntAcdntD: TDateField;
+    tbCrAcdntDescrpt: TStringField;
+    tbCrAcdntStatus: TStringField;
+    tbTblBikoretDtl: TTable;
+    tbTblBikoretDtlBikoretDtl: TStringField;
+    tbTblBikoretDtlID: TAutoIncField;
+    tbTblBikoretDtlIdBikoret: TIntegerField;
+    tbCrFollow: TTable;
+    tbCrFollowId: TAutoIncField;
+    tbCrFollowCarId: TIntegerField;
+    tbCrFollowMoed: TDateField;
+    tbCrFollowSha: TTimeField;
+    tbCrFollowRemark: TStringField;
+    tbCrTipulOut: TTable;
+    tbCrTipulOutId: TAutoIncField;
+    tbCrTipulOutCarId: TIntegerField;
+    tbCrTipulOutMoed: TDateField;
+    tbCrTipulOutTipulOutId: TSmallintField;
+    tbCrTipulOutMusah: TStringField;
+    tbCrTipulOutRemark: TStringField;
+    tbCrTipulOutLTipulOut: TStringField;
+    tbTblTipulOut: TTable;
+    tbTblTipulOutId: TAutoIncField;
+    tbTblTipulOutTipulOut: TStringField;
+    dsCrDrv: TDataSource;
+    dsCrTipulDtl: TDataSource;
+    dsCrAcdnt: TDataSource;
+    dsCrFollow: TDataSource;
+    dsCrTipulOut: TDataSource;
+    tbTblAtar: TTable;
+    tbTblAtarID: TAutoIncField;
+    tbTblAtarAtar: TStringField;
+    dsTblAtar: TDataSource;
+    tbTofesId: TAutoIncField;
+    tbTofesCarId: TIntegerField;
+    tbTofesMoed: TDateField;
+    tbTofesName: TStringField;
+    tbTofesTofes: TBlobField;
+    tbTofesExt: TStringField;
+    acAutoTipul: TAction;
+    acPrinAndtDtl: TAction;
+    procedure acPrinAndtDtlExecute(Sender: TObject);
+    procedure acShowScanExecute(Sender: TObject);
+    procedure acAutoTipulExecute(Sender: TObject);
+    procedure acPhotoExecute(Sender: TObject);
+    procedure acScanExecute(Sender: TObject);
+    procedure acPrintExecute(Sender: TObject);
+    procedure acMailExecute(Sender: TObject);
+    procedure acSaveExecute(Sender: TObject);
+    procedure dsCarDataChange(Sender: TObject; Field: TField);
+    procedure FormCreate(Sender: TObject);
+  private
+    function HasAllValue: Boolean;
+    procedure CarTblClose;
+    procedure SaveTofes(pName, pFile, pExt: String);
+  public
+    Company: String;
+  end;
+
+var
+  frmGnrlEdit1: TfrmGnrlEdit1;
+
+implementation
+uses
+   MainDM, KbFunc, WordFunc, DriverEdit, ScanUtil, ShowScan, ClientEdit;
+{$R *.dfm}
+
+procedure TfrmGnrlEdit1.FormCreate(Sender: TObject);
+begin
+  inherited;
+   try
+       tbTblAtar.Open;
+       tbTblOved.Open;
+       tbTblType.Open;
+       tbTblProducer.Open;
+       tbTblDgam.Open;
+       tbTblCargo.Open;
+       tbTblInsure.Open;
+       tbTblTipul.Open;
+       tbCrTipul.Open;
+       tbDriver.Open;
+       tbCrDrv.Open;
+       tbCrAcdnt.Open;
+       tbCrFollow.Open;
+       tbTblTipulOut.Open;
+       tbCrTipulOut.Open;
+       tbCrTipulDtl.Open;
+       tbTblBikoretDtl.Open;
+   except
+       on E: EDatabaseError do
+       begin
+           CarTblClose;
+           MessageDlg('!!! קיים קובץ לא תקין' + #10#13 +
+                       E.Message, mtError, [mbOK], 0);
+           Self.Destroy;
+       end;
+   end;
+
+   LoadPosition('\Software\Kochavit\CarEdit');
+   self.dsCarDataChange(Self, nil);
+end;
+
+procedure TfrmGnrlEdit1.CarTblClose;
+begin
+   tbCar.Close;
+   tbTblType.Close;
+   tbTblProducer.Close;
+   tbTblDgam.Close;
+   tbTblCargo.Close;
+   tbTblInsure.Close;
+   tbTblOved.Close;
+   tbTblAtar.Close;
+   tbTblTipul.Close;
+   tbCrTipul.Close;
+   tbDriver.Close;
+   tbCrDrv.Close;
+   tbCrAcdnt.Close;
+   tbCrFollow.Close;
+   tbTblTipulOut.Close;
+   tbCrTipulOut.Close;
+   tbCrTipulDtl.Close;
+   tbTblBikoretDtl.Close;
+end;
+
+
+procedure TfrmGnrlEdit1.dsCarDataChange(Sender: TObject; Field: TField);
+begin
+  inherited;
+   lbHead.Caption := 'רכב: ' +
+           tbCar.FieldByName('Number').AsString +
+            ' בחברה: '+ Company;
+end;
+
+procedure TfrmGnrlEdit1.acSaveExecute(Sender: TObject);
+begin
+  inherited;
+   if HasAllValue then
+   begin
+       tbCar.Post;
+       Close;
+   end;
+end;
+
+function TfrmGnrlEdit1.HasAllValue: Boolean;
+begin
+   if (edIdCar.Text = '') or (edNumber.Text = '  -   -  ') then
+  begin
+    MessageDlg('שדות מצוינים באדום הם שדות חובה',
+                   mtConfirmation, [mbOk], 0);
+    if (edIdCar.Text = '') then
+        edIdCar.SetFocus
+    else
+        edNumber.SetFocus;
+    Result := False;
+  end
+  else
+    Result := True;
+end;
+
+procedure TfrmGnrlEdit1.acMailExecute(Sender: TObject);
+var
+   WordObj: TWordObj;
+   WorkFile, nCopy: OleVariant;
+   vButton, vMemo: String;
+   sEmail, tmpDoc, vPath: String;
+   vSave: Boolean;
+begin
+  inherited;
+   vPath := ExtractFilePath(Application.ExeName) + 'Docs\Car\';
+   vSave := True;
+   if SelectDoc(WorkFile, nCopy, vButton, vMemo, vPath, vSave) then
+   begin
+       WordObj := TWordObj.Create;
+       with WordObj do
+       begin
+           if ConnectWord then
+           begin
+               OpenDoc(WorkFile);
+               InsertData(WordObj, tbCar, WorkFile, '');
+               InsertData(WordObj, tbTblType, WorkFile, '');
+               InsertData(WordObj, tbTblProducer, WorkFile, '');
+               InsertData(WordObj, tbTblDgam, WorkFile, '');
+               InsertData(WordObj, tbTblCargo, WorkFile, '');
+               InsertData(WordObj, tbTblInsure, WorkFile, '');
+               InsertData(WordObj, dmMain.tbClient, WorkFile, '');
+               InsertData(WordObj, tbCrTipul, WorkFile, '');
+               InsertData(WordObj, tbTblTipul, WorkFile, vMemo);
+               if vButton = 'btnFax' then
+                   FaxDoc(nCopy)
+               else if vButton = 'btnEmail' then
+               begin
+                   sEmail := dmMain.tbClient.FieldByName('Email').AsString;
+                   tmpDoc := vPath+'Email'+ExtractFileName(WorkFile);
+                   SaveAsDoc(tmpDoc);
+                   EmailDoc(tmpDoc, sEmail);
+               end
+               else
+                  if vSave then
+                  begin
+                    tmpDoc := vPath+'Temp.Doc';
+                    PrintDoc_SaveCopy(nCopy, tmpDoc);
+                    SaveTofes(ChangeFileExt(ExtractFileName(WorkFile), ''),
+                        tmpDoc, 'Doc');
+                  end
+                  else
+                    PrintDoc(nCopy);
+
+               CloseWord;
+           end;
+           Free;
+       end;
+   end;
+end;
+
+procedure TfrmGnrlEdit1.SaveTofes(pName, pFile, pExt: String);
+begin
+   if (pExt = 'jpg') then
+    CompressJPeg(pFile);
+  try
+    tbTofes.Open;
+    tbTofes.Append;
+    tbTofesMoed.AsDateTime := Date;
+    tbTofesName.AsString := pName;
+    tbTofesExt.AsString := pExt;
+    tbTofesTofes.LoadFromFile(pFile);
+    tbTofes.Post;
+  except
+    on E: EDBEngineError do
+    begin
+      MessageDlg('!!! ????? ?? ????' + #10#13 +
+                       E.Message, mtError, [mbOK], 0);
+      tbTofes.Close;
+    end;
+  end;
+end;
+
+procedure TfrmGnrlEdit1.acPrintExecute(Sender: TObject);
+var
+   WordObj: TWordObj;
+   WorkFile: OleVariant;
+   vPath: String;
+begin
+  inherited;
+   vPath := ExtractFilePath(Application.ExeName) + 'Docs\';
+   WorkFile := 'Car.doc';
+   WordObj := TWordObj.Create;
+   with WordObj do
+   begin
+       if ConnectWord then
+       begin
+           OpenDoc(vPath+WorkFile);
+           InsertData(WordObj, tbCar, WorkFile, '');
+           InsertData(WordObj, tbTblType, WorkFile, '');
+           InsertData(WordObj, tbTblProducer, WorkFile, '');
+           InsertData(WordObj, tbTblDgam, WorkFile, '');
+           InsertData(WordObj, tbTblCargo, WorkFile, '');
+           InsertData(WordObj, tbTblInsure, WorkFile, '');
+           InsertData(WordObj, dmMain.tbClient, WorkFile, '');
+           InsertData(WordObj, tbCrTipul, WorkFile, '');
+           InsertData(WordObj, tbTblTipul, WorkFile, '');
+           PrintDoc(1);
+           CloseWord;
+       end;
+       Free;
+   end;
+end;
+
+procedure TfrmGnrlEdit1.acScanExecute(Sender: TObject);
+var
+  Path, tmpBmpFile, tmpJpgFile: String;
+begin
+  inherited;
+  frmScaner := TfrmScaner.Create(Self);
+  try
+    frmScaner.FSourceId := GetScanerSource;
+    Path := ExtractFilePath(Application.ExeName);
+    tmpBmpFile := Path + 'Docs\ScanDoc\Temp.Bmp';
+    tmpJpgFile := Path + 'Docs\ScanDoc\Temp.Jpg';
+    frmScaner.FTmpFile := tmpBmpFile;
+    if (frmScaner.ShowModal = mrYes) then
+    begin
+      ConvertBmpToJpg(tmpBmpFile, tmpJpgFile);
+      SaveTofes(frmScaner.edName.Text, tmpJpgFile, 'jpg');
+    end;
+  finally
+    frmScaner.Free;
+  end;
+end;
+
+procedure TfrmGnrlEdit1.acPhotoExecute(Sender: TObject);
+var
+  pFile: String;
+begin
+  inherited;
+  pFile := GetPhotoName;
+  if (pFile <> '') then
+    SaveTofes(ChangeFileExt(ExtractFileName(pFile), ''), pFile,
+              RightStr(ExtractFileExt(pFile), 3));
+end;
+
+procedure TfrmGnrlEdit1.acAutoTipulExecute(Sender: TObject);
+begin
+  inherited;
+   if (tbCar.State = dsInsert) and HasAllValue then
+  begin
+    with tbTblTipul do
+    begin
+      First;
+      while not Eof do
+      begin
+        if FieldByName('Kavua').AsBoolean then
+        begin
+          tbCrTipul.Append;
+          tbCrTipul.FieldByName('TipulId').AsInteger :=
+            FieldByName('Id').AsInteger;
+          tbCrTipul.Post;
+        end;
+        Next;
+      end;
+    end;
+  end;
+end;
+
+procedure TfrmGnrlEdit1.acShowScanExecute(Sender: TObject);
+var
+  tmpFile: String;
+begin
+  inherited;
+  frmShowScan := TfrmShowScan.Create(Self);
+  try
+    frmShowScan.dsTofes.DataSet := tbTofes;
+    tbTofes.Open;
+    if (frmShowScan.ShowModal = mrYes) then
+    begin
+      tmpFile := ExtractFilePath(Application.ExeName) +
+          'Docs\ScanDoc\Temp.'+tbTofesExt.AsString;
+      tbTofesTofes.SaveToFile(tmpFile);
+      frmShowScan.ShowFile(tmpFile);
+    end;
+  finally
+    tbTofes.Close;
+    frmShowScan.Free;
+  end;
+end;
+
+procedure TfrmGnrlEdit1.acPrinAndtDtlExecute(Sender: TObject);
+begin
+  inherited;
+   RvKartis.ExecuteReport('rpCarKartis');
+end;
+
+end.

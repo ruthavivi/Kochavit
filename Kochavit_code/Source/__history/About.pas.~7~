@@ -1,0 +1,68 @@
+unit About;
+
+interface
+
+uses
+  Windows, Forms, StdCtrls, Buttons, ExtCtrls, Controls, Classes, pngimage,
+  Vcl.Graphics, EnPngGr;
+
+type
+  TfrmAbout = class(TForm)
+    Image1: TImage;
+    StaticText1: TStaticText;
+    Panel1: TPanel;
+    Label1: TLabel;
+    Label2: TLabel;
+    Panel2: TPanel;
+    btnOK: TBitBtn;
+    Panel3: TPanel;
+    Label4: TLabel;
+    Label5: TLabel;
+    Label3: TLabel;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label9: TLabel;
+    Label10: TLabel;
+    Label11: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    procedure btnOKClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Label12Click(Sender: TObject);
+    procedure Label13Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  frmAbout: TfrmAbout;
+
+implementation
+uses
+  ShellApi;
+{$R *.dfm}
+
+procedure TfrmAbout.btnOKClick(Sender: TObject);
+begin
+   Close;
+end;
+
+procedure TfrmAbout.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   Action := caFree;
+end;
+
+procedure TfrmAbout.Label12Click(Sender: TObject);
+begin
+  ShellExecute(Handle, 'open', PChar('mailto:sorinh@zahav.net.il') ,nil, nil, SW_SHOWNORMAL);
+end;
+
+procedure TfrmAbout.Label13Click(Sender: TObject);
+begin
+    ShellExecute(Handle, 'open', 'http://sorinh.wix.com/nemo',nil,nil, SW_SHOWNORMAL);
+end;
+
+end.

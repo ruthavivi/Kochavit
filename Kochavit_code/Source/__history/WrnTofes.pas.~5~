@@ -1,0 +1,287 @@
+unit WrnTofes;
+
+interface
+
+uses
+  Classes, SysUtils, Forms, StrUtils, WordFunc, WrnList, WordVer,
+  KbFunc, DbTables, MainDM, edbcomps;
+
+  function  GetTofesDoc(pType: String): String;
+  function  AreTipulSelected: Boolean;
+  function  GetSetNextNo: Integer;
+  procedure LoadTipulId;
+  procedure ProccessTofes;
+  procedure ScanData;
+  procedure InsertData(pI: String);
+
+var
+  NoBkr: Integer;
+  NumberBrCode: String;
+  TipulIdList: TStringList;
+  WorkFile: OleVariant;
+  Ver: Integer;
+  WordObj: TWordObj;
+
+implementation
+
+procedure ProccessTofes;
+begin
+  TipulIdList := TStringList.Create;
+  try
+    LoadTipulId;
+    ScanData;
+  finally
+    TipulIdList.Free;
+  end;
+end;
+
+function AreTipulSelected: Boolean;
+begin
+  if frmWrnList.dbgCar.SelectedRows.Count > 0 then
+    Result := True
+  else
+    Result := False;
+end;
+
+procedure LoadTipulId;
+var
+  i: Integer;
+begin
+  with frmWrnList.dbgCar do
+  begin
+    DataSource.DataSet.DisableControls;
+    if AreTipulSelected then
+    begin
+      for i := 0 to SelectedRows.Count -1 do
+      begin
+        DataSource.DataSet.GotoBookmark(Pointer(SelectedRows.Items[i]));
+        TipulIdList.Add(DataSource.DataSet.FieldByName('Id').AsString);
+      end;
+    end
+    else
+    begin
+      DataSource.DataSet.First;
+      while not DataSource.DataSet.Eof do
+      begin
+        TipulIdList.Add(DataSource.DataSet.FieldByName('Id').AsString);
+        DataSource.DataSet.Next;
+      end;
+    end;
+    DataSource.DataSet.EnableControls;
+  end;
+end;
+
+function GetTofesDoc(pType: String): String;
+var
+  qrGnrl: TQuery;
+begin
+  Result := 'Tofes.Doc';
+  qrGnrl := TQuery.Create(nil);
+  try
+    qrGnrl.DatabaseName := 'KB';
+    qrGnrl.SQL.Text := 'SELECT Doc FROM KTblType ' +
+                      'WHERE Type = ' + QuotedStr(pType);
+    qrGnrl.Open;
+    if not qrGnrl.Eof then
+      Result := qrGnrl.FieldByName('Doc').AsString;
+  finally
+    qrGnrl.Close;
+    qrGnrl.Free;
+  end;
+end;
+
+function GetSetNextNo: Integer;
+var
+  tbTable: TEDBTable;
+begin
+  tbTable := TEDBTable.Create(nil);
+  try
+    tbTable.DatabaseName := 'KB';
+    tbTable.TableName := 'KDefault';
+    tbTable.Open;
+    Result := tbTable.FieldByName('NextNoBkr').AsInteger;
+    tbTable.Edit;
+    tbTable.FieldByName('NextNoBkr').AsInteger := Result +1;
+    tbTable.Post;
+  finally
+    tbTable.Close;
+    tbTable.Free;
+  end;
+end;
+
+procedure ScanData;
+var
+  i: Integer;
+begin
+  Ver := GetCurrentWordMajorVersion;
+  WordObj := TWordObj.Create;
+  try
+    WordObj.ConnectWord;
+    for i := 0 to TipulIdList.Count -1 do
+    begin
+      NoBkr := GetSetNextNo;
+      dmMain.qrWrnExt.Locate('Id', TipulIdList[i], []);
+      InsertData(IntToStr(i+1));
+    end;
+  finally
+    WordObj.Free;
+  end;
+end;
+
+function PadLeftA(const AString: string; const AChar: Char;
+  const ALen: Integer): string;
+var
+  PadLength: Integer; // number of padding characters required
+begin
+  Result := AString;
+  PadLength := ALen - Length(AString);
+  if PadLength < 1 then
+    Exit;
+  Result := AString + StringOfChar(AChar, PadLength);
+end;
+
+//function PadRightA(const AString: string; const AChar: Char;
+//  const ALen: Integer): string;
+//var
+//  PadLength: Integer; // number of padding characters required
+//begin
+//  Result := AString;
+//  PadLength := ALen - Length(AString);
+//  if PadLength < 1 then
+//    Exit;
+//  Result := StringOfChar(AChar, PadLength) + AString;
+//end;
+
+procedure InsertData(pI: String);
+var
+  i: Integer;
+  vRemark, FldName: String;
+begin
+  with dmMain.qrWrnExt do
+  begin
+    WorkFile := ExtractFilePath(Application.ExeName) + 'Docs\Tofes\' +
+                GetTofesDoc(FieldByName('Type').AsString);
+    WordObj.OpenDoc(WorkFile);
+    for i := 0 to FieldCount -1 do
+    begin
+      FldName := Fields[i].FieldName;
+      if (FldName = 'Remark') then
+        vRemark := FieldByName(FldName).AsString
+      else if (Ver = 9) and ((FldName = 'Number') or (FldName = 'Tel') or
+              (FldName = 'Tel1')) then
+      begin
+        if (FldName = 'Number') then
+        begin
+          WordObj.InsertBookMark('Number',
+              RevStr(FieldByName(FldName).AsString));
+          WordObj.InsertBookMark('NumberA',
+              RevStr(FieldByName(FldName).AsString));
+        end
+        else if (FldName = 'Tel') then
+        begin
+          WordObj.InsertBookMark('Tel',
+              RevStr(FieldByName(FldName).AsString));
+          WordObj.InsertBookMark('TelA',
+              RevStr(FieldByName(FldName).AsString));
+        end
+        else if (FldName = 'Tel1') then
+        begin
+          WordObj.InsertBookMark('Tel1',
+              RevStr(FieldByName(FldName).AsString));
+          WordObj.InsertBookMark('Tel1A',
+              RevStr(FieldByName(FldName).AsString))
+        end;
+      end
+      else
+      begin
+        WordObj.InsertBookMark(FldName,
+                       FieldByName(FldName).AsString);
+        WordObj.InsertBookMark(FldName+'A',
+                       FieldByName(FldName).AsString);
+      end;
+    end;
+    NumberBrCode := '!'+dmMain.qrWrnExt.FieldByName('Number').AsString+'!';
+
+  end;
+
+  WordObj.InsertBookMark('sp', '');
+//  with frmWrnList.qrUpd do
+//  begin
+//    if not Eof then
+//    begin
+//      while not Eof do
+//      begin
+//        WordObj.WriteNewLine(FieldByName(Fields[0].FieldName).AsString);
+//        Next;
+//      end;
+//    end;
+//  end;
+  if (vRemark <> '') then
+    WordObj.WriteNewLine(vRemark);
+
+  if (WordObj.ExistBookMark('tp')) then
+  begin
+//    with frmWrnList.qrGnrl do
+//    begin
+//      if not Eof then
+//      begin
+//        WordObj.InsertBookMark('tp', '');
+//        while not Eof do
+//        begin
+//          if (FieldByName(Fields[1].FieldName).AsDateTime <= (Date + 30)) then
+//            WordObj.WriteNewLine(
+//              PadLeftA(' ! ' + FieldByName(Fields[0].FieldName).AsString+': ' +
+//                  FieldByName(Fields[1].FieldName).AsString, ' ', 25))
+//          else
+//            WordObj.WriteNewLine(
+//              PadLeftA(FieldByName(Fields[0].FieldName).AsString+': ' +
+//                  FieldByName(Fields[1].FieldName).AsString, ' ', 25));
+//          Next;
+//        end;
+//      end;
+//    end;
+  end;
+
+  if (WordObj.ExistBookMark('dh')) then
+  begin
+//    with frmWrnList.qrGnrl2 do
+//    begin
+//      First;
+//      if not Eof then
+//      begin
+//        WordObj.InsertBookMark('dh', '');
+//        while not Eof do
+//        begin
+//          if (FieldByName(Fields[4].FieldName).AsDateTime <= (Date + 30)) then
+//            WordObj.WriteNewLine(' ! ' +
+//              PadLeftA(FieldByName(Fields[0].FieldName).AsString+
+//                  ': ' + FieldByName(Fields[1].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[2].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[3].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[4].FieldName).AsString, ' ', 25))
+//          else
+//            WordObj.WriteNewLine(
+//              PadLeftA(FieldByName(Fields[0].FieldName).AsString+
+//                  ': ' + FieldByName(Fields[1].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[2].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[3].FieldName).AsString +
+//                  ': ' + FieldByName(Fields[4].FieldName).AsString, ' ', 25));
+//          Next;
+//        end;
+//      end;
+//    end;
+  end;
+
+  WordObj.InsertBookMark('NoBkr', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NoBkrB', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NoBkrC', IntToStr(NoBkr));
+  WordObj.InsertBookMark('NumberBrCode', NumberBrCode);
+
+  WordObj.InsertBookMark('pI', pI);
+
+//  WordObj.EditDoc;
+  WordObj.PrintDoc('1');
+  WordObj.CloseWord;
+end;
+
+end.
